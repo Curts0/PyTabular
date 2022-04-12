@@ -1,0 +1,3 @@
+*.pbix
+*.csv
+__pycache__
