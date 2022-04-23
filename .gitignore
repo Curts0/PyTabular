@@ -1,3 +1,5 @@
 *.pbix
 *.csv
 __pycache__
+/working
+garbage.py
