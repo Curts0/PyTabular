@@ -120,6 +120,29 @@ def pbix_utility_window():
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
     root.mainloop()
 
+file_metadata = {
+    "/Version": "integer",
+    "/DataMashup": "skip",
+    "/DiagramLayout": "skip",
+    "/Report/Layout": {
+        "file_type": "json",
+        "decode": "utf-16",
+        "sections":{
+            "id": "integer",
+            "reportId": "integer",
+            "theme": "string",
+            "filters": {"file_type":"json_string"}
+        }
+    },
+    "/Settings": {},
+    "/Metadata": {},
+    "/Report/LinguisticSchema": "skip",
+    "/Connections": "skip",
+    "/SecurityBindings": "skip"
+}
+
+
+
 #pbix_utility_window()
 #'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix'
 a = read_content_xml('C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix')
