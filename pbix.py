@@ -134,25 +134,33 @@ def pbix_utility_window():
 
 
 file_metadata = {
-    "/Version": {"run": True, "file_type": "text", "decode": "utf-16", "contents": "double"},
-    "/DataMashup": "skip",
-    "/DiagramLayout": "skip",
+    "/Version": {"run": True, "content": [
+        {"file_type": "text",
+         "decode": "utf-16",
+         "contents": "integer",
+         "location": "",
+         "dictionary_attribute_name": "version"
+         }
+    ]
+    },
+    "/DataMashup": {"run": False},
+    "/DiagramLayout": {"run": False},
     "/Report/Layout": {
         "run": True,
         "file_type": "json",
         "decode": "utf-16",
-        "sections": {
+        "content": {
             "id": "integer",
             "reportId": "integer",
             "theme": "string",
             "filters": {"file_type": "json_string"}
         }
     },
-    "/Settings": {},
-    "/Metadata": {},
-    "/Report/LinguisticSchema": "skip",
-    "/Connections": "skip",
-    "/SecurityBindings": "skip"
+    "/Settings": {"run": False},
+    "/Metadata": {"run": False},
+    "/Report/LinguisticSchema": {"run": False},
+    "/Connections": {"run": False},
+    "/SecurityBindings": {"run": False}
 }
 
 
