@@ -3,16 +3,18 @@ import zipfile
 import json
 import os
 import pandas as pd
-from functools import partial
 from tkinter import filedialog, Tk, ttk, StringVar, Label
 
 
 
 class pbix:
     def __init__(self,file_location=None) -> None:
-        self.visual_keys = ['id', 'x', 'y', 'z', 'width', 'height', 'config', 'filters', 'tabOrder', 'query', 'dataTransforms']
-        self.layout_keys = ['id', 'reportId', 'theme', 'filters', 'resourcePackages', 'sections', 'config', 'layoutOptimization', 'publicCustomVisuals', 'pods']
-        self.layout_sections_keys = ['id', 'name', 'displayName', 'filters', 'ordinal', 'visualContainers', 'objectId', 'config', 'displayOption', 'width', 'height']
+        def try_recursive(location, initial_try):
+            try:
+                return location[initial_try]
+            except:
+                return None
+
         #Get top level .pbix file items
         if file_location is None:
             file_location = retrieve_pbix_file()
@@ -26,13 +28,13 @@ class pbix:
         #Base Layout Items
         self.layout = json.loads(self.zipping.open('Report/Layout','r').read().decode('utf-16'))
         self.layout_id = self.layout['id']
-        self.layout_report_id = self.layout['reportId']
+        self.layout_report_id = try_recursive(self.layout,'reportId')
         self.layout_theme = self.layout['theme']
         self.layout_resource_packages = self.layout['resourcePackages']
         self.layout_sections = self.layout['sections']
         self.layout_optimization = self.layout['layoutOptimization']
         self.layout_publicCustomVisuals = self.layout['publicCustomVisuals']
-        self.layout_pods = self.layout['pods']
+        self.layout_pods = try_recursive(self.layout,'pods')
         self.layout_config = json.loads(self.layout['config'])
 
         #Report Level Filters
@@ -44,8 +46,8 @@ class pbix:
         self.report_level_measures = report_level_b.drop(columns=['extends','measures'])
 
         #Report Pages
-        self.report_tabs = pd.DataFrame(self.layout_sections,columns=self.layout_sections_keys).add_suffix('_report')
-        page_level_filters_a = self.report_tabs[['id_report','filters_report']]
+        self.report_tabs = pd.DataFrame(self.layout_sections,columns=self.layout_sections_keys)
+        page_level_filters_a = self.report_tabs[['id','filters']]
         self.page_level_filters = 1
 
         #Stats
@@ -110,12 +112,8 @@ def main_csv_saver(file_name,file_contents,file_location=None,open_file=True):
 def pbix_utility_window():
     pbix_class = pbix()
     def change_file():
-        pbix_class = pbix()
-        tkinter_var_file_location.set(pbix_class.file_location)
-        tkinter_var_file_name.set(pbix_class.base_file_name)
-        tkinter_main_label_var.set(f'Do stuff with your PBI File - {pbix_class.file_location}')
-        root.title(pbix_class.base_file_name)
-
+        root.destroy()
+        pbix_utility_window()
 
     print('Launching Window...')
     root = Tk()
@@ -131,12 +129,9 @@ def pbix_utility_window():
 
     ttk.Button(frm,text="Change Working PBIX File",command =change_file).grid(column=0, row=2)
     ttk.Button(frm,text="Unzip PBIX File", command = lambda: unzip_all(file_location=tkinter_var_file_location.get())).grid(column=0,row=3)
-    
-    #report level measure doesn't work when changing file...
     ttk.Button(frm,text="Report Level Measures to CSV",
      command = lambda: main_csv_saver(tkinter_var_file_name.get(),pbix_class.report_level_measures)).grid(column=0, row=4)
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
-
     root.mainloop()
 
 pbix_utility_window()
