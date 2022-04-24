@@ -6,14 +6,9 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 from tkinter import filedialog, Tk, ttk, StringVar, Label
 
+
 class pbix:
     def __init__(self, file_location=None) -> None:
-        def try_recursive(location, initial_try):
-            try:
-                return location[initial_try]
-            except:
-                return None
-
         # Get top level .pbix file items
         if file_location is None:
             file_location = retrieve_pbix_file()
@@ -24,17 +19,27 @@ class pbix:
         self.base_file_name = os.path.splitext(
             os.path.basename(self.file_location))[0]
         self.file_list = self.zipping.namelist()
-
+        self.pbix_dict = dict()
+        for file_name in self.file_list:
+            if file_name in file_metadata.keys():
+                file_meta_dict = file_metadata[file_name]
+                if file_meta_dict["run"]:
+                    file_meta_dict = file_metadata[file_name]
+                    print(file_meta_dict)
+                    self.pbix_dict[file_name] = self.file_get_read_items(location=file_meta_dict['location'],encoding=file_meta_dict["encoding"])
         pass
 
     def __repr__(self) -> str:
         return 'PBIX called... raise the roof'
 
     # Garbage Functions to Remove or Fix
-    def file_get_read_items(self,location,encoding) -> dict():
-        pbix_dict = self.zipping.open(location,'r').read().decode(encoding)
+    def file_get_read_items(self, location, encoding):
+        pbix_dict = self.zipping.open(location, 'r').read().decode(encoding)
         pbix_dict = json.loads(pbix_dict)
+        if location == "Version":
+            return float(self.zipping.open(location, 'r').read().decode(encoding))
         return pbix_dict
+
 
 def read_content_xml(file_location=None):
     if file_location is None:
@@ -51,6 +56,7 @@ def read_content_xml(file_location=None):
             pass
     return content_list
 
+
 def retrieve_pbix_file():
     root = Tk()
     root.wm_attributes('-topmost', 1)
@@ -60,6 +66,7 @@ def retrieve_pbix_file():
     root.quit
     print(f'Got the file location...{file_location}')
     return file_location
+
 
 def unzip_all(file_location=None, save_location=None):
     if file_location is None:
@@ -79,6 +86,7 @@ def unzip_all(file_location=None, save_location=None):
         os.startfile(save_location)
         print(f'Saved Files to {save_location}')
 
+
 def main_csv_saver(file_name, file_contents, file_location=None, open_file=True):
     if file_location is None or file_name is None:
         root = Tk()
@@ -96,6 +104,7 @@ def main_csv_saver(file_name, file_contents, file_location=None, open_file=True)
     if open_file:
         os.startfile(file_location)
     return file_contents
+
 
 def pbix_utility_window():
     pbix_class = pbix()
@@ -127,21 +136,14 @@ def pbix_utility_window():
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
     root.mainloop()
 
-#data from xml
-file_metadata = {
-    "/Version": {"run": True, "content": [
-        {"file_type": "text",
-         "decode": "utf-16",
-         "contents": "integer",
-         "location": "",
 
-         }
-    ]
-    },
-    "/DataMashup": {"run": False},
-    "/DiagramLayout": {"run": False},
-    "/Report/Layout": {
-        "run": True,
+# data from xml
+file_metadata = {
+    "Version": {"run": True, "location": "Version", "encoding": "utf-16-le"},
+    "DataMashup": {"run": False},
+    "DiagramLayout": {"run": False},
+    "Report/Layout": {
+        "run": False,
         "file_type": "json",
         "decode": "utf-16",
         "content": {
@@ -151,15 +153,13 @@ file_metadata = {
             "filters": {"file_type": "json_string"}
         }
     },
-    "/Settings": {"run": False},
-    "/Metadata": {"run": False},
-    "/Report/LinguisticSchema": {"run": False},
-    "/Connections": {"run": False},
-    "/SecurityBindings": {"run": False}
+    "Settings": {"run": True, "location": "Settings", "encoding": "utf-16"},
+    "Metadata": {"run": True, "location": "Metadata", "encoding": "utf-16"},
+    "Report/LinguisticSchema": {"run": False},
+    "Connections": {"run": True, "location": "Connections", "encoding": "utf-8"},
+    "SecurityBindings": {"run": False}
 }
-
 
 # pbix_utility_window()
 #'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix'
-a = read_content_xml(
-    'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix')
+#a = read_content_xml('C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix')
