@@ -9,6 +9,9 @@ from tkinter import filedialog, Tk, ttk, StringVar, Label
 
 class pbix:
     def __init__(self,file_location=None) -> None:
+        self.visual_keys = ['id', 'x', 'y', 'z', 'width', 'height', 'config', 'filters', 'tabOrder', 'query', 'dataTransforms']
+        self.layout_keys = ['id', 'reportId', 'theme', 'filters', 'resourcePackages', 'sections', 'config', 'layoutOptimization', 'publicCustomVisuals', 'pods']     
+        self.layout_sections_keys = ['id', 'name', 'displayName', 'filters', 'ordinal', 'visualContainers', 'objectId', 'config', 'displayOption', 'width', 'height']
         def try_recursive(location, initial_try):
             try:
                 return location[initial_try]
