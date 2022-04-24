@@ -3,6 +3,7 @@ import zipfile
 import json
 import os
 import pandas as pd
+import xml.etree.ElementTree as ET
 from tkinter import filedialog, Tk, ttk, StringVar, Label
 
 
@@ -38,8 +39,15 @@ def read_content_xml(file_location=None):
     if file_location is None:
         file_location = retrieve_pbix_file()
     pbix_class = pbix(file_location)
-    pbix_class.zipping.read()
-    return 1
+    content_xml_str = pbix_class.zipping.open('[Content_Types].xml','r').read().decode('utf-8-sig')
+    content_xml = ET.fromstring(content_xml_str)
+    content_list = []
+    for x in content_xml:
+        try:
+            content_list.append(x.attrib['PartName'])
+        except:
+            pass
+    return content_list
 
 
 def retrieve_pbix_file():
@@ -112,4 +120,6 @@ def pbix_utility_window():
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
     root.mainloop()
 
-pbix_utility_window()
+#pbix_utility_window()
+#'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix'
+a = read_content_xml('C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix')
