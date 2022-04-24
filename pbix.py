@@ -6,7 +6,6 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 from tkinter import filedialog, Tk, ttk, StringVar, Label
 
-
 class pbix:
     def __init__(self, file_location=None) -> None:
         def try_recursive(location, initial_try):
@@ -32,10 +31,10 @@ class pbix:
         return 'PBIX called... raise the roof'
 
     # Garbage Functions to Remove or Fix
-    def get_read_items(self) -> dict():
-        layout_dict = open('Report/Layout', 'r', encoding='utf-16').read()
-        return layout_dict
-
+    def file_get_read_items(self,location,encoding) -> dict():
+        pbix_dict = self.zipping.open(location,'r').read().decode(encoding)
+        pbix_dict = json.loads(pbix_dict)
+        return pbix_dict
 
 def read_content_xml(file_location=None):
     if file_location is None:
@@ -52,7 +51,6 @@ def read_content_xml(file_location=None):
             pass
     return content_list
 
-
 def retrieve_pbix_file():
     root = Tk()
     root.wm_attributes('-topmost', 1)
@@ -62,7 +60,6 @@ def retrieve_pbix_file():
     root.quit
     print(f'Got the file location...{file_location}')
     return file_location
-
 
 def unzip_all(file_location=None, save_location=None):
     if file_location is None:
@@ -82,7 +79,6 @@ def unzip_all(file_location=None, save_location=None):
         os.startfile(save_location)
         print(f'Saved Files to {save_location}')
 
-
 def main_csv_saver(file_name, file_contents, file_location=None, open_file=True):
     if file_location is None or file_name is None:
         root = Tk()
@@ -100,7 +96,6 @@ def main_csv_saver(file_name, file_contents, file_location=None, open_file=True)
     if open_file:
         os.startfile(file_location)
     return file_contents
-
 
 def pbix_utility_window():
     pbix_class = pbix()
@@ -132,14 +127,14 @@ def pbix_utility_window():
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
     root.mainloop()
 
-
+#data from xml
 file_metadata = {
     "/Version": {"run": True, "content": [
         {"file_type": "text",
          "decode": "utf-16",
          "contents": "integer",
          "location": "",
-         "dictionary_attribute_name": "version"
+
          }
     ]
     },
