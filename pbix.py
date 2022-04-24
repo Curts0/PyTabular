@@ -25,14 +25,27 @@ class pbix:
                 file_meta_dict = file_metadata[file_name]
                 if file_meta_dict["run"]:
                     file_meta_dict = file_metadata[file_name]
-                    print(file_meta_dict)
-                    self.pbix_dict[file_name] = self.file_get_read_items(location=file_meta_dict['location'],encoding=file_meta_dict["encoding"])
+                    pbix_dict_key_name = file_name if file_meta_dict["name"] is None else file_meta_dict["name"]
+                    self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(location=file_name, encoding=file_meta_dict["encoding"])
+                    if file_meta_dict["nest"]:
+
+                        if file_meta_dict["list"]:
+                            pass
+                        else:
+                            for content in file_meta_dict["contents"].keys():
+                                if file_meta_dict["contents"][content]["run"] and file_meta_dict["contents"][content]["update"] == "json":
+                                    self.pbix_dict[pbix_dict_key_name][content] = json.loads(self.pbix_dict[pbix_dict_key_name][content])
+
+
+
+
+
+
         pass
 
     def __repr__(self) -> str:
         return 'PBIX called... raise the roof'
 
-    # Garbage Functions to Remove or Fix
     def file_get_read_items(self, location, encoding):
         pbix_dict = self.zipping.open(location, 'r').read().decode(encoding)
         pbix_dict = json.loads(pbix_dict)
@@ -137,26 +150,50 @@ def pbix_utility_window():
     root.mainloop()
 
 
-# data from xml
 file_metadata = {
-    "Version": {"run": True, "location": "Version", "encoding": "utf-16-le"},
+    "Version": {"run": True, "encoding": "utf-16-le", "name": None,"nest": False, "list": False},
     "DataMashup": {"run": False},
     "DiagramLayout": {"run": False},
-    "Report/Layout": {
-        "run": False,
-        "file_type": "json",
-        "decode": "utf-16",
-        "content": {
-            "id": "integer",
-            "reportId": "integer",
-            "theme": "string",
-            "filters": {"file_type": "json_string"}
-        }
-    },
-    "Settings": {"run": True, "location": "Settings", "encoding": "utf-16"},
-    "Metadata": {"run": True, "location": "Metadata", "encoding": "utf-16"},
+    "Report/Layout": {"run": True, "encoding": "utf-16", "name": "Layout", "nest": True,  "list": False, "contents": {
+        'id': {"run": False},
+        'reportId': {"run": False},
+        'theme': {"run": False},
+        'filters': {"run": True, "update": "json"},
+        'resourcePackages': {"run": False},
+        'sections': {"run": True, "update": None, "nest": True, "list": False, "contents": {
+            'id': {"run": False}, 
+            'name': {"run": False}, 
+            'displayName': {"run": False}, 
+            'filters': {"run": True, "update":"json"}, 
+            'ordinal': {"run": False}, 
+            'visualContainers': {"run": True, "update": None, "nest": True, "list": True, "contents":{
+                'id': {"run": False}, 
+                'x': {"run": False}, 
+                'y': {"run": False}, 
+                'z': {"run": False}, 
+                'width': {"run": False}, 
+                'height': {"run": False}, 
+                'config': {"run": True, "update":"json"}, 
+                'filters': {"run": True, "update":"json"}, 
+                'tabOrder': {"run": False}, 
+                'query': {"run": True, "update":"json"}, 
+                'dataTransforms': {"run": True, "update":"json"}
+            }}, 
+            'objectId': {"run": False}, 
+            'config': {"run": True, "update": "json"}, 
+            'displayOption': {"run": False}, 
+            'width': {"run": False}, 
+            'height': {"run": False}
+        }},
+        'config': {"run": True, "update": "json"},
+        'layoutOptimization': {"run": False},
+        'publicCustomVisuals': {"run": False},
+        'pods': {"run": False}
+    }},
+    "Settings": {"run": True, "encoding": "utf-16", "name": None,"nest": False},
+    "Metadata": {"run": True, "encoding": "utf-16", "name": None,"nest": False},
     "Report/LinguisticSchema": {"run": False},
-    "Connections": {"run": True, "location": "Connections", "encoding": "utf-8"},
+    "Connections": {"run": True, "encoding": "utf-8", "name": None,"nest": False},
     "SecurityBindings": {"run": False}
 }
 
