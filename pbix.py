@@ -23,7 +23,7 @@ class pbix:
         self.zipping = zipfile.ZipFile(file_location)
         self.file_location = file_location
         self.base_file_name = os.path.splitext(os.path.basename(self.file_location))[0]
-        self.name_list = self.zipping.namelist()
+        self.file_list = self.zipping.namelist()
 
         pass
     def __repr__(self) -> str:
@@ -33,6 +33,14 @@ class pbix:
     def get_read_items(self) -> dict():
         layout_dict = open('Report/Layout','r',encoding='utf-16').read()
         return layout_dict
+
+def read_content_xml(file_location=None):
+    if file_location is None:
+        file_location = retrieve_pbix_file()
+    pbix_class = pbix(file_location)
+    pbix_class.zipping.read()
+    return 1
+
 
 def retrieve_pbix_file():
     root = Tk()
