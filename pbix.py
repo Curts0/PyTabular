@@ -21,39 +21,46 @@ class pbix:
         self.file_list = self.zipping.namelist()
         self.pbix_dict = dict()
 
-        #Gets starting point to unzip, it gets the all of the files and compares to the file_metadata variable below... 
+        # Gets starting point to unzip, it gets the all of the files and compares to the file_metadata variable below...
         for file_name in self.file_list:
-            #If file_name is in the top level of file_metadata
+            # If file_name is in the top level of file_metadata
             if file_name in file_metadata.keys():
-                #example Report/Layout {dictionary contents}
-                #If the meta_data says it should run as True
+                # example Report/Layout {dictionary contents}
+                # If the meta_data says it should run as True
                 if file_metadata[file_name]["run"]:
-                    #Check if the "name" needs to change like Report/Layout to just Layout
-                    pbix_dict_key_name = file_name if file_metadata[file_name]["name"] is None else file_metadata[file_name]["name"]
-                    #Add to main dictionary and unzip with metadata driven encoding
-                    self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(location=file_name, encoding=file_metadata[file_name]["encoding"])
-                    #If metadata indicates that more needs to be done inside of dictionary
-                    if file_metadata[file_name]["nest"]: #"Layout"
+                    # Check if the "name" needs to change like Report/Layout to just Layout
+                    pbix_dict_key_name = file_name if file_metadata[file_name][
+                        "name"] is None else file_metadata[file_name]["name"]
+                    # Add to main dictionary and unzip with metadata driven encoding
+                    self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(
+                        location=file_name, encoding=file_metadata[file_name]["encoding"])
+                    # If metadata indicates that more needs to be done inside of dictionary
+                    if file_metadata[file_name]["nest"]:  # "Layout"
                         for file_one_sub_component in file_metadata[file_name]["contents"].keys():
                             if file_metadata[file_name]["contents"][file_one_sub_component]["run"]:
-                                if file_metadata[file_name]["contents"][file_one_sub_component]["update"]=="json":
-                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component] = json.loads(self.pbix_dict[pbix_dict_key_name][file_one_sub_component])
+                                if file_metadata[file_name]["contents"][file_one_sub_component]["update"] == "json":
+                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component] = json.loads(
+                                        self.pbix_dict[pbix_dict_key_name][file_one_sub_component])
                                 if file_metadata[file_name]["contents"][file_one_sub_component]["nest"] and file_metadata[file_name]["contents"][file_one_sub_component]["list"]:
-                                    for place, item in enumerate(self.pbix_dict[pbix_dict_key_name][file_one_sub_component]):#Really only "Sections"
+                                    # Really only "Sections"
+                                    for place, item in enumerate(self.pbix_dict[pbix_dict_key_name][file_one_sub_component]):
                                         print(file_one_sub_component)
                                         for file_two_sub_component in file_metadata[file_name]["contents"][file_one_sub_component]["contents"].keys():
-                                            
+
                                             if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["run"]:
-                                                
-                                                if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]=="json":
-                                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component] = json.loads(self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component])
+
+                                                if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component] == "json":
+                                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component] = json.loads(
+                                                        self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component])
                                                 if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["nest"] and file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["list"]:
                                                     for sub_place, sub_item in enumerate(self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component]):
                                                         for file_three_sub_component in file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"].keys():
                                                             if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"][file_three_sub_component]["run"]:
-                                                                if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"][file_three_sub_component] =="json":
-                                                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component][sub_place][file_three_sub_component] = json.loads(self.pbix_dict[pbix_dict_key_name][file_one_sub_component][file_two_sub_component][place][file_three_sub_component])
+                                                                if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"][file_three_sub_component] == "json":
+                                                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component][sub_place][file_three_sub_component] = json.loads(
+                                                                        self.pbix_dict[pbix_dict_key_name][file_one_sub_component][file_two_sub_component][place][file_three_sub_component])
         pass
+
     def __repr__(self) -> str:
         return 'PBIX called... raise the roof'
 
@@ -162,49 +169,49 @@ def pbix_utility_window():
 
 
 file_metadata = {
-    "Version": {"run": True, "encoding": "utf-16-le", "name": None,"nest": False, "list": False},
+    "Version": {"run": True, "encoding": "utf-16-le", "name": None, "nest": False, "list": False},
     "DataMashup": {"run": False},
     "DiagramLayout": {"run": False},
     "Report/Layout": {"run": True, "encoding": "utf-16", "name": "Layout", "nest": True,  "list": False, "contents": {
         'id': {"run": False},
         'reportId': {"run": False},
         'theme': {"run": False},
-        'filters': {"run": True, "name": None,"nest": False, "list": False, "update": "json"},
+        'filters': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
         'resourcePackages': {"run": False},
         'sections': {"run": True, "update": None, "nest": True, "list": True, "contents": {
-            'id': {"run": False}, 
-            'name': {"run": False}, 
-            'displayName': {"run": False}, 
-            'filters': {"run": True, "name": None,"nest": False, "list": False, "update":"json"}, 
-            'ordinal': {"run": False}, 
-            'visualContainers': {"run": True, "update": None, "nest": True, "list": True, "name": None, "contents":{
-                'id': {"run": False}, 
-                'x': {"run": False}, 
-                'y': {"run": False}, 
-                'z': {"run": False}, 
-                'width': {"run": False}, 
-                'height': {"run": False}, 
-                'config': {"run": True, "update":"json"}, 
-                'filters': {"run": True, "update":"json"}, 
-                'tabOrder': {"run": False}, 
-                'query': {"run": True, "update":"json"}, 
-                'dataTransforms': {"run": True, "update":"json"}
-            }}, 
-            'objectId': {"run": False}, 
-            'config': {"run": True, "name": None,"nest": False, "list": False, "update": "json"}, 
-            'displayOption': {"run": False}, 
-            'width': {"run": False}, 
+            'id': {"run": False},
+            'name': {"run": False},
+            'displayName': {"run": False},
+            'filters': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
+            'ordinal': {"run": False},
+            'visualContainers': {"run": True, "update": None, "nest": True, "list": True, "name": None, "contents": {
+                'id': {"run": False},
+                'x': {"run": False},
+                'y': {"run": False},
+                'z': {"run": False},
+                'width': {"run": False},
+                'height': {"run": False},
+                'config': {"run": True, "update": "json"},
+                'filters': {"run": True, "update": "json"},
+                'tabOrder': {"run": False},
+                'query': {"run": True, "update": "json"},
+                'dataTransforms': {"run": True, "update": "json"}
+            }},
+            'objectId': {"run": False},
+            'config': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
+            'displayOption': {"run": False},
+            'width': {"run": False},
             'height': {"run": False}
         }},
-        'config': {"run": True, "name": None,"nest": False, "list": False, "update": "json"},
+        'config': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
         'layoutOptimization': {"run": False},
         'publicCustomVisuals': {"run": False},
         'pods': {"run": False}
     }},
-    "Settings": {"run": True, "encoding": "utf-16", "name": None,"nest": False},
-    "Metadata": {"run": True, "encoding": "utf-16", "name": None,"nest": False},
+    "Settings": {"run": True, "encoding": "utf-16", "name": None, "nest": False},
+    "Metadata": {"run": True, "encoding": "utf-16", "name": None, "nest": False},
     "Report/LinguisticSchema": {"run": False},
-    "Connections": {"run": True, "encoding": "utf-8", "name": None,"nest": False},
+    "Connections": {"run": True, "encoding": "utf-8", "name": None, "nest": False},
     "SecurityBindings": {"run": False}
 }
 
