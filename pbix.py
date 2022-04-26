@@ -22,6 +22,9 @@ class pbix:
         self.pbix_dict = dict()
 
         # Gets starting point to unzip, it gets the all of the files and compares to the file_metadata variable below...
+        '''
+        IM SO SORRY FOR THIS PART
+        '''
         for file_name in self.file_list:
             # If file_name is in the top level of file_metadata
             if file_name in file_metadata.keys():
@@ -44,7 +47,6 @@ class pbix:
                                 if file_metadata[file_name]["contents"][file_one_sub_component]["nest"] and file_metadata[file_name]["contents"][file_one_sub_component]["list"]:
                                     # Really only "Sections"
                                     for place, item in enumerate(self.pbix_dict[pbix_dict_key_name][file_one_sub_component]):
-                                        print(file_one_sub_component)
                                         for file_two_sub_component in file_metadata[file_name]["contents"][file_one_sub_component]["contents"].keys():
 
                                             if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["run"]:
@@ -59,7 +61,25 @@ class pbix:
                                                                 if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"][file_three_sub_component] == "json":
                                                                     self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component][sub_place][file_three_sub_component] = json.loads(
                                                                         self.pbix_dict[pbix_dict_key_name][file_one_sub_component][file_two_sub_component][place][file_three_sub_component])
-        pass
+        self.Version = self.pbix_dict["Version"]
+        self.Number_Of_Connections = len(self.pbix_dict["Connections"]["Connections"])
+        if self.Number_Of_Connections == 1:
+            self.Connection_Name =  self.pbix_dict["Connections"]["Connections"][0]["Name"]
+            self.Connection_String = self.pbix_dict["Connections"]["Connections"][0]["ConnectionString"]
+            self.Connection_Type = self.pbix_dict["Connections"]["Connections"][0]["ConnectionType"]
+        self.Dataset_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['DatasetId']
+        self.Report_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['ReportId']
+
+        
+    def find_visual_by_id(self,visual_id):
+        #self.pbix_dict['Layout']['sections'][x]['visualContainers'][x]['id']
+        for section in self.pbix_dict['Layout']['sections']:
+            for visual_container in self.pbix_dict['Layout']['sections'][section]['visualContainers']:
+                if visual_container['id'] == visual_id:
+                    return (self.pbix_dict['Layout']['sections'][section]['displayName'],
+                    self.pbix_dict['Layout']['sections'][section]['visualContainers'][visual_container])
+        return 1
+    pass
 
     def __repr__(self) -> str:
         return 'PBIX called... raise the roof'
