@@ -22,9 +22,7 @@ class pbix:
         self.pbix_dict = dict()
 
         # Gets starting point to unzip, it gets the all of the files and compares to the file_metadata variable below...
-        '''
-        IM SO SORRY FOR THIS PART
-        '''
+        #--------------------------------------#
         for file_name in self.file_list:
             # If file_name is in the top level of file_metadata
             if file_name in file_metadata.keys():
@@ -37,30 +35,26 @@ class pbix:
                     # Add to main dictionary and unzip with metadata driven encoding
                     self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(
                         location=file_name, encoding=file_metadata[file_name]["encoding"])
-                    # If metadata indicates that more needs to be done inside of dictionary
-                    if file_metadata[file_name]["nest"]:  # "Layout"
-                        for file_one_sub_component in file_metadata[file_name]["contents"].keys():
-                            if file_metadata[file_name]["contents"][file_one_sub_component]["run"]:
-                                if file_metadata[file_name]["contents"][file_one_sub_component]["update"] == "json":
-                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component] = json.loads(
-                                        self.pbix_dict[pbix_dict_key_name][file_one_sub_component])
-                                if file_metadata[file_name]["contents"][file_one_sub_component]["nest"] and file_metadata[file_name]["contents"][file_one_sub_component]["list"]:
-                                    # Really only "Sections"
-                                    for place, item in enumerate(self.pbix_dict[pbix_dict_key_name][file_one_sub_component]):
-                                        for file_two_sub_component in file_metadata[file_name]["contents"][file_one_sub_component]["contents"].keys():
+                    #---------------------------------------------------------------------#
+        '''
+        Okay so I have nested json inside of nested strings inside of nested everything.
+        I need to check for json_string - just do a json.loads() if it works then do it, else get the value
+        I need to check for list isinstance(x,list)
+        I need to check for dictionary isinstance(x,dict)
+        I need to check for all keys
+        Check Json Depth
+        # Python3 Program to find depth of a dictionary
+    def dict_depth(my_dict):
+        if isinstance(my_dict, dict):
+            
+            return 1 + (max(map(dict_depth, my_dict.values()))
+                                        if my_dict else 0)
+            
+        return 0`
+Use the dict_depth check and while is greater than 0 rerun the dict_depth...
+Then during it check for 
 
-                                            if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["run"]:
-
-                                                if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component] == "json":
-                                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component] = json.loads(
-                                                        self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component])
-                                                if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["nest"] and file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["list"]:
-                                                    for sub_place, sub_item in enumerate(self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component]):
-                                                        for file_three_sub_component in file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"].keys():
-                                                            if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"][file_three_sub_component]["run"]:
-                                                                if file_metadata[file_name]["contents"][file_one_sub_component]["contents"][file_two_sub_component]["contents"][file_three_sub_component] == "json":
-                                                                    self.pbix_dict[pbix_dict_key_name][file_one_sub_component][place][file_two_sub_component][sub_place][file_three_sub_component] = json.loads(
-                                                                        self.pbix_dict[pbix_dict_key_name][file_one_sub_component][file_two_sub_component][place][file_three_sub_component])
+        '''
         self.Version = self.pbix_dict["Version"]
         self.Number_Of_Connections = len(self.pbix_dict["Connections"]["Connections"])
         if self.Number_Of_Connections == 1:
