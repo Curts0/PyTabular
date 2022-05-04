@@ -30,12 +30,39 @@ class pbix:
                 # If the meta_data says it should run as True
                 if file_metadata[file_name]["run"]:
                     # Check if the "name" needs to change like Report/Layout to just Layout
-                    pbix_dict_key_name = file_name if file_metadata[file_name][
-                        "name"] is None else file_metadata[file_name]["name"]
+                    pbix_dict_key_name = file_name if file_metadata[file_name]["name"] is None else file_metadata[file_name]["name"]
                     # Add to main dictionary and unzip with metadata driven encoding
-                    self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(
-                        location=file_name, encoding=file_metadata[file_name]["encoding"])
+                    self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(location=file_name, encoding=file_metadata[file_name]["encoding"])
                     #---------------------------------------------------------------------#
+    #LAYOUT WORK#
+    def dynamic_layout(self,starting_dictionary):
+        dictionary_to_run = starting_dictionary
+        def dict_depth(my_dict):
+            if isinstance(my_dict, dict):
+                return 1 + (max(map(dict_depth, my_dict.values())) if my_dict else 0)
+            return 0
+        def str_dict_check(item):
+            try:
+                return True,json.loads(item)
+            except:
+                return False,item
+        def list_check(item):
+            if isinstance(item,list):
+                return True
+            return False
+        run = dict_depth(dictionary_to_run)
+        while run > 0:
+            for key in dictionary_to_run:
+                str_dict_var = str_dict_check(dictionary_to_run[key])
+                if str_dict_var[0] == True:
+                    dictionary_to_run[key] = str_dict_var[1]
+                    dictionary_to_run[key] = self.dynamic_layout(dictionary_to_run[key])
+                if list_check(dictionary_to_run[key]):
+                    for item in dictionary_to_run[key]:
+                        item = self.dynamic_layout(item)
+            run = 0
+        return dictionary_to_run
+
         '''
         Okay so I have nested json inside of nested strings inside of nested everything.
         I need to check for json_string - just do a json.loads() if it works then do it, else get the value
@@ -183,49 +210,14 @@ def pbix_utility_window():
 
 
 file_metadata = {
-    "Version": {"run": True, "encoding": "utf-16-le", "name": None, "nest": False, "list": False},
+    "Version": {"run": True, "encoding": "utf-16-le", "name": None},
     "DataMashup": {"run": False},
     "DiagramLayout": {"run": False},
-    "Report/Layout": {"run": True, "encoding": "utf-16", "name": "Layout", "nest": True,  "list": False, "contents": {
-        'id': {"run": False},
-        'reportId': {"run": False},
-        'theme': {"run": False},
-        'filters': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
-        'resourcePackages': {"run": False},
-        'sections': {"run": True, "update": None, "nest": True, "list": True, "contents": {
-            'id': {"run": False},
-            'name': {"run": False},
-            'displayName': {"run": False},
-            'filters': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
-            'ordinal': {"run": False},
-            'visualContainers': {"run": True, "update": None, "nest": True, "list": True, "name": None, "contents": {
-                'id': {"run": False},
-                'x': {"run": False},
-                'y': {"run": False},
-                'z': {"run": False},
-                'width': {"run": False},
-                'height': {"run": False},
-                'config': {"run": True, "update": "json"},
-                'filters': {"run": True, "update": "json"},
-                'tabOrder': {"run": False},
-                'query': {"run": True, "update": "json"},
-                'dataTransforms': {"run": True, "update": "json"}
-            }},
-            'objectId': {"run": False},
-            'config': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
-            'displayOption': {"run": False},
-            'width': {"run": False},
-            'height': {"run": False}
-        }},
-        'config': {"run": True, "name": None, "nest": False, "list": False, "update": "json"},
-        'layoutOptimization': {"run": False},
-        'publicCustomVisuals': {"run": False},
-        'pods': {"run": False}
-    }},
-    "Settings": {"run": True, "encoding": "utf-16", "name": None, "nest": False},
-    "Metadata": {"run": True, "encoding": "utf-16", "name": None, "nest": False},
+    "Report/Layout": {"run": True, "encoding": "utf-16", "name": "Layout"},
+    "Settings": {"run": True, "encoding": "utf-16", "name": None},
+    "Metadata": {"run": True, "encoding": "utf-16", "name": None},
     "Report/LinguisticSchema": {"run": False},
-    "Connections": {"run": True, "encoding": "utf-8", "name": None, "nest": False},
+    "Connections": {"run": True, "encoding": "utf-8", "name": None},
     "SecurityBindings": {"run": False}
 }
 
