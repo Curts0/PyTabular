@@ -9,6 +9,17 @@ from tkinter import filedialog, Tk, ttk, StringVar, Label
 
 class pbix:
     def __init__(self, file_location=None) -> None:
+        file_metadata = {
+            "Version": {"run": True, "encoding": "utf-16-le", "name": None},
+            "DataMashup": {"run": False},
+            "DiagramLayout": {"run": False},
+            "Report/Layout": {"run": True, "encoding": "utf-16", "name": "Layout"},
+            "Settings": {"run": True, "encoding": "utf-16", "name": None},
+            "Metadata": {"run": True, "encoding": "utf-16", "name": None},
+            "Report/LinguisticSchema": {"run": False},
+            "Connections": {"run": True, "encoding": "utf-8", "name": None},
+            "SecurityBindings": {"run": False}
+        }
         # Get top level .pbix file items
         if file_location is None:
             file_location = retrieve_pbix_file()
@@ -30,33 +41,43 @@ class pbix:
                 # If the meta_data says it should run as True
                 if file_metadata[file_name]["run"]:
                     # Check if the "name" needs to change like Report/Layout to just Layout
-                    pbix_dict_key_name = file_name if file_metadata[file_name]["name"] is None else file_metadata[file_name]["name"]
+                    pbix_dict_key_name = file_name if file_metadata[file_name][
+                        "name"] is None else file_metadata[file_name]["name"]
                     # Add to main dictionary and unzip with metadata driven encoding
-                    self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(location=file_name, encoding=file_metadata[file_name]["encoding"])
+                    self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(
+                        location=file_name, encoding=file_metadata[file_name]["encoding"])
                     #---------------------------------------------------------------------#
         self.Version = self.pbix_dict["Version"]
-        self.Number_Of_Connections = len(self.pbix_dict["Connections"]["Connections"])
+        self.Number_Of_Connections = len(
+            self.pbix_dict["Connections"]["Connections"])
         if self.Number_Of_Connections == 1:
-            self.Connection_Name =  self.pbix_dict["Connections"]["Connections"][0]["Name"]
+            self.Connection_Name = self.pbix_dict["Connections"]["Connections"][0]["Name"]
             self.Connection_String = self.pbix_dict["Connections"]["Connections"][0]["ConnectionString"]
             self.Connection_Type = self.pbix_dict["Connections"]["Connections"][0]["ConnectionType"]
         self.Dataset_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['DatasetId']
         self.Report_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['ReportId']
-        self.pbix_dict['Layout'] = self.dynamic_layout(self.pbix_dict['Layout'])
+        self.pbix_dict['Layout'] = self.dynamic_layout(
+            self.pbix_dict['Layout'])
     #LAYOUT WORK#
-    def dynamic_layout(self,starting_dictionary):
+
+    def dynamic_layout(self, starting_dictionary):
+        '''
+        '''
         dictionary_to_run = starting_dictionary
+
         def dict_depth(my_dict):
             if isinstance(my_dict, dict):
                 return 1 + (max(map(dict_depth, my_dict.values())) if my_dict else 0)
             return 0
+
         def str_dict_check(item):
             try:
-                return True,json.loads(item)
+                return True, json.loads(item)
             except:
-                return False,item
+                return False, item
+
         def list_check(item):
-            if isinstance(item,list):
+            if isinstance(item, list):
                 return True
             return False
         run = dict_depth(dictionary_to_run)
@@ -65,23 +86,21 @@ class pbix:
                 str_dict_var = str_dict_check(dictionary_to_run[key])
                 if str_dict_var[0] == True:
                     dictionary_to_run[key] = str_dict_var[1]
-                    dictionary_to_run[key] = self.dynamic_layout(dictionary_to_run[key])
+                    dictionary_to_run[key] = self.dynamic_layout(
+                        dictionary_to_run[key])
                 if list_check(dictionary_to_run[key]):
                     for item in dictionary_to_run[key]:
                         item = self.dynamic_layout(item)
             run = 0
         return dictionary_to_run
 
-
-
-        
-    def find_visual_by_id(self,visual_id):
-        #self.pbix_dict['Layout']['sections'][x]['visualContainers'][x]['id']
+    def find_visual_by_id(self, visual_id):
+        # self.pbix_dict['Layout']['sections'][x]['visualContainers'][x]['id']
         for section in self.pbix_dict['Layout']['sections']:
             for visual_container in self.pbix_dict['Layout']['sections'][section]['visualContainers']:
                 if visual_container['id'] == visual_id:
                     return (self.pbix_dict['Layout']['sections'][section]['displayName'],
-                    self.pbix_dict['Layout']['sections'][section]['visualContainers'][visual_container])
+                            self.pbix_dict['Layout']['sections'][section]['visualContainers'][visual_container])
         return 1
     pass
 
@@ -191,18 +210,6 @@ def pbix_utility_window():
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
     root.mainloop()
 
-
-file_metadata = {
-    "Version": {"run": True, "encoding": "utf-16-le", "name": None},
-    "DataMashup": {"run": False},
-    "DiagramLayout": {"run": False},
-    "Report/Layout": {"run": True, "encoding": "utf-16", "name": "Layout"},
-    "Settings": {"run": True, "encoding": "utf-16", "name": None},
-    "Metadata": {"run": True, "encoding": "utf-16", "name": None},
-    "Report/LinguisticSchema": {"run": False},
-    "Connections": {"run": True, "encoding": "utf-8", "name": None},
-    "SecurityBindings": {"run": False}
-}
 
 # pbix_utility_window()
 #'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix'
