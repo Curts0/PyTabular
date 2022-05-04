@@ -58,6 +58,10 @@ class pbix:
         self.Report_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['ReportId']
         self.pbix_dict['Layout'] = self.dynamic_layout(
             self.pbix_dict['Layout'])
+                #Report Level Measures
+        report_level_a = pd.DataFrame(self.pbix_dict['Layout']['config']['modelExtensions'][0]['entities']).explode('measures').rename(columns={'name':'table'})
+        report_level_b = pd.concat([report_level_a, report_level_a['measures'].apply(pd.Series)],axis=1)
+        self.report_level_measures = report_level_b.drop(columns=['extends','measures'])
     #LAYOUT WORK#
 
     def dynamic_layout(self, starting_dictionary):
@@ -211,6 +215,6 @@ def pbix_utility_window():
     root.mainloop()
 
 
-# pbix_utility_window()
+pbix_utility_window()
 #'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix'
 #a = read_content_xml('C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix')
