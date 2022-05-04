@@ -34,6 +34,15 @@ class pbix:
                     # Add to main dictionary and unzip with metadata driven encoding
                     self.pbix_dict[pbix_dict_key_name] = self.file_get_read_items(location=file_name, encoding=file_metadata[file_name]["encoding"])
                     #---------------------------------------------------------------------#
+        self.Version = self.pbix_dict["Version"]
+        self.Number_Of_Connections = len(self.pbix_dict["Connections"]["Connections"])
+        if self.Number_Of_Connections == 1:
+            self.Connection_Name =  self.pbix_dict["Connections"]["Connections"][0]["Name"]
+            self.Connection_String = self.pbix_dict["Connections"]["Connections"][0]["ConnectionString"]
+            self.Connection_Type = self.pbix_dict["Connections"]["Connections"][0]["ConnectionType"]
+        self.Dataset_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['DatasetId']
+        self.Report_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['ReportId']
+        self.pbix_dict['Layout'] = self.dynamic_layout(self.pbix_dict['Layout'])
     #LAYOUT WORK#
     def dynamic_layout(self,starting_dictionary):
         dictionary_to_run = starting_dictionary
@@ -63,33 +72,7 @@ class pbix:
             run = 0
         return dictionary_to_run
 
-        '''
-        Okay so I have nested json inside of nested strings inside of nested everything.
-        I need to check for json_string - just do a json.loads() if it works then do it, else get the value
-        I need to check for list isinstance(x,list)
-        I need to check for dictionary isinstance(x,dict)
-        I need to check for all keys
-        Check Json Depth
-        # Python3 Program to find depth of a dictionary
-    def dict_depth(my_dict):
-        if isinstance(my_dict, dict):
-            
-            return 1 + (max(map(dict_depth, my_dict.values()))
-                                        if my_dict else 0)
-            
-        return 0`
-Use the dict_depth check and while is greater than 0 rerun the dict_depth...
-Then during it check for 
 
-        '''
-        self.Version = self.pbix_dict["Version"]
-        self.Number_Of_Connections = len(self.pbix_dict["Connections"]["Connections"])
-        if self.Number_Of_Connections == 1:
-            self.Connection_Name =  self.pbix_dict["Connections"]["Connections"][0]["Name"]
-            self.Connection_String = self.pbix_dict["Connections"]["Connections"][0]["ConnectionString"]
-            self.Connection_Type = self.pbix_dict["Connections"]["Connections"][0]["ConnectionType"]
-        self.Dataset_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['DatasetId']
-        self.Report_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['ReportId']
 
         
     def find_visual_by_id(self,visual_id):
