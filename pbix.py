@@ -4,6 +4,8 @@ import json
 import os
 import pandas as pd
 import xml.etree.ElementTree as ET
+import uuid
+import tkinter as tk
 from tkinter import filedialog, Tk, ttk, StringVar, Label
 
 
@@ -48,21 +50,16 @@ class pbix:
                         location=file_name, encoding=file_metadata[file_name]["encoding"])
                     #---------------------------------------------------------------------#
         self.Version = self.pbix_dict["Version"]
-        self.Number_Of_Connections = len(
-            self.pbix_dict["Connections"]["Connections"])
-        if self.Number_Of_Connections == 1:
-            self.Connection_Name = self.pbix_dict["Connections"]["Connections"][0]["Name"]
-            self.Connection_String = self.pbix_dict["Connections"]["Connections"][0]["ConnectionString"]
-            self.Connection_Type = self.pbix_dict["Connections"]["Connections"][0]["ConnectionType"]
-        self.Dataset_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['DatasetId']
-        self.Report_Id = self.pbix_dict["Connections"]["RemoteArtifacts"][0]['ReportId']
         self.pbix_dict['Layout'] = self.dynamic_layout(
             self.pbix_dict['Layout'])
-                #Report Level Measures
-        report_level_a = pd.DataFrame(self.pbix_dict['Layout']['config']['modelExtensions'][0]['entities']).explode('measures').rename(columns={'name':'table'})
-        report_level_b = pd.concat([report_level_a, report_level_a['measures'].apply(pd.Series)],axis=1)
-        self.report_level_measures = report_level_b.drop(columns=['extends','measures'])
-    #LAYOUT WORK#
+        
+        #Report Level Measures#
+        try:
+            report_level_a = pd.DataFrame(self.pbix_dict['Layout']['config']['modelExtensions'][0]['entities']).explode('measures').rename(columns={'name':'table'})
+            report_level_b = pd.concat([report_level_a, report_level_a['measures'].apply(pd.Series)],axis=1)
+            self.report_level_measures = report_level_b.drop(columns=['extends','measures'])
+        except:
+            pass
 
     def dynamic_layout(self, starting_dictionary):
         '''
@@ -105,7 +102,7 @@ class pbix:
                 if visual_container['id'] == visual_id:
                     return (self.pbix_dict['Layout']['sections'][section]['displayName'],
                             self.pbix_dict['Layout']['sections'][section]['visualContainers'][visual_container])
-        return 1
+        return 'No such Visual!'
     pass
 
     def __repr__(self) -> str:
@@ -183,6 +180,50 @@ def main_csv_saver(file_name, file_contents, file_location=None, open_file=True)
         os.startfile(file_location)
     return file_contents
 
+def j_tree(tree, parent, dic):
+    #https://stackoverflow.com/questions/15023333/simple-tool-library-to-visualize-huge-python-dict
+    for key in sorted(dic.keys()):
+        uid = uuid.uuid4()
+        if isinstance(dic[key], dict):
+            tree.insert(parent, 'end', uid, text=key)
+            j_tree(tree, uid, dic[key])
+        elif isinstance(dic[key], tuple):
+            tree.insert(parent, 'end', uid, text=str(key) + '()')
+            j_tree(tree, uid,
+                   dict([(i, x) for i, x in enumerate(dic[key])]))
+        elif isinstance(dic[key], list):
+            tree.insert(parent, 'end', uid, text=str(key) + '[]')
+            j_tree(tree, uid,
+                   dict([(i, x) for i, x in enumerate(dic[key])]))
+        else:
+            value = 'None' if dic[key] is None else dic[key]
+            if isinstance(value, str):
+                value = value.replace(' ', '_')
+            tree.insert(parent, 'end', uid, text=key, value=value)
+
+
+def tk_tree_view(data):
+    # Setup the root UI
+    root = tk.Tk()
+    root.title("tk_tree_view")
+    root.columnconfigure(0, weight=1)
+    root.rowconfigure(0, weight=1)
+    root.wm_attributes('-topmost', 1)
+    # Setup the Frames
+    tree_frame = ttk.Frame(root, padding="3")
+    tree_frame.grid(row=0, column=0, sticky=tk.NSEW)
+
+    # Setup the Tree
+    tree = ttk.Treeview(tree_frame, columns=('Values'))
+    tree.column('Values', width=100, anchor='center')
+    tree.heading('Values', text='Values')
+    j_tree(tree, '', data)
+    tree.pack(fill=tk.BOTH, expand=1)
+
+    # Limit windows minimum dimensions
+    root.update_idletasks()
+    root.minsize(root.winfo_reqwidth(), root.winfo_reqheight())
+    root.mainloop()
 
 def pbix_utility_window():
     pbix_class = pbix()
@@ -203,14 +244,15 @@ def pbix_utility_window():
     frm = ttk.Frame(root, padding=200)
     frm.grid()
     main_label = Label(frm, textvariable=tkinter_main_label_var).grid(
-        column=0, row=1)
+        column=0, row=0)
 
     ttk.Button(frm, text="Change Working PBIX File",
-               command=change_file).grid(column=0, row=2)
+               command=change_file).grid(column=0, row=1)
     ttk.Button(frm, text="Unzip PBIX File", command=lambda: unzip_all(
-        file_location=tkinter_var_file_location.get())).grid(column=0, row=3)
+        file_location=tkinter_var_file_location.get())).grid(column=0, row=2)
     ttk.Button(frm, text="Report Level Measures to CSV",
-               command=lambda: main_csv_saver(tkinter_var_file_name.get(), pbix_class.report_level_measures)).grid(column=0, row=4)
+               command=lambda: main_csv_saver(tkinter_var_file_name.get(), pbix_class.report_level_measures)).grid(column=0, row=3)
+    ttk.Button(frm,text='Explore Contents',command=lambda: tk_tree_view(pbix_class.pbix_dict)).grid(column=0, row=4)
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
     root.mainloop()
 
