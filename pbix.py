@@ -6,6 +6,7 @@ import pandas as pd
 import xml.etree.ElementTree as ET
 import uuid
 import tkinter as tk
+import webbrowser
 from tkinter import filedialog, Tk, ttk, StringVar, Label
 
 
@@ -60,6 +61,14 @@ class pbix:
             self.report_level_measures = report_level_b.drop(columns=['extends','measures'])
         except:
             pass
+        #Dataset & Report Ids#
+        try:
+            self.dataset_id = self.pbix_dict['Connections']['RemoteArtifacts'][0]['DatasetId']
+            self.dataset_url = f'https://app.powerbi.com/groups/me/datasets/{self.dataset_id}/details'
+            self.report_id = self.pbix_dict['Connections']['RemoteArtifacts'][0]['ReportId']
+            self.report_url = f'https://app.powerbi.com/groups/me/reports/{self.report_id}'
+        except:
+            pass
 
     def dynamic_layout(self, starting_dictionary):
         '''
@@ -96,12 +105,12 @@ class pbix:
         return dictionary_to_run
 
     def find_visual_by_id(self, visual_id):
+        #1066932766
         # self.pbix_dict['Layout']['sections'][x]['visualContainers'][x]['id']
-        for section in self.pbix_dict['Layout']['sections']:
-            for visual_container in self.pbix_dict['Layout']['sections'][section]['visualContainers']:
-                if visual_container['id'] == visual_id:
-                    return (self.pbix_dict['Layout']['sections'][section]['displayName'],
-                            self.pbix_dict['Layout']['sections'][section]['visualContainers'][visual_container])
+        for section_place,section in enumerate(self.pbix_dict['Layout']['sections']):
+            for visual_place,visual_container in enumerate(section['visualContainers']):
+                if visual_container['id'] == int(visual_id):
+                    return visual_container
         return 'No such Visual!'
     pass
 
@@ -203,6 +212,7 @@ def j_tree(tree, parent, dic):
 
 
 def tk_tree_view(data):
+    #####FIX Bug with daily order and sales report
     # Setup the root UI
     root = tk.Tk()
     root.title("tk_tree_view")
@@ -238,6 +248,9 @@ def pbix_utility_window():
     tkinter_var_file_name = StringVar(root, pbix_class.base_file_name)
     tkinter_main_label_var = StringVar(
         root, f'Do stuff with your PBI File - {pbix_class.file_location}')
+    def tkinter_visual_lookup_id():
+        entry = visual_input.get("1.0", "end-1c")
+        tk_tree_view(pbix_class.find_visual_by_id(entry))
 
     root.title(pbix_class.base_file_name)
     root.wm_attributes('-topmost', 1)
@@ -252,8 +265,14 @@ def pbix_utility_window():
         file_location=tkinter_var_file_location.get())).grid(column=0, row=2)
     ttk.Button(frm, text="Report Level Measures to CSV",
                command=lambda: main_csv_saver(tkinter_var_file_name.get(), pbix_class.report_level_measures)).grid(column=0, row=3)
-    ttk.Button(frm,text='Explore Contents',command=lambda: tk_tree_view(pbix_class.pbix_dict)).grid(column=0, row=4)
-    ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=5)
+    ttk.Label(frm,text='Lookup Visual by Id: ',justify=tk.RIGHT).grid(column=0,row=4)
+    visual_input = tk.Text(frm,height=1,width=15)
+    visual_input.grid(column=1,row=4)
+    ttk.Button(frm,text='Go',command=tkinter_visual_lookup_id).grid(column=2,row=4)
+    ttk.Button(frm,text='Explore File Contents',command=lambda: tk_tree_view(pbix_class.pbix_dict)).grid(column=0, row=5)
+    ttk.Button(frm,text='Go to Dataset URL', command= lambda: webbrowser.open(pbix_class.dataset_url)).grid(column=0,row=6)
+    ttk.Button(frm,text='Go to Report URL', command= lambda: webbrowser.open(pbix_class.report_url)).grid(column=0,row=7)
+    ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=8)
     root.mainloop()
 
 
