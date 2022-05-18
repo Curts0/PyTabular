@@ -207,12 +207,11 @@ def j_tree(tree, parent, dic):
         else:
             value = 'None' if dic[key] is None else dic[key]
             if isinstance(value, str):
-                value = value.replace(' ', '_')
+                value = value.replace(' ', '_').replace('"','')
             tree.insert(parent, 'end', uid, text=key, value=value)
 
 
 def tk_tree_view(data):
-    #####FIX Bug with daily order and sales report
     # Setup the root UI
     root = tk.Tk()
     root.title("tk_tree_view")
