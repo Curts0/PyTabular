@@ -274,7 +274,7 @@ def pbix_utility_window():
     ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=8)
     root.mainloop()
 
-
-pbix_utility_window()
+if __name__ == '__main__':
+    pbix_utility_window()
 #'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix'
 #a = read_content_xml('C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix')
