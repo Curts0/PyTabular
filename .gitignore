@@ -6,3 +6,4 @@ garbage.py
 /build
 /dist
 *.spec
+*.dll

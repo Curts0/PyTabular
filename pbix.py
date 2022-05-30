@@ -1,3 +1,4 @@
+from pyadomd import Pyadomd
 from tokenize import String
 import zipfile
 import json
@@ -8,6 +9,8 @@ import uuid
 import tkinter as tk
 import webbrowser
 from tkinter import filedialog, Tk, ttk, StringVar, Label
+import pyperclip
+conn_str = "Data Source=asazure://centralus.asazure.windows.net/azraasdaientdlfn700;Initial Catalog=FINANCE;Cube=Model;User ID=svc-azssas-process-p@rockwellautomation.com;Password=');!3xk3YlB(Fatf'"
 
 
 class pbix:
@@ -53,12 +56,15 @@ class pbix:
         self.Version = self.pbix_dict["Version"]
         self.pbix_dict['Layout'] = self.dynamic_layout(
             self.pbix_dict['Layout'])
-        
+
         #Report Level Measures#
         try:
-            report_level_a = pd.DataFrame(self.pbix_dict['Layout']['config']['modelExtensions'][0]['entities']).explode('measures').rename(columns={'name':'table'})
-            report_level_b = pd.concat([report_level_a, report_level_a['measures'].apply(pd.Series)],axis=1)
-            self.report_level_measures = report_level_b.drop(columns=['extends','measures'])
+            report_level_a = pd.DataFrame(self.pbix_dict['Layout']['config']['modelExtensions'][0]['entities']).explode(
+                'measures').rename(columns={'name': 'table'})
+            report_level_b = pd.concat(
+                [report_level_a, report_level_a['measures'].apply(pd.Series)], axis=1)
+            self.report_level_measures = report_level_b.drop(
+                columns=['extends', 'measures'])
         except:
             pass
         #Dataset & Report Ids#
@@ -105,10 +111,10 @@ class pbix:
         return dictionary_to_run
 
     def find_visual_by_id(self, visual_id):
-        #1066932766
+        # 1066932766
         # self.pbix_dict['Layout']['sections'][x]['visualContainers'][x]['id']
-        for section_place,section in enumerate(self.pbix_dict['Layout']['sections']):
-            for visual_place,visual_container in enumerate(section['visualContainers']):
+        for section_place, section in enumerate(self.pbix_dict['Layout']['sections']):
+            for visual_place, visual_container in enumerate(section['visualContainers']):
                 if visual_container['id'] == int(visual_id):
                     return visual_container
         return 'No such Visual!'
@@ -171,7 +177,7 @@ def unzip_all(file_location=None, save_location=None):
         print(f'Saved Files to {save_location}')
 
 
-def main_csv_saver(file_name, file_contents, file_location=None, open_file=True):
+def main_csv_saver(file_contents,file_name=None, file_location=None, open_file=True):
     if file_location is None or file_name is None:
         root = Tk()
         root.wm_attributes('-topmost', 1)
@@ -189,8 +195,9 @@ def main_csv_saver(file_name, file_contents, file_location=None, open_file=True)
         os.startfile(file_location)
     return file_contents
 
+
 def j_tree(tree, parent, dic):
-    #https://stackoverflow.com/questions/15023333/simple-tool-library-to-visualize-huge-python-dict
+    # https://stackoverflow.com/questions/15023333/simple-tool-library-to-visualize-huge-python-dict
     for key in sorted(dic.keys()):
         uid = uuid.uuid4()
         if isinstance(dic[key], dict):
@@ -207,7 +214,7 @@ def j_tree(tree, parent, dic):
         else:
             value = 'None' if dic[key] is None else dic[key]
             if isinstance(value, str):
-                value = value.replace(' ', '_').replace('"','')
+                value = value.replace(' ', '_').replace('"', '')
             tree.insert(parent, 'end', uid, text=key, value=value)
 
 
@@ -228,11 +235,37 @@ def tk_tree_view(data):
     tree.heading('Values', text='Values')
     j_tree(tree, '', data)
     tree.pack(fill=tk.BOTH, expand=1)
-
+    tree.bind("<Control-Key-c>", lambda x: copy_from_treeview(tree, x))
     # Limit windows minimum dimensions
     root.update_idletasks()
     root.minsize(root.winfo_reqwidth(), root.winfo_reqheight())
     root.mainloop()
+
+
+def copy_from_treeview(tree, event):
+    selection = tree.selection()
+    column = tree.identify_column(event.x)
+    column_no = int(column.replace("#", "")) - 1
+
+    copy_values = []
+    for each in selection:
+        try:
+            value = tree.item(each)["values"][column_no]
+            copy_values.append(str(value))
+        except:
+            pass
+
+    copy_string = "\n".join(copy_values)
+    pyperclip.copy(copy_string)
+
+
+def dax_query(query, conn_str=conn_str):
+    with Pyadomd(conn_str) as conn:
+        with conn.cursor().execute(query) as cur:
+            df = pd.DataFrame(cur.fetchone(), columns=[
+                              i.name for i in cur.description])
+    return df 
+
 
 def pbix_utility_window():
     pbix_class = pbix()
@@ -247,34 +280,47 @@ def pbix_utility_window():
     tkinter_var_file_name = StringVar(root, pbix_class.base_file_name)
     tkinter_main_label_var = StringVar(
         root, f'Do stuff with your PBI File - {pbix_class.file_location}')
+
     def tkinter_visual_lookup_id():
         entry = visual_input.get("1.0", "end-1c")
         tk_tree_view(pbix_class.find_visual_by_id(entry))
 
+    def get_run_dax_query():
+        entry = dax_input.get("1.0", "end-1c")
+        return dax_query(entry)
     root.title(pbix_class.base_file_name)
     root.wm_attributes('-topmost', 1)
     frm = ttk.Frame(root, padding=200)
     frm.grid()
     main_label = Label(frm, textvariable=tkinter_main_label_var).grid(
         column=0, row=0)
-
     ttk.Button(frm, text="Change Working PBIX File",
                command=change_file).grid(column=0, row=1)
     ttk.Button(frm, text="Unzip PBIX File", command=lambda: unzip_all(
         file_location=tkinter_var_file_location.get())).grid(column=0, row=2)
     ttk.Button(frm, text="Report Level Measures to CSV",
-               command=lambda: main_csv_saver(tkinter_var_file_name.get(), pbix_class.report_level_measures)).grid(column=0, row=3)
-    ttk.Label(frm,text='Lookup Visual by Id: ',justify=tk.RIGHT).grid(column=0,row=4)
-    visual_input = tk.Text(frm,height=1,width=15)
-    visual_input.grid(column=1,row=4)
-    ttk.Button(frm,text='Go',command=tkinter_visual_lookup_id).grid(column=2,row=4)
-    ttk.Button(frm,text='Explore File Contents',command=lambda: tk_tree_view(pbix_class.pbix_dict)).grid(column=0, row=5)
-    ttk.Button(frm,text='Go to Dataset URL', command= lambda: webbrowser.open(pbix_class.dataset_url)).grid(column=0,row=6)
-    ttk.Button(frm,text='Go to Report URL', command= lambda: webbrowser.open(pbix_class.report_url)).grid(column=0,row=7)
-    ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=8)
+               command=lambda: main_csv_saver(pbix_class.report_level_measures,tkinter_var_file_name.get())).grid(column=0, row=3)
+    ttk.Label(frm, text='Lookup Visual by Id: ',
+              justify=tk.RIGHT).grid(column=0, row=4)
+    visual_input = tk.Text(frm, height=1, width=15)
+    visual_input.grid(column=1, row=4)
+    ttk.Button(frm, text='Go', command=tkinter_visual_lookup_id).grid(
+        column=2, row=4)
+    ttk.Button(frm, text='Explore File Contents', command=lambda: tk_tree_view(
+        pbix_class.pbix_dict)).grid(column=0, row=5)
+    ttk.Button(frm, text='Go to Dataset URL', command=lambda: webbrowser.open(
+        pbix_class.dataset_url)).grid(column=0, row=6)
+    ttk.Button(frm, text='Go to Report URL', command=lambda: webbrowser.open(
+        pbix_class.report_url)).grid(column=0, row=7)
+    ttk.Label(frm, text='FIN 700 Dax Query to CSV : ',
+              justify=tk.RIGHT).grid(column=0, row=8)
+    dax_input = tk.Text(frm, height=5, width=50)
+    dax_input.grid(column=1, row=8)
+    ttk.Button(frm, text='To CSV', command=lambda: main_csv_saver(get_run_dax_query())).grid(column=2, row=8)
+    ttk.Button(frm, text="Quit", command=root.quit).grid(column=0, row=9)
     root.mainloop()
+
 
 if __name__ == '__main__':
     pbix_utility_window()
-#'C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix'
-#a = read_content_xml('C:/Users/CStallings/Documents/Annual Recurring Revenue Dashboard.pbix')
+
