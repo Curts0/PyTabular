@@ -1,5 +1,6 @@
 from typing import List, Tuple
 import clr
+import sys
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices')
@@ -26,11 +27,11 @@ def iterator(collection) -> List[Tuple]:
 	return [(index, collection.get_Item(index).Name,collection.get_Item(index)) for index in range(len(collection))]
 
 
-	
 
 
 
-class Tabular:
+
+class Connection:
 	def __init__(self,CONNECTION_STR=CONNECTION_STR['FIN 500'],Database_Index=0):
 		self.Server = Server()
 		self.Server.Connect(CONNECTION_STR)
@@ -41,14 +42,15 @@ class Tabular:
 		databases = [(x, self.Server.Databases[x].get_Name()) for x in range(0, len(self.Server.Databases))]
 		#db = self.Server.Databases[database_index]
 		return databases
-	def refresh_items(database, collections, RefreshType = RefreshType.Full):
-		'''
-		Will take each individual collection from collections
-		Then it will iterate through each on and add a request to refresh.
-		After then it will submit the refresh update.
-		'''
-		for collection in collections:
-			collection.RequestRefresh(RefreshType)
+
+class Refresh(Connection):
+	def __init__(self,Collections,RefreshType = RefreshType.Full, UpdateOptions = UpdateOptions.ExpandFull):
+		self.Collections = Collections
+		pass
+	def Run(self):
+		for collection in self.Collections:
+			collection.RequestRefresh(RefreshType.Full)
+		return self.Database.Update(UpdateOptions)
 
 def cli():
 	server_str = inquirer.select(

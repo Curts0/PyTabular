@@ -7,3 +7,4 @@ garbage.py
 /dist
 *.spec
 *.dll
+/.pytest_cache
