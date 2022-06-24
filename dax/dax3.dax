@@ -1,0 +1,33 @@
+/*
+https://www.nist.gov/pml/time-and-frequency-division/popular-links/daylight-saving-time-dst  
+
+begins at 2:00 a.m. on the second Sunday of March 
+(at 2 a.m. the local time time skips ahead to 3 a.m. so there is one less hour in the day)
+
+ends at 2:00 a.m. on the first Sunday of November
+(at 2 a.m. the local time becomes 1 a.m. and that hour is repeated, so there is an extra hour in the day)
+*/
+DEFINE
+
+    VAR cst = UTCNOW() - ( 6 / 24 )
+    VAR cdt = UTCNOW() - ( 5 / 24 )
+    VAR year_cst = YEAR(cst)
+
+
+    VAR march_1 = DATE(year_cst,3,1)
+    VAR march_days_to_first_sunday = 7 - WEEKDAY( march_1, 2 )
+    VAR cdt_begin = march_1 + march_days_to_first_sunday + 7 + (2/24)
+    
+    VAR november_1 = DATE(year_cst,11,1)
+    VAR november_days_to_first_sunday = 7 - WEEKDAY( november_1,2 )
+    VAR cdt_end = november_1 + november_days_to_first_sunday + 7 + (2/24)
+EVALUATE
+{
+    FORMAT(
+        IF( AND( cst >= cdt_begin, cst <= cdt_end ), cdt, cst ),
+        "mm/dd/yyyy hh:nn:ss"
+    )
+}
+//"mm/dd/yyyy hh:nn:ss"
+//March 6th 2022
+//March 5th 2022

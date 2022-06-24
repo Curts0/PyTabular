@@ -3,13 +3,14 @@ import clr
 import sys
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
+clr.AddReference('Microsoft.AnalysisServices.Tabular.json')
 clr.AddReference('Microsoft.AnalysisServices')
 from InquirerPy.base.control import Choice
 from InquirerPy import inquirer, get_style
 from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType
+from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails
 from Microsoft.AnalysisServices import UpdateOptions
-
+import pandas as pd
 style = get_style({"questionmark":"blue","answermark":"blue"})
 
 
@@ -31,26 +32,40 @@ def iterator(collection) -> List[Tuple]:
 
 
 
-class Connection:
+class Tabular:
 	def __init__(self,CONNECTION_STR=CONNECTION_STR['FIN 500'],Database_Index=0):
 		self.Server = Server()
 		self.Server.Connect(CONNECTION_STR)
 		self.Database = self.Server.Databases[Database_Index]
 		self.Model = self.Database.Model
+		self.DaxConnection = AdomdConnection()
+		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
 		pass
-	def pick_db(self,db_name='FINANCE'):
-		databases = [(x, self.Server.Databases[x].get_Name()) for x in range(0, len(self.Server.Databases))]
-		#db = self.Server.Databases[database_index]
-		return databases
-
-class Refresh(Connection):
-	def __init__(self,Collections,RefreshType = RefreshType.Full, UpdateOptions = UpdateOptions.ExpandFull):
-		self.Collections = Collections
-		pass
-	def Run(self):
-		for collection in self.Collections:
-			collection.RequestRefresh(RefreshType.Full)
+	def Refresh(self, Collections, RefreshType=RefreshType.Full) -> None:
+		'''
+		Input iterable Collections for the function to run through.
+		It will add the collection items into a Refresh Request.
+		To execute refresh run through Update()
+		'''
+		for collection in Collections:
+			collection.RequestRefresh(RefreshType)
+	def Update(self, UpdateOptions=UpdateOptions.ExpandFull) -> None:
+		'''
+		Takes currently changed options in model then updates.
+		'''
 		return self.Database.Update(UpdateOptions)
+	def Query(self,Query_Str) -> pd.DataFrame:
+		'''
+		Executes Query on Model and Returns Results in Pandas DataFrame
+		'''
+		self.DaxConnection.Open()
+		Query =  AdomdCommand(Query_Str, self.DaxConnection).ExecuteReader()
+		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
+		Results = list()
+		while Query.Read():
+			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))]) 
+		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
+		return df
 
 def cli():
 	server_str = inquirer.select(

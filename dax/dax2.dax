@@ -1,0 +1,61 @@
+DEFINE
+    VAR sales_order_facts_table =
+        CALCULATETABLE(
+            'Sales Orders Facts',
+            KEEPFILTERS(
+                FILTER(
+                    ALL(
+                        'Sales Orders Facts'[LINE_ITM_SEQUENCE_NO],
+                        'Sales Orders Facts'[ITM_RJCTN_PRCSNG_STAT_KEY],
+                        'Sales Orders Facts'[RJCTN_FLAG]
+                    ),
+                    'Sales Orders Facts'[LINE_ITM_SEQUENCE_NO] = 1
+                        && 'Sales Orders Facts'[ITM_RJCTN_PRCSNG_STAT_KEY] = 4
+                        && 'Sales Orders Facts'[RJCTN_FLAG] = 1
+                )
+            )
+        )
+    MEASURE 'Sales Orders Facts'[Book & Re-Bill Values] =
+        CALCULATE(
+            [Order Cancellation Value In USD At P Rate],
+            KEEPFILTERS(
+                FILTER(
+                    ALL(
+                        'Sales Orders Facts'[ORD_LN_ITM_CREATD_TO_CNCLD_IN_DAYS]
+                    ),
+                    'Sales Orders Facts'[ORD_LN_ITM_CREATD_TO_CNCLD_IN_DAYS] IN { 0, 1, 2, 3, 4, 5 }
+                )
+            )
+        )
+    MEASURE 'Sales Orders Facts'[Order Cancellation Value Post Book & Re-Bill] =
+        CALCULATE(
+            [Order Cancellation Value In USD At P Rate],
+            KEEPFILTERS(
+                FILTER(
+                    ALL(
+                        'Sales Orders Facts'[ORD_LN_ITM_CREATD_TO_CNCLD_IN_DAYS]
+                    ),
+                    NOT ( 'Sales Orders Facts'[ORD_LN_ITM_CREATD_TO_CNCLD_IN_DAYS] IN { 0, 1, 2, 3, 4, 5 } )
+                )
+            )
+        )
+
+EVALUATE
+SUMMARIZE(
+    TOPN(
+        5,
+        CALCULATETABLE(
+            'Sales Orders Facts',
+            'Booking Document'[Booking Document Identifier]
+                = "6505212135"
+        )
+    ),
+    'Booking Document'[Booking Document Identifier],
+    'Date Order Item Cancel'[Date Dt],
+    'Sales Orders Facts'[ORD_ITM_CREATD_DTE_KEY],
+    'Sales Orders Facts'[ORD_ITM_CANCEL_DTE_KEY],
+    'Sales Orders Facts'[ORD_LN_ITM_CREATD_TO_CNCLD_IN_DAYS],
+    "canc", [Order Cancellation Value In USD At P Rate],
+    "book & rebill", [Book & Re-Bill Values],
+    "post book & rebill", [Order Cancellation Value Post Book & Re-Bill]
+)
