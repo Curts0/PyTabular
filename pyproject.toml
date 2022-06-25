@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PyTabular"
+version = "0.0.1"
+authors = [
+  { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
+]
+description = "Connect to your tabular model and perform operations programmatically"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Windows 10",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Curts0/PyTabular"
+"Bug Tracker" = "https://github.com/Curts0/PyTabular/issues"
