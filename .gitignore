@@ -8,3 +8,8 @@ garbage.py
 *.spec
 *.dll
 /.pytest_cache
+/.vscode
+py_pbi_utils.pbitool.json
+pbix.py
+/.git
+/dax

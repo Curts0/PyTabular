@@ -27,11 +27,6 @@ def iterator(collection) -> List[Tuple]:
 	'''
 	return [(index, collection.get_Item(index).Name,collection.get_Item(index)) for index in range(len(collection))]
 
-
-
-
-
-
 class Tabular:
 	def __init__(self,CONNECTION_STR=CONNECTION_STR['FIN 500'],Database_Index=0):
 		self.Server = Server()
@@ -58,12 +53,16 @@ class Tabular:
 		'''
 		Executes Query on Model and Returns Results in Pandas DataFrame
 		'''
-		self.DaxConnection.Open()
+		try:
+			self.DaxConnection.Open()
+		except: 
+			pass
 		Query =  AdomdCommand(Query_Str, self.DaxConnection).ExecuteReader()
 		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
 		Results = list()
 		while Query.Read():
-			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))]) 
+			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))])
+		Query.Close()
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
 		return df
 
@@ -123,19 +122,3 @@ def cli():
 
 if __name__ == '__main__':
 	cli()
-
-
-
-
-
-
-
-
-'''
-conn = AdomdConnection()
-conn.ConnectionString = CONNECTION_STR["FIN 300"]
-conn.Open()
-query = AdomdCommand('EVALUATE TOPN(1000,FACT_COPA)', conn).ExecuteReader()
-while query.Read()
-Read() will start at the first row and keep returning true if it finds data
-'''
