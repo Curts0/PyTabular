@@ -1,6 +1,6 @@
 from typing import List, Tuple
 import clr
-import sys
+
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices.Tabular.json')

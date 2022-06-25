@@ -1,5 +1,5 @@
-from pybi import tabular
-tab = tabular.Tabular()
+from pytabular import pytabular
+tab = pytabular.Tabular()
 
 def test_connection():
 	'''

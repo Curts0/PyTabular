@@ -1,15 +1,5 @@
-*.pbix
-*.csv
 __pycache__
-/working
-garbage.py
-/build
-/dist
-*.spec
-*.dll
 /.pytest_cache
 /.vscode
-py_pbi_utils.pbitool.json
-pbix.py
 /.git
-/dax
+/daxqueries

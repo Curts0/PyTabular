@@ -6,7 +6,7 @@ with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-  name = 'pytabular',         # How you named your package folder (MyLib)
+  name = 'PyTabular',         # How you named your package folder (MyLib)
   packages = ['pytabular'],   # Chose the same as "name"
   version = '0.1.1',      # Start with a small number and increase it with every change you make
   license='MIT',
@@ -29,4 +29,5 @@ setup(
     'Operating System :: Microsoft :: Windows',
     'Programming Language :: Python :: 3.10'
   ],
+  package_dir={"":"pytabular"}
 )
