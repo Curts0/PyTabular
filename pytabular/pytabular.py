@@ -1,6 +1,6 @@
 from typing import List, Tuple
 import clr
-
+from localsecret import CONNECTION_STR
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices.Tabular.json')
@@ -12,12 +12,6 @@ from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, Co
 from Microsoft.AnalysisServices import UpdateOptions
 import pandas as pd
 style = get_style({"questionmark":"blue","answermark":"blue"})
-
-
-
-CONNECTION_STR = {"FIN 300": "Data Source=asazure://centralus.asazure.windows.net/azraasdaientdlfn300:rw;Initial Catalog=FINANCE;Cube=Model;User ID=svc-azssas-process-p@rockwellautomation.com;Password=');!3xk3YlB(Fatf'",
-                  "FIN 500": "Data Source=asazure://centralus.asazure.windows.net/azraasdaientdlfn500:rw;Initial Catalog=FINANCE;Cube=Model;User ID=svc-azssas-process-p@rockwellautomation.com;Password=');!3xk3YlB(Fatf'",
-                  "FIN 700": "Data Source=asazure://centralus.asazure.windows.net/azraasdaientdlfn700:rw;Initial Catalog=FINANCE;Cube=Model;User ID=svc-azssas-process-p@rockwellautomation.com;Password=');!3xk3YlB(Fatf'"}
 
 def iterator(collection) -> List[Tuple]:
 	'''
@@ -116,8 +110,6 @@ def cli():
 		case "Check Memory":
 			print(database.get_EstimatedSize())
 	return database
-
-
 
 
 if __name__ == '__main__':
