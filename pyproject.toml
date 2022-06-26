@@ -24,6 +24,14 @@ classifiers = [
 "Homepage" = "https://github.com/Curts0/PyTabular"
 "Bug Tracker" = "https://github.com/Curts0/PyTabular/issues"
 
-# pyproject.toml
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["pytabular"]
+
+[tool.setuptools.package-data]
+"*" = ["*.dll"]
+
 [tool.pytest.ini_options]
-filterwarnings = ignore::DeprecationWarning
+filterwarnings = ["ignore::DeprecationWarning"]
