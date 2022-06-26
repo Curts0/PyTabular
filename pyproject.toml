@@ -8,6 +8,10 @@ version = "0.0.1"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
+dependencies = [
+    "InquirerPy",
+    "pythonnet"
+]
 description = "Connect to your tabular model and perform operations programmatically"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -16,7 +20,10 @@ classifiers = [
     "License :: OSI Approved :: MIT License"
 ]
 
-
 [project.urls]
 "Homepage" = "https://github.com/Curts0/PyTabular"
 "Bug Tracker" = "https://github.com/Curts0/PyTabular/issues"
+
+# pyproject.toml
+[tool.pytest.ini_options]
+filterwarnings = ignore::DeprecationWarning
