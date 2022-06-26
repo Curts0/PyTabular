@@ -3,5 +3,7 @@ __pycache__
 /.vscode
 /.git
 /daxqueries
+/dist
+/PyTabular.egg-info
 /pytabular/localsecret.py
 setup.py

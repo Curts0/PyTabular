@@ -10,7 +10,8 @@ authors = [
 ]
 dependencies = [
     "InquirerPy",
-    "pythonnet"
+    "pythonnet",
+    "pandas"
 ]
 description = "Connect to your tabular model and perform operations programmatically"
 readme = "README.md"
@@ -25,10 +26,8 @@ classifiers = [
 "Bug Tracker" = "https://github.com/Curts0/PyTabular/issues"
 
 [tool.setuptools]
-include-package-data = true
-
-[tool.setuptools.packages.find]
-where = ["pytabular"]
+packages.find.where = ["."]
+packages.find.include = ["pytabular"]
 
 [tool.setuptools.package-data]
 "*" = ["*.dll"]
