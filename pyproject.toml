@@ -28,6 +28,7 @@ classifiers = [
 [tool.setuptools]
 packages.find.where = ["."]
 packages.find.include = ["pytabular"]
+include-package-data = true
 
 [tool.setuptools.package-data]
 "*" = ["*.dll"]

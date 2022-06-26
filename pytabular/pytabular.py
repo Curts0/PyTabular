@@ -1,6 +1,5 @@
 from typing import List, Tuple
 import clr
-from localsecret import CONNECTION_STR
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices.Tabular.json')
@@ -12,7 +11,7 @@ from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, Co
 from Microsoft.AnalysisServices import UpdateOptions
 import pandas as pd
 style = get_style({"questionmark":"blue","answermark":"blue"})
-
+CONNECTION_STR = ''
 def iterator(collection) -> List[Tuple]:
 	'''
 	Input a collection from Microsoft.Analysis.Services.Tabular.
@@ -22,7 +21,7 @@ def iterator(collection) -> List[Tuple]:
 	return [(index, collection.get_Item(index).Name,collection.get_Item(index)) for index in range(len(collection))]
 
 class Tabular:
-	def __init__(self,CONNECTION_STR=CONNECTION_STR['FIN 500'],Database_Index=0):
+	def __init__(self,CONNECTION_STR=CONNECTION_STR,Database_Index=0):
 		self.Server = Server()
 		self.Server.Connect(CONNECTION_STR)
 		self.Database = self.Server.Databases[Database_Index]
@@ -59,7 +58,7 @@ class Tabular:
 		Query.Close()
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
 		return df
-
+'''
 def cli():
 	server_str = inquirer.select(
 		message = "What do you want to access?:",
@@ -114,3 +113,4 @@ def cli():
 
 if __name__ == '__main__':
 	cli()
+'''

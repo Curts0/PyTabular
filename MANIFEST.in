@@ -1,1 +1,6 @@
 exclude pytabular/localsecret.py
+include pytabular/dll/Microsoft.AnalysisServices.AdomdClient.dll
+include pytabular/dll/Microsoft.AnalysisServices.Core.dll
+include pytabular/dll/Microsoft.AnalysisServices.dll
+include pytabular/dll/Microsoft.AnalysisServices.Tabular.dll
+include pytabular/dll/Microsoft.AnalysisServices.Tabular.Json.dll

@@ -4,6 +4,6 @@ __pycache__
 /.git
 /daxqueries
 /dist
-/PyTabular.egg-info
+/*.egg-info
 /pytabular/localsecret.py
 setup.py
