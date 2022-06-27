@@ -1,0 +1,64 @@
+:py:mod:`conf`
+==============
+
+.. py:module:: conf
+
+
+Module Contents
+---------------
+
+.. py:data:: project
+   :annotation: = PyTabular
+
+   
+
+.. py:data:: copyright
+   :annotation: = 2022, Curtis Stallings
+
+   
+
+.. py:data:: author
+   :annotation: = Curtis Stallings
+
+   
+
+.. py:data:: extensions
+   :annotation: = []
+
+   
+
+.. py:data:: templates_path
+   :annotation: = ['_templates']
+
+   
+
+.. py:data:: exclude_patterns
+   :annotation: = []
+
+   
+
+.. py:data:: autoapi_type
+   :annotation: = python
+
+   
+
+.. py:data:: autoapi_dirs
+   :annotation: = ['../../']
+
+   
+
+.. py:data:: autoapi_ignore
+   :annotation: = ['*localsecret.py']
+
+   
+
+.. py:data:: html_theme
+   :annotation: = alabaster
+
+   
+
+.. py:data:: html_static_path
+   :annotation: = ['_static']
+
+   
+

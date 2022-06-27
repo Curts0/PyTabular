@@ -1,0 +1,15 @@
+:py:mod:`test`
+==============
+
+.. py:module:: test
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   test_tabular/index.rst
+
+

@@ -1,0 +1,73 @@
+:py:mod:`pytabular.pytabular`
+=============================
+
+.. py:module:: pytabular.pytabular
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   pytabular.pytabular.Tabular
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   pytabular.pytabular.iterator
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   pytabular.pytabular.style
+   pytabular.pytabular.CONNECTION_STR
+
+
+.. py:data:: style
+   
+
+   
+
+.. py:data:: CONNECTION_STR
+   :annotation: = 
+
+   
+
+.. py:function:: iterator(collection) -> List[Tuple]
+
+   Input a collection from Microsoft.Analysis.Services.Tabular.
+   It will iterate through the C# collection and return a List[Tuple]
+   Ex. [(Index,Collection Item, Name of Item)]
+
+
+.. py:class:: Tabular(CONNECTION_STR=CONNECTION_STR, Database_Index=0)
+
+   .. py:method:: Refresh(self, Collections, RefreshType=RefreshType.Full) -> None
+
+      Input iterable Collections for the function to run through.
+      It will add the collection items into a Refresh Request.
+      To execute refresh run through Update()
+
+
+   .. py:method:: Update(self, UpdateOptions=UpdateOptions.ExpandFull) -> None
+
+      Takes currently changed options in model then updates.
+
+
+   .. py:method:: Query(self, Query_Str) -> pandas.DataFrame
+
+      Executes Query on Model and Returns Results in Pandas DataFrame
+
+
+

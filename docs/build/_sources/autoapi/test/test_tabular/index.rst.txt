@@ -1,0 +1,44 @@
+:py:mod:`test.test_tabular`
+===========================
+
+.. py:module:: test.test_tabular
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   test.test_tabular.test_connection
+   test.test_tabular.test_query
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   test.test_tabular.tab
+
+
+.. py:data:: tab
+   
+
+   
+
+.. py:function:: test_connection()
+
+   Does a quick check to the Tabular Class
+   To ensure that it can connnect
+
+
+.. py:function:: test_query()
+
+   Does a quick query on the model and checks if it will return expected value
+
+
