@@ -1,6 +1,0 @@
-:py:mod:`pytabular.dll`
-=======================
-
-.. py:module:: pytabular.dll
-
-
