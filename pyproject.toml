@@ -14,7 +14,7 @@ dependencies = [
     "pandas"
 ]
 description = "Connect to your tabular model and perform operations programmatically"
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">=3.10"
 classifiers = [
     "Programming Language :: Python :: 3.10",

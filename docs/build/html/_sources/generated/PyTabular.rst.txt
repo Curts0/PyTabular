@@ -1,0 +1,35 @@
+﻿pytabular
+=========
+
+.. automodule:: pytabular
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      iterator
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Tabular
+   
+   
+
+   
+   
+   
+
+
+

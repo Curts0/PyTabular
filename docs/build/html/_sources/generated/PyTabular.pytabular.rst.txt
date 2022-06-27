@@ -1,0 +1,23 @@
+﻿PyTabular.pytabular
+===================
+
+.. automodule:: PyTabular.pytabular
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
