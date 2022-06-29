@@ -1,5 +1,6 @@
 from pytabular import pytabular
-tab = pytabular.Tabular()
+from pytabular import localsecret
+tab = pytabular.Tabular(localsecret.CONNECTION_STR['FIN 500'])
 
 def test_connection():
 	'''

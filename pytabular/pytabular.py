@@ -84,7 +84,7 @@ class Tabular:
 		query_str = "EVALUATE UNION(\n"
 		for table in self.Columns:
 			for column in table:
-				if column[2].Type.value__ != 3:
+				if column[2].Type != ColumnType.RowNumber:
 					table_name = column[2].Table.get_Name()
 					column_name = column[2].get_Name()
 					dax_identifier = f"'{table_name}'[{column_name}]"
