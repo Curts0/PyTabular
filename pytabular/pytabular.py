@@ -1,4 +1,7 @@
+
 from typing import List, Tuple
+from types import FunctionType
+from collections import namedtuple
 import clr
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
@@ -7,11 +10,9 @@ clr.AddReference('Microsoft.AnalysisServices')
 from InquirerPy.base.control import Choice
 from InquirerPy import inquirer, get_style
 from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails
+from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType
 from Microsoft.AnalysisServices import UpdateOptions
 import pandas as pd
-style = get_style({"questionmark":"blue","answermark":"blue"})
-CONNECTION_STR = ''
 def iterator(collection) -> List[Tuple]:
 	'''
 	Input a collection from Microsoft.Analysis.Services.Tabular.
@@ -20,14 +21,30 @@ def iterator(collection) -> List[Tuple]:
 	'''
 	return [(index, collection.get_Item(index).Name,collection.get_Item(index)) for index in range(len(collection))]
 
+def find(iterator_collection: List[Tuple],names) -> List:
+	'''
+	Input should be the returned value from the iterator func
+	and the specific name or names (in iterable format) to filter the list down
+	'''
+	if type(names) == str:
+		names = [names]
+	return [iterator_collection[key][0] for key,value in enumerate(iterator_collection) if iterator_collection[key][1] in names]
+
+
 class Tabular:
-	def __init__(self,CONNECTION_STR=CONNECTION_STR,Database_Index=0):
+	'''
+	Tabular Class
+	'''
+	def __init__(self,CONNECTION_STR):
 		self.Server = Server()
 		self.Server.Connect(CONNECTION_STR)
-		self.Database = self.Server.Databases[Database_Index]
+		self.Catalog = self.Server.ConnectionInfo.Catalog
+		self.Database = self.Server.Databases[find(iterator(self.Server.Databases),self.Catalog)[-1]]
 		self.Model = self.Database.Model
 		self.DaxConnection = AdomdConnection()
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
+		self.Tables = iterator(self.Model.Tables)
+		self.Columns = [iterator(table[2].Columns) for table in self.Tables]
 		pass
 	def Refresh(self, Collections, RefreshType=RefreshType.Full) -> None:
 		'''
@@ -58,6 +75,22 @@ class Tabular:
 		Query.Close()
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
 		return df
+	def Query_Every_Column(self,query_function='COUNTROWS(VALUES(_))') -> pd.DataFrame():
+		'''
+		Dynamically pull all tables and columns
+		and perform a dax query to retrieve all counts
+		outputs a dataframe
+		'''
+		query_str = "EVALUATE UNION(\n"
+		for table in self.Columns:
+			for column in table:
+				if column[2].Type.value__ != 3:
+					table_name = column[2].Table.get_Name()
+					column_name = column[2].get_Name()
+					dax_identifier = f"'{table_name}'[{column_name}]"
+					query_str += f"ROW(\"Table\",\"{table_name}\",\"Column\",\"{column_name}\",\"{query_function}\",{query_function.replace('_',dax_identifier)}),\n"
+		query_str = f'{query_str[:-2]})'
+		return self.Query(query_str)
 '''
 def cli():
 	server_str = inquirer.select(
