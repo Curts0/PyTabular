@@ -1,15 +1,20 @@
-#PyTabular
+
+# PyTabular
 
 
-###Download
+### Download
+
 Currently not in pypi, but feel free to take the dist file and use.
 
-###How Does It Work?
+### How Does It Work?
+
 Thanks to 'Pythonnet <https://pythonnet.github.io/>'
 
-###Getting Started
+### Getting Started
+
 In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.
-'''
-import pytabular
-model = pytabular.Tabular(<CONNECTION_STR>)
-'''
+
+```python
+    import pytabular
+    model = pytabular.Tabular(CONNECTION_STR)
+```
