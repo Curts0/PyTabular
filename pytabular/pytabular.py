@@ -77,9 +77,8 @@ class Tabular:
 		return df
 	def Query_Every_Column(self,query_function='COUNTROWS(VALUES(_))') -> pd.DataFrame():
 		'''
-		Dynamically pull all tables and columns
-		and perform a dax query to retrieve all counts
-		outputs a dataframe
+		This will dynamically create a query to pull all columns from the model and run the query function.
+		It will replace the _ with the column to run.
 		'''
 		query_str = "EVALUATE UNION(\n"
 		for table in self.Columns:
@@ -89,6 +88,18 @@ class Tabular:
 					column_name = column[2].get_Name()
 					dax_identifier = f"'{table_name}'[{column_name}]"
 					query_str += f"ROW(\"Table\",\"{table_name}\",\"Column\",\"{column_name}\",\"{query_function}\",{query_function.replace('_',dax_identifier)}),\n"
+		query_str = f'{query_str[:-2]})'
+		return self.Query(query_str)
+	def Query_Every_Table(self,query_function='COUNTROWS(_)') -> pd.DataFrame():
+		'''
+		This will dynamically create a query to pull all tables from the model and run the query function.
+		It will replace the _ with the column to run.
+		'''
+		query_str = "EVALUATE UNION(\n"
+		for table in self.Tables:
+			table_name = table[2].get_Name()
+			dax_table_identifier = f'\'{table_name}\''
+			query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",{query_function.replace('_',dax_table_identifier)}),\n"
 		query_str = f'{query_str[:-2]})'
 		return self.Query(query_str)
 '''
