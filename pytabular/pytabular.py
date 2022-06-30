@@ -46,6 +46,8 @@ class Tabular:
 		self.Tables = iterator(self.Model.Tables)
 		self.Columns = [iterator(table[2].Columns) for table in self.Tables]
 		pass
+	def Disconnect(self):
+		return self.Server.Disconnect()
 	def Refresh(self, Collections, RefreshType=RefreshType.Full) -> None:
 		'''
 		Input iterable Collections for the function to run through.
@@ -93,7 +95,7 @@ class Tabular:
 	def Query_Every_Table(self,query_function='COUNTROWS(_)') -> pd.DataFrame():
 		'''
 		This will dynamically create a query to pull all tables from the model and run the query function.
-		It will replace the _ with the column to run.
+		It will replace the _ with the table to run.
 		'''
 		query_str = "EVALUATE UNION(\n"
 		for table in self.Tables:
