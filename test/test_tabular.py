@@ -1,5 +1,13 @@
 from pytabular import pytabular
 from pytabular import localsecret
+import clr
+clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
+clr.AddReference('Microsoft.AnalysisServices.Tabular')
+clr.AddReference('Microsoft.AnalysisServices.Tabular.json')
+clr.AddReference('Microsoft.AnalysisServices')
+from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
+from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType
+from Microsoft.AnalysisServices import UpdateOptions
 tab = pytabular.Tabular(localsecret.CONNECTION_STR['FIN 500'])
 
 def test_connection():
@@ -9,6 +17,8 @@ def test_connection():
 	'''
 	assert tab.Server.Connected
 
+def test_database():
+	assert isinstance(tab.Database,Database)
 
 def test_query():
 	'''
