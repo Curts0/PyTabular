@@ -26,11 +26,34 @@ DAX Query
     # Returns a Pandas DataFrame
 ```
 
-Refresh Table(s)
+Refresh Tables and Partitions
+
 ```python
-    #will return ints that correspond to the names of the table in your model
-    tables_to_refresh = pytabular.find(model.Tables,['Table One','Table Two']) #ex [0,1]
+    #filter down the collection to what you want to refresh
+    tables_to_refresh = [table for table in a.Tables if table.get_Name() in ['Table1','Table2','Table3']]
     
+    #Queue up the tables and partitions that you want to refresh.
+    model.Refresh(tables_to_refresh)
+
+    #Once you are ready, update to execute the refresh
+    model.Update()
+```
+
+Built In Dax Query Helpers
+```python
+
+    #Query Every Column
+    model.Query_Every_Column() #Will return pd.DataFrame()
+
+    #Query Every Table
+    model.Query_Every_Table() #Will return pd.DataFrame()
     
-    model.Refresh(tables_to_refresh, model.Tables,)
+    '''
+    NOTE, notice the default values for the query_function argument. 
+    Query_Every_Column will get COUNTROWS(VALUES(_))
+    and Query_Every_Table() will get COUNTROWS(_)
+    with '_' being replaced with the dax identifier to the table or column in question.
+    You can replace this str with anything you want. For example output the MIN(_) or MAX(_) of each column rather than the default queries.
+    '''
+    
 ```

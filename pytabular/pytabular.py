@@ -31,13 +31,13 @@ class Tabular:
 		pass
 	def Disconnect(self):
 		return self.Server.Disconnect()
-	def Refresh(self, Collections, RefreshType=RefreshType.Full) -> None:
+	def Refresh(self, iterable_items, RefreshType=RefreshType.Full) -> None:
 		'''
 		Input iterable Collections for the function to run through.
 		It will add the collection items into a Refresh Request.
 		To execute refresh run through Update()
 		'''
-		for collection in Collections:
+		for collection in iterable_items:
 			collection.RequestRefresh(RefreshType)
 	def Update(self, UpdateOptions=UpdateOptions.ExpandFull) -> None:
 		'''
