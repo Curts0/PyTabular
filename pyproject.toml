@@ -3,13 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "PyTabular"
-version = "0.0.1"
+name = "python_tabular"
+version = "0.0.3"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
 dependencies = [
-    "InquirerPy",
     "pythonnet",
     "pandas"
 ]

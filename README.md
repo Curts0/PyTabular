@@ -12,6 +12,12 @@ I basically took my two favorite things Python and Tabular Models and connected 
 
 ### Getting Started
 
+Importing package
+
+```powershell
+python3 -m pip install python_tabular
+```
+
 In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.
 
 ```python
