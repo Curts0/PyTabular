@@ -46,6 +46,7 @@ class Tabular:
 		self.Tables = iterator(self.Model.Tables)
 		self.Columns = [iterator(table[2].Columns) for table in self.Tables]
 		self.Partitions = [iterator(table[2].Partitions) for table in self.Tables]
+		self.Measures = [iterator(table[2].Measures) for table in self.Tables]
 		pass
 	def Disconnect(self):
 		return self.Server.Disconnect()
