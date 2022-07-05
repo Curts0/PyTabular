@@ -23,4 +23,14 @@ DAX Query
 
 ```python
     model.Query(DAX_QUERY)
+    # Returns a Pandas DataFrame
+```
+
+Refresh Table(s)
+```python
+    #will return ints that correspond to the names of the table in your model
+    tables_to_refresh = pytabular.find(model.Tables,['Table One','Table Two']) #ex [0,1]
+    
+    
+    model.Refresh(tables_to_refresh, model.Tables,)
 ```

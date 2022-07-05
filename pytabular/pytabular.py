@@ -45,6 +45,7 @@ class Tabular:
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
 		self.Tables = iterator(self.Model.Tables)
 		self.Columns = [iterator(table[2].Columns) for table in self.Tables]
+		self.Partitions = [iterator(table[2].Partitions) for table in self.Tables]
 		pass
 	def Disconnect(self):
 		return self.Server.Disconnect()
