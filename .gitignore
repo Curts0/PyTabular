@@ -3,7 +3,7 @@ __pycache__
 /.vscode
 /.git
 /daxqueries
-/dist
+#/dist
 /*.egg-info
 /pytabular/localsecret.py
 setup.py
