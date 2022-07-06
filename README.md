@@ -36,7 +36,7 @@ Refresh Tables and Partitions
 
 ```python
     #filter down the collection to what you want to refresh
-    tables_to_refresh = [table for table in a.Tables if table.get_Name() in ['Table1','Table2','Table3']]
+    tables_to_refresh = [table for table in model.Tables if table.get_Name() in ['Table1','Table2','Table3']]
     
     #Queue up the tables and partitions that you want to refresh.
     model.Refresh(tables_to_refresh)
