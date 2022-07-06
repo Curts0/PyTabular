@@ -61,5 +61,4 @@ Built In Dax Query Helpers
     with '_' being replaced with the dax identifier to the table or column in question.
     You can replace this str with anything you want. For example output the MIN(_) or MAX(_) of each column rather than the default queries.
     '''
-    
 ```

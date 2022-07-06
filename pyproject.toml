@@ -4,17 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python_tabular"
-version = "0.0.4"
+version = "0.0.6"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
 dependencies = [
     "pythonnet==3.0.0a2",
+    "clr-loader==0.1.7",
     "pandas"
 ]
 description = "Connect to your tabular model and perform operations programmatically"
 readme = "README.rst"
-requires-python = ">=3.10"
+requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3.10",
     "License :: OSI Approved :: MIT License"
