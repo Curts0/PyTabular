@@ -128,7 +128,7 @@ class Tabular:
 		dename(backup.Hierarchies.GetEnumerator())
 		dename(backup_relationships)
 		backup.RequestRename(backup.Name.removesuffix('_backup'))
-		#self.Update()
+		self.Update()
 		return True
 	def Query(self,Query_Str) -> pd.DataFrame:
 		'''
