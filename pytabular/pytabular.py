@@ -8,7 +8,7 @@ clr.AddReference('Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices.Tabular.json')
 clr.AddReference('Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType
+from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType, MetadataPermission
 from Microsoft.AnalysisServices import UpdateOptions
 import pandas as pd
 
@@ -31,7 +31,7 @@ class Tabular:
 		pass
 	def Disconnect(self):
 		return self.Server.Disconnect()
-	def Refresh(self, iterable_items, RefreshType=RefreshType.Full) -> None:
+	def Refresh(self, iterable_items: List, RefreshType=RefreshType.Full) -> None:
 		'''
 		Input iterable Collections for the function to run through.
 		It will add the collection items into a Refresh Request.
@@ -44,6 +44,92 @@ class Tabular:
 		Takes currently changed options in model then updates.
 		'''
 		return self.Database.Update(UpdateOptions)
+	def Backup_Table(self,table_str:str = 'Controlling Value Type'):
+		'''
+		1. Clone Table
+			Rename every column, partition, measure, hierarchy with suffix _backup
+			Backup RLS & OLS for Table
+				Scan through every Role
+					If Role contains table, clone it
+					set_Table to backup table
+					set_Column to backup columns
+					set_FilterExpressions to back references
+					add to Role
+
+		2. Refresh Clone Table 
+		3. Find all relationship for that table
+			Clone, rename with _backup and replace with column from clone table
+		'''
+		table = self.Model.Tables.Find(table_str).Clone()
+		def rename(items):
+			for item in items:
+				item.RequestRename(f'{item.Name}_backup')
+		rename(table.Columns.GetEnumerator())
+		rename(table.Partitions.GetEnumerator())
+		rename(table.Measures.GetEnumerator())
+		rename(table.Hierarchies.GetEnumerator())
+		table.RequestRename(f'{table.Name}_backup')
+		self.Model.Tables.Add(table)
+		relationships = [relationship.Clone() for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == table.Name.removesuffix('_backup') or relationship.FromTable.Name == table.Name.removesuffix('_backup')]
+		rename(relationships)
+		for relationship in relationships:
+			if relationship.ToTable.Name == table.Name.removesuffix('_backup'):
+				relationship.set_ToColumn(table.Columns.Find(f'{relationship.ToColumn.Name}_backup'))
+			elif relationship.FromTable.Name == table.Name.removesuffix('_backup'):
+				relationship.set_FromColumn(table.Columns.Find(f'{relationship.FromColumn.Name}_backup'))
+			self.Model.Relationships.Add(relationship)
+		def clone_role_permissions():
+			roles = [role for role in self.Model.Roles.GetEnumerator() for tablepermission in role.TablePermissions.GetEnumerator() if tablepermission.Name == table_str]
+			for role in roles:
+				tablepermissions = [table.Clone() for table in role.TablePermissions.GetEnumerator() if table.Name == table_str]
+				for tablepermission in tablepermissions:
+					tablepermission.set_Table(table)
+					for column in tablepermission.ColumnPermissions.GetEnumerator():
+						column.set_Column(self.Model.Tables.Find(table.Name).Columns.Find(f'{column.Name}_backup'))
+					role.TablePermissions.Add(tablepermission)
+			return True
+		clone_role_permissions()
+		self.Refresh([table])
+		self.Update()
+		return True
+	def Revert_Table(self, table_str:str = 'Controlling Value Type'):
+		'''
+		1. Remove main table
+		2. Rename suffix in backup table
+		3. Update
+		'''
+		main = self.Model.Tables.Find(table_str)
+		backup = self.Model.Tables.Find(f'{table_str}_backup')
+		main_relationships = [relationship for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == main.Name or relationship.FromTable.Name == main.Name]
+		backup_relationships = [relationship for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == backup.Name or relationship.FromTable.Name == backup.Name]
+		
+		def remove_role_permissions():
+			roles = [role for role in self.Model.Roles.GetEnumerator() for tablepermission in role.TablePermissions.GetEnumerator() if tablepermission.Name == table_str]
+			for role in roles:
+				tablepermissions = [table for table in role.TablePermissions.GetEnumerator() if table.Name == table_str]
+				for tablepermission in tablepermissions:
+					role.TablePermissions.Remove(tablepermission)
+		for relationship in main_relationships:
+			if relationship.ToTable.Name == main.Name:
+				self.Model.Relationships.Remove(relationship)
+			elif relationship.FromTable.Name == main.Name:
+				self.Model.Relationships.Remove(relationship)
+		self.Model.Tables.Remove(main)
+		remove_role_permissions()
+		def dename(items):
+			for item in items:
+				print(item.Name)
+				item.RequestRename(f'{item.Name}'.removesuffix('_backup'))
+				self.Model.SaveChanges()
+		#[column for column in backup.Columns.GetEnumerator() if column.Type != ColumnType.RowNumber]
+		dename([column for column in backup.Columns.GetEnumerator() if column.Type != ColumnType.RowNumber])
+		dename(backup.Partitions.GetEnumerator())
+		dename(backup.Measures.GetEnumerator())
+		dename(backup.Hierarchies.GetEnumerator())
+		dename(backup_relationships)
+		backup.RequestRename(backup.Name.removesuffix('_backup'))
+		#self.Update()
+		return True
 	def Query(self,Query_Str) -> pd.DataFrame:
 		'''
 		Executes Query on Model and Returns Results in Pandas DataFrame
