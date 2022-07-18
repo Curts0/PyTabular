@@ -11,16 +11,30 @@ from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
 from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType, MetadataPermission
 from Microsoft.AnalysisServices import UpdateOptions
 import pandas as pd
+import logging
+import sys
+'''
+log = logging.getLogger('PyTabular')
+logformat = logging.Formatter(fmt='%(name)s :: %(levelname)-8s :: %(message)s')
+consoleHandler = logging.StreamHandler(stream=sys.stdout)
+consoleHandler.setFormatter('%(ascitime)s :: %(levelname)-8s :: %(message)s')
+consoleHandler.setLevel(logging.INFO)
+log.addHandler(consoleHandler)
+'''
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(levelname)-8s :: %(message)s')
 
 class Tabular:
 	'''
 	Tabular Class
 	'''
 	def __init__(self,CONNECTION_STR):
+		logging.debug(f'Initializing Tabular Class')
 		self.Server = Server()
 		self.Server.Connect(CONNECTION_STR)
+		logging.debug(f'Connected to Server - {self.Server.Name}')
 		self.Catalog = self.Server.ConnectionInfo.Catalog
 		self.Database = self.Server.Databases.Find(self.Catalog)
+		logging.debug(f'Connected to Database - {self.Database.Name}')
 		self.Model = self.Database.Model
 		self.DaxConnection = AdomdConnection()
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
@@ -28,9 +42,23 @@ class Tabular:
 		self.Columns = [column for table in self.Tables for column in table.Columns.GetEnumerator()]
 		self.Partitions = [partition for table in self.Tables for partition in table.Partitions.GetEnumerator()]
 		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
+		logging.debug(f'Class Initialization Completed')
 		pass
-	def Disconnect(self):
-		return self.Server.Disconnect()
+	def Disconnect(self) -> bool:
+		'''
+		Self explanatory. Runs self.Server.Disconnect()
+		For logging purposes will check if disconnect successful.
+		'''
+		logging.debug(f'Disconnecting from - {self.Server.Name}')
+		self.Server.Disconnect()
+		
+		if self.Server.Connected:
+			logging.error(f'Disconnect Unsuccessful')
+			return False
+		else:
+			logging.debug(f'Disconnect Successful')
+			return True
+		
 	def Refresh(self, iterable_items: List, RefreshType=RefreshType.Full) -> None:
 		'''
 		Input iterable Collections for the function to run through.
@@ -44,7 +72,7 @@ class Tabular:
 		Takes currently changed options in model then updates.
 		'''
 		return self.Database.Update(UpdateOptions)
-	def Backup_Table(self,table_str:str = 'Controlling Value Type'):
+	def Backup_Table(self,table_str:str = 'Table Name'):
 		'''
 		1. Clone Table
 			Rename every column, partition, measure, hierarchy with suffix _backup
@@ -92,7 +120,7 @@ class Tabular:
 		self.Refresh([table])
 		self.Update()
 		return True
-	def Revert_Table(self, table_str:str = 'Controlling Value Type'):
+	def Revert_Table(self, table_str:str = 'Table Name'):
 		'''
 		1. Remove main table
 		2. Rename suffix in backup table
