@@ -66,11 +66,13 @@ class Tabular:
 		To execute refresh run through Update()
 		'''
 		for collection in iterable_items:
+			logging.debug(f'Adding {collection.Name} to Refresh Request')
 			collection.RequestRefresh(RefreshType)
 	def Update(self, UpdateOptions=UpdateOptions.ExpandFull) -> None:
 		'''
 		Takes currently changed options in model then updates.
 		'''
+		logging.debug('Running Update Request')
 		return self.Database.Update(UpdateOptions)
 	def Backup_Table(self,table_str:str = 'Table Name'):
 		'''
@@ -88,36 +90,60 @@ class Tabular:
 		3. Find all relationship for that table
 			Clone, rename with _backup and replace with column from clone table
 		'''
+		logging.info('Backup Beginning...')
+		logging.debug(f'Cloning {table_str}')
 		table = self.Model.Tables.Find(table_str).Clone()
+		logging.info(f'Beginning Renames')
 		def rename(items):
 			for item in items:
 				item.RequestRename(f'{item.Name}_backup')
+				logging.debug(f'Renamed - {item.Name}')
+		logging.info('Renaming Columns')
 		rename(table.Columns.GetEnumerator())
+		logging.info('Renaming Partitions')
 		rename(table.Partitions.GetEnumerator())
+		logging.info('Renaming Measures')
 		rename(table.Measures.GetEnumerator())
+		logging.info('Renaming Hierarchies')
 		rename(table.Hierarchies.GetEnumerator())
+		logging.info('Renaming Table')
 		table.RequestRename(f'{table.Name}_backup')
+		logging.info('Adding Table to Model as backup')
 		self.Model.Tables.Add(table)
+		logging.info('Finding Necessary Relationships... Cloning...')
 		relationships = [relationship.Clone() for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == table.Name.removesuffix('_backup') or relationship.FromTable.Name == table.Name.removesuffix('_backup')]
+		logging.info('Renaming Relationships')
 		rename(relationships)
+		logging.info('Switching Relationships to Clone Table & Column')
 		for relationship in relationships:
+			logging.debug(f'Renaming - {relationship.Name}')
 			if relationship.ToTable.Name == table.Name.removesuffix('_backup'):
 				relationship.set_ToColumn(table.Columns.Find(f'{relationship.ToColumn.Name}_backup'))
 			elif relationship.FromTable.Name == table.Name.removesuffix('_backup'):
 				relationship.set_FromColumn(table.Columns.Find(f'{relationship.FromColumn.Name}_backup'))
+			logging.debug(f'Adding {relationship.Name} to {self.Model.Name}')
 			self.Model.Relationships.Add(relationship)
 		def clone_role_permissions():
+			logging.info(f'Beginning to handle roles and permissions for table...')
+			logging.debug(f'Finding Roles...')
 			roles = [role for role in self.Model.Roles.GetEnumerator() for tablepermission in role.TablePermissions.GetEnumerator() if tablepermission.Name == table_str]
 			for role in roles:
+				logging.debug(f'Role {role.Name} matched, looking into it...')
+				logging.debug(f'Searching for table specific permissions')
 				tablepermissions = [table.Clone() for table in role.TablePermissions.GetEnumerator() if table.Name == table_str]
 				for tablepermission in tablepermissions:
+					logging.debug(f'{tablepermission.Name} found... switching table to clone')
 					tablepermission.set_Table(table)
 					for column in tablepermission.ColumnPermissions.GetEnumerator():
+						logging.debug(f'Column - {column.Name} copying permissions to clone...')
 						column.set_Column(self.Model.Tables.Find(table.Name).Columns.Find(f'{column.Name}_backup'))
+					logging.debug(f'Adding {tablepermission.Name} to {role.Name}')
 					role.TablePermissions.Add(tablepermission)
 			return True
 		clone_role_permissions()
+		logging.info(f'Refreshing Clone... {table.Name}')
 		self.Refresh([table])
+		logging.info(f'Updating Model {self.Model.Name}')
 		self.Update()
 		return True
 	def Revert_Table(self, table_str:str = 'Table Name'):
