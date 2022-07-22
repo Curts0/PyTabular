@@ -13,14 +13,7 @@ from Microsoft.AnalysisServices import UpdateOptions
 import pandas as pd
 import logging
 import sys
-'''
-log = logging.getLogger('PyTabular')
-logformat = logging.Formatter(fmt='%(name)s :: %(levelname)-8s :: %(message)s')
-consoleHandler = logging.StreamHandler(stream=sys.stdout)
-consoleHandler.setFormatter('%(ascitime)s :: %(levelname)-8s :: %(message)s')
-consoleHandler.setLevel(logging.INFO)
-log.addHandler(consoleHandler)
-'''
+
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(levelname)-8s :: %(message)s')
 
 class Tabular:
@@ -152,59 +145,90 @@ class Tabular:
 		2. Rename suffix in backup table
 		3. Update
 		'''
+		logging.info(f'Beginning Revert for {table_str}')
+		logging.debug(f'Finding original {table_str}')
 		main = self.Model.Tables.Find(table_str)
+		logging.debug(f'Finding backup {table_str}')
 		backup = self.Model.Tables.Find(f'{table_str}_backup')
+		logging.debug(f'Finding original relationships')
 		main_relationships = [relationship for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == main.Name or relationship.FromTable.Name == main.Name]
+		logging.debug(f'Finding backup relationships')
 		backup_relationships = [relationship for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == backup.Name or relationship.FromTable.Name == backup.Name]
 		
 		def remove_role_permissions():
+			logging.debug(f'Finding table and column permission in roles to remove from {table_str}')
 			roles = [role for role in self.Model.Roles.GetEnumerator() for tablepermission in role.TablePermissions.GetEnumerator() if tablepermission.Name == table_str]
 			for role in roles:
+				logging.debug(f'Role {role.Name} Found')
 				tablepermissions = [table for table in role.TablePermissions.GetEnumerator() if table.Name == table_str]
 				for tablepermission in tablepermissions:
+					logging.debug(f'Removing {tablepermission.Name} from {role.Name}')
 					role.TablePermissions.Remove(tablepermission)
 		for relationship in main_relationships:
+			logging.debug(f'Cleaning relationships...')
 			if relationship.ToTable.Name == main.Name:
+				logging.debug(f'Removing {relationship.Name}')
 				self.Model.Relationships.Remove(relationship)
 			elif relationship.FromTable.Name == main.Name:
+				logging.debug(f'Removing {relationship.Name}')
 				self.Model.Relationships.Remove(relationship)
+		logging.debug(f'Removing Original Table {main.Name}')
 		self.Model.Tables.Remove(main)
 		remove_role_permissions()
 		def dename(items):
 			for item in items:
-				print(item.Name)
+				logging.debug(f'Removing Suffix for {item.Name}')
 				item.RequestRename(f'{item.Name}'.removesuffix('_backup'))
+				logging.debug(f'Saving Changes... for {item.Name}')
 				self.Model.SaveChanges()
 		#[column for column in backup.Columns.GetEnumerator() if column.Type != ColumnType.RowNumber]
+		logging.info(f'Name changes for Columns...')
 		dename([column for column in backup.Columns.GetEnumerator() if column.Type != ColumnType.RowNumber])
+		logging.info(f'Name changes for Partitions...')
 		dename(backup.Partitions.GetEnumerator())
+		logging.info(f'Name changes for Measures...')
 		dename(backup.Measures.GetEnumerator())
+		logging.info(f'Name changes for Hierarchies...')
 		dename(backup.Hierarchies.GetEnumerator())
+		logging.info(f'Name changes for Relationships...')
 		dename(backup_relationships)
+		logging.info(f'Name changes for Backup Table...')
 		backup.RequestRename(backup.Name.removesuffix('_backup'))
 		self.Update()
 		return True
-	def Query(self,Query_Str) -> pd.DataFrame:
+	def Query(self,Query_Str:str) -> pd.DataFrame:
 		'''
 		Executes Query on Model and Returns Results in Pandas DataFrame
 		'''
+		logging.info(f'Query Called...')
 		try:
+			logging.debug(f'Attempting to Open Connection...')
 			self.DaxConnection.Open()
+			logging.debug(f'Connected!')
 		except: 
+			logging.debug(f'Connection skipped already connected...')
 			pass
+		logging.debug(f'Querying Model with Query...')
 		Query =  AdomdCommand(Query_Str, self.DaxConnection).ExecuteReader()
+		logging.debug(f'Determining Field Count...')
 		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
 		Results = list()
+		logging.debug(f'Converting Results into List...')
 		while Query.Read():
 			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))])
+		logging.debug(f'Data retrieved and closing query...')
 		Query.Close()
+		logging.debug(f'Converting to Pandas DataFrame...')
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
 		return df
-	def Query_Every_Column(self,query_function='COUNTROWS(VALUES(_))') -> pd.DataFrame():
+	def Query_Every_Column(self,query_function:str='COUNTROWS(VALUES(_))') -> pd.DataFrame():
 		'''
 		This will dynamically create a query to pull all columns from the model and run the query function.
 		It will replace the _ with the column to run.
 		'''
+		logging.info(f'Beginning execution of querying every column...')
+		logging.debug(f'Function to be run: {query_function}')
+		logging.debug(f'Dynamically creating DAX query...')
 		query_str = "EVALUATE UNION(\n"
 		for column in self.Columns:
 			if column.Type != ColumnType.RowNumber:
@@ -214,11 +238,14 @@ class Tabular:
 				query_str += f"ROW(\"Table\",\"{table_name}\",\"Column\",\"{column_name}\",\"{query_function}\",{query_function.replace('_',dax_identifier)}),\n"
 		query_str = f'{query_str[:-2]})'
 		return self.Query(query_str)
-	def Query_Every_Table(self,query_function='COUNTROWS(_)') -> pd.DataFrame():
+	def Query_Every_Table(self,query_function:str='COUNTROWS(_)') -> pd.DataFrame():
 		'''
 		This will dynamically create a query to pull all tables from the model and run the query function.
 		It will replace the _ with the table to run.
 		'''
+		logging.info(f'Beginning execution of querying every table...')
+		logging.debug(f'Function to be run: {query_function}')
+		logging.debug(f'Dynamically creating DAX query...')
 		query_str = "EVALUATE UNION(\n"
 		for table in self.Tables:
 			table_name = table.get_Name()
