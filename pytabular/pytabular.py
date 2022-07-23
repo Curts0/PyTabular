@@ -298,6 +298,7 @@ class TE2:
 	TE2 Class, to use any built TabularEditor Command Line Scripts
 	https://docs.tabulareditor.com/te2/Command-line-Options.html
 	#https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip
+	#https://cdn.tabulareditor.com/files/TabularEditor.2.16.7.zip
 	'''
 	def __init__(self,TE_Location='https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip') -> None:
 		logging.debug(f'Checking for TE2 in {os.getcwd()}')
@@ -320,5 +321,14 @@ class TE2:
 			os.remove(file_location)
 		else:
 			logging.debug(f'TE2 Directory Found with Files {os.listdir(path=te2_path)}')
+		self.EXE_Path = os.path.join(te2_path,'TabularEditor.exe')
+		if os.path.exists(self.EXE_Path):
+			logging.debug(f'TabularEditor.exe Located! {self.EXE_Path}')
+		else:
+			logging.error('TabularEditor.exe not found!')
 		pass
 	pass
+
+###
+#Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.DaxConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
+###

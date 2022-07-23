@@ -9,3 +9,4 @@ __pycache__
 /TE2
 setup.py
 notes.txt
+*.bim
