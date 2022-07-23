@@ -1,20 +1,32 @@
 
+import logging
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(levelname)s :: %(message)s')
+
+import clr
+logging.debug('Adding Reference Microsoft.AnalysisServices.AdomdClient')
+clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
+logging.debug('Adding Reference Microsoft.AnalysisServices.Tabular')
+clr.AddReference('Microsoft.AnalysisServices.Tabular')
+logging.debug('Adding Reference Microsoft.AnalysisServices')
+clr.AddReference('Microsoft.AnalysisServices')
+logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
+from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
+logging.debug(f'Importing Microsoft.AnalysisServices.Tabular')
+from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType, MetadataPermission
+logging.debug(f'Importing Microsoft.AnalysisServices')
+from Microsoft.AnalysisServices import UpdateOptions
+
+logging.debug('Importing Other Packages...')
 from typing import List, Tuple
 from types import FunctionType
 from collections import namedtuple, OrderedDict
-import clr
-clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
-clr.AddReference('Microsoft.AnalysisServices.Tabular')
-clr.AddReference('Microsoft.AnalysisServices.Tabular.json')
-clr.AddReference('Microsoft.AnalysisServices')
-from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType, MetadataPermission
-from Microsoft.AnalysisServices import UpdateOptions
+import requests as r
 import pandas as pd
-import logging
+import json
+import os
 import sys
 
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(levelname)-8s :: %(message)s')
+
 
 class Tabular:
 	'''
@@ -181,7 +193,6 @@ class Tabular:
 				item.RequestRename(f'{item.Name}'.removesuffix('_backup'))
 				logging.debug(f'Saving Changes... for {item.Name}')
 				self.Model.SaveChanges()
-		#[column for column in backup.Columns.GetEnumerator() if column.Type != ColumnType.RowNumber]
 		logging.info(f'Name changes for Columns...')
 		dename([column for column in backup.Columns.GetEnumerator() if column.Type != ColumnType.RowNumber])
 		logging.info(f'Name changes for Partitions...')
@@ -253,3 +264,61 @@ class Tabular:
 			query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",{query_function.replace('_',dax_table_identifier)}),\n"
 		query_str = f'{query_str[:-2]})'
 		return self.Query(query_str)
+
+class BPA:
+	'''
+	Best Practice Analyzer Class 
+		Can provide Url, Json File Path, or Python List.
+		If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules.
+		https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+	'''
+	def __init__(self,rules='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
+		'''
+		'''
+		self.Rules:list[dict()] = []
+		if type(rules) == list:
+			logging.debug(f'Rules identified as python... Initializing Rules...')
+			self.Rules = rules
+		else:
+			logging.debug(f'Initializing BPA Class with: {rules}')
+			try:
+				logging.debug(f'Searching for Rules on the good ol\' internet...')
+				self.Rules = r.get(rules).json()
+				logging.debug(f'Rules recieved from: {rules}')
+			except:
+				logging.debug(f'Request to {rules} failed...')
+				logging.debug(f'Searching for Rules locally with file path...')
+				with open(rules,'r') as json_file:
+					self.Rules = json.load(json_file)
+				logging.debug(f'Rules from file path collected...')
+		pass
+
+class TE2:
+	'''
+	TE2 Class, to use any built TabularEditor Command Line Scripts
+	https://docs.tabulareditor.com/te2/Command-line-Options.html
+	#https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip
+	'''
+	def __init__(self,TE_Location='https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip') -> None:
+		logging.debug(f'Checking for TE2 in {os.getcwd()}')
+		te2_path = os.path.join(os.getcwd(),'TE2')
+		if os.path.exists(te2_path) == False:
+			logging.debug('Downloading Tabular Editor for BPA...')
+			self.TE_Location = TE_Location
+			response = r.get(self.TE_Location)
+			file_location = f"{os.getcwd()}\\{self.TE_Location.split('/')[-1]}"
+			with open(file_location,'wb') as te2:
+				te2.write(response.content)
+			logging.debug('TE2 Zip Download Complete!')
+			logging.debug('Import ZipFile')
+			import zipfile as Z
+			logging.debug('Unzipping file...')
+			with Z.ZipFile(file_location) as zip:
+				zip.extractall(path=te2_path)
+			logging.debug('All Unzipped!')
+			logging.debug('Removing Zip File')
+			os.remove(file_location)
+		else:
+			logging.debug(f'TE2 Directory Found with Files {os.listdir(path=te2_path)}')
+		pass
+	pass
