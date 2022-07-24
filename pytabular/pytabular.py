@@ -25,6 +25,7 @@ import pandas as pd
 import json
 import os
 import sys
+import subprocess
 
 
 
@@ -264,6 +265,16 @@ class Tabular:
 			query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",{query_function.replace('_',dax_table_identifier)}),\n"
 		query_str = f'{query_str[:-2]})'
 		return self.Query(query_str)
+	def Analyze_BPA(self,Tabular_Editor_Exe,Best_Practice_Analyzer):
+		#Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.DaxConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
+		#start /wait 
+		logging.debug(f'Beginning request to talk with TE2 & Find BPA...')
+		cmd = f"{Tabular_Editor_Exe} \"Provider=MSOLAP;{self.DaxConnection.ConnectionString}\" {self.Database.Name} -B \"{os.getcwd()}\\Model.bim\" -A {Best_Practice_Analyzer} -V/?"
+		logging.debug(f'Command Generated')
+		logging.debug(f'Submitting Command...')
+		sp = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
+		output,error = sp.communicate()
+		return output
 
 class BPA:
 	'''
@@ -272,25 +283,22 @@ class BPA:
 		If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules.
 		https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
 	'''
-	def __init__(self,rules='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
+	def __init__(self,rules_location:str='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
 		'''
 		'''
+		self.Location = rules_location
 		self.Rules:list[dict()] = []
-		if type(rules) == list:
-			logging.debug(f'Rules identified as python... Initializing Rules...')
-			self.Rules = rules
-		else:
-			logging.debug(f'Initializing BPA Class with: {rules}')
-			try:
-				logging.debug(f'Searching for Rules on the good ol\' internet...')
-				self.Rules = r.get(rules).json()
-				logging.debug(f'Rules recieved from: {rules}')
-			except:
-				logging.debug(f'Request to {rules} failed...')
-				logging.debug(f'Searching for Rules locally with file path...')
-				with open(rules,'r') as json_file:
-					self.Rules = json.load(json_file)
-				logging.debug(f'Rules from file path collected...')
+		logging.debug(f'Initializing BPA Class with: {rules_location}')
+		try:
+			logging.debug(f'Searching for Rules on the good ol\' internet...')
+			self.Rules = r.get(rules_location).json()
+			logging.debug(f'Rules recieved from: {rules_location}')
+		except:
+			logging.debug(f'Request to {rules_location} failed...')
+			logging.debug(f'Searching for Rules locally with file path...')
+			with open(rules_location,'r') as json_file:
+				self.Rules = json.load(json_file)
+			logging.debug(f'Rules from file path collected...')
 		pass
 
 class TE2:
@@ -332,3 +340,12 @@ class TE2:
 ###
 #Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.DaxConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
 ###
+'''
+Example of what to do for ignoring BPA:
+  "annotations": [
+    {
+      "name": "BestPracticeAnalyzer_IgnoreRules",
+      "value": "{\"RuleIDs\":[\"HIDE_FACT_TABLE_COLUMNS\"]}"
+    }
+  ]
+'''
