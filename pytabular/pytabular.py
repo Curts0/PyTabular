@@ -1,4 +1,5 @@
 
+from doctest import OutputChecker
 import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(levelname)s :: %(message)s')
 
@@ -273,8 +274,11 @@ class Tabular:
 		logging.debug(f'Command Generated')
 		logging.debug(f'Submitting Command...')
 		sp = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
-		output,error = sp.communicate()
-		return output
+		raw_output,error = sp.communicate()
+		if len(error) > 0:
+			return error
+		else:
+			return [output for output in raw_output.split('\n') if 'violates rule' in output]
 
 class BPA:
 	'''
