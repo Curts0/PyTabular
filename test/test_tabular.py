@@ -27,3 +27,4 @@ def test_query():
 	df = tab.Query('EVALUATE {1}')
 	assert df.iloc[0]['[Value]'] == 1
 
+tab.Disconnect()

@@ -1,8 +1,5 @@
-
-from doctest import OutputChecker
 import logging
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(levelname)s :: %(message)s')
-
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
 import clr
 logging.debug('Adding Reference Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
@@ -18,17 +15,37 @@ logging.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions
 
 logging.debug('Importing Other Packages...')
-from typing import List, Tuple
-from types import FunctionType
-from collections import namedtuple, OrderedDict
-from re import sub
+from typing import List
 import requests as r
 import pandas as pd
 import json
 import os
-import sys
 import subprocess
 
+def pd_dataframe_to_dax_expression(df:pd.DataFrame) -> str:
+	'''
+	This will take a pandas dataframe and convert to a dax expression
+	For example this DF:
+		col1  col2
+	0   1     3
+	1   2     4
+
+	|
+	|
+	V
+
+	Will convert to this expression string:
+	DEFINE
+		TABLE tablename = { ( 1, 3 ), ( 2, 4 ) }
+
+	EVALUATE
+	SELECTCOLUMNS(
+		tablename,
+		"col1", tablename[Value1],
+		"col2", tablename[Value2]
+	)
+	'''
+	return True
 def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
 	'''
 	This will take a pandas dataframe and convert to an m expression
@@ -70,7 +87,8 @@ def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
 
 class Tabular:
 	'''
-	Tabular Class
+	Tabular Class. Input Connection String then you are off to the races...
+	This will be your best friend: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet
 	'''
 	def __init__(self,CONNECTION_STR):
 		logging.debug(f'Initializing Tabular Class')
@@ -120,19 +138,8 @@ class Tabular:
 		return self.Database.Update(UpdateOptions)
 	def Backup_Table(self,table_str:str = 'Table Name'):
 		'''
-		1. Clone Table
-			Rename every column, partition, measure, hierarchy with suffix _backup
-			Backup RLS & OLS for Table
-				Scan through every Role
-					If Role contains table, clone it
-					set_Table to backup table
-					set_Column to backup columns
-					set_FilterExpressions to back references
-					add to Role
-
-		2. Refresh Clone Table 
-		3. Find all relationship for that table
-			Clone, rename with _backup and replace with column from clone table
+		This will copy and refresh a table appending _backup to the end of the names for every object
+		It will bring over every relationship, role, measure, column, etc...
 		'''
 		logging.info('Backup Beginning...')
 		logging.debug(f'Cloning {table_str}')
@@ -192,9 +199,8 @@ class Tabular:
 		return True
 	def Revert_Table(self, table_str:str = 'Table Name'):
 		'''
-		1. Remove main table
-		2. Rename suffix in backup table
-		3. Update
+		This is used in conjunction with Backup_Table().
+		It will take the 'TableName_backup' and replace with the original.
 		'''
 		logging.info(f'Beginning Revert for {table_str}')
 		logging.debug(f'Finding original {table_str}')
