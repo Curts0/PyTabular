@@ -62,3 +62,17 @@ Built In Dax Query Helpers
     You can replace this str with anything you want. For example output the MIN(_) or MAX(_) of each column rather than the default queries.
     '''
 ```
+
+Backup & Revert a Table in Memory
+```python
+    model.Backup_Table('TableName') #This will backup the table with surround items (columns,measures,relationships,roles,hierarchies,etc.) and will add a suffix of '_backup'
+    #Make any changes to your original table and then revert or delete backup as necessary
+    model.Revert_Table('TableName') #This will essentially replace your original with _backup
+```
+
+Run BPA from TE2
+```python
+    TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
+    BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+    model.Analyze_BPA(TE2.EXE_Path,BPA.Location) #This will output a list of BPA violations...
+```
