@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python_tabular"
-version = "0.0.7"
+version = "0.0.8"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
@@ -15,7 +15,7 @@ dependencies = [
     "requests"
 ]
 description = "Connect to your tabular model and perform operations programmatically"
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
     "Programming Language :: Python :: 3.10",
