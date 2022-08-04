@@ -13,7 +13,7 @@ clr.AddReference('Microsoft.AnalysisServices')
 logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
 from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
 logging.debug(f'Importing Microsoft.AnalysisServices.Tabular')
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType, MetadataPermission
+from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType
 logging.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions
 
@@ -21,6 +21,7 @@ logging.debug('Importing Other Packages...')
 from typing import List, Tuple
 from types import FunctionType
 from collections import namedtuple, OrderedDict
+from re import sub
 import requests as r
 import pandas as pd
 import json
@@ -28,7 +29,44 @@ import os
 import sys
 import subprocess
 
+def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
+	'''
+	This will take a pandas dataframe and convert to an m expression
+	For example this DF:
+	   col1  col2
+	0   1     3
+	1   2     4
+	
+	|
+	|
+	V
 
+	Will convert to this expression string:
+	let
+	Source=#table({"col1","col2"},
+	{
+	{"1","3"},{"2","4"}
+	})
+	in
+	Source
+	'''
+	def m_list_expression_generator(list_of_strings: list[str]) -> str:
+		'''
+		Takes a python list of strings and converts to power query m expression list format...
+		Ex: ["item1","item2","item3"] --> {"item1","item2","item3"}
+		Codepoint reference --> \u007b == { and \u007d == }
+		'''
+		string_components = ','.join([f'\"{string_value}\"' for string_value in list_of_strings])
+		return f'\u007b{string_components}\u007d'
+	logging.debug(f'Executing m_list_generator()... for {df.columns}')
+	columns = m_list_expression_generator(df.columns)
+	expression_str = f"let\nSource=#table({columns},\n"
+	logging.debug(f'Iterating through rows to build expression... df has {len(df)} rows...')
+	expression_list_rows = []
+	for index, row in df.iterrows():
+		expression_list_rows += [m_list_expression_generator(row.to_list())]
+	expression_str += f"\u007b\n{','.join(expression_list_rows)}\n\u007d)\nin\nSource"
+	return expression_str
 
 class Tabular:
 	'''
@@ -64,8 +102,7 @@ class Tabular:
 			return False
 		else:
 			logging.debug(f'Disconnect Successful')
-			return True
-		
+			return True	
 	def Refresh(self, iterable_items: List, RefreshType=RefreshType.Full) -> None:
 		'''
 		Input iterable Collections for the function to run through.
@@ -279,6 +316,38 @@ class Tabular:
 			return error
 		else:
 			return [output for output in raw_output.split('\n') if 'violates rule' in output]
+	def Create_Table(self,df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4]}),table_name:str = 'Testing') -> bool:
+		'''
+		Should create table as m-partition from a pandas df
+		'''
+		logging.debug(f'Beginning to create table for {table_name}...')
+		new_table = Table()
+		new_table.RequestRename(table_name)
+		logging.debug(f'Sorting through columns...')
+		df_column_names = df.columns
+		#\u007b = { and \u007d = }
+		for df_column_name in df_column_names:
+			logging.debug(f'Adding {df_column_name} to Table...')
+			column = DataColumn()
+			column.RequestRename(df_column_name)
+			column.set_SourceColumn(df_column_name)
+			column.set_DataType(DataType.String)
+			new_table.Columns.Add(column)
+		logging.debug(f'Expression String Created...')
+		logging.debug(f'Creating MPartition...')
+		partition = Partition()
+		partition.set_Source(MPartitionSource())
+		logging.debug(f'Setting MPartition Expression...')
+		partition.Source.set_Expression(pd_dataframe_to_m_expression(df))
+		logging.debug(f'Adding partition: {partition.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}')
+		new_table.Partitions.Add(partition)
+		logging.debug(f'Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}')
+		self.Model.Tables.Add(new_table)
+		self.Refresh([new_table])
+		self.Update()
+		return True
+
+
 
 class BPA:
 	'''
@@ -340,16 +409,3 @@ class TE2:
 			logging.error('TabularEditor.exe not found!')
 		pass
 	pass
-
-###
-#Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.DaxConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
-###
-'''
-Example of what to do for ignoring BPA:
-  "annotations": [
-    {
-      "name": "BestPracticeAnalyzer_IgnoreRules",
-      "value": "{\"RuleIDs\":[\"HIDE_FACT_TABLE_COLUMNS\"]}"
-    }
-  ]
-'''
