@@ -21,7 +21,8 @@ import pandas as pd
 import json
 import os
 import subprocess
-from logic_utils import pd_dataframe_to_m_expression
+import atexit
+from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 
 class Tabular:
 	'''
@@ -37,6 +38,7 @@ class Tabular:
 		self.Database = self.Server.Databases.Find(self.Catalog)
 		logging.debug(f'Connected to Database - {self.Database.Name}')
 		self.Model = self.Database.Model
+		logging.debug(f'Connected to Model - {self.Model.Name}')
 		self.DaxConnection = AdomdConnection()
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
 		self.Tables = [table for table in self.Model.Tables.GetEnumerator()]
@@ -44,11 +46,14 @@ class Tabular:
 		self.Partitions = [partition for table in self.Tables for partition in table.Partitions.GetEnumerator()]
 		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
 		logging.debug(f'Class Initialization Completed')
+		logging.debug(f'Registering Disconnect on Termination...')
+		atexit.register(self.Disconnect)
 		pass
+	def __repr__(self) -> str:
+		return f'{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\n{self.Database.EstimatedSize} Estimated Size\n{len(self.Tables)} Tables\n{len(self.Columns)} Columns\n{len(self.Partitions)} Partitions\n{len(self.Measures)} Measures'
 	def Disconnect(self) -> bool:
 		'''
 		Self explanatory. Runs self.Server.Disconnect()
-		For logging purposes will check if disconnect successful.
 		'''
 		logging.debug(f'Disconnecting from - {self.Server.Name}')
 		self.Server.Disconnect()
@@ -260,7 +265,7 @@ class Tabular:
 			return error
 		else:
 			return [output for output in raw_output.split('\n') if 'violates rule' in output]
-	def Create_Table(self,df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4]}),table_name:str = 'Testing') -> bool:
+	def Create_Table(self,df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4], 'col3':['five','six']}),table_name:str = 'Testing') -> bool:
 		'''
 		Should create table as m-partition from a pandas df
 		'''
@@ -269,13 +274,13 @@ class Tabular:
 		new_table.RequestRename(table_name)
 		logging.debug(f'Sorting through columns...')
 		df_column_names = df.columns
-		#\u007b = { and \u007d = }
+		dtype_conversion = pandas_datatype_to_tabular_datatype(df)
 		for df_column_name in df_column_names:
 			logging.debug(f'Adding {df_column_name} to Table...')
 			column = DataColumn()
 			column.RequestRename(df_column_name)
 			column.set_SourceColumn(df_column_name)
-			column.set_DataType(DataType.String)
+			column.set_DataType(dtype_conversion[df_column_name])
 			new_table.Columns.Add(column)
 		logging.debug(f'Expression String Created...')
 		logging.debug(f'Creating MPartition...')
@@ -296,9 +301,9 @@ class Tabular:
 class BPA:
 	'''
 	Best Practice Analyzer Class 
-		Can provide Url, Json File Path, or Python List.
-		If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules.
-		https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+	Can provide Url, Json File Path, or Python List.
+	If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules.
+	https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
 	'''
 	def __init__(self,rules_location:str='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
 		'''
@@ -317,7 +322,7 @@ class BPA:
 				self.Rules = json.load(json_file)
 			logging.debug(f'Rules from file path collected...')
 		pass
-
+#Todo... subclass with a namedtuple
 class TE2:
 	'''
 	TE2 Class, to use any built TabularEditor Command Line Scripts

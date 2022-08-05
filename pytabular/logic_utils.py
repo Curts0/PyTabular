@@ -1,7 +1,13 @@
-import datetime
-import pandas as pd
 import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
+
+import datetime
+from typing import Dict
+import pandas as pd
+
+import clr
+clr.AddReference('Microsoft.AnalysisServices.Tabular')
+from Microsoft.AnalysisServices.Tabular import DataType
 
 def ticks_to_datetime(ticks:int) -> datetime.datetime:
 	'''
@@ -12,7 +18,32 @@ def ticks_to_datetime(ticks:int) -> datetime.datetime:
 	'''
 	return datetime.datetime(1,1,1) + datetime.timedelta(microseconds=ticks//10)
 
-def pd_dataframe_to_dax_expression(df:pd.DataFrame) -> str:
+def pandas_datatype_to_tabular_datatype(df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4]}) )-> Dict:
+	'''
+	Input is a pandas dataframe. 
+	It will output a dictionary that connect the column to a tabular datatype.
+	EX {'col1': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>, 'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>, 'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800>}
+	'''
+	logging.info(f'Getting DF Column Dtypes to Tabular Dtypes...')
+	#https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html
+	#https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.datatype?view=analysisservices-dotnet
+	#df.col1.dtype.kind
+	tabular_datatype_mapping_key = {
+		'b':DataType.Boolean,
+		'i':DataType.Int64,
+		'u':DataType.Int64,
+		'f':DataType.Double,
+		'c':DataType.Double,
+		'm':DataType.DateTime,
+		'M':DataType.DateTime,
+		'O':DataType.String,
+		'S':DataType.String,
+		'U':DataType.String,
+		'V':DataType.String
+	}
+	return {column:tabular_datatype_mapping_key[df[column].dtype.kind] for column in df.columns}
+
+def pd_dataframe_to_dax_expression(df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4]})) -> str:
 	'''
 	This will take a pandas dataframe and convert to a dax expression
 	For example this DF:
@@ -35,6 +66,11 @@ def pd_dataframe_to_dax_expression(df:pd.DataFrame) -> str:
 		"col2", tablename[Value2]
 	)
 	'''
+	def dax_tableconstructor_rows_expression_generator(list_of_strings: list[str]) -> str:
+		'''
+		Converts list[str] to dax table rows for example ['one','two'] -> '('one','two')'
+		'''
+		return
 	return True
 def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
 	'''
