@@ -2,10 +2,11 @@ sources_dir: docs
 templates_dir: docs/templates
 repo: https://github.com/Curts0/PyTabular  #link to sources on github
 version: master                               #link to sources on github
+#https://github.com/davidenunes/mkgendocs
+#gendocs --config mkgendocs.yml
 
 pages:
   - page: "pytabular.md"
     source: 'pytabular/pytabular.py'
     classes:
-      - Tabular:
-        - Disconnect
+      - Tabular
