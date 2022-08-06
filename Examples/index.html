@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Examples/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Examples - PyTabular</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Examples";
+        var mkdocs_page_input_path = "Examples.md";
+        var mkdocs_page_url = "/PyTabular/Examples/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> PyTabular
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="../Pytabular.md">Tabular</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PyTabular</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Examples</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1"></h1>
+<h3 id="return_zero_row_tables">Return_Zero_Row_Tables</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py#L9">source</a></p>
+<pre><code class="language-python">.Return_Zero_Row_Tables(
+   model: pytabular.Tabular
+)
+</code></pre>
+<hr />
+<p>Returns list of table names of those that are returning isna()</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>model</strong> (pytabular.Tabular) : Tabular Model</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>List of table names where DAX COUNTROWS('Table Name') is nan or 0.</li>
+</ul>
+<hr />
+<h3 id="table_last_refresh_times">Table_Last_Refresh_Times</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py#L23">source</a></p>
+<pre><code class="language-python">.Table_Last_Refresh_Times(
+   model: pytabular.Tabular, group_partition: bool = True
+)
+</code></pre>
+<hr />
+<p>Returns pd.DataFrame of tables with their latest refresh time. 
+Optional 'group_partition' variable, default is True.
+If False an extra column will be include to have the last refresh time to the grain of the partition
+Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>model</strong> (pytabular.Tabular) : Tabular Model</li>
+<li><strong>group_partition</strong> (bool, optional) : Whether or not you want the grain of the dataframe to be by table or by partition. Defaults to True.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
+If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()</li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

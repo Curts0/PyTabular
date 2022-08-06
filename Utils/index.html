@@ -3,16 +3,23 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="shortcut icon" href="/PyTabular/img/favicon.ico" />
-    <title>PyTabular</title>
-    <link rel="stylesheet" href="/PyTabular/css/theme.css" />
-    <link rel="stylesheet" href="/PyTabular/css/theme_extra.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Utils/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Utils - PyTabular</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
-    <script src="/PyTabular/js/jquery-3.6.0.min.js" defer></script>
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Utils";
+        var mkdocs_page_input_path = "Utils.md";
+        var mkdocs_page_url = "/PyTabular/Utils/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
     <!--[if lt IE 9]>
-      <script src="/PyTabular/js/html5shiv.min.js"></script>
+      <script src="../js/html5shiv.min.js"></script>
     <![endif]-->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
       <script>hljs.initHighlightingOnLoad();</script> 
@@ -24,9 +31,9 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
     <div class="wy-side-scroll">
       <div class="wy-side-nav-search">
-          <a href="/PyTabular/." class="icon icon-home"> PyTabular
+          <a href=".." class="icon icon-home"> PyTabular
         </a><div role="search">
-  <form id ="rtd-search-form" class="wy-form" action="/PyTabular//search.html" method="get">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
       <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
   </form>
 </div>
@@ -34,11 +41,11 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="/PyTabular/.">Home</a>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="" href="/PyTabular/Pytabular.md">Tabular</a>
+                <li class="toctree-l1"><a class="" href="../Pytabular.md">Tabular</a>
                 </li>
               </ul>
       </div>
@@ -48,13 +55,14 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
       <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="/PyTabular/.">PyTabular</a>
+          <a href="..">PyTabular</a>
         
       </nav>
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="/PyTabular/." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Utils</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -63,12 +71,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-
-  <h1 id="404-page-not-found">404</h1>
-
-  <p><strong>Page not found</strong></p>
-
-
+                <h1 id="_1"></h1>
+<h3 id="ticks_to_datetime">ticks_to_datetime</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py#L12">source</a></p>
+<pre><code class="language-python">.ticks_to_datetime(
+   ticks: int
+)
+</code></pre>
+<hr />
+<p>Converts a C# System DateTime Tick into a Python DateTime</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>ticks</strong> (int) : C# DateTime Tick -&gt; https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>datetime</strong>  : datetime.datetime value</li>
+</ul>
+              
             </div>
           </div><footer>
 
@@ -95,10 +115,10 @@
     
   </span>
 </div>
-    <script>var base_url = '/PyTabular/';</script>
-    <script src="/PyTabular/js/theme_extra.js" defer></script>
-    <script src="/PyTabular/js/theme.js" defer></script>
-      <script src="/PyTabular/search/main.js" defer></script>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
     <script defer>
         window.onload = function () {
             SphinxRtdTheme.Navigation.enable(true);
