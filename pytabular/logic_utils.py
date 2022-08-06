@@ -10,16 +10,14 @@ clr.AddReference('Microsoft.AnalysisServices.Tabular')
 from Microsoft.AnalysisServices.Tabular import DataType
 
 def ticks_to_datetime(ticks:int) -> datetime.datetime:
-	'''	Converts a C# System DateTime Tick into a Python DateTime
-	https://gist.github.com/gamesbook/03d030b7b79370fb6b2a67163a8ac3b5
-	Example: 637922723630700000 -> datetime.datetime(2022, 7, 1, 11, 39, 23, 70000)
+	'''Converts a C# System DateTime Tick into a Python DateTime
 
 	Args:
 		ticks (int): C# DateTime Tick -> https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0
 
 	Returns:
-		datetime.datetime: datetime.datetime value.
-	'''	
+		datetime.datetime: datetime.datetime value
+	'''
 	return datetime.datetime(1,1,1) + datetime.timedelta(microseconds=ticks//10)
 
 def pandas_datatype_to_tabular_datatype(df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4]}) )-> Dict:

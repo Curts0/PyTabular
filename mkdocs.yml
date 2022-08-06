@@ -2,5 +2,5 @@ site_name: PyTabular
 site_url: https://curts0.github.io/PyTabular/
 nav:
     - Home: index.md
-    - Tabular: pytabular.md
+    - Tabular: Pytabular.md
 theme: readthedocs

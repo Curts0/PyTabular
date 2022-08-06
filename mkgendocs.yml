@@ -1,0 +1,27 @@
+sources_dir: docs
+templates_dir: docs/templates
+repo: https://github.com/Curts0/PyTabular  #link to sources on github
+version: master                               #link to sources on github
+
+pages:
+  - page: "PyTabular.md"
+    source: 'pytabular/pytabular.py'
+    classes:
+      - Tabular
+  - page: "BPA.md"
+    source: 'pytabular/pytabular.py'
+    classes:
+      - BPA
+  - page: "TE2.md"
+    source: 'pytabular/pytabular.py'
+    classes:
+      - TE2
+  - page: "Examples.md"
+    source: 'pytabular/basic_checks.py'
+    functions:
+      - Return_Zero_Row_Tables
+      - Table_Last_Refresh_Times
+  - page: "Utils.md"
+    source: 'pytabular/logic_utils.py'
+    functions:
+      - ticks_to_datetime
