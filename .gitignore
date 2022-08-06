@@ -11,3 +11,4 @@ setup.py
 notes.txt
 *.bim
 *.csv
+docs/_config.yml
