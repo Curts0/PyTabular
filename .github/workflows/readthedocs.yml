@@ -1,9 +1,9 @@
-name: docs_pages_workflow
+name: readthedocs
  
 # execute this workflow automatically when a we push to master
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
  
 jobs:
  
