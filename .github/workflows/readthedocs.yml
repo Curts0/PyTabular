@@ -1,29 +1,49 @@
-name: readthedocs
- 
-# execute this workflow automatically when a we push to master
-on:
+name: readthedocs 
+
+on: 
   push:
-    branches: [ master ]
- 
+    branches: [ master ]   
+
 jobs:
- 
+
   build_docs_job:
     runs-on: ubuntu-latest
-    container: debian:buster-slim
- 
-    steps:
- 
-    - name: Prereqs
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+  steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+
+    - name: Set up Python
+      uses: actions/setup-python@v2.2.1
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
       run: |
-        apt-get update
-        apt-get install -y git
-        git clone "https://token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
-      shell: bash
- 
-    - name: Execute script to build our documentation and update pages
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: "docs/buildDocs.sh"
-      shell: bash
+        python -m pip install -U sphinx
+        python -m pip install sphinx-rtd-theme
+    
+    - name: make the sphinx docs
+      run: |
+        make -C docs clean
+        make -C docs html
+              
+    - name: Init new repo in dist folder and commit
+      run: |
+        cd docs/build/html/
+        git init
+        touch .nojekyll
+        git add -A
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m 'deploy'
+
+    - name: Force push to destination branch
+      uses: ad-m/github-push-action@v0.5.0
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        force: true
+        directory: ./docs/build/html
