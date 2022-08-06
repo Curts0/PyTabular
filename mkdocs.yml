@@ -2,7 +2,7 @@ site_name: PyTabular
 site_url: https://curts0.github.io/PyTabular/
 nav:
     - Home: index.md
-    - Tabular: Pytabular.md
+    - Tabular: PyTabular.md
     - BPA: BPA.md
     - TE2: TE2.md
     - Utils: Utils.md
