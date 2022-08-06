@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/pytabular/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Tabular - PyTabular</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tabular";
+        var mkdocs_page_input_path = "pytabular.md";
+        var mkdocs_page_url = "/PyTabular/pytabular/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> PyTabular
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Tabular</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#tabular">Tabular</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#disconnect">.Disconnect</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.Refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#update">.Update</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#backup_table">.Backup_Table</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#revert_table">.Revert_Table</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query">.Query</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query_every_column">.Query_Every_Column</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query_every_table">.Query_Every_Table</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#analyze_bpa">.Analyze_BPA</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#create_table">.Create_Table</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PyTabular</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Tabular</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1"></h1>
+<h2 id="tabular">Tabular</h2>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L27">source</a></p>
+<pre><code class="language-python">Tabular(
+   CONNECTION_STR: str
+)
+</code></pre>
+<hr />
+<p>Tabular Class Initialization. Input Connection String then you are off to the races...
+This will be your best friend: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>CONNECTION_STR</strong> (str) : https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions</li>
+</ul>
+<p><strong>Methods:</strong></p>
+<h3 id="disconnect">.Disconnect</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L56">source</a></p>
+<pre><code class="language-python">.Disconnect()
+</code></pre>
+<hr />
+<p>Disconnects from Model</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>bool</strong>  : True if successful, False if unsuccessful</li>
+</ul>
+<h3 id="refresh">.Refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L71">source</a></p>
+<pre><code class="language-python">.Refresh(
+   iterable_items: List, RefreshType = RefreshType.Full
+)
+</code></pre>
+<hr />
+<p>Input iterable Collections for the function to run through.
+It will add the collection items into a Refresh Request.
+To execute refresh run through Update()</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>iterable_items</strong> (List) : Must be refreshable Tabular objects.</li>
+<li><strong>RefreshType</strong> (<em>type</em>, optional) : <em>description</em>. Defaults to RefreshType.Full.</li>
+</ul>
+<h3 id="update">.Update</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L83">source</a></p>
+<pre><code class="language-python">.Update(
+   UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
+)
+</code></pre>
+<hr />
+<p>Really just this... https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions)</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>UpdateOptions</strong> (UpdateOptions, optional) : See above MS Doc link. Defaults to UpdateOptions.ExpandFull.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>None</strong>  : Placeholder to eventually change.</li>
+</ul>
+<h3 id="backup_table">.Backup_Table</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L94">source</a></p>
+<pre><code class="language-python">.Backup_Table(
+   table_str: str
+)
+</code></pre>
+<hr />
+<p>USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
+It will add suffix '_backup' to all objects.
+Refresh is performed from source during backup.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>table_str</strong> (str, optional) : Name of Table.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
+</ul>
+<h3 id="revert_table">.Revert_Table</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L161">source</a></p>
+<pre><code class="language-python">.Revert_Table(
+   table_str: str
+)
+</code></pre>
+<hr />
+<p>USE WITH CAUTION, EXPERIMENTAL. This is used in conjunction with Backup_Table().
+It will take the 'TableName_backup' and replace with the original.
+Example scenario -&gt; 
+1. model.Backup_Table('TableName')
+2. #perform any proposed changes in original 'TableName'
+3. #validate changes in 'TableName'
+4. #if unsuccessful run model.Revert_Table('TableName')</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>table_str</strong> (str) : Name of table.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
+</ul>
+<h3 id="query">.Query</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L229">source</a></p>
+<pre><code class="language-python">.Query(
+   Query_Str: str
+)
+</code></pre>
+<hr />
+<p>Executes Query on Model and Returns Results in Pandas DataFrame</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>Query_Str</strong> (str) : Dax Query. Note, needs full syntax (ex: EVALUATE). See https://docs.microsoft.com/en-us/dax/dax-queries </li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns dataframe with results</li>
+</ul>
+<h3 id="query_every_column">.Query_Every_Column</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L259">source</a></p>
+<pre><code class="language-python">.Query_Every_Column(
+   query_function: str = 'COUNTROWS(VALUES(_))'
+)
+</code></pre>
+<hr />
+<p>This will dynamically create a query to pull all columns from the model and run the query function.
+It will replace the _ with the column to run.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.
+Example -&gt; 
+EVALUATE
+UNION(
+        ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(<em>))", COUNTROWS(VALUES("Column1"))),
+        ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(</em>))", COUNTROWS(VALUES("Column2"))),
+        ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1")))
+)</li>
+</ul>
+<p>Defaults to 'COUNTROWS(VALUES(_))'.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
+</ul>
+<h3 id="query_every_table">.Query_Every_Table</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L290">source</a></p>
+<pre><code class="language-python">.Query_Every_Table(
+   query_function: str = 'COUNTROWS(_)'
+)
+</code></pre>
+<hr />
+<p>This will dynamically create a query to pull all tables from the model and run the query function.
+It will replace the _ with the table to run.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.
+Example -&gt; 
+EVALUATE
+UNION(
+        ROW("Table_Name", "Table1", "COUNTROWS(<em>)", COUNTROWS("Table1")),
+        ROW("Table_Name", "Table2", "COUNTROWS(</em>)", COUNTROWS("Table2")),
+        ROW("Table_Name", "Table3", "COUNTROWS(<em>)", COUNTROWS("Table3"))
+). Defaults to 'COUNTROWS(</em>)'.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns dataframe with results</li>
+</ul>
+<h3 id="analyze_bpa">.Analyze_BPA</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L317">source</a></p>
+<pre><code class="language-python">.Analyze_BPA(
+   Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
+)
+</code></pre>
+<hr />
+<p>Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
+https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html
+https://docs.tabulareditor.com/te2/Command-line-Options.html</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>Tabular_Editor_Exe</strong> (str) : TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.</li>
+<li><strong>Best_Practice_Analyzer</strong> (str) : BPA json file path. Feel free to use class BPA().Location or provide your own. Defualts to        https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li>Assuming no failure, will return list of BPA violations. Else will return error from command line.</li>
+</ul>
+<h3 id="create_table">.Create_Table</h3>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L341">source</a></p>
+<pre><code class="language-python">.Create_Table(
+   df: pd.DataFrame, table_name: str
+)
+</code></pre>
+<hr />
+<p>Creates tables from pd.DataFrame as an M-Partition. 
+So will convert the dataframe to M-Partition logic via the M query table constructor.
+Runs refresh and will update model.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>df</strong> (pd.DataFrame) : DataFrame to add to model</li>
+<li><strong>table_name</strong> (str) : <em>description</em></li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>bool</strong>  : True if successful</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
