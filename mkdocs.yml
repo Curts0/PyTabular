@@ -3,4 +3,8 @@ site_url: https://curts0.github.io/PyTabular/
 nav:
     - Home: index.md
     - Tabular: Pytabular.md
+    - BPA: BPA.md
+    - TE2: TE2.md
+    - Utils: Utils.md
+    - Examples: Examples.md
 theme: readthedocs
