@@ -26,10 +26,14 @@ from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular
 
 class Tabular:
 	'''
-	Tabular Class. Input Connection String then you are off to the races...
-	This will be your best friend: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet
 	'''
-	def __init__(self,CONNECTION_STR):
+	def __init__(self,CONNECTION_STR:str):
+		'''Tabular Class Initialization. Input Connection String then you are off to the races...
+		This will be your best friend: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet
+
+		Args:
+			CONNECTION_STR (str): https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions
+		'''
 		logging.debug(f'Initializing Tabular Class')
 		self.Server = Server()
 		self.Server.Connect(CONNECTION_STR)
@@ -52,8 +56,10 @@ class Tabular:
 	def __repr__(self) -> str:
 		return f'{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\n{self.Database.EstimatedSize} Estimated Size\n{len(self.Tables)} Tables\n{len(self.Columns)} Columns\n{len(self.Partitions)} Partitions\n{len(self.Measures)} Measures'
 	def Disconnect(self) -> bool:
-		'''
-		Self explanatory. Runs self.Server.Disconnect()
+		'''Disconnects from Model
+
+		Returns:
+			bool: True if successful, False if unsuccessful
 		'''
 		logging.debug(f'Disconnecting from - {self.Server.Name}')
 		self.Server.Disconnect()
@@ -65,25 +71,39 @@ class Tabular:
 			logging.debug(f'Disconnect Successful')
 			return True	
 	def Refresh(self, iterable_items: List, RefreshType=RefreshType.Full) -> None:
-		'''
-		Input iterable Collections for the function to run through.
+		'''Input iterable Collections for the function to run through.
 		It will add the collection items into a Refresh Request.
 		To execute refresh run through Update()
-		'''
+
+		Args:
+			iterable_items (List): Must be refreshable Tabular objects.
+			RefreshType (_type_, optional): _description_. Defaults to RefreshType.Full.
+		'''	
 		for collection in iterable_items:
 			logging.debug(f'Adding {collection.Name} to Refresh Request')
 			collection.RequestRefresh(RefreshType)
-	def Update(self, UpdateOptions=UpdateOptions.ExpandFull) -> None:
-		'''
-		Takes currently changed options in model then updates.
+	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
+		'''Really just this... https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions)
+
+		Args:
+			UpdateOptions (UpdateOptions, optional): See above MS Doc link. Defaults to UpdateOptions.ExpandFull.
+
+		Returns:
+			None: Placeholder to eventually change.
 		'''
 		logging.debug('Running Update Request')
 		return self.Database.Update(UpdateOptions)
-	def Backup_Table(self,table_str:str = 'Table Name'):
-		'''
-		This will copy and refresh a table appending _backup to the end of the names for every object
-		It will bring over every relationship, role, measure, column, etc...
-		'''
+	def Backup_Table(self,table_str:str) -> bool:
+		'''USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
+		It will add suffix '_backup' to all objects.
+		Refresh is performed from source during backup.
+
+		Args:
+			table_str (str, optional): Name of Table.
+
+		Returns:
+			bool: Returns True if Successful, else will return error.
+		'''		
 		logging.info('Backup Beginning...')
 		logging.debug(f'Cloning {table_str}')
 		table = self.Model.Tables.Find(table_str).Clone()
@@ -140,10 +160,23 @@ class Tabular:
 		logging.info(f'Updating Model {self.Model.Name}')
 		self.Update()
 		return True
-	def Revert_Table(self, table_str:str = 'Table Name'):
-		'''
-		This is used in conjunction with Backup_Table().
+	def Revert_Table(self, table_str:str) -> bool:
+		'''USE WITH CAUTION, EXPERIMENTAL. This is used in conjunction with Backup_Table().
 		It will take the 'TableName_backup' and replace with the original.
+		Example scenario -> 
+		1. model.Backup_Table('TableName')
+		2. #perform any proposed changes in original 'TableName'
+		3. #validate changes in 'TableName'
+		4. #if unsuccessful run model.Revert_Table('TableName')
+
+		Args:
+			table_str (str): Name of table.
+
+		Returns:
+			bool: Returns True if Successful, else will return error.
+		'''		
+		'''
+
 		'''
 		logging.info(f'Beginning Revert for {table_str}')
 		logging.debug(f'Finding original {table_str}')
@@ -196,8 +229,13 @@ class Tabular:
 		self.Update()
 		return True
 	def Query(self,Query_Str:str) -> pd.DataFrame:
-		'''
-		Executes Query on Model and Returns Results in Pandas DataFrame
+		'''	Executes Query on Model and Returns Results in Pandas DataFrame
+
+		Args:
+			Query_Str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See https://docs.microsoft.com/en-us/dax/dax-queries 
+
+		Returns:
+			pd.DataFrame: Returns dataframe with results
 		'''
 		logging.info(f'Query Called...')
 		try:
@@ -220,10 +258,24 @@ class Tabular:
 		logging.debug(f'Converting to Pandas DataFrame...')
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
 		return df
-	def Query_Every_Column(self,query_function:str='COUNTROWS(VALUES(_))') -> pd.DataFrame():
-		'''
-		This will dynamically create a query to pull all columns from the model and run the query function.
+	def Query_Every_Column(self,query_function:str='COUNTROWS(VALUES(_))') -> pd.DataFrame:
+		'''This will dynamically create a query to pull all columns from the model and run the query function.
 		It will replace the _ with the column to run.
+
+		Args:
+			query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
+			Example -> 
+			EVALUATE
+			UNION(
+				ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1"))),
+				ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column2"))),
+				ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1")))
+			)
+
+			Defaults to 'COUNTROWS(VALUES(_))'.
+
+		Returns:
+			pd.DataFrame: Returns dataframe with results.
 		'''
 		logging.info(f'Beginning execution of querying every column...')
 		logging.debug(f'Function to be run: {query_function}')
@@ -237,10 +289,22 @@ class Tabular:
 				query_str += f"ROW(\"Table\",\"{table_name}\",\"Column\",\"{column_name}\",\"{query_function}\",{query_function.replace('_',dax_identifier)}),\n"
 		query_str = f'{query_str[:-2]})'
 		return self.Query(query_str)
-	def Query_Every_Table(self,query_function:str='COUNTROWS(_)') -> pd.DataFrame():
-		'''
-		This will dynamically create a query to pull all tables from the model and run the query function.
+	def Query_Every_Table(self,query_function:str='COUNTROWS(_)') -> pd.DataFrame:
+		'''This will dynamically create a query to pull all tables from the model and run the query function.
 		It will replace the _ with the table to run.
+
+		Args:
+			query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
+			Example -> 
+			EVALUATE
+			UNION(
+				ROW("Table_Name", "Table1", "COUNTROWS(_)", COUNTROWS("Table1")),
+				ROW("Table_Name", "Table2", "COUNTROWS(_)", COUNTROWS("Table2")),
+				ROW("Table_Name", "Table3", "COUNTROWS(_)", COUNTROWS("Table3"))
+			). Defaults to 'COUNTROWS(_)'.
+
+		Returns:
+			pd.DataFrame: Returns dataframe with results
 		'''
 		logging.info(f'Beginning execution of querying every table...')
 		logging.debug(f'Function to be run: {query_function}')
@@ -252,7 +316,18 @@ class Tabular:
 			query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",{query_function.replace('_',dax_table_identifier)}),\n"
 		query_str = f'{query_str[:-2]})'
 		return self.Query(query_str)
-	def Analyze_BPA(self,Tabular_Editor_Exe,Best_Practice_Analyzer):
+	def Analyze_BPA(self,Tabular_Editor_Exe:str,Best_Practice_Analyzer:str) -> List[str]:
+		'''Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
+		https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html
+		https://docs.tabulareditor.com/te2/Command-line-Options.html
+
+		Args:
+			Tabular_Editor_Exe (str): TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.
+			Best_Practice_Analyzer (str): BPA json file path. Feel free to use class BPA().Location or provide your own. Defualts to 	https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+
+		Returns:
+			List[str]: Assuming no failure, will return list of BPA violations. Else will return error from command line.
+		'''		
 		#Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.DaxConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
 		#start /wait 
 		logging.debug(f'Beginning request to talk with TE2 & Find BPA...')
@@ -265,10 +340,18 @@ class Tabular:
 			return error
 		else:
 			return [output for output in raw_output.split('\n') if 'violates rule' in output]
-	def Create_Table(self,df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4], 'col3':['five','six']}),table_name:str = 'Testing') -> bool:
-		'''
-		Should create table as m-partition from a pandas df
-		'''
+	def Create_Table(self,df:pd.DataFrame, table_name:str) -> bool:
+		'''Creates tables from pd.DataFrame as an M-Partition. 
+		So will convert the dataframe to M-Partition logic via the M query table constructor.
+		Runs refresh and will update model.
+
+		Args:
+			df (pd.DataFrame): DataFrame to add to model
+			table_name (str): _description_
+
+		Returns:
+			bool: True if successful
+		'''	
 		logging.debug(f'Beginning to create table for {table_name}...')
 		new_table = Table()
 		new_table.RequestRename(table_name)

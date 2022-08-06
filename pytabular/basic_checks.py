@@ -7,21 +7,33 @@ import sys
 import pandas as pd
 
 def Return_Zero_Row_Tables(model:pytabular.Tabular) -> List[str]:
-	'''
-	Returns list of table names of those that are returning isna()
-	'''
+	'''	Returns list of table names of those that are returning isna()
+
+	Args:
+		model (pytabular.Tabular): Tabular Model
+
+	Returns:
+		List[str]: List of table names where DAX COUNTROWS('Table Name') is nan or 0.
+	'''	
 	logging.info(f'Executing Basic Function {sys._getframe(0).f_code.co_name}')
 	query_function = 'COUNTROWS(_)'
 	df = model.Query_Every_Table(query_function)
 	return df[df[f'[{query_function}]'].isna()]['[Table]'].to_list()
 
 def Table_Last_Refresh_Times(model:pytabular.Tabular, group_partition:bool = True) -> pd.DataFrame:
-	'''
-	Returns pd.DataFrame of tables with their latest refresh time. 
+	'''	Returns pd.DataFrame of tables with their latest refresh time. 
 	Optional 'group_partition' variable, default is True.
 	If False an extra column will be include to have the last refresh time to the grain of the partition
-	Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes') 
-	'''
+	Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')
+
+	Args:
+		model (pytabular.Tabular): Tabular Model
+		group_partition (bool, optional): Whether or not you want the grain of the dataframe to be by table or by partition. Defaults to True.
+
+	Returns:
+		pd.DataFrame: pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
+		If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()
+	'''	
 	logging.info(f'Executing Basic Function {sys._getframe(0).f_code.co_name}')
 	data = {\
 		"Tables":[partition.Table.Name for partition in model.Partitions],\
