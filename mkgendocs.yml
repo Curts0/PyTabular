@@ -2,9 +2,10 @@ sources_dir: docs
 templates_dir: docs/templates
 repo: https://github.com/Curts0/PyTabular  #link to sources on github
 version: master                               #link to sources on github
-
+#gendocs --config mkgendocs.yml
+#need to automate in workflow
 pages:
-  - page: "PyTabular.md"
+  - page: "Tabular.md"
     source: 'pytabular/pytabular.py'
     classes:
       - Tabular
