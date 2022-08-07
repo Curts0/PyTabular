@@ -25,11 +25,11 @@ import atexit
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 
 class Tabular:
-	'''Tabular Class Initialization. Input Connection String then you are off to the races...
+	'''Input Connection String then you are off to the races...
 		This will be your best friend: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 	Args:
-		CONNECTION_STR (str): https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions
+		CONNECTION_STR (str): (https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
 	'''	
 	def __init__(self,CONNECTION_STR:str):
 		logging.debug(f'Initializing Tabular Class')
@@ -57,7 +57,7 @@ class Tabular:
 		'''Disconnects from Model
 
 		Returns:
-			bool: True if successful, False if unsuccessful
+			bool: True if successful
 		'''
 		logging.debug(f'Disconnecting from - {self.Server.Name}')
 		self.Server.Disconnect()
