@@ -8,7 +8,7 @@ PyTabular allows for programmatic execution on your tabular models... In Python!
 
 ### How Does It Work?
 
-I basically took my two favorite things Python and Tabular Models and connected the two. Thanks to [Pythonnet (3.0.0a2)](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import the package. 
+I basically took my two favorite things Python and Tabular Models and connected the two. Thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import the package. 
 
 ### Getting Started
 

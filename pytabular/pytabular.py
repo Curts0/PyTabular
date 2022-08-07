@@ -26,7 +26,7 @@ from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular
 
 class Tabular:
 	'''Tabular Class Initialization. Input Connection String then you are off to the races...
-		This will be your best friend: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet
+		This will be your best friend: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 	Args:
 		CONNECTION_STR (str): https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions

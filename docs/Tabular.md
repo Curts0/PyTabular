@@ -12,7 +12,7 @@ Tabular(
 
 ---
 Tabular Class Initialization. Input Connection String then you are off to the races...
-This will be your best friend: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet
+This will be your best friend: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 
 **Args**
