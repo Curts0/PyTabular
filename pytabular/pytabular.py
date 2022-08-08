@@ -26,7 +26,7 @@ import atexit
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 
 class Tabular:
-	'''Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+	'''Tabular Class to perform operations:\[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 	Args:
 		CONNECTION_STR (str): [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
@@ -262,15 +262,6 @@ class Tabular:
 
 		Args:
 			query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
-			<br/>Example -> 
-			<br/>EVALUATE
-			<br/>UNION(
-			<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1"))),
-			<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column2"))),
-			<br/>&emsp;ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1")))
-			<br/>)
-			<br/>
-			<br/>Defaults to 'COUNTROWS(VALUES(_))'.
 
 		Returns:
 			pd.DataFrame: Returns dataframe with results.
@@ -292,14 +283,7 @@ class Tabular:
 		It will replace the _ with the table to run.
 
 		Args:
-			query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
-			Example -> 
-			EVALUATE
-			UNION(
-				ROW("Table_Name", "Table1", "COUNTROWS(_)", COUNTROWS("Table1")),
-				ROW("Table_Name", "Table2", "COUNTROWS(_)", COUNTROWS("Table2")),
-				ROW("Table_Name", "Table3", "COUNTROWS(_)", COUNTROWS("Table3"))
-			). Defaults to 'COUNTROWS(_)'.
+			query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions. Defaults to 'COUNTROWS(_)'.
 
 		Returns:
 			pd.DataFrame: Returns dataframe with results

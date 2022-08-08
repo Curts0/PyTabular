@@ -1,4 +1,5 @@
 import logging
+
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
 from typing import List
 import pytabular
