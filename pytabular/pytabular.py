@@ -92,8 +92,8 @@ class Tabular:
 		logging.debug('Running Update Request')
 		return self.Database.Update(UpdateOptions)
 	def Backup_Table(self,table_str:str) -> bool:
-		'''USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
-		It will add suffix '_backup' to all objects.
+		'''USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.  
+		It will add suffix '_backup' to all objects.  
 		Refresh is performed from source during backup.
 
 		Args:

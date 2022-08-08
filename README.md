@@ -4,17 +4,11 @@
 [![readthedocs](https://github.com/Curts0/PyTabular/actions/workflows/readthedocs.yml/badge.svg)](https://github.com/Curts0/PyTabular/actions/workflows/readthedocs.yml)
 [![pages-build-deployment](https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment)
 
-### What Does It Do?
+### What is it?
 
-PyTabular allows for programmatic execution on your tabular models... In Python!
-
-### How Does It Work?
-
-I basically took my two favorite things Python and Tabular Models and connected the two. Thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import the package. 
+PyTabular is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import it. 
 
 ### Getting Started
-
-Importing package
 
 ```powershell
 python3 -m pip install python_tabular
@@ -38,7 +32,7 @@ Refresh Tables and Partitions
 
 ```python
     #filter down the collection to what you want to refresh
-    tables_to_refresh = [table for table in model.Tables if table.get_Name() in ['Table1','Table2','Table3']]
+    tables_to_refresh = [table for table in model.Tables if table.Name in ['Table1','Table2','Table3']]
     
     #Queue up the tables and partitions that you want to refresh.
     model.Refresh(tables_to_refresh)
@@ -78,3 +72,5 @@ Run BPA from TE2
     BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
     model.Analyze_BPA(TE2.EXE_Path,BPA.Location) #This will output a list of BPA violations...
 ```
+
+I'm working on converting everything to the google docstring format and using those to populate the documentation. I still have some formatting issues to work through, but that should help with understanding what this package can do.
