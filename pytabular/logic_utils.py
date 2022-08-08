@@ -13,23 +13,23 @@ def ticks_to_datetime(ticks:int) -> datetime.datetime:
 	'''Converts a C# System DateTime Tick into a Python DateTime
 
 	Args:
-		ticks (int): C# DateTime Tick -> https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0
+		ticks (int): C# DateTime Tick -> [https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0]
 
 	Returns:
 		datetime.datetime: datetime.datetime value
 	'''
 	return datetime.datetime(1,1,1) + datetime.timedelta(microseconds=ticks//10)
 
-def pandas_datatype_to_tabular_datatype(df:pd.DataFrame = pd.DataFrame(data={'col1': [1.0, 2.0], 'col2': [3, 4]}) )-> Dict:
-	'''
-	Input is a pandas dataframe. 
-	It will output a dictionary that connect the column to a tabular datatype.
-	EX {'col1': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>, 'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>, 'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800>}
+def pandas_datatype_to_tabular_datatype(df:pd.DataFrame)-> Dict:
+	'''WiP takes dataframe columns and gets respective tabular column datatype. ([NumPy Datatypes](https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html) and [Tabular Datatypes](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.datatype?view=analysisservices-dotnet))
+
+	Args:
+		df (pd.DataFrame): Pandas DataFrame
+
+	Returns:
+		Dict: EX {'col1': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>, 'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>, 'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800>}
 	'''
 	logging.info(f'Getting DF Column Dtypes to Tabular Dtypes...')
-	#https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html
-	#https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.datatype?view=analysisservices-dotnet
-	#df.col1.dtype.kind
 	tabular_datatype_mapping_key = {
 		'b':DataType.Boolean,
 		'i':DataType.Int64,

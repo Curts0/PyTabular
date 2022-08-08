@@ -2,7 +2,7 @@
 
 
 ## Tabular
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L27)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L28)
 ```python 
 Tabular(
    CONNECTION_STR: str
@@ -11,13 +11,12 @@ Tabular(
 
 
 ---
-Input Connection String then you are off to the races...
-This will be your best friend: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 
 **Args**
 
-* **CONNECTION_STR** (str) : (https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
+* **CONNECTION_STR** (str) : [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
 
 
 
@@ -68,7 +67,7 @@ To execute refresh run through Update()
 ```
 
 ---
-Really just this... https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions)
+[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
 
 **Args**
