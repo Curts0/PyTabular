@@ -21,8 +21,7 @@ def ticks_to_datetime(ticks:int) -> datetime.datetime:
 	return datetime.datetime(1,1,1) + datetime.timedelta(microseconds=ticks//10)
 
 def pandas_datatype_to_tabular_datatype(df:pd.DataFrame)-> Dict:
-	'''WiP takes dataframe columns and gets respective tabular column datatype.
-	<br/>([NumPy Datatypes](https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html) and [Tabular Datatypes](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.datatype?view=analysisservices-dotnet))
+	'''WiP takes dataframe columns and gets respective tabular column datatype.  ([NumPy Datatypes](https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html) and [Tabular Datatypes](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.datatype?view=analysisservices-dotnet))
 
 	Args:
 		df (pd.DataFrame): Pandas DataFrame
