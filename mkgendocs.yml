@@ -26,3 +26,4 @@ pages:
     source: 'pytabular/logic_utils.py'
     functions:
       - ticks_to_datetime
+      - pandas_datatype_to_tabular_datatype
