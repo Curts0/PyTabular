@@ -11,7 +11,7 @@ Tabular(
 
 
 ---
-Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+Tabular Class to perform operations:\[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 
 **Args**
@@ -170,15 +170,6 @@ This will dynamically create a query to pull all columns from the model and run 
 **Args**
 
 * **query_function** (str, optional) : Dax query is dynamically building a query with the UNION & ROW DAX Functions.
-<br/>Example -> 
-<br/>EVALUATE
-<br/>UNION(
-<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1"))),
-<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column2"))),
-<br/>&emsp;ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1")))
-<br/>)
-<br/>
-<br/>Defaults to 'COUNTROWS(VALUES(_))'.
 
 
 **Returns**
@@ -187,7 +178,7 @@ This will dynamically create a query to pull all columns from the model and run 
 
 
 ### .Query_Every_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L290)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L281)
 ```python
 .Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
@@ -201,14 +192,7 @@ It will replace the _ with the table to run.
 
 **Args**
 
-* **query_function** (str, optional) : Dax query is dynamically building a query with the UNION & ROW DAX Functions.
-Example -> 
-EVALUATE
-UNION(
-        ROW("Table_Name", "Table1", "COUNTROWS(_)", COUNTROWS("Table1")),
-        ROW("Table_Name", "Table2", "COUNTROWS(_)", COUNTROWS("Table2")),
-        ROW("Table_Name", "Table3", "COUNTROWS(_)", COUNTROWS("Table3"))
-). Defaults to 'COUNTROWS(_)'.
+* **query_function** (str, optional) : Dax query is dynamically building a query with the UNION & ROW DAX Functions. Defaults to 'COUNTROWS(_)'.
 
 
 **Returns**
@@ -217,7 +201,7 @@ UNION(
 
 
 ### .Analyze_BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L317)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L301)
 ```python
 .Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
@@ -242,7 +226,7 @@ https://docs.tabulareditor.com/te2/Command-line-Options.html
 
 
 ### .Create_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L341)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L325)
 ```python
 .Create_Table(
    df: pd.DataFrame, table_name: str

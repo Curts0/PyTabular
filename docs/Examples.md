@@ -2,7 +2,7 @@
 
 
 ### Return_Zero_Row_Tables
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L9)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L10)
 ```python
 .Return_Zero_Row_Tables(
    model: pytabular.Tabular
@@ -27,7 +27,7 @@ Returns list of table names of those that are returning isna()
 
 
 ### Table_Last_Refresh_Times
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L23)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L24)
 ```python
 .Table_Last_Refresh_Times(
    model: pytabular.Tabular, group_partition: bool = True

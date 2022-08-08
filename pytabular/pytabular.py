@@ -33,7 +33,7 @@ class Tabular:
 	'''	
 	def __init__(self,CONNECTION_STR:str):
 		logging.debug(f'Initializing Tabular Class')
-		self.Server = Server()
+		self.Server = Server() #[Server](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet)
 		self.Server.Connect(CONNECTION_STR)
 		logging.debug(f'Connected to Server - {self.Server.Name}')
 		self.Catalog = self.Server.ConnectionInfo.Catalog
