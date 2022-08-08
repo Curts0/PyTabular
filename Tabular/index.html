@@ -116,9 +116,12 @@
                 <h1 id="_1"></h1>
 <h2 id="tabular">Tabular</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L28">source</a></p>
-<pre><code class="language-python">(Workflow Testing)Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+<pre><code class="language-python">Tabular(
+   CONNECTION_STR: str
+)
 </code></pre>
 <hr />
+<p>Tabular Class to perform operations:<a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet">Microsoft.AnalysisServices.Tabular</a></p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>CONNECTION_STR</strong> (str) : <a href="https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions">Connection String</a></li>
@@ -194,9 +197,9 @@ Refresh is performed from source during backup.</p>
 It will take the 'TableName_backup' and replace with the original.
 Example scenario -&gt; 
 1. model.Backup_Table('TableName')
-2. #perform any proposed changes in original 'TableName'
-3. #validate changes in 'TableName'
-4. #if unsuccessful run model.Revert_Table('TableName')</p>
+2. perform any proposed changes in original 'TableName'
+3. validate changes in 'TableName'
+4. if unsuccessful run model.Revert_Table('TableName')</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>table_str</strong> (str) : Name of table.</li>
