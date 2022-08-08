@@ -26,7 +26,7 @@ import atexit
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 
 class Tabular:
-	'''(Workflow Testing)Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+	'''Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 	Args:
 		CONNECTION_STR (str): [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
@@ -163,9 +163,9 @@ class Tabular:
 		It will take the 'TableName_backup' and replace with the original.
 		Example scenario -> 
 		1. model.Backup_Table('TableName')
-		2. #perform any proposed changes in original 'TableName'
-		3. #validate changes in 'TableName'
-		4. #if unsuccessful run model.Revert_Table('TableName')
+		2. perform any proposed changes in original 'TableName'
+		3. validate changes in 'TableName'
+		4. if unsuccessful run model.Revert_Table('TableName')
 
 		Args:
 			table_str (str): Name of table.
