@@ -26,7 +26,7 @@ import atexit
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 
 class Tabular:
-	'''Tabular Class to perform operations:\[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+	'''(Workflow Testing)Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 	Args:
 		CONNECTION_STR (str): [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
