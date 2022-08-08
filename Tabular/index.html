@@ -121,7 +121,7 @@
 )
 </code></pre>
 <hr />
-<p>Tabular Class to perform operations: <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet">Microsoft.AnalysisServices.Tabular</a></p>
+<p>Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>CONNECTION_STR</strong> (str) : <a href="https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions">Connection String</a></li>
@@ -235,23 +235,14 @@ Example scenario -&gt;
 <br/>It will replace the _ with the column to run.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.
-<br/>Example -&gt; 
-<br/>EVALUATE
-<br/>UNION(
-<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(<em>))", COUNTROWS(VALUES("Column1"))),
-<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(</em>))", COUNTROWS(VALUES("Column2"))),
-<br/>&emsp;ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(<em>))", COUNTROWS(VALUES("Column1")))
-<br/>)
-<br/>
-<br/>Defaults to 'COUNTROWS(VALUES(</em>))'.</li>
+<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
 </ul>
 <h3 id="query_every_table">.Query_Every_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L290">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L281">source</a></p>
 <pre><code class="language-python">.Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
 )
@@ -261,21 +252,14 @@ Example scenario -&gt;
 It will replace the _ with the table to run.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.
-Example -&gt; 
-EVALUATE
-UNION(
-        ROW("Table_Name", "Table1", "COUNTROWS(<em>)", COUNTROWS("Table1")),
-        ROW("Table_Name", "Table2", "COUNTROWS(</em>)", COUNTROWS("Table2")),
-        ROW("Table_Name", "Table3", "COUNTROWS(<em>)", COUNTROWS("Table3"))
-). Defaults to 'COUNTROWS(</em>)'.</li>
+<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions. Defaults to 'COUNTROWS(_)'.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="analyze_bpa">.Analyze_BPA</h3>
-<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L317">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L301">source</a></p>
 <pre><code class="language-python">.Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
 )
@@ -294,7 +278,7 @@ https://docs.tabulareditor.com/te2/Command-line-Options.html</p>
 <li>Assuming no failure, will return list of BPA violations. Else will return error from command line.</li>
 </ul>
 <h3 id="create_table">.Create_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L341">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py#L325">source</a></p>
 <pre><code class="language-python">.Create_Table(
    df: pd.DataFrame, table_name: str
 )
