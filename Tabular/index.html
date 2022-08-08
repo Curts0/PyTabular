@@ -232,19 +232,20 @@ Example scenario -&gt;
 </code></pre>
 <hr />
 <p>This will dynamically create a query to pull all columns from the model and run the query function.
-It will replace the _ with the column to run.</p>
+<br/>It will replace the _ with the column to run.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.
-Example -&gt; 
-EVALUATE
-UNION(
-        ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(<em>))", COUNTROWS(VALUES("Column1"))),
-        ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(</em>))", COUNTROWS(VALUES("Column2"))),
-        ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1")))
-)</li>
+<br/>Example -&gt; 
+<br/>EVALUATE
+<br/>UNION(
+<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(<em>))", COUNTROWS(VALUES("Column1"))),
+<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(</em>))", COUNTROWS(VALUES("Column2"))),
+<br/>&emsp;ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(<em>))", COUNTROWS(VALUES("Column1")))
+<br/>)
+<br/>
+<br/>Defaults to 'COUNTROWS(VALUES(</em>))'.</li>
 </ul>
-<p>Defaults to 'COUNTROWS(VALUES(_))'.</p>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
