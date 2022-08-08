@@ -13,10 +13,10 @@ def ticks_to_datetime(ticks:int) -> datetime.datetime:
 	'''Converts a C# System DateTime Tick into a Python DateTime
 
 	Args:
-		ticks (int): (C# DateTime Tick)[https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0]
+		ticks (int): [C# DateTime Tick](https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0)
 
 	Returns:
-		datetime.datetime: datetime.datetime value
+		datetime.datetime: [Python datetime.datetime](https://docs.python.org/3/library/datetime.html)
 	'''
 	return datetime.datetime(1,1,1) + datetime.timedelta(microseconds=ticks//10)
 

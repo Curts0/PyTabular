@@ -164,21 +164,21 @@ Executes Query on Model and Returns Results in Pandas DataFrame
 
 ---
 This will dynamically create a query to pull all columns from the model and run the query function.
-It will replace the _ with the column to run.
+<br/>It will replace the _ with the column to run.
 
 
 **Args**
 
 * **query_function** (str, optional) : Dax query is dynamically building a query with the UNION & ROW DAX Functions.
-Example -> 
-EVALUATE
-UNION(
-        ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1"))),
-        ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column2"))),
-        ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1")))
-)
-
-Defaults to 'COUNTROWS(VALUES(_))'.
+<br/>Example -> 
+<br/>EVALUATE
+<br/>UNION(
+<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1"))),
+<br/>&emsp;ROW("Table_Name", "Table1", "Column_Name", "Column2", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column2"))),
+<br/>&emsp;ROW("Table_Name", "Table2", "Column_Name", "Column1", "COUNTROWS(VALUES(_))", COUNTROWS(VALUES("Column1")))
+<br/>)
+<br/>
+<br/>Defaults to 'COUNTROWS(VALUES(_))'.
 
 
 **Returns**
