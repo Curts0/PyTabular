@@ -41,11 +41,13 @@ class Tabular:
 		logging.debug(f'Connected to Server - {self.Server.Name}')
 		self.Catalog = self.Server.ConnectionInfo.Catalog
 		logging.debug(f'Received Catalog - {self.Catalog}')
-		if len([database for database in self.Server.Databases.GetEnumerator()]) == 1:
-			self.Database = self.Server.Databases.get_Item(0)
-		else:
-			self.Database = self.Server.Databases.Find(self.Catalog)
+		try:
+			self.Database = [database for database in self.Server.Databases.GetEnumerator() if database.Name == self.Catalog][0]
+		except:
+			logging.error(f'Unable to find Database... {self.Catalog}')
 		logging.debug(f'Connected to Database - {self.Database.Name}')
+		self.CompatibilityLevel: int = self.Database.CompatibilityLevel
+		self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
 		self.Model = self.Database.Model
 		logging.debug(f'Connected to Model - {self.Model.Name}')
 		self.DaxConnection = AdomdConnection()

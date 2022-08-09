@@ -17,8 +17,8 @@ def Return_Zero_Row_Tables(model:pytabular.Tabular) -> List[str]:
 		List[str]: List of table names where DAX COUNTROWS('Table Name') is nan or 0.
 	'''	
 	logging.info(f'Executing Basic Function {sys._getframe(0).f_code.co_name}')
-	query_function = 'COUNTROWS(_)'
-	df = model.Query_Every_Table(query_function)
+	query_function: str = 'COUNTROWS(_)'
+	df: pd.DataFrame = model.Query_Every_Table(query_function)
 	return df[df[f'[{query_function}]'].isna()]['[Table]'].to_list()
 
 def Table_Last_Refresh_Times(model:pytabular.Tabular, group_partition:bool = True) -> pd.DataFrame:
@@ -48,3 +48,9 @@ def Table_Last_Refresh_Times(model:pytabular.Tabular, group_partition:bool = Tru
 	else:
 		logging.debug('Returning DF')
 		return df
+
+def BPA_Violations_To_DF(model:pytabular.Tabular,te2:str, bpa:str) -> pd.DataFrame:
+	results = model.Analyze_BPA(te2,bpa)
+	data = [rule.replace(' violates rule ','^').replace('\"','').split('^') for rule in results]
+	columns = ["Object","Violation"]
+	return pd.DataFrame(data,columns=columns)
