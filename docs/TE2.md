@@ -2,7 +2,7 @@
 
 
 ## TE2
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L391)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L400)
 ```python 
 TE2(
    TE_Location = 'https: //github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'

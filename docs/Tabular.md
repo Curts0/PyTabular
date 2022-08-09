@@ -2,7 +2,7 @@
 
 
 ## Tabular
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L28)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L32)
 ```python 
 Tabular(
    CONNECTION_STR: str
@@ -24,7 +24,7 @@ Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https:/
 
 
 ### .Disconnect
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L56)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L65)
 ```python
 .Disconnect()
 ```
@@ -39,7 +39,7 @@ Disconnects from Model
 
 
 ### .Refresh
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L71)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L80)
 ```python
 .Refresh(
    iterable_items: List, RefreshType = RefreshType.Full
@@ -59,7 +59,7 @@ To execute refresh run through Update()
 
 
 ### .Update
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L83)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L92)
 ```python
 .Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
@@ -81,7 +81,7 @@ To execute refresh run through Update()
 
 
 ### .Backup_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L94)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L103)
 ```python
 .Backup_Table(
    table_str: str
@@ -105,7 +105,7 @@ Refresh is performed from source during backup.
 
 
 ### .Revert_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L161)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L170)
 ```python
 .Revert_Table(
    table_str: str
@@ -133,7 +133,7 @@ Example scenario ->
 
 
 ### .Query
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L229)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L238)
 ```python
 .Query(
    Query_Str: str
@@ -155,7 +155,7 @@ Executes Query on Model and Returns Results in Pandas DataFrame
 
 
 ### .Query_Every_Column
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L259)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L268)
 ```python
 .Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
@@ -178,7 +178,7 @@ This will dynamically create a query to pull all columns from the model and run 
 
 
 ### .Query_Every_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L281)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L290)
 ```python
 .Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
@@ -201,7 +201,7 @@ It will replace the _ with the table to run.
 
 
 ### .Analyze_BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L301)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L310)
 ```python
 .Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
@@ -226,7 +226,7 @@ https://docs.tabulareditor.com/te2/Command-line-Options.html
 
 
 ### .Create_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L325)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L334)
 ```python
 .Create_Table(
    df: pd.DataFrame, table_name: str
