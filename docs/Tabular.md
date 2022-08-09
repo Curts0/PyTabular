@@ -11,7 +11,7 @@ Tabular(
 
 
 ---
-Tabular Class to perform operations:\[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 
 **Args**
@@ -89,8 +89,8 @@ To execute refresh run through Update()
 ```
 
 ---
-USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
-It will add suffix '_backup' to all objects.
+USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.  
+It will add suffix '_backup' to all objects.  
 Refresh is performed from source during backup.
 
 
@@ -117,9 +117,9 @@ USE WITH CAUTION, EXPERIMENTAL. This is used in conjunction with Backup_Table().
 It will take the 'TableName_backup' and replace with the original.
 Example scenario -> 
 1. model.Backup_Table('TableName')
-2. #perform any proposed changes in original 'TableName'
-3. #validate changes in 'TableName'
-4. #if unsuccessful run model.Revert_Table('TableName')
+2. perform any proposed changes in original 'TableName'
+3. validate changes in 'TableName'
+4. if unsuccessful run model.Revert_Table('TableName')
 
 
 **Args**

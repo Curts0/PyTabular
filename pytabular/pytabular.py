@@ -2,16 +2,19 @@ import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
 
 import clr
+
+
 logging.debug('Adding Reference Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 logging.debug('Adding Reference Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
 logging.debug('Adding Reference Microsoft.AnalysisServices')
 clr.AddReference('Microsoft.AnalysisServices')
-logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
-from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
+
 logging.debug(f'Importing Microsoft.AnalysisServices.Tabular')
 from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType
+logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
+from Microsoft.AnalysisServices.AdomdClient import (AdomdCommand, AdomdConnection)
 logging.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions
 
@@ -37,7 +40,11 @@ class Tabular:
 		self.Server.Connect(CONNECTION_STR)
 		logging.debug(f'Connected to Server - {self.Server.Name}')
 		self.Catalog = self.Server.ConnectionInfo.Catalog
-		self.Database = self.Server.Databases.Find(self.Catalog)
+		logging.debug(f'Received Catalog - {self.Catalog}')
+		if len([database for database in self.Server.Databases.GetEnumerator()]) == 1:
+			self.Database = self.Server.Databases.get_Item(0)
+		else:
+			self.Database = self.Server.Databases.Find(self.Catalog)
 		logging.debug(f'Connected to Database - {self.Database.Name}')
 		self.Model = self.Database.Model
 		logging.debug(f'Connected to Model - {self.Model.Name}')
@@ -50,6 +57,7 @@ class Tabular:
 		logging.debug(f'Class Initialization Completed')
 		logging.debug(f'Registering Disconnect on Termination...')
 		atexit.register(self.Disconnect)
+		
 		pass
 	def __repr__(self) -> str:
 		return f'{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\n{self.Database.EstimatedSize} Estimated Size\n{len(self.Tables)} Tables\n{len(self.Columns)} Columns\n{len(self.Partitions)} Partitions\n{len(self.Measures)} Measures'
