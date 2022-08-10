@@ -28,31 +28,28 @@ def test_query(model):
 
 def remove_py_tables(model):
 	table_check = [table for table in model.Tables if testingtable in table.Name]
-	try:
-		for table in table_check:
-			model.Model.Tables.Remove(table)
-		model.Update()
-		return True
-	except:
-		return False
+	for table in table_check:
+		model.Model.Tables.Remove(table)
+	model.Model.SaveChanges()
+	return True
 
 def test_pre_table_checks(model):
-	assert remove_py_tables(model)
+	assert remove_py_tables(model) == True
 
 def test_create_table(model):
 	df = pd.DataFrame(data={'col1':[1,2,3],'col2':['four','five','six']})
-	assert model.Create_Table(df,testingtable)
+	assert model.Create_Table(df,testingtable) == True
 
 def test_backingup_table(model):
-	assert model.Backup_Table(testingtable)
+	assert model.Backup_Table(testingtable) == True
 
 def test_revert_table(model):
-	assert model.Revert_Table(testingtable)
+	assert model.Revert_Table(testingtable) == True
 
 def test_table_removal(model):
-	assert remove_py_tables(model)
+	assert remove_py_tables(model) == True
 
 def test_bpa(model):
 	te2 = pytabular.TE2().EXE_Path
 	bpa = pytabular.BPA().Location
-	assert model.Analyze_BPA(te2,bpa)
+	assert model.Analyze_BPA(te2,bpa) 

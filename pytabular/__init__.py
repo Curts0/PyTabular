@@ -1,4 +1,5 @@
-
+import logging
+logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
 import os
 import sys
 dll = os.path.join(os.path.dirname(__file__),"dll")

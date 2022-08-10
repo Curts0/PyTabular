@@ -1,16 +1,11 @@
 import logging
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
-
 import clr
-
-
 logging.debug('Adding Reference Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
 logging.debug('Adding Reference Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
 logging.debug('Adding Reference Microsoft.AnalysisServices')
 clr.AddReference('Microsoft.AnalysisServices')
-
 logging.debug(f'Importing Microsoft.AnalysisServices.Tabular')
 from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType
 logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
@@ -101,6 +96,15 @@ class Tabular:
 		'''
 		logging.debug('Running Update Request')
 		return self.Database.Update(UpdateOptions)
+	def SaveChanges(self) -> bool:
+		'''TODO need to clean this up and add more flexibility.  
+		Just a simple wrapper to call self.Model.SaveChanges()
+
+		Returns:
+			bool:
+		'''		
+		self.Model.SaveChanges()
+		return True
 	def Backup_Table(self,table_str:str) -> bool:
 		'''USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.  
 		It will add suffix '_backup' to all objects.  
@@ -166,7 +170,7 @@ class Tabular:
 		logging.info(f'Refreshing Clone... {table.Name}')
 		self.Refresh([table])
 		logging.info(f'Updating Model {self.Model.Name}')
-		self.Update()
+		self.SaveChanges()
 		return True
 	def Revert_Table(self, table_str:str) -> bool:
 		'''USE WITH CAUTION, EXPERIMENTAL. This is used in conjunction with Backup_Table().
@@ -234,7 +238,7 @@ class Tabular:
 		dename(backup_relationships)
 		logging.info(f'Name changes for Backup Table...')
 		backup.RequestRename(backup.Name.removesuffix('_backup'))
-		self.Update()
+		self.SaveChanges()
 		return True
 	def Query(self,Query_Str:str) -> pd.DataFrame:
 		'''	Executes Query on Model and Returns Results in Pandas DataFrame
@@ -368,7 +372,7 @@ class Tabular:
 		logging.debug(f'Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}')
 		self.Model.Tables.Add(new_table)
 		self.Refresh([new_table])
-		self.Update()
+		self.SaveChanges()
 		return True
 
 
