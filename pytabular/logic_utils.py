@@ -2,7 +2,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
 
 import datetime
-from typing import Dict
+from typing import Dict, List
 import pandas as pd
 
 import clr
@@ -95,7 +95,7 @@ def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
 	in
 	Source
 	'''
-	def m_list_expression_generator(list_of_strings: list[str]) -> str:
+	def m_list_expression_generator(list_of_strings:List[str]) -> str:
 		'''
 		Takes a python list of strings and converts to power query m expression list format...
 		Ex: ["item1","item2","item3"] --> {"item1","item2","item3"}
