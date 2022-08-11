@@ -48,6 +48,16 @@ def Table_Last_Refresh_Times(model:pytabular.Tabular, group_partition:bool = Tru
 		return df
 
 def BPA_Violations_To_DF(model:pytabular.Tabular,te2:str, bpa:str) -> pd.DataFrame:
+	'''Runs BPA Analyzer from TE2 and outputs result into a DF.
+
+	Args:
+		model (pytabular.Tabular): Tabular Model Class
+		te2 (str): TE2 Exe File Path (Can use TE2().EXE_path)
+		bpa (str): BPA File Location (Can use BPA().Location)
+
+	Returns:
+		pd.DataFrame: Super simple right now. Just splits into two columns.. The object in violation and the rule.
+	'''	
 	results = model.Analyze_BPA(te2,bpa)
 	data = [rule.replace(' violates rule ','^').replace('\"','').split('^') for rule in results]
 	columns = ["Object","Violation"]

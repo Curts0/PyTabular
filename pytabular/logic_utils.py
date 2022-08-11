@@ -73,25 +73,30 @@ def pd_dataframe_to_dax_expression(df:pd.DataFrame = pd.DataFrame(data={'col1': 
 		return
 	return True
 def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
-	'''
-	This will take a pandas dataframe and convert to an m expression
-	For example this DF:
-	   col1  col2
-	0   1     3
-	1   2     4
-	
-	|
-	|
-	V
-
-	Will convert to this expression string:
-	let
-	Source=#table({"col1","col2"},
-	{
-	{"1","3"},{"2","4"}
-	})
-	in
+	'''This will take a pandas dataframe and convert to an m expression  
+	For example this DF:  
+	   col1  col2  
+	0   1     3  
+	1   2     4  
+	  
+	|  
+	|  
+	V  
+  
+	Will convert to this expression string:  
+	let  
+	Source=#table({"col1","col2"},  
+	{  
+	{"1","3"},{"2","4"}  
+	})  
+	in  
 	Source
+
+	Args:
+		df (pd.DataFrame): Pandas DataFrame
+
+	Returns:
+		str: Currently only returning string values in your tabular model.
 	'''
 	def m_list_expression_generator(list_of_strings:List[str]) -> str:
 		'''

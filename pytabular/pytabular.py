@@ -42,10 +42,7 @@ class Tabular:
 		logging.debug(f'Connected to Model - {self.Model.Name}')
 		self.DaxConnection = AdomdConnection()
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
-		self.Tables = [table for table in self.Model.Tables.GetEnumerator()]
-		self.Columns = [column for table in self.Tables for column in table.Columns.GetEnumerator()]
-		self.Partitions = [partition for table in self.Tables for partition in table.Partitions.GetEnumerator()]
-		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
+		self.Reload_Model_Info()
 		logging.debug(f'Class Initialization Completed')
 		logging.debug(f'Registering Disconnect on Termination...')
 		atexit.register(self.Disconnect)
@@ -53,6 +50,17 @@ class Tabular:
 		pass
 	def __repr__(self) -> str:
 		return f'{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\n{self.Database.EstimatedSize} Estimated Size\n{len(self.Tables)} Tables\n{len(self.Columns)} Columns\n{len(self.Partitions)} Partitions\n{len(self.Measures)} Measures'
+	def Reload_Model_Info(self) -> bool:
+		'''Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
+
+		Returns:
+			bool: True if successful
+		'''
+		self.Tables = [table for table in self.Model.Tables.GetEnumerator()]
+		self.Columns = [column for table in self.Tables for column in table.Columns.GetEnumerator()]
+		self.Partitions = [partition for table in self.Tables for partition in table.Partitions.GetEnumerator()]
+		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
+		return True
 	def Disconnect(self) -> bool:
 		'''Disconnects from Model
 
@@ -106,7 +114,8 @@ class Tabular:
 
 		Returns:
 			bool:
-		'''		
+		'''
+		self.Reload_Model_Info()
 		self.Model.SaveChanges()
 		return True
 	def Backup_Table(self,table_str:str) -> bool:
@@ -382,11 +391,10 @@ class Tabular:
 
 
 class BPA:
-	'''
-	Best Practice Analyzer Class 
-	Can provide Url, Json File Path, or Python List.
-	If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules.
-	https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+	'''_summary_
+	'''	
+	'''Best Practice Analyzer Class. Can provide Url, Json File Path, or Python List. If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules. 
+	[Default BPA](https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json)
 	'''
 	def __init__(self,rules_location:str='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
 		'''
@@ -407,11 +415,9 @@ class BPA:
 		pass
 #Todo... subclass with a namedtuple
 class TE2:
-	'''
-	TE2 Class, to use any built TabularEditor Command Line Scripts
-	https://docs.tabulareditor.com/te2/Command-line-Options.html
-	#https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip
-	#https://cdn.tabulareditor.com/files/TabularEditor.2.16.7.zip
+	'''TE2 Class, to use any built TabularEditor Command Line Scripts  
+	[TE2 Command Line Example](https://docs.tabulareditor.com/te2/Command-line-Options.html)  
+	[TE2 Download](https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip)
 	'''
 	def __init__(self,TE_Location='https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip') -> None:
 		logging.debug(f'Checking for TE2 in {os.getcwd()}')

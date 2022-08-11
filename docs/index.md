@@ -6,7 +6,7 @@
 
 ### What is it?
 
-PyTabular is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import it. 
+PyTabular is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/)
 
 ### Getting Started
 
@@ -28,17 +28,17 @@ DAX Query
     # Returns a Pandas DataFrame
 ```
 
-Refresh Tables and Partitions
+[Refresh Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh)
 
 ```python
-    #filter down the collection to what you want to refresh
-    tables_to_refresh = [table for table in model.Tables if table.Name in ['Table1','Table2','Table3']]
-    
+    #Can be str(table name only), Table object, Partition object, or an iterable combination of the three.
+    model.Refresh('Table Name')
+    tables_to_refresh = ['Table Name 1', 'Table Name 2', <Table Class>, <Partition Class>]
     #Queue up the tables and partitions that you want to refresh.
     model.Refresh(tables_to_refresh)
 
     #Once you are ready, update to execute the refresh
-    model.Update()
+    model.SaveChanges()
 ```
 
 Built In Dax Query Helpers
@@ -72,5 +72,3 @@ Run BPA from TE2
     BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
     model.Analyze_BPA(TE2.EXE_Path,BPA.Location) #This will output a list of BPA violations...
 ```
-
-I'm working on converting everything to the google docstring format and using those to populate the documentation. I still have some formatting issues to work through, but that should help with understanding what this package can do.

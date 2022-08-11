@@ -2,7 +2,7 @@
 
 
 ## Tabular
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L20)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L21)
 ```python 
 Tabular(
    CONNECTION_STR: str
@@ -23,8 +23,23 @@ Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https:/
 **Methods:**
 
 
+### .Reload_Model_Info
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L53)
+```python
+.Reload_Model_Info()
+```
+
+---
+Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
+
+
+**Returns**
+
+* **bool**  : True if successful
+
+
 ### .Disconnect
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L55)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L64)
 ```python
 .Disconnect()
 ```
@@ -39,27 +54,25 @@ Disconnects from Model
 
 
 ### .Refresh
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L70)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L79)
 ```python
 .Refresh(
-   iterable_items: List, RefreshType = RefreshType.Full
+   Object: Union[str, Table, Partition, Iterable], RefreshType = RefreshType.Full
 )
 ```
 
 ---
-Input iterable Collections for the function to run through.
-It will add the collection items into a Refresh Request.
-To execute refresh run through Update()
+Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges() to actually run the refresh on the model.
 
 
 **Args**
 
-* **iterable_items** (List) : Must be refreshable Tabular objects.
-* **RefreshType** (_type_, optional) : _description_. Defaults to RefreshType.Full.
+* **Object** (Union[str,Table,Partition,Iterable]) : Can be str(table name only), Table object, Partition object, or an iterable combination of the three.
+* **RefreshType** (_type_, optional) : [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
 
 
 ### .Update
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L82)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L100)
 ```python
 .Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
@@ -81,7 +94,7 @@ To execute refresh run through Update()
 
 
 ### .SaveChanges
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L93)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L111)
 ```python
 .SaveChanges()
 ```
@@ -96,7 +109,7 @@ Just a simple wrapper to call self.Model.SaveChanges()
 bool:
 
 ### .Backup_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L102)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L121)
 ```python
 .Backup_Table(
    table_str: str
@@ -120,7 +133,7 @@ Refresh is performed from source during backup.
 
 
 ### .Revert_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L169)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L188)
 ```python
 .Revert_Table(
    table_str: str
@@ -148,7 +161,7 @@ Example scenario ->
 
 
 ### .Query
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L237)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L256)
 ```python
 .Query(
    Query_Str: str
@@ -170,7 +183,7 @@ Executes Query on Model and Returns Results in Pandas DataFrame
 
 
 ### .Query_Every_Column
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L267)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L286)
 ```python
 .Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
@@ -193,7 +206,7 @@ This will dynamically create a query to pull all columns from the model and run 
 
 
 ### .Query_Every_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L289)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L308)
 ```python
 .Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
@@ -216,7 +229,7 @@ It will replace the _ with the table to run.
 
 
 ### .Analyze_BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L309)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L328)
 ```python
 .Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
@@ -241,7 +254,7 @@ https://docs.tabulareditor.com/te2/Command-line-Options.html
 
 
 ### .Create_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L333)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L352)
 ```python
 .Create_Table(
    df: pd.DataFrame, table_name: str
