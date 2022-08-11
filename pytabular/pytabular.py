@@ -8,7 +8,8 @@ logging.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions
 
 logging.debug('Importing Other Packages...')
-from typing import List
+from typing import List, Union
+from collections.abc import Iterable
 import requests as r
 import pandas as pd
 import json
@@ -67,18 +68,27 @@ class Tabular:
 		else:
 			logging.debug(f'Disconnect Successful')
 			return True	
-	def Refresh(self, iterable_items: List, RefreshType=RefreshType.Full) -> None:
-		'''Input iterable Collections for the function to run through.
-		It will add the collection items into a Refresh Request.
-		To execute refresh run through Update()
+	def Refresh(self, Object:Union[str,Table,Partition,Iterable], RefreshType=RefreshType.Full) -> None:
+		'''Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges() to actually run the refresh on the model.
 
 		Args:
-			iterable_items (List): Must be refreshable Tabular objects.
-			RefreshType (_type_, optional): _description_. Defaults to RefreshType.Full.
-		'''	
-		for collection in iterable_items:
-			logging.debug(f'Adding {collection.Name} to Refresh Request')
-			collection.RequestRefresh(RefreshType)
+			Object (Union[str,Table,Partition,Iterable]): Can be str(table name only), Table object, Partition object, or an iterable combination of the three.
+			RefreshType (_type_, optional): [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
+		'''
+		logging.debug(f'Beginning RequestRefresh cadence...')
+		def refresh(object):
+			if isinstance(object,str):
+				logging.info(f'Requesting refresh for {object}')
+				table = [table for table in self.Tables if table.Name == object][0]
+				table.RequestRefresh(RefreshType)
+			else:
+				logging.info(f'Requesting refresh for {object.Name}')
+				object.RequestRefresh(RefreshType)
+		if isinstance(Object,Iterable):
+			[refresh(object) for object in Object]
+		else:
+			refresh(Object)
+			Object.RequestRefresh(RefreshType)
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
