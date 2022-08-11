@@ -1,11 +1,9 @@
 import logging
-logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
-
 import datetime
 from typing import Dict, List
 import pandas as pd
-
 import clr
+
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
 from Microsoft.AnalysisServices.Tabular import DataType
 

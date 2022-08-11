@@ -1,38 +1,55 @@
 from pytabular import pytabular
 from pytabular import localsecret
-import clr
-clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
-clr.AddReference('Microsoft.AnalysisServices.Tabular')
-clr.AddReference('Microsoft.AnalysisServices.Tabular.json')
-clr.AddReference('Microsoft.AnalysisServices')
-from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, ConnectionDetails, ColumnType
-from Microsoft.AnalysisServices import UpdateOptions
+import pytest
+import pandas as pd
+from Microsoft.AnalysisServices.Tabular import Database
+
 aas = pytabular.Tabular(localsecret.CONNECTION_STR['FIN 500'])
 gen2 = pytabular.Tabular(localsecret.CONNECTION_STR['GEN2TEST'])
+testingtable = 'PyTestTable'
+pytestmark = pytest.mark.parametrize("model",[(aas),(gen2)])
 
-def test_connection():
+def test_connection(model):
 	'''
 	Does a quick check to the Tabular Class
 	To ensure that it can connnect
 	'''
-	assert aas.Server.Connected and gen2.Server.Connected
+	assert model.Server.Connected
 
-def test_database():
-	assert isinstance(aas.Database,Database) and isinstance(aas.Database,Database)
+def test_database(model):
+	assert isinstance(model.Database,Database)
 
-def test_query():
+def test_query(model):
 	'''
 	Does a quick query on the model and checks if it will return expected value
 	'''
-	df_aas = aas.Query('EVALUATE {1}')
-	df_gen2 = gen2.Query('EVALUATE {1}')
-	assert df_aas.iloc[0]['[Value]'] == 1 and df_gen2.iloc[0]['[Value]'] == 1
+	df = model.Query('EVALUATE {1}')
+	assert df.iloc[0]['[Value]'] == 1
 
-def test_bpa():
-	'''
-	BPA Tests
-	'''
+def remove_py_tables(model):
+	table_check = [table for table in model.Tables if testingtable in table.Name]
+	for table in table_check:
+		model.Model.Tables.Remove(table)
+	model.Model.SaveChanges()
+	return True
+
+def test_pre_table_checks(model):
+	assert remove_py_tables(model) == True
+
+def test_create_table(model):
+	df = pd.DataFrame(data={'col1':[1,2,3],'col2':['four','five','six']})
+	assert model.Create_Table(df,testingtable) == True
+
+def test_backingup_table(model):
+	assert model.Backup_Table(testingtable) == True
+
+def test_revert_table(model):
+	assert model.Revert_Table(testingtable) == True
+
+def test_table_removal(model):
+	assert remove_py_tables(model) == True
+
+def test_bpa(model):
 	te2 = pytabular.TE2().EXE_Path
 	bpa = pytabular.BPA().Location
-	assert aas.Analyze_BPA(te2,bpa) and gen2.Analyze_BPA(te2,bpa)
+	assert model.Analyze_BPA(te2,bpa) 
