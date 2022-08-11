@@ -67,6 +67,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#table_last_refresh_times">Table_Last_Refresh_Times</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bpa_violations_to_df">BPA_Violations_To_DF</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -131,6 +133,25 @@ Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'Re
 <ul>
 <li><strong>DataFrame</strong>  : pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
 If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()</li>
+</ul>
+<hr />
+<h3 id="bpa_violations_to_df">BPA_Violations_To_DF</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L50">source</a></p>
+<pre><code class="language-python">.BPA_Violations_To_DF(
+   model: pytabular.Tabular, te2: str, bpa: str
+)
+</code></pre>
+<hr />
+<p>Runs BPA Analyzer from TE2 and outputs result into a DF.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>model</strong> (pytabular.Tabular) : Tabular Model Class</li>
+<li><strong>te2</strong> (str) : TE2 Exe File Path (Can use TE2().EXE_path)</li>
+<li><strong>bpa</strong> (str) : BPA File Location (Can use BPA().Location)</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Super simple right now. Just splits into two columns.. The object in violation and the rule.</li>
 </ul>
               
             </div>

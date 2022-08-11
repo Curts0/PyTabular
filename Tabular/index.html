@@ -49,6 +49,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#tabular">Tabular</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#reload_model_info">.Reload_Model_Info</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#disconnect">.Disconnect</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#refresh">.Refresh</a>
@@ -117,7 +119,7 @@
               
                 <h1 id="_1"></h1>
 <h2 id="tabular">Tabular</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L20">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L21">source</a></p>
 <pre><code class="language-python">Tabular(
    CONNECTION_STR: str
 )
@@ -129,8 +131,18 @@
 <li><strong>CONNECTION_STR</strong> (str) : <a href="https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions">Connection String</a></li>
 </ul>
 <p><strong>Methods:</strong></p>
+<h3 id="reload_model_info">.Reload_Model_Info</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L53">source</a></p>
+<pre><code class="language-python">.Reload_Model_Info()
+</code></pre>
+<hr />
+<p>Runs on <strong>init</strong> iterates through details, can be called after any model changes. Called in SaveChanges()</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>bool</strong>  : True if successful</li>
+</ul>
 <h3 id="disconnect">.Disconnect</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L55">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L64">source</a></p>
 <pre><code class="language-python">.Disconnect()
 </code></pre>
 <hr />
@@ -140,22 +152,20 @@
 <li><strong>bool</strong>  : True if successful</li>
 </ul>
 <h3 id="refresh">.Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L70">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L79">source</a></p>
 <pre><code class="language-python">.Refresh(
-   iterable_items: List, RefreshType = RefreshType.Full
+   Object: Union[str, Table, Partition, Iterable], RefreshType = RefreshType.Full
 )
 </code></pre>
 <hr />
-<p>Input iterable Collections for the function to run through.
-It will add the collection items into a Refresh Request.
-To execute refresh run through Update()</p>
+<p>Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges() to actually run the refresh on the model.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>iterable_items</strong> (List) : Must be refreshable Tabular objects.</li>
-<li><strong>RefreshType</strong> (<em>type</em>, optional) : <em>description</em>. Defaults to RefreshType.Full.</li>
+<li><strong>Object</strong> (Union[str,Table,Partition,Iterable]) : Can be str(table name only), Table object, Partition object, or an iterable combination of the three.</li>
+<li><strong>RefreshType</strong> (<em>type</em>, optional) : <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet">RefreshType</a>. Defaults to RefreshType.Full.</li>
 </ul>
 <h3 id="update">.Update</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L82">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L100">source</a></p>
 <pre><code class="language-python">.Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
 )
@@ -171,7 +181,7 @@ To execute refresh run through Update()</p>
 <li><strong>None</strong>  : Placeholder to eventually change.</li>
 </ul>
 <h3 id="savechanges">.SaveChanges</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L93">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L111">source</a></p>
 <pre><code class="language-python">.SaveChanges()
 </code></pre>
 <hr />
@@ -180,7 +190,7 @@ Just a simple wrapper to call self.Model.SaveChanges()</p>
 <p><strong>Returns</strong></p>
 <p>bool:</p>
 <h3 id="backup_table">.Backup_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L102">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L121">source</a></p>
 <pre><code class="language-python">.Backup_Table(
    table_str: str
 )
@@ -198,7 +208,7 @@ Refresh is performed from source during backup.</p>
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
 <h3 id="revert_table">.Revert_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L169">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L188">source</a></p>
 <pre><code class="language-python">.Revert_Table(
    table_str: str
 )
@@ -220,7 +230,7 @@ Example scenario -&gt;
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
 <h3 id="query">.Query</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L237">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L256">source</a></p>
 <pre><code class="language-python">.Query(
    Query_Str: str
 )
@@ -236,7 +246,7 @@ Example scenario -&gt;
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="query_every_column">.Query_Every_Column</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L267">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L286">source</a></p>
 <pre><code class="language-python">.Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
 )
@@ -253,7 +263,7 @@ Example scenario -&gt;
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
 </ul>
 <h3 id="query_every_table">.Query_Every_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L289">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L308">source</a></p>
 <pre><code class="language-python">.Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
 )
@@ -270,7 +280,7 @@ It will replace the _ with the table to run.</p>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="analyze_bpa">.Analyze_BPA</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L309">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L328">source</a></p>
 <pre><code class="language-python">.Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
 )
@@ -289,7 +299,7 @@ https://docs.tabulareditor.com/te2/Command-line-Options.html</p>
 <li>Assuming no failure, will return list of BPA violations. Else will return error from command line.</li>
 </ul>
 <h3 id="create_table">.Create_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L333">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L352">source</a></p>
 <pre><code class="language-python">.Create_Table(
    df: pd.DataFrame, table_name: str
 )
