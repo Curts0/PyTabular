@@ -51,3 +51,30 @@ Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'Re
 
 * **DataFrame**  : pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
 If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()
+
+----
+
+
+### BPA_Violations_To_DF
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L50)
+```python
+.BPA_Violations_To_DF(
+   model: pytabular.Tabular, te2: str, bpa: str
+)
+```
+
+---
+Runs BPA Analyzer from TE2 and outputs result into a DF.
+
+
+**Args**
+
+* **model** (pytabular.Tabular) : Tabular Model Class
+* **te2** (str) : TE2 Exe File Path (Can use TE2().EXE_path)
+* **bpa** (str) : BPA File Location (Can use BPA().Location)
+
+
+**Returns**
+
+* **DataFrame**  : Super simple right now. Just splits into two columns.. The object in violation and the rule.
+

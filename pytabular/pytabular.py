@@ -8,7 +8,8 @@ logging.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions
 
 logging.debug('Importing Other Packages...')
-from typing import List
+from typing import List, Union
+from collections.abc import Iterable
 import requests as r
 import pandas as pd
 import json
@@ -41,10 +42,7 @@ class Tabular:
 		logging.debug(f'Connected to Model - {self.Model.Name}')
 		self.DaxConnection = AdomdConnection()
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
-		self.Tables = [table for table in self.Model.Tables.GetEnumerator()]
-		self.Columns = [column for table in self.Tables for column in table.Columns.GetEnumerator()]
-		self.Partitions = [partition for table in self.Tables for partition in table.Partitions.GetEnumerator()]
-		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
+		self.Reload_Model_Info()
 		logging.debug(f'Class Initialization Completed')
 		logging.debug(f'Registering Disconnect on Termination...')
 		atexit.register(self.Disconnect)
@@ -52,6 +50,17 @@ class Tabular:
 		pass
 	def __repr__(self) -> str:
 		return f'{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\n{self.Database.EstimatedSize} Estimated Size\n{len(self.Tables)} Tables\n{len(self.Columns)} Columns\n{len(self.Partitions)} Partitions\n{len(self.Measures)} Measures'
+	def Reload_Model_Info(self) -> bool:
+		'''Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
+
+		Returns:
+			bool: True if successful
+		'''
+		self.Tables = [table for table in self.Model.Tables.GetEnumerator()]
+		self.Columns = [column for table in self.Tables for column in table.Columns.GetEnumerator()]
+		self.Partitions = [partition for table in self.Tables for partition in table.Partitions.GetEnumerator()]
+		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
+		return True
 	def Disconnect(self) -> bool:
 		'''Disconnects from Model
 
@@ -67,18 +76,27 @@ class Tabular:
 		else:
 			logging.debug(f'Disconnect Successful')
 			return True	
-	def Refresh(self, iterable_items: List, RefreshType=RefreshType.Full) -> None:
-		'''Input iterable Collections for the function to run through.
-		It will add the collection items into a Refresh Request.
-		To execute refresh run through Update()
+	def Refresh(self, Object:Union[str,Table,Partition,Iterable], RefreshType=RefreshType.Full) -> None:
+		'''Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges() to actually run the refresh on the model.
 
 		Args:
-			iterable_items (List): Must be refreshable Tabular objects.
-			RefreshType (_type_, optional): _description_. Defaults to RefreshType.Full.
-		'''	
-		for collection in iterable_items:
-			logging.debug(f'Adding {collection.Name} to Refresh Request')
-			collection.RequestRefresh(RefreshType)
+			Object (Union[str,Table,Partition,Iterable]): Can be str(table name only), Table object, Partition object, or an iterable combination of the three.
+			RefreshType (_type_, optional): [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
+		'''
+		logging.debug(f'Beginning RequestRefresh cadence...')
+		def refresh(object):
+			if isinstance(object,str):
+				logging.info(f'Requesting refresh for {object}')
+				table = [table for table in self.Tables if table.Name == object][0]
+				table.RequestRefresh(RefreshType)
+			else:
+				logging.info(f'Requesting refresh for {object.Name}')
+				object.RequestRefresh(RefreshType)
+		if isinstance(Object,Iterable):
+			[refresh(object) for object in Object]
+		else:
+			refresh(Object)
+			Object.RequestRefresh(RefreshType)
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
@@ -96,7 +114,8 @@ class Tabular:
 
 		Returns:
 			bool:
-		'''		
+		'''
+		self.Reload_Model_Info()
 		self.Model.SaveChanges()
 		return True
 	def Backup_Table(self,table_str:str) -> bool:
@@ -372,11 +391,10 @@ class Tabular:
 
 
 class BPA:
-	'''
-	Best Practice Analyzer Class 
-	Can provide Url, Json File Path, or Python List.
-	If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules.
-	https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+	'''_summary_
+	'''	
+	'''Best Practice Analyzer Class. Can provide Url, Json File Path, or Python List. If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules. 
+	[Default BPA](https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json)
 	'''
 	def __init__(self,rules_location:str='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
 		'''
@@ -397,11 +415,9 @@ class BPA:
 		pass
 #Todo... subclass with a namedtuple
 class TE2:
-	'''
-	TE2 Class, to use any built TabularEditor Command Line Scripts
-	https://docs.tabulareditor.com/te2/Command-line-Options.html
-	#https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip
-	#https://cdn.tabulareditor.com/files/TabularEditor.2.16.7.zip
+	'''TE2 Class, to use any built TabularEditor Command Line Scripts  
+	[TE2 Command Line Example](https://docs.tabulareditor.com/te2/Command-line-Options.html)  
+	[TE2 Download](https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip)
 	'''
 	def __init__(self,TE_Location='https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip') -> None:
 		logging.debug(f'Checking for TE2 in {os.getcwd()}')

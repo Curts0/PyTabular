@@ -22,8 +22,10 @@ pages:
     functions:
       - Return_Zero_Row_Tables
       - Table_Last_Refresh_Times
+      - BPA_Violations_To_DF
   - page: "Utils.md"
     source: 'pytabular/logic_utils.py'
     functions:
       - ticks_to_datetime
       - pandas_datatype_to_tabular_datatype
+      - pd_dataframe_to_m_expression
