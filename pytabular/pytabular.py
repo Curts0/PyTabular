@@ -1,11 +1,5 @@
 import logging
-import clr
-logging.debug('Adding Reference Microsoft.AnalysisServices.AdomdClient')
-clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
-logging.debug('Adding Reference Microsoft.AnalysisServices.Tabular')
-clr.AddReference('Microsoft.AnalysisServices.Tabular')
-logging.debug('Adding Reference Microsoft.AnalysisServices')
-clr.AddReference('Microsoft.AnalysisServices')
+
 logging.debug(f'Importing Microsoft.AnalysisServices.Tabular')
 from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType
 logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
