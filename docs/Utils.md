@@ -2,7 +2,7 @@
 
 
 ### ticks_to_datetime
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L12)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L10)
 ```python
 .ticks_to_datetime(
    ticks: int
@@ -27,7 +27,7 @@ Converts a C# System DateTime Tick into a Python DateTime
 
 
 ### pandas_datatype_to_tabular_datatype
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L23)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L21)
 ```python
 .pandas_datatype_to_tabular_datatype(
    df: pd.DataFrame
