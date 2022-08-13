@@ -92,11 +92,10 @@ class Tabular:
 			else:
 				logging.info(f'Requesting refresh for {object.Name}')
 				object.RequestRefresh(RefreshType)
-		if isinstance(Object,Iterable):
+		if isinstance(Object,Iterable) and isinstance(Object,str) == False:
 			[refresh(object) for object in Object]
 		else:
 			refresh(Object)
-			Object.RequestRefresh(RefreshType)
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
