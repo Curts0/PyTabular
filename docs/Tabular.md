@@ -72,7 +72,7 @@ Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges(
 
 
 ### .Update
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L100)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L99)
 ```python
 .Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
@@ -94,7 +94,7 @@ Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges(
 
 
 ### .SaveChanges
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L111)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L110)
 ```python
 .SaveChanges()
 ```
@@ -109,7 +109,7 @@ Just a simple wrapper to call self.Model.SaveChanges()
 bool:
 
 ### .Backup_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L121)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L120)
 ```python
 .Backup_Table(
    table_str: str
@@ -133,7 +133,7 @@ Refresh is performed from source during backup.
 
 
 ### .Revert_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L188)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L187)
 ```python
 .Revert_Table(
    table_str: str
@@ -161,7 +161,7 @@ Example scenario ->
 
 
 ### .Query
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L256)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L255)
 ```python
 .Query(
    Query_Str: str
@@ -183,7 +183,7 @@ Executes Query on Model and Returns Results in Pandas DataFrame
 
 
 ### .Query_Every_Column
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L286)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L285)
 ```python
 .Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
@@ -206,7 +206,7 @@ This will dynamically create a query to pull all columns from the model and run 
 
 
 ### .Query_Every_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L308)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L307)
 ```python
 .Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
@@ -229,7 +229,7 @@ It will replace the _ with the table to run.
 
 
 ### .Analyze_BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L328)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L327)
 ```python
 .Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
@@ -254,7 +254,7 @@ https://docs.tabulareditor.com/te2/Command-line-Options.html
 
 
 ### .Create_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L352)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L351)
 ```python
 .Create_Table(
    df: pd.DataFrame, table_name: str
