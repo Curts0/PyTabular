@@ -19,7 +19,7 @@ import atexit
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 
 class Tabular:
-	'''Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+	'''Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 	Args:
 		CONNECTION_STR (str): [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
@@ -92,11 +92,10 @@ class Tabular:
 			else:
 				logging.info(f'Requesting refresh for {object.Name}')
 				object.RequestRefresh(RefreshType)
-		if isinstance(Object,Iterable):
+		if isinstance(Object,Iterable) and isinstance(Object,str) == False:
 			[refresh(object) for object in Object]
 		else:
 			refresh(Object)
-			Object.RequestRefresh(RefreshType)
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
@@ -327,8 +326,8 @@ class Tabular:
 		return self.Query(query_str)
 	def Analyze_BPA(self,Tabular_Editor_Exe:str,Best_Practice_Analyzer:str) -> List[str]:
 		'''Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
-		https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html
-		https://docs.tabulareditor.com/te2/Command-line-Options.html
+		[Tabular Editor BPA](https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html)
+		[Tabular Editor Command Line Options](https://docs.tabulareditor.com/te2/Command-line-Options.html)
 
 		Args:
 			Tabular_Editor_Exe (str): TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.
@@ -394,7 +393,7 @@ class BPA:
 	'''_summary_
 	'''	
 	'''Best Practice Analyzer Class. Can provide Url, Json File Path, or Python List. If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules. 
-	[Default BPA](https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json)
+	[Default BPA File](https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json)
 	'''
 	def __init__(self,rules_location:str='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
 		'''
