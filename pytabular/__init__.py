@@ -22,4 +22,3 @@ logging.debug(f"Importing from the rest...")
 from . pytabular import Tabular, BPA, TE2
 from . basic_checks import Return_Zero_Row_Tables, Table_Last_Refresh_Times, BPA_Violations_To_DF
 from . logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
-from . trace import a, b
