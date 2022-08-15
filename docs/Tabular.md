@@ -73,6 +73,7 @@ Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges(
 
 
 ### .Update
+
 [source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L113)
 ```python
 .Update(

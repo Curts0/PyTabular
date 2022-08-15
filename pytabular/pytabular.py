@@ -104,12 +104,13 @@ class Tabular:
 			[refresh(object) for object in Object]
 		else:
 			refresh(Object)
-
+      
 		if Run:
 			refresh_trace.Start()
 			self.SaveChanges()
 			refresh_trace.Stop()
 			refresh_trace.Drop()
+
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
