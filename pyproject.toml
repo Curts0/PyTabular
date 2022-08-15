@@ -4,13 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python_tabular"
-version = "0.0.30"
+version = "0.0.40"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
 dependencies = [
     "pythonnet==3.0.0a2",
     "clr-loader==0.1.7",
+    "xmltodict==0.13.0",
     "pandas",
     "requests"
 ]

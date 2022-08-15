@@ -443,7 +443,6 @@ class Tabular_Trace:
 			if type(xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT']) == list:
 				events += [event  for event in xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT'] ]
 			else:
-				print(xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT']['NAME'])
 				events += [xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT']]
 		for event in events:
 			self.Event_Categories[event['ID']] = [column['ID'] for column in event['EVENTCOLUMNLIST']['EVENTCOLUMN']]
