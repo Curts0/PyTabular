@@ -1,14 +1,14 @@
 import logging
 
 logging.debug(f'Importing Microsoft.AnalysisServices.Tabular')
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType
+from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType, Trace, TraceEvent, TraceEventHandler
 logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
 from Microsoft.AnalysisServices.AdomdClient import (AdomdCommand, AdomdConnection)
 logging.debug(f'Importing Microsoft.AnalysisServices')
-from Microsoft.AnalysisServices import UpdateOptions
+from Microsoft.AnalysisServices import UpdateOptions, TraceEventClass, TraceEventSubclass, TraceEventCollection, TraceColumn
 
 logging.debug('Importing Other Packages...')
-from typing import List, Union
+from typing import List, Union, Callable
 from collections.abc import Iterable
 import requests as r
 import pandas as pd
@@ -16,10 +16,12 @@ import json
 import os
 import subprocess
 import atexit
+import random
+import xmltodict
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 
 class Tabular:
-	'''Tabular Class to perform operations:[Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+	'''Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
 
 	Args:
 		CONNECTION_STR (str): [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
@@ -76,7 +78,7 @@ class Tabular:
 		else:
 			logging.debug(f'Disconnect Successful')
 			return True	
-	def Refresh(self, Object:Union[str,Table,Partition,Iterable], RefreshType=RefreshType.Full) -> None:
+	def Refresh(self, Object:Union[str,Table,Partition,Iterable], RefreshType=RefreshType.Full, Run:bool = True) -> None:
 		'''Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges() to actually run the refresh on the model.
 
 		Args:
@@ -84,6 +86,12 @@ class Tabular:
 			RefreshType (_type_, optional): [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
 		'''
 		logging.debug(f'Beginning RequestRefresh cadence...')
+
+		if Run:
+			refresh_trace = Tabular_Trace(self, [TraceEventClass.ProgressReportBegin,TraceEventClass.ProgressReportCurrent,TraceEventClass.ProgressReportEnd,TraceEventClass.ProgressReportError],[TraceColumn.EventSubclass,TraceColumn.CurrentTime, TraceColumn.ObjectName, TraceColumn.ObjectPath, TraceColumn.DatabaseName, TraceColumn.SessionID, TraceColumn.TextData, TraceColumn.EventClass, TraceColumn.ProgressTotal])
+			refresh_trace.Add()
+			refresh_trace.Update()
+
 		def refresh(object):
 			if isinstance(object,str):
 				logging.info(f'Requesting refresh for {object}')
@@ -96,6 +104,13 @@ class Tabular:
 			[refresh(object) for object in Object]
 		else:
 			refresh(Object)
+      
+		if Run:
+			refresh_trace.Start()
+			self.SaveChanges()
+			refresh_trace.Stop()
+			refresh_trace.Drop()
+
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
@@ -326,8 +341,8 @@ class Tabular:
 		return self.Query(query_str)
 	def Analyze_BPA(self,Tabular_Editor_Exe:str,Best_Practice_Analyzer:str) -> List[str]:
 		'''Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
-		https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html
-		https://docs.tabulareditor.com/te2/Command-line-Options.html
+		[Tabular Editor BPA](https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html)
+		[Tabular Editor Command Line Options](https://docs.tabulareditor.com/te2/Command-line-Options.html)
 
 		Args:
 			Tabular_Editor_Exe (str): TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.
@@ -387,13 +402,74 @@ class Tabular:
 		self.SaveChanges()
 		return True
 
+def main_handler(source, args):
+	if args.EventSubclass == TraceEventSubclass.ReadData:
+		logging.debug(f'{args.ProgressTotal} - {args.ObjectPath}')
+	else:
+		logging.debug(f'{args.EventClass} - {args.EventSubclass} - {args.ObjectName}')
+
+class Tabular_Trace:
+	def __init__(self, Tabular_Class:Tabular, TE:List[TraceEvent],TEC:List[TraceColumn],Handler:Callable=main_handler) -> None:
+		logging.debug(f'Request to Initialize Trace beginning...')
+		Name = 'PyTabular_'+''.join(random.SystemRandom().choices([str(x) for x in [0,1,2,3,4,5,6,7,8,9]],k=5))
+		ID = Name.replace('PyTabular_','')
+		self.Tabular = Tabular_Class
+		logging.debug(f'Creating Trace Events...')
+		logging.debug(f'Creating Trace... {Name}')
+		self.Trace = Trace(Name,ID)
+		self.Get_Event_Categories()
+		TE = [TraceEvent(trace_event) for trace_event in TE]
+		logging.debug(f'Adding Events to... {self.Trace.Name}')
+		[self.Trace.get_Events().Add(te) for te in TE]
+		def add_column(trace_event,trace_event_column):
+			try:
+				trace_event.Columns.Add(trace_event_column)
+			except:
+				logging.warning(f'{trace_event} - {trace_event_column} Skipped')
+		logging.debug(f'Adding Trace Event Columns...')
+		#TODO Need to clarify if column gets skipped...
+		[add_column(trace_event,trace_event_column) for trace_event_column in TEC for trace_event in TE if str(trace_event_column.value__) in self.Event_Categories[str(trace_event.EventID.value__)] ]
+		logging.debug(f'Adding Handler to... {self.Trace.Name}')
+		self.Handler = TraceEventHandler(Handler)
+		self.Trace.OnEvent += self.Handler
+		pass
+	def Get_Event_Categories(self):
+		logging.info(f'Starting to retrieve Event Categories')
+		self.Event_Categories = {}
+		events = []
+		logging.debug(f'Searching DMV...')
+		df = self.Tabular.Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES")
+		for index, row in df.iterrows():
+			xml_data = xmltodict.parse(row.Data)
+			if type(xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT']) == list:
+				events += [event  for event in xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT'] ]
+			else:
+				events += [xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT']]
+		for event in events:
+			self.Event_Categories[event['ID']] = [column['ID'] for column in event['EVENTCOLUMNLIST']['EVENTCOLUMN']]
+	def Add(self) -> bool:
+		logging.debug(f'Adding {self.Trace.Name} to {self.Tabular.Server.Name}')
+		self.item_number = self.Tabular.Server.Traces.Add(self.Trace)
+		return True
+	def Update(self) -> bool:
+		logging.debug(f'Running update for - {self.Trace.Name}')
+		self.Tabular.Server.Traces.get_Item(self.item_number).Update()
+	def Start(self) -> bool:
+		logging.debug(f'Starting Trace - {self.Trace.Name}')
+		self.Tabular.Server.Traces.get_Item(self.item_number).Start()
+	def Stop(self) -> bool:
+		logging.debug(f'Stopping Trace - {self.Trace.Name}')
+		self.Tabular.Server.Traces.get_Item(self.item_number).Stop()
+	def Drop(self) -> bool:
+		logging.debug(f'Dropping Trace - {self.Trace.Name}')
+		self.Tabular.Server.Traces.get_Item(self.item_number).Drop()
 
 
 class BPA:
 	'''_summary_
 	'''	
 	'''Best Practice Analyzer Class. Can provide Url, Json File Path, or Python List. If nothing is provided it will default to Microsofts Analysis Services report with BPA Rules. 
-	[Default BPA](https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json)
+	[Default BPA File](https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json)
 	'''
 	def __init__(self,rules_location:str='https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json') -> None:
 		'''
@@ -412,7 +488,7 @@ class BPA:
 				self.Rules = json.load(json_file)
 			logging.debug(f'Rules from file path collected...')
 		pass
-#Todo... subclass with a namedtuple
+#TODO... subclass with a namedtuple
 class TE2:
 	'''TE2 Class, to use any built TabularEditor Command Line Scripts  
 	[TE2 Command Line Example](https://docs.tabulareditor.com/te2/Command-line-Options.html)  
