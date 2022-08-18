@@ -36,9 +36,7 @@ DAX Query
     tables_to_refresh = ['Table Name 1', 'Table Name 2', <Table Class>, <Partition Class>]
     #Queue up the tables and partitions that you want to refresh.
     model.Refresh(tables_to_refresh)
-
-    #Once you are ready, update to execute the refresh
-    model.SaveChanges()
+    #NOTE if you monitor the logs you will notice a Trace is executed on the refreshes.
 ```
 
 Built In Dax Query Helpers

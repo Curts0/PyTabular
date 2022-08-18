@@ -16,9 +16,8 @@ import json
 import os
 import subprocess
 import atexit
-import random
-import xmltodict
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
+from tabular_tracing import Refresh_Trace
 
 class Tabular:
 	'''Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
@@ -87,11 +86,6 @@ class Tabular:
 		'''
 		logging.debug(f'Beginning RequestRefresh cadence...')
 
-		if Run:
-			refresh_trace = Tabular_Trace(self, [TraceEventClass.ProgressReportBegin,TraceEventClass.ProgressReportCurrent,TraceEventClass.ProgressReportEnd,TraceEventClass.ProgressReportError],[TraceColumn.EventSubclass,TraceColumn.CurrentTime, TraceColumn.ObjectName, TraceColumn.ObjectPath, TraceColumn.DatabaseName, TraceColumn.SessionID, TraceColumn.TextData, TraceColumn.EventClass, TraceColumn.ProgressTotal])
-			refresh_trace.Add()
-			refresh_trace.Update()
-
 		def refresh(object):
 			if isinstance(object,str):
 				logging.info(f'Requesting refresh for {object}')
@@ -100,17 +94,19 @@ class Tabular:
 			else:
 				logging.info(f'Requesting refresh for {object.Name}')
 				object.RequestRefresh(RefreshType)
+		
+		
 		if isinstance(Object,Iterable) and isinstance(Object,str) == False:
 			[refresh(object) for object in Object]
 		else:
 			refresh(Object)
       
 		if Run:
-			refresh_trace.Start()
+			rt = Refresh_Trace(self)
+			rt.Start()
 			self.SaveChanges()
-			refresh_trace.Stop()
-			refresh_trace.Drop()
-
+			rt.Stop()
+			rt.Drop()
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
@@ -213,9 +209,6 @@ class Tabular:
 
 		Returns:
 			bool: Returns True if Successful, else will return error.
-		'''		
-		'''
-
 		'''
 		logging.info(f'Beginning Revert for {table_str}')
 		logging.debug(f'Finding original {table_str}')
@@ -401,68 +394,6 @@ class Tabular:
 		self.Refresh([new_table])
 		self.SaveChanges()
 		return True
-
-def main_handler(source, args):
-	if args.EventSubclass == TraceEventSubclass.ReadData:
-		logging.debug(f'{args.ProgressTotal} - {args.ObjectPath}')
-	else:
-		logging.debug(f'{args.EventClass} - {args.EventSubclass} - {args.ObjectName}')
-
-class Tabular_Trace:
-	def __init__(self, Tabular_Class:Tabular, TE:List[TraceEvent],TEC:List[TraceColumn],Handler:Callable=main_handler) -> None:
-		logging.debug(f'Request to Initialize Trace beginning...')
-		Name = 'PyTabular_'+''.join(random.SystemRandom().choices([str(x) for x in [0,1,2,3,4,5,6,7,8,9]],k=5))
-		ID = Name.replace('PyTabular_','')
-		self.Tabular = Tabular_Class
-		logging.debug(f'Creating Trace Events...')
-		logging.debug(f'Creating Trace... {Name}')
-		self.Trace = Trace(Name,ID)
-		self.Get_Event_Categories()
-		TE = [TraceEvent(trace_event) for trace_event in TE]
-		logging.debug(f'Adding Events to... {self.Trace.Name}')
-		[self.Trace.get_Events().Add(te) for te in TE]
-		def add_column(trace_event,trace_event_column):
-			try:
-				trace_event.Columns.Add(trace_event_column)
-			except:
-				logging.warning(f'{trace_event} - {trace_event_column} Skipped')
-		logging.debug(f'Adding Trace Event Columns...')
-		#TODO Need to clarify if column gets skipped...
-		[add_column(trace_event,trace_event_column) for trace_event_column in TEC for trace_event in TE if str(trace_event_column.value__) in self.Event_Categories[str(trace_event.EventID.value__)] ]
-		logging.debug(f'Adding Handler to... {self.Trace.Name}')
-		self.Handler = TraceEventHandler(Handler)
-		self.Trace.OnEvent += self.Handler
-		pass
-	def Get_Event_Categories(self):
-		logging.info(f'Starting to retrieve Event Categories')
-		self.Event_Categories = {}
-		events = []
-		logging.debug(f'Searching DMV...')
-		df = self.Tabular.Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES")
-		for index, row in df.iterrows():
-			xml_data = xmltodict.parse(row.Data)
-			if type(xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT']) == list:
-				events += [event  for event in xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT'] ]
-			else:
-				events += [xml_data['EVENTCATEGORY']['EVENTLIST']['EVENT']]
-		for event in events:
-			self.Event_Categories[event['ID']] = [column['ID'] for column in event['EVENTCOLUMNLIST']['EVENTCOLUMN']]
-	def Add(self) -> bool:
-		logging.debug(f'Adding {self.Trace.Name} to {self.Tabular.Server.Name}')
-		self.item_number = self.Tabular.Server.Traces.Add(self.Trace)
-		return True
-	def Update(self) -> bool:
-		logging.debug(f'Running update for - {self.Trace.Name}')
-		self.Tabular.Server.Traces.get_Item(self.item_number).Update()
-	def Start(self) -> bool:
-		logging.debug(f'Starting Trace - {self.Trace.Name}')
-		self.Tabular.Server.Traces.get_Item(self.item_number).Start()
-	def Stop(self) -> bool:
-		logging.debug(f'Stopping Trace - {self.Trace.Name}')
-		self.Tabular.Server.Traces.get_Item(self.item_number).Stop()
-	def Drop(self) -> bool:
-		logging.debug(f'Dropping Trace - {self.Trace.Name}')
-		self.Tabular.Server.Traces.get_Item(self.item_number).Drop()
 
 
 class BPA:
