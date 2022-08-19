@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Utils/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Logic%20Utils/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Utils - PyTabular</title>
+    <title>Logic Utils - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Utils";
-        var mkdocs_page_input_path = "Utils.md";
-        var mkdocs_page_url = "/PyTabular/Utils/";
+        var mkdocs_page_name = "Logic Utils";
+        var mkdocs_page_input_path = "Logic Utils.md";
+        var mkdocs_page_url = "/PyTabular/Logic%20Utils/";
       </script>
     
     <script src="../js/jquery-3.6.0.min.js" defer></script>
@@ -49,21 +49,27 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../BPA/">BPA</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../TE2/">TE2</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Best%20Practice%20Analyzer/">Best Practice Analyzer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular%20Editor%202/">Tabular Editor</a>
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Utils</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Logic Utils</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#ticks_to_datetime">ticks_to_datetime</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pandas_datatype_to_tabular_datatype">pandas_datatype_to_tabular_datatype</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pd_dataframe_to_m_expression">pd_dataframe_to_m_expression</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#remove_folder_and_contents">remove_folder_and_contents</a>
     </li>
     </ul>
                 </li>
@@ -86,7 +92,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Utils</li>
+      <li>Logic Utils</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -97,7 +103,7 @@
               
                 <h1 id="_1"></h1>
 <h3 id="ticks_to_datetime">ticks_to_datetime</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L10">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L11">source</a></p>
 <pre><code class="language-python">.ticks_to_datetime(
    ticks: int
 )
@@ -114,7 +120,7 @@
 </ul>
 <hr />
 <h3 id="pandas_datatype_to_tabular_datatype">pandas_datatype_to_tabular_datatype</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L21">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L22">source</a></p>
 <pre><code class="language-python">.pandas_datatype_to_tabular_datatype(
    df: pd.DataFrame
 )
@@ -131,7 +137,7 @@
 </ul>
 <hr />
 <h3 id="pd_dataframe_to_m_expression">pd_dataframe_to_m_expression</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L75">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L76">source</a></p>
 <pre><code class="language-python">.pd_dataframe_to_m_expression(
    df: pd.DataFrame
 )
@@ -161,11 +167,24 @@ Source</p>
 <ul>
 <li><strong>str</strong>  : Currently only returning string values in your tabular model.</li>
 </ul>
+<hr />
+<h3 id="remove_folder_and_contents">remove_folder_and_contents</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L120">source</a></p>
+<pre><code class="language-python">.remove_folder_and_contents(
+   folder_location
+)
+</code></pre>
+<hr />
+<p>Internal used in tabular_editor.py and best_practice_analyzer.py.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>folder_location</strong> (str) : Folder path to remove directory and contents.</li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../TE2/" class="btn btn-neutral float-left" title="TE2"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Tabular%20Editor%202/" class="btn btn-neutral float-left" title="Tabular Editor"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../Examples/" class="btn btn-neutral float-right" title="Examples">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -189,7 +208,7 @@ Source</p>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../TE2/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Tabular%20Editor%202/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../Examples/" style="color: #fcfcfc">Next &raquo;</a></span>

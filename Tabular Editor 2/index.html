@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/BPA/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Tabular%20Editor%202/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>BPA - PyTabular</title>
+    <title>Tabular Editor - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "BPA";
-        var mkdocs_page_input_path = "BPA.md";
-        var mkdocs_page_url = "/PyTabular/BPA/";
+        var mkdocs_page_name = "Tabular Editor";
+        var mkdocs_page_input_path = "Tabular Editor 2.md";
+        var mkdocs_page_url = "/PyTabular/Tabular%20Editor%202/";
       </script>
     
     <script src="../js/jquery-3.6.0.min.js" defer></script>
@@ -48,20 +48,28 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Tabular</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Best%20Practice%20Analyzer/">Best Practice Analyzer</a>
+                </li>
+              </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">BPA</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Tabular Editor</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#bpa">BPA</a>
+    <li class="toctree-l2"><a class="reference internal" href="#tabular_editor">Tabular_Editor</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#download_tabular_editor">Download_Tabular_Editor</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../TE2/">TE2</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Utils/">Utils</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Logic%20Utils/">Logic Utils</a>
                 </li>
               </ul>
               <ul>
@@ -82,7 +90,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>BPA</li>
+      <li>Tabular Editor</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -92,20 +100,40 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="_1"></h1>
-<h2 id="bpa">BPA</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L468">source</a></p>
-<pre><code class="language-python">BPA(
-   rules_location: str = 'https: //raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json'
+<h2 id="tabular_editor">Tabular_Editor</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L38">source</a></p>
+<pre><code class="language-python">Tabular_Editor(
+   EXE_File_Path: str = 'Default'
 )
 </code></pre>
 <hr />
-<p><em>summary</em></p>
+<p>Setting Tabular_Editor Class for future work.</p>
+<hr />
+<h3 id="download_tabular_editor">Download_Tabular_Editor</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L8">source</a></p>
+<pre><code class="language-python">.Download_Tabular_Editor(
+   Download_Location: str = 'https: //github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip',
+   Folder: str = 'Tabular_Editor_2', Auto_Remove = True
+)
+</code></pre>
+<hr />
+<p>Runs a request.get() to retrieve the zip file from web. Will unzip response and store in directory. Will also register the removal of the new directory and files when exiting program.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>Download_Location</strong> (str, optional) : File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.</li>
+<li><strong>Folder</strong> (str, optional) : New Folder Location. Defaults to 'Tabular_Editor_2'.</li>
+<li><strong>Auto_Remove</strong> (bool, optional) : Boolean to determine auto removal of files once script exits. Defaults to True.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>str</strong>  : <em>description</em></li>
+</ul>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../Tabular/" class="btn btn-neutral float-left" title="Tabular"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../TE2/" class="btn btn-neutral float-right" title="TE2">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Best%20Practice%20Analyzer/" class="btn btn-neutral float-left" title="Best Practice Analyzer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Logic%20Utils/" class="btn btn-neutral float-right" title="Logic Utils">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -128,10 +156,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../Tabular/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Best%20Practice%20Analyzer/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../TE2/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../Logic%20Utils/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

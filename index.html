@@ -55,15 +55,19 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="BPA/">BPA</a>
+                <li class="toctree-l1"><a class="reference internal" href="Traces/">Trace</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="TE2/">TE2</a>
+                <li class="toctree-l1"><a class="reference internal" href="Best%20Practice%20Analyzer/">Best Practice Analyzer</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="Utils/">Utils</a>
+                <li class="toctree-l1"><a class="reference internal" href="Tabular%20Editor%202/">Tabular Editor</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="Logic%20Utils/">Logic Utils</a>
                 </li>
               </ul>
               <ul>
@@ -116,9 +120,7 @@
     tables_to_refresh = ['Table Name 1', 'Table Name 2', &lt;Table Class&gt;, &lt;Partition Class&gt;]
     #Queue up the tables and partitions that you want to refresh.
     model.Refresh(tables_to_refresh)
-
-    #Once you are ready, update to execute the refresh
-    model.SaveChanges()
+    #NOTE if you monitor the logs you will notice a Trace is executed on the refreshes.
 </code></pre>
 <p>Built In Dax Query Helpers</p>
 <pre><code class="language-python">
@@ -193,5 +195,5 @@
 
 <!--
 MkDocs version : 1.3.1
-Build Date UTC : 2022-08-15 19:39:56.315679+00:00
+Build Date UTC : 2022-08-19 17:03:59.063331+00:00
 -->
