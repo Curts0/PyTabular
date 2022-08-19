@@ -1,5 +1,6 @@
 import logging
 import datetime
+import os
 from typing import Dict, List
 import pandas as pd
 import clr
@@ -115,3 +116,14 @@ def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
 		expression_list_rows += [m_list_expression_generator(row.to_list())]
 	expression_str += f"\u007b\n{','.join(expression_list_rows)}\n\u007d)\nin\nSource"
 	return expression_str
+
+def remove_folder_and_contents(folder_location):
+	'''Internal used in tabular_editor.py and best_practice_analyzer.py.
+
+	Args:
+		folder_location (str): Folder path to remove directory and contents.
+	'''
+	import shutil
+	if os.path.exists(folder_location):
+		logging.info(f'Removing Dir and Contents -> {folder_location}')
+		shutil.rmtree(folder_location)

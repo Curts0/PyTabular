@@ -3,8 +3,9 @@ site_url: https://curts0.github.io/PyTabular/
 nav:
     - Home: index.md
     - Tabular: Tabular.md
-    - BPA: BPA.md
-    - TE2: TE2.md
-    - Utils: Utils.md
+    - Trace: Traces.md
+    - Best Practice Analyzer: Best Practice Analyzer.md
+    - Tabular Editor: Tabular Editor 2.md
+    - Logic Utils: Logic Utils.md
     - Examples: Examples.md
 theme: readthedocs

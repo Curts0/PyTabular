@@ -1,4 +1,3 @@
-from lib2to3.pytree import Base
 import logging
 import random
 import xmltodict
@@ -10,6 +9,15 @@ from Microsoft.AnalysisServices import TraceColumn, TraceEventClass, TraceEventS
 
 class Base_Trace:
 	def __init__(self, Tabular_Class, Trace_Events:List[TraceEvent], Trace_Event_Columns:List[TraceColumn], Handler:Callable) -> None:
+		'''Generates Trace to be run on Server. This is the base class to customize the type of Trace you are looking for.  
+		[Server Traces](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.server.traces?view=analysisservices-dotnet#microsoft-analysisservices-tabular-server-traces)  
+
+		Args:
+			Tabular_Class (Tabular): Tabular Class to retrieve the connected Server and Model.
+			Trace_Events (List[TraceEvent]): List of Trace Events that you wish to track. [TraceEventClass](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventclass?view=analysisservices-dotnet)
+			Trace_Event_Columns (List[TraceColumn]): List of Trace Event Columns you with to track. [TraceEventColumn](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tracecolumn?view=analysisservices-dotnet)
+			Handler (Callable): Function to call when Trace returns response. Input needs to be two arguments. One is source (Which is currently None... Need to investigate why). Second is [TraceEventArgs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventargs?view=analysisservices-dotnet)
+		'''		
 		logging.debug(f'Trace Base Class initializing...')
 		self.Name = 'PyTabular_'+''.join(random.SystemRandom().choices([str(x) for x in [y for y in range(0,10)]], k=10))
 		self.ID = self.Name.replace('PyTabular_', '')
@@ -26,7 +34,12 @@ class Base_Trace:
 		self.Add()
 		self.Update()
 
-	def Build(self):
+	def Build(self) -> bool:
+		'''Run on initialization. This will take the inputed arguments for the class and attempt to build the Trace.
+
+		Returns:
+			bool: True if successful
+		'''		
 		logging.info(f'Building Trace {self.Name}')
 		TE = [TraceEvent(trace_event) for trace_event in self.Trace_Events]
 		logging.debug(f'Adding Events to... {self.Trace.Name}')
@@ -49,27 +62,57 @@ class Base_Trace:
 	def Arguments(Trace_Events: List[TraceEvent], Trace_Event_Columns: List[TraceColumn], Handler: Callable):
 		raise NotImplementedError
 
-	def Add(self):
+	def Add(self) -> int:
+		'''Runs on initialization. Adds built Trace to the Server.
+
+		Returns:
+			int: Return int of placement in Server.Traces.get_Item(int)
+		'''		
 		logging.info(f'Adding {self.Name} to {self.Tabular_Class.Server.Name}')
 		return self.Tabular_Class.Server.Traces.Add(self.Trace)
 
-	def Update(self):
+	def Update(self) -> None:
+		'''Runs on initialization. Syncs with Server. 
+
+		Returns:
+			None: Returns None. Unless unsuccessful then it will return the error from Server.
+		'''		
 		logging.info(f'Updating {self.Name} in {self.Tabular_Class.Server.Name}')
 		return self.Trace.Update()
 
-	def Start(self):
+	def Start(self) -> None:
+		'''Call when you want to start the Trace
+
+		Returns:
+			None: Returns None. Unless unsuccessful then it will return the error from Server.
+		'''		
 		logging.info(f'Starting {self.Name} in {self.Tabular_Class.Server.Name}')
 		return self.Trace.Start()
 
-	def Stop(self):
+	def Stop(self) -> None:
+		'''Call when you want to stop the Trace
+
+		Returns:
+			None: Returns None. Unless unsuccessful then it will return the error from Server.
+		'''		
 		logging.info(f'Stopping {self.Name} in {self.Tabular_Class.Server.Name}')
 		return self.Trace.Stop()
 
-	def Drop(self):
+	def Drop(self) -> None:
+		'''Call when you want to drop the Trace
+
+		Returns:
+			None: Returns None. Unless unsuccessful then it will return the error from Server.
+		'''		
 		logging.info(f'Dropping {self.Name} in {self.Tabular_Class.Server.Name}')
 		return self.Trace.Drop()
 
 	def Query_DMV_For_Event_Categories(self):
+		'''Internal use. Called during the building process to locate allowed columns for event categories. This is done by executing a Tabular().Query() on the DISCOVER_EVENT_CATEGORIES table in the DMV. Then the function will parse the results, as it is xml inside of rows.
+
+		Returns:
+			_type_: _description_
+		'''		
 		Event_Categories = {}
 		events = []
 		logging.debug(f'Querying DMV for columns rules...')
@@ -93,6 +136,11 @@ def default_refresh_handler(source, args):
 		logging.debug(f'{args.EventClass} - {args.EventSubclass} - {args.ObjectName}')
 
 class Refresh_Trace(Base_Trace):
+	'''Subclass of Base_Trace. For built-in Refresh Tracing.
+
+	Args:
+		Base_Trace (_type_): _description_
+	'''	
 	def __init__(self, Tabular_Class, Trace_Events: List[TraceEvent] = [TraceEventClass.ProgressReportBegin,TraceEventClass.ProgressReportCurrent,TraceEventClass.ProgressReportEnd,TraceEventClass.ProgressReportError],
 	Trace_Event_Columns: List[TraceColumn] = [TraceColumn.EventSubclass,TraceColumn.CurrentTime, TraceColumn.ObjectName, TraceColumn.ObjectPath, TraceColumn.DatabaseName, TraceColumn.SessionID, TraceColumn.TextData, TraceColumn.EventClass, TraceColumn.ProgressTotal],
 	Handler: Callable = default_refresh_handler) -> None:

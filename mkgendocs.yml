@@ -1,31 +1,41 @@
 sources_dir: docs
 templates_dir: docs/templates
-repo: https://github.com/Curts0/PyTabular  #link to sources on github
-version: master                               #link to sources on github
-#gendocs --config mkgendocs.yml
-#need to automate in workflow
+repo: https://github.com/Curts0/PyTabular
+version: master
+
+
 pages:
   - page: "Tabular.md"
     source: 'pytabular/pytabular.py'
     classes:
       - Tabular
-  - page: "BPA.md"
-    source: 'pytabular/pytabular.py'
+  - page: "Traces.md"
+    source: 'pytabular/tabular_tracing.py'
+    classes:
+      - Base_Trace
+      - Refresh_Trace
+  - page: "Best Practice Analyzer.md"
+    source: 'pytabular/best_practice_analyzer.py'
+    functions:
+      - Download_BPA_File
     classes:
       - BPA
-  - page: "TE2.md"
-    source: 'pytabular/pytabular.py'
+  - page: "Tabular Editor 2.md"
+    source: 'pytabular/tabular_editor.py'
+    functions:
+      - Download_Tabular_Editor
     classes:
-      - TE2
+      - Tabular_Editor
   - page: "Examples.md"
     source: 'pytabular/basic_checks.py'
     functions:
       - Return_Zero_Row_Tables
       - Table_Last_Refresh_Times
       - BPA_Violations_To_DF
-  - page: "Utils.md"
+  - page: "Logic Utils.md"
     source: 'pytabular/logic_utils.py'
     functions:
       - ticks_to_datetime
       - pandas_datatype_to_tabular_datatype
       - pd_dataframe_to_m_expression
+      - remove_folder_and_contents
