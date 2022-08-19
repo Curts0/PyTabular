@@ -8,16 +8,16 @@ from Microsoft.AnalysisServices import TraceColumn, TraceEventClass, TraceEventS
 
 
 class Base_Trace:
-	def __init__(self, Tabular_Class, Trace_Events:List[TraceEvent], Trace_Event_Columns:List[TraceColumn], Handler:Callable) -> None:
-		'''Generates Trace to be run on Server. This is the base class to customize the type of Trace you are looking for.  
-		[Server Traces](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.server.traces?view=analysisservices-dotnet#microsoft-analysisservices-tabular-server-traces)  
+	'''Generates Trace to be run on Server. This is the base class to customize the type of Trace you are looking for.  
+	[Server Traces](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.server.traces?view=analysisservices-dotnet#microsoft-analysisservices-tabular-server-traces)  
 
-		Args:
-			Tabular_Class (Tabular): Tabular Class to retrieve the connected Server and Model.
-			Trace_Events (List[TraceEvent]): List of Trace Events that you wish to track. [TraceEventClass](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventclass?view=analysisservices-dotnet)
-			Trace_Event_Columns (List[TraceColumn]): List of Trace Event Columns you with to track. [TraceEventColumn](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tracecolumn?view=analysisservices-dotnet)
-			Handler (Callable): Function to call when Trace returns response. Input needs to be two arguments. One is source (Which is currently None... Need to investigate why). Second is [TraceEventArgs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventargs?view=analysisservices-dotnet)
-		'''		
+	Args:
+		Tabular_Class (Tabular): Tabular Class to retrieve the connected Server and Model.
+		Trace_Events (List[TraceEvent]): List of Trace Events that you wish to track. [TraceEventClass](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventclass?view=analysisservices-dotnet)
+		Trace_Event_Columns (List[TraceColumn]): List of Trace Event Columns you with to track. [TraceEventColumn](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tracecolumn?view=analysisservices-dotnet)
+		Handler (Callable): Function to call when Trace returns response. Input needs to be two arguments. One is source (Which is currently None... Need to investigate why). Second is [TraceEventArgs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventargs?view=analysisservices-dotnet)
+	'''		
+	def __init__(self, Tabular_Class, Trace_Events:List[TraceEvent], Trace_Event_Columns:List[TraceColumn], Handler:Callable) -> None:
 		logging.debug(f'Trace Base Class initializing...')
 		self.Name = 'PyTabular_'+''.join(random.SystemRandom().choices([str(x) for x in [y for y in range(0,10)]], k=10))
 		self.ID = self.Name.replace('PyTabular_', '')
