@@ -11,6 +11,18 @@ Base_Trace(
 ```
 
 
+---
+Generates Trace to be run on Server. This is the base class to customize the type of Trace you are looking for.  
+[Server Traces](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.server.traces?view=analysisservices-dotnet#microsoft-analysisservices-tabular-server-traces)  
+
+
+**Args**
+
+* **Tabular_Class** (Tabular) : Tabular Class to retrieve the connected Server and Model.
+* **Trace_Events** (List[TraceEvent]) : List of Trace Events that you wish to track. [TraceEventClass](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventclass?view=analysisservices-dotnet)
+* **Trace_Event_Columns** (List[TraceColumn]) : List of Trace Event Columns you with to track. [TraceEventColumn](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tracecolumn?view=analysisservices-dotnet)
+* **Handler** (Callable) : Function to call when Trace returns response. Input needs to be two arguments. One is source (Which is currently None... Need to investigate why). Second is [TraceEventArgs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventargs?view=analysisservices-dotnet)
+
 
 
 **Methods:**
