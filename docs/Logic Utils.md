@@ -2,7 +2,7 @@
 
 
 ### ticks_to_datetime
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L10)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L11)
 ```python
 .ticks_to_datetime(
    ticks: int
@@ -27,7 +27,7 @@ Converts a C# System DateTime Tick into a Python DateTime
 
 
 ### pandas_datatype_to_tabular_datatype
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L21)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L22)
 ```python
 .pandas_datatype_to_tabular_datatype(
    df: pd.DataFrame
@@ -52,7 +52,7 @@ WiP takes dataframe columns and gets respective tabular column datatype.  ([NumP
 
 
 ### pd_dataframe_to_m_expression
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L75)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L76)
 ```python
 .pd_dataframe_to_m_expression(
    df: pd.DataFrame
@@ -88,4 +88,24 @@ Source
 **Returns**
 
 * **str**  : Currently only returning string values in your tabular model.
+
+
+----
+
+
+### remove_folder_and_contents
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L120)
+```python
+.remove_folder_and_contents(
+   folder_location
+)
+```
+
+---
+Internal used in tabular_editor.py and best_practice_analyzer.py.
+
+
+**Args**
+
+* **folder_location** (str) : Folder path to remove directory and contents.
 

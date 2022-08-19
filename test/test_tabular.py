@@ -1,4 +1,4 @@
-from pytabular import pytabular
+import pytabular
 from pytabular import localsecret
 import pytest
 import pandas as pd
@@ -61,6 +61,6 @@ def test_table_removal(model):
 
 @pytest.mark.parametrize("model",testing_parameters)
 def test_bpa(model):
-	te2 = pytabular.TE2().EXE_Path
+	te2 = pytabular.Tabular_Editor().EXE
 	bpa = pytabular.BPA().Location
 	assert model.Analyze_BPA(te2,bpa) 
