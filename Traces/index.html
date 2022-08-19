@@ -123,6 +123,16 @@
    Trace_Event_Columns: List[TraceColumn], Handler: Callable
 )
 </code></pre>
+<hr />
+<p>Generates Trace to be run on Server. This is the base class to customize the type of Trace you are looking for.<br />
+<a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.server.traces?view=analysisservices-dotnet#microsoft-analysisservices-tabular-server-traces">Server Traces</a>  </p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>Tabular_Class</strong> (Tabular) : Tabular Class to retrieve the connected Server and Model.</li>
+<li><strong>Trace_Events</strong> (List[TraceEvent]) : List of Trace Events that you wish to track. <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventclass?view=analysisservices-dotnet">TraceEventClass</a></li>
+<li><strong>Trace_Event_Columns</strong> (List[TraceColumn]) : List of Trace Event Columns you with to track. <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tracecolumn?view=analysisservices-dotnet">TraceEventColumn</a></li>
+<li><strong>Handler</strong> (Callable) : Function to call when Trace returns response. Input needs to be two arguments. One is source (Which is currently None... Need to investigate why). Second is <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventargs?view=analysisservices-dotnet">TraceEventArgs</a></li>
+</ul>
 <p><strong>Methods:</strong></p>
 <h3 id="build">.Build</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L37">source</a></p>
