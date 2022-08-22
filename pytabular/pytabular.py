@@ -1,23 +1,26 @@
 import logging
+logger = logging.getLogger('PyTabular')
 
-logging.debug(f'Importing Microsoft.AnalysisServices.Tabular')
+logger.debug(f'Importing Microsoft.AnalysisServices.Tabular')
 from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType, Trace, TraceEvent, TraceEventHandler
-logging.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
+logger.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
 from Microsoft.AnalysisServices.AdomdClient import (AdomdCommand, AdomdConnection)
-logging.debug(f'Importing Microsoft.AnalysisServices')
+logger.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions, TraceEventClass, TraceEventSubclass, TraceEventCollection, TraceColumn
 
-logging.debug('Importing Other Packages...')
+logger.debug('Importing Other Packages...')
 from typing import List, Union, Callable
 from collections.abc import Iterable
+from collections import namedtuple
 import requests as r
 import pandas as pd
 import json
 import os
 import subprocess
 import atexit
-from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
+from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype, ticks_to_datetime
 from tabular_tracing import Refresh_Trace
+
 
 class Tabular:
 	'''Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
@@ -26,26 +29,26 @@ class Tabular:
 		CONNECTION_STR (str): [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions)
 	'''	
 	def __init__(self,CONNECTION_STR:str):
-		logging.debug(f'Initializing Tabular Class')
+		logger.debug(f'Initializing Tabular Class')
 		self.Server = Server() #[Server](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet)
 		self.Server.Connect(CONNECTION_STR)
-		logging.debug(f'Connected to Server - {self.Server.Name}')
+		logger.debug(f'Connected to Server - {self.Server.Name}')
 		self.Catalog = self.Server.ConnectionInfo.Catalog
-		logging.debug(f'Received Catalog - {self.Catalog}')
+		logger.debug(f'Received Catalog - {self.Catalog}')
 		try:
 			self.Database = [database for database in self.Server.Databases.GetEnumerator() if database.Name == self.Catalog][0]
 		except:
-			logging.error(f'Unable to find Database... {self.Catalog}')
-		logging.debug(f'Connected to Database - {self.Database.Name}')
+			logger.error(f'Unable to find Database... {self.Catalog}')
+		logger.debug(f'Connected to Database - {self.Database.Name}')
 		self.CompatibilityLevel: int = self.Database.CompatibilityLevel
 		self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
 		self.Model = self.Database.Model
-		logging.debug(f'Connected to Model - {self.Model.Name}')
+		logger.debug(f'Connected to Model - {self.Model.Name}')
 		self.DaxConnection = AdomdConnection()
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
 		self.Reload_Model_Info()
-		logging.debug(f'Class Initialization Completed')
-		logging.debug(f'Registering Disconnect on Termination...')
+		logger.debug(f'Class Initialization Completed')
+		logger.debug(f'Registering Disconnect on Termination...')
 		atexit.register(self.Disconnect)
 		
 		pass
@@ -68,14 +71,14 @@ class Tabular:
 		Returns:
 			bool: True if successful
 		'''
-		logging.debug(f'Disconnecting from - {self.Server.Name}')
+		logger.debug(f'Disconnecting from - {self.Server.Name}')
 		self.Server.Disconnect()
 		
 		if self.Server.Connected:
-			logging.error(f'Disconnect Unsuccessful')
+			logger.error(f'Disconnect Unsuccessful')
 			return False
 		else:
-			logging.debug(f'Disconnect Successful')
+			logger.debug(f'Disconnect Successful')
 			return True	
 	def Refresh(self, Object:Union[str,Table,Partition,Iterable], RefreshType=RefreshType.Full, Run:bool = True) -> None:
 		'''Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges() to actually run the refresh on the model.
@@ -84,15 +87,20 @@ class Tabular:
 			Object (Union[str,Table,Partition,Iterable]): Can be str(table name only), Table object, Partition object, or an iterable combination of the three.
 			RefreshType (_type_, optional): [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
 		'''
-		logging.debug(f'Beginning RequestRefresh cadence...')
-
+		logger.debug(f'Beginning RequestRefresh cadence...')
+		def Refresh_Report(Property_Changes):
+			logger.debug(f'Running Refresh Report...')
+			for property_change in Property_Changes:
+				if isinstance(property_change.Object,Partition) and property_change.Property_Name == 'RefreshedTime':
+					logger.info(f'{property_change.Object.Table.Name} - {property_change.Object.Name} Refreshed! - {ticks_to_datetime(property_change.New_Value.Ticks).strftime("%m/%d/%Y, %H:%M:%S")}')
+			return True
 		def refresh(object):
 			if isinstance(object,str):
-				logging.info(f'Requesting refresh for {object}')
+				logger.info(f'Requesting refresh for {object}')
 				table = [table for table in self.Tables if table.Name == object][0]
 				table.RequestRefresh(RefreshType)
 			else:
-				logging.info(f'Requesting refresh for {object.Name}')
+				logger.info(f'Requesting refresh for {object.Name}')
 				object.RequestRefresh(RefreshType)
 		
 		
@@ -104,9 +112,11 @@ class Tabular:
 		if Run:
 			rt = Refresh_Trace(self)
 			rt.Start()
-			self.SaveChanges()
+			m = self.SaveChanges()
 			rt.Stop()
 			rt.Drop()
+			Refresh_Report(m.Property_Changes)
+		return m.Property_Changes
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
@@ -116,18 +126,29 @@ class Tabular:
 		Returns:
 			None: Placeholder to eventually change.
 		'''
-		logging.debug('Running Update Request')
+		logger.debug('Running Update Request')
 		return self.Database.Update(UpdateOptions)
 	def SaveChanges(self) -> bool:
-		'''TODO need to clean this up and add more flexibility.  
-		Just a simple wrapper to call self.Model.SaveChanges()
+		def property_changes(Property_Changes):
+			Property_Change = namedtuple("Property_Change","New_Value Object Original_Value Property_Name Property_Type")
+			return [Property_Change(change.NewValue, change.Object, change.OriginalValue, change.PropertyName, change.PropertyType) for change in Property_Changes.GetEnumerator()]
 
-		Returns:
-			bool:
-		'''
-		self.Reload_Model_Info()
-		self.Model.SaveChanges()
-		return True
+		
+		logger.info(f'Executing SaveChanges()...')
+		Model_Save_Results = self.Model.SaveChanges()
+		if isinstance(Model_Save_Results.Impact, type(None)):
+			logger.warning(f'No changes detected on save for {self.Model.Name}')
+			return None
+		else:
+			Property_Changes = Model_Save_Results.Impact.PropertyChanges
+			Added_Objects = Model_Save_Results.Impact.AddedObjects
+			Added_Subtree_Roots = Model_Save_Results.Impact.AddedSubtreeRoots
+			Removed_Objects = Model_Save_Results.Impact.RemovedObjects
+			Removed_Subtree_Roots = Model_Save_Results.Impact.RemovedSubtreeRoots
+			Changes = namedtuple("Changes","Property_Changes Added_Objects Added_Subtree_Roots Removed_Objects Removed_Subtree_Roots")
+			[property_changes(Property_Changes), Added_Objects, Added_Subtree_Roots, Removed_Objects, Removed_Subtree_Roots]
+			self.Reload_Model_Info()
+			return Changes(property_changes(Property_Changes), Added_Objects, Added_Subtree_Roots, Removed_Objects, Removed_Subtree_Roots)
 	def Backup_Table(self,table_str:str) -> bool:
 		'''USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.  
 		It will add suffix '_backup' to all objects.  
@@ -139,60 +160,60 @@ class Tabular:
 		Returns:
 			bool: Returns True if Successful, else will return error.
 		'''		
-		logging.info('Backup Beginning...')
-		logging.debug(f'Cloning {table_str}')
+		logger.info('Backup Beginning...')
+		logger.debug(f'Cloning {table_str}')
 		table = self.Model.Tables.Find(table_str).Clone()
-		logging.info(f'Beginning Renames')
+		logger.info(f'Beginning Renames')
 		def rename(items):
 			for item in items:
 				item.RequestRename(f'{item.Name}_backup')
-				logging.debug(f'Renamed - {item.Name}')
-		logging.info('Renaming Columns')
+				logger.debug(f'Renamed - {item.Name}')
+		logger.info('Renaming Columns')
 		rename(table.Columns.GetEnumerator())
-		logging.info('Renaming Partitions')
+		logger.info('Renaming Partitions')
 		rename(table.Partitions.GetEnumerator())
-		logging.info('Renaming Measures')
+		logger.info('Renaming Measures')
 		rename(table.Measures.GetEnumerator())
-		logging.info('Renaming Hierarchies')
+		logger.info('Renaming Hierarchies')
 		rename(table.Hierarchies.GetEnumerator())
-		logging.info('Renaming Table')
+		logger.info('Renaming Table')
 		table.RequestRename(f'{table.Name}_backup')
-		logging.info('Adding Table to Model as backup')
+		logger.info('Adding Table to Model as backup')
 		self.Model.Tables.Add(table)
-		logging.info('Finding Necessary Relationships... Cloning...')
+		logger.info('Finding Necessary Relationships... Cloning...')
 		relationships = [relationship.Clone() for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == table.Name.removesuffix('_backup') or relationship.FromTable.Name == table.Name.removesuffix('_backup')]
-		logging.info('Renaming Relationships')
+		logger.info('Renaming Relationships')
 		rename(relationships)
-		logging.info('Switching Relationships to Clone Table & Column')
+		logger.info('Switching Relationships to Clone Table & Column')
 		for relationship in relationships:
-			logging.debug(f'Renaming - {relationship.Name}')
+			logger.debug(f'Renaming - {relationship.Name}')
 			if relationship.ToTable.Name == table.Name.removesuffix('_backup'):
 				relationship.set_ToColumn(table.Columns.Find(f'{relationship.ToColumn.Name}_backup'))
 			elif relationship.FromTable.Name == table.Name.removesuffix('_backup'):
 				relationship.set_FromColumn(table.Columns.Find(f'{relationship.FromColumn.Name}_backup'))
-			logging.debug(f'Adding {relationship.Name} to {self.Model.Name}')
+			logger.debug(f'Adding {relationship.Name} to {self.Model.Name}')
 			self.Model.Relationships.Add(relationship)
 		def clone_role_permissions():
-			logging.info(f'Beginning to handle roles and permissions for table...')
-			logging.debug(f'Finding Roles...')
+			logger.info(f'Beginning to handle roles and permissions for table...')
+			logger.debug(f'Finding Roles...')
 			roles = [role for role in self.Model.Roles.GetEnumerator() for tablepermission in role.TablePermissions.GetEnumerator() if tablepermission.Name == table_str]
 			for role in roles:
-				logging.debug(f'Role {role.Name} matched, looking into it...')
-				logging.debug(f'Searching for table specific permissions')
+				logger.debug(f'Role {role.Name} matched, looking into it...')
+				logger.debug(f'Searching for table specific permissions')
 				tablepermissions = [table.Clone() for table in role.TablePermissions.GetEnumerator() if table.Name == table_str]
 				for tablepermission in tablepermissions:
-					logging.debug(f'{tablepermission.Name} found... switching table to clone')
+					logger.debug(f'{tablepermission.Name} found... switching table to clone')
 					tablepermission.set_Table(table)
 					for column in tablepermission.ColumnPermissions.GetEnumerator():
-						logging.debug(f'Column - {column.Name} copying permissions to clone...')
+						logger.debug(f'Column - {column.Name} copying permissions to clone...')
 						column.set_Column(self.Model.Tables.Find(table.Name).Columns.Find(f'{column.Name}_backup'))
-					logging.debug(f'Adding {tablepermission.Name} to {role.Name}')
+					logger.debug(f'Adding {tablepermission.Name} to {role.Name}')
 					role.TablePermissions.Add(tablepermission)
 			return True
 		clone_role_permissions()
-		logging.info(f'Refreshing Clone... {table.Name}')
+		logger.info(f'Refreshing Clone... {table.Name}')
 		self.Refresh([table])
-		logging.info(f'Updating Model {self.Model.Name}')
+		logger.info(f'Updating Model {self.Model.Name}')
 		self.SaveChanges()
 		return True
 	def Revert_Table(self, table_str:str) -> bool:
@@ -210,53 +231,53 @@ class Tabular:
 		Returns:
 			bool: Returns True if Successful, else will return error.
 		'''
-		logging.info(f'Beginning Revert for {table_str}')
-		logging.debug(f'Finding original {table_str}')
+		logger.info(f'Beginning Revert for {table_str}')
+		logger.debug(f'Finding original {table_str}')
 		main = self.Model.Tables.Find(table_str)
-		logging.debug(f'Finding backup {table_str}')
+		logger.debug(f'Finding backup {table_str}')
 		backup = self.Model.Tables.Find(f'{table_str}_backup')
-		logging.debug(f'Finding original relationships')
+		logger.debug(f'Finding original relationships')
 		main_relationships = [relationship for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == main.Name or relationship.FromTable.Name == main.Name]
-		logging.debug(f'Finding backup relationships')
+		logger.debug(f'Finding backup relationships')
 		backup_relationships = [relationship for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == backup.Name or relationship.FromTable.Name == backup.Name]
 		
 		def remove_role_permissions():
-			logging.debug(f'Finding table and column permission in roles to remove from {table_str}')
+			logger.debug(f'Finding table and column permission in roles to remove from {table_str}')
 			roles = [role for role in self.Model.Roles.GetEnumerator() for tablepermission in role.TablePermissions.GetEnumerator() if tablepermission.Name == table_str]
 			for role in roles:
-				logging.debug(f'Role {role.Name} Found')
+				logger.debug(f'Role {role.Name} Found')
 				tablepermissions = [table for table in role.TablePermissions.GetEnumerator() if table.Name == table_str]
 				for tablepermission in tablepermissions:
-					logging.debug(f'Removing {tablepermission.Name} from {role.Name}')
+					logger.debug(f'Removing {tablepermission.Name} from {role.Name}')
 					role.TablePermissions.Remove(tablepermission)
 		for relationship in main_relationships:
-			logging.debug(f'Cleaning relationships...')
+			logger.debug(f'Cleaning relationships...')
 			if relationship.ToTable.Name == main.Name:
-				logging.debug(f'Removing {relationship.Name}')
+				logger.debug(f'Removing {relationship.Name}')
 				self.Model.Relationships.Remove(relationship)
 			elif relationship.FromTable.Name == main.Name:
-				logging.debug(f'Removing {relationship.Name}')
+				logger.debug(f'Removing {relationship.Name}')
 				self.Model.Relationships.Remove(relationship)
-		logging.debug(f'Removing Original Table {main.Name}')
+		logger.debug(f'Removing Original Table {main.Name}')
 		self.Model.Tables.Remove(main)
 		remove_role_permissions()
 		def dename(items):
 			for item in items:
-				logging.debug(f'Removing Suffix for {item.Name}')
+				logger.debug(f'Removing Suffix for {item.Name}')
 				item.RequestRename(f'{item.Name}'.removesuffix('_backup'))
-				logging.debug(f'Saving Changes... for {item.Name}')
+				logger.debug(f'Saving Changes... for {item.Name}')
 				self.Model.SaveChanges()
-		logging.info(f'Name changes for Columns...')
+		logger.info(f'Name changes for Columns...')
 		dename([column for column in backup.Columns.GetEnumerator() if column.Type != ColumnType.RowNumber])
-		logging.info(f'Name changes for Partitions...')
+		logger.info(f'Name changes for Partitions...')
 		dename(backup.Partitions.GetEnumerator())
-		logging.info(f'Name changes for Measures...')
+		logger.info(f'Name changes for Measures...')
 		dename(backup.Measures.GetEnumerator())
-		logging.info(f'Name changes for Hierarchies...')
+		logger.info(f'Name changes for Hierarchies...')
 		dename(backup.Hierarchies.GetEnumerator())
-		logging.info(f'Name changes for Relationships...')
+		logger.info(f'Name changes for Relationships...')
 		dename(backup_relationships)
-		logging.info(f'Name changes for Backup Table...')
+		logger.info(f'Name changes for Backup Table...')
 		backup.RequestRename(backup.Name.removesuffix('_backup'))
 		self.SaveChanges()
 		return True
@@ -269,25 +290,25 @@ class Tabular:
 		Returns:
 			pd.DataFrame: Returns dataframe with results
 		'''
-		logging.info(f'Query Called...')
+		logger.info(f'Query Called...')
 		try:
-			logging.debug(f'Attempting to Open Connection...')
+			logger.debug(f'Attempting to Open Connection...')
 			self.DaxConnection.Open()
-			logging.debug(f'Connected!')
+			logger.debug(f'Connected!')
 		except: 
-			logging.debug(f'Connection skipped already connected...')
+			logger.debug(f'Connection skipped already connected...')
 			pass
-		logging.debug(f'Querying Model with Query...')
+		logger.debug(f'Querying Model with Query...')
 		Query =  AdomdCommand(Query_Str, self.DaxConnection).ExecuteReader()
-		logging.debug(f'Determining Field Count...')
+		logger.debug(f'Determining Field Count...')
 		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
 		Results = list()
-		logging.debug(f'Converting Results into List...')
+		logger.debug(f'Converting Results into List...')
 		while Query.Read():
 			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))])
-		logging.debug(f'Data retrieved and closing query...')
+		logger.debug(f'Data retrieved and closing query...')
 		Query.Close()
-		logging.debug(f'Converting to Pandas DataFrame...')
+		logger.debug(f'Converting to Pandas DataFrame...')
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
 		return df
 	def Query_Every_Column(self,query_function:str='COUNTROWS(VALUES(_))') -> pd.DataFrame:
@@ -300,9 +321,9 @@ class Tabular:
 		Returns:
 			pd.DataFrame: Returns dataframe with results.
 		'''
-		logging.info(f'Beginning execution of querying every column...')
-		logging.debug(f'Function to be run: {query_function}')
-		logging.debug(f'Dynamically creating DAX query...')
+		logger.info(f'Beginning execution of querying every column...')
+		logger.debug(f'Function to be run: {query_function}')
+		logger.debug(f'Dynamically creating DAX query...')
 		query_str = "EVALUATE UNION(\n"
 		for column in self.Columns:
 			if column.Type != ColumnType.RowNumber:
@@ -322,9 +343,9 @@ class Tabular:
 		Returns:
 			pd.DataFrame: Returns dataframe with results
 		'''
-		logging.info(f'Beginning execution of querying every table...')
-		logging.debug(f'Function to be run: {query_function}')
-		logging.debug(f'Dynamically creating DAX query...')
+		logger.info(f'Beginning execution of querying every table...')
+		logger.debug(f'Function to be run: {query_function}')
+		logger.debug(f'Dynamically creating DAX query...')
 		query_str = "EVALUATE UNION(\n"
 		for table in self.Tables:
 			table_name = table.get_Name()
@@ -346,10 +367,10 @@ class Tabular:
 		'''		
 		#Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.DaxConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
 		#start /wait 
-		logging.debug(f'Beginning request to talk with TE2 & Find BPA...')
+		logger.debug(f'Beginning request to talk with TE2 & Find BPA...')
 		cmd = f"{Tabular_Editor_Exe} \"Provider=MSOLAP;{self.DaxConnection.ConnectionString}\" {self.Database.Name} -B \"{os.getcwd()}\\Model.bim\" -A {Best_Practice_Analyzer} -V/?"
-		logging.debug(f'Command Generated')
-		logging.debug(f'Submitting Command...')
+		logger.debug(f'Command Generated')
+		logger.debug(f'Submitting Command...')
 		sp = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
 		raw_output,error = sp.communicate()
 		if len(error) > 0:
@@ -368,28 +389,28 @@ class Tabular:
 		Returns:
 			bool: True if successful
 		'''	
-		logging.debug(f'Beginning to create table for {table_name}...')
+		logger.debug(f'Beginning to create table for {table_name}...')
 		new_table = Table()
 		new_table.RequestRename(table_name)
-		logging.debug(f'Sorting through columns...')
+		logger.debug(f'Sorting through columns...')
 		df_column_names = df.columns
 		dtype_conversion = pandas_datatype_to_tabular_datatype(df)
 		for df_column_name in df_column_names:
-			logging.debug(f'Adding {df_column_name} to Table...')
+			logger.debug(f'Adding {df_column_name} to Table...')
 			column = DataColumn()
 			column.RequestRename(df_column_name)
 			column.set_SourceColumn(df_column_name)
 			column.set_DataType(dtype_conversion[df_column_name])
 			new_table.Columns.Add(column)
-		logging.debug(f'Expression String Created...')
-		logging.debug(f'Creating MPartition...')
+		logger.debug(f'Expression String Created...')
+		logger.debug(f'Creating MPartition...')
 		partition = Partition()
 		partition.set_Source(MPartitionSource())
-		logging.debug(f'Setting MPartition Expression...')
+		logger.debug(f'Setting MPartition Expression...')
 		partition.Source.set_Expression(pd_dataframe_to_m_expression(df))
-		logging.debug(f'Adding partition: {partition.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}')
+		logger.debug(f'Adding partition: {partition.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}')
 		new_table.Partitions.Add(partition)
-		logging.debug(f'Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}')
+		logger.debug(f'Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}')
 		self.Model.Tables.Add(new_table)
 		self.Refresh([new_table])
 		self.SaveChanges()

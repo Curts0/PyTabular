@@ -1,24 +1,30 @@
 import logging
 logging.basicConfig(level=logging.DEBUG,format='%(asctime)s :: %(module)s :: %(levelname)s :: %(message)s')
-logging.debug('Logging configured...')
+logger = logging.getLogger('PyTabular')
+logger.setLevel(logging.DEBUG)
+logger.debug('Logging configured...')
+logger.debug(f'NOTE to update PyTabular logger...')
+logger.debug(f'>>>import logging')
+logger.debug(f'>>>pytabular.logger.setLevel(level=logging.INFO)')
+logger.debug(f'Visit https://docs.python.org/3/library/logging.html#logging-levels for logging level options...')
 
-logging.debug(f'Setting up file paths for {__file__}')
+logger.debug(f'Setting up file paths for {__file__}')
 import os
 import sys
 dll = os.path.join(os.path.dirname(__file__),"dll")
 sys.path.append(dll)
 sys.path.append(os.path.dirname(__file__))
 
-logging.debug(f'Beginning CLR references...')
+logger.debug(f'Beginning CLR references...')
 import clr
-logging.debug('Adding Reference Microsoft.AnalysisServices.AdomdClient')
+logger.debug('Adding Reference Microsoft.AnalysisServices.AdomdClient')
 clr.AddReference('Microsoft.AnalysisServices.AdomdClient')
-logging.debug('Adding Reference Microsoft.AnalysisServices.Tabular')
+logger.debug('Adding Reference Microsoft.AnalysisServices.Tabular')
 clr.AddReference('Microsoft.AnalysisServices.Tabular')
-logging.debug('Adding Reference Microsoft.AnalysisServices')
+logger.debug('Adding Reference Microsoft.AnalysisServices')
 clr.AddReference('Microsoft.AnalysisServices')
 
-logging.debug(f"Importing from the rest...")
+logger.debug(f"Importing from the rest...")
 from . pytabular import Tabular
 from . basic_checks import Return_Zero_Row_Tables, Table_Last_Refresh_Times, BPA_Violations_To_DF
 from . logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
