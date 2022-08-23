@@ -1,4 +1,5 @@
 import logging
+logger = logging.getLogger('PyTabular')
 from typing import List
 import pytabular
 from logic_utils import ticks_to_datetime
@@ -14,7 +15,7 @@ def Return_Zero_Row_Tables(model:pytabular.Tabular) -> List[str]:
 	Returns:
 		List[str]: List of table names where DAX COUNTROWS('Table Name') is nan or 0.
 	'''	
-	logging.info(f'Executing Basic Function {sys._getframe(0).f_code.co_name}')
+	logger.info(f'Executing Basic Function {sys._getframe(0).f_code.co_name}')
 	query_function: str = 'COUNTROWS(_)'
 	df: pd.DataFrame = model.Query_Every_Table(query_function)
 	return df[df[f'[{query_function}]'].isna()]['[Table]'].to_list()
@@ -33,7 +34,7 @@ def Table_Last_Refresh_Times(model:pytabular.Tabular, group_partition:bool = Tru
 		pd.DataFrame: pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
 		If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()
 	'''	
-	logging.info(f'Executing Basic Function {sys._getframe(0).f_code.co_name}')
+	logger.info(f'Executing Basic Function {sys._getframe(0).f_code.co_name}')
 	data = {\
 		"Tables":[partition.Table.Name for partition in model.Partitions],\
 		"Partitions":[partition.Name for partition in model.Partitions],\
@@ -41,10 +42,10 @@ def Table_Last_Refresh_Times(model:pytabular.Tabular, group_partition:bool = Tru
 	}
 	df = pd.DataFrame(data)
 	if group_partition:
-		logging.debug('Grouping together to grain of Table')
+		logger.debug('Grouping together to grain of Table')
 		return df[["Tables","RefreshedTime"]].groupby(by=["Tables"]).max().reset_index(drop=False)
 	else:
-		logging.debug('Returning DF')
+		logger.debug('Returning DF')
 		return df
 
 def BPA_Violations_To_DF(model:pytabular.Tabular,te2:str, bpa:str) -> pd.DataFrame:

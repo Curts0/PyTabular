@@ -1,4 +1,5 @@
 import logging
+logger = logging.getLogger('PyTabular')
 import datetime
 import os
 from typing import Dict, List
@@ -28,7 +29,7 @@ def pandas_datatype_to_tabular_datatype(df:pd.DataFrame)-> Dict:
 	Returns:
 		Dict: EX {'col1': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>, 'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>, 'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800>}
 	'''
-	logging.info(f'Getting DF Column Dtypes to Tabular Dtypes...')
+	logger.info(f'Getting DF Column Dtypes to Tabular Dtypes...')
 	tabular_datatype_mapping_key = {
 		'b':DataType.Boolean,
 		'i':DataType.Int64,
@@ -107,10 +108,10 @@ def pd_dataframe_to_m_expression(df:pd.DataFrame) -> str:
 		'''
 		string_components = ','.join([f'\"{string_value}\"' for string_value in list_of_strings])
 		return f'\u007b{string_components}\u007d'
-	logging.debug(f'Executing m_list_generator()... for {df.columns}')
+	logger.debug(f'Executing m_list_generator()... for {df.columns}')
 	columns = m_list_expression_generator(df.columns)
 	expression_str = f"let\nSource=#table({columns},\n"
-	logging.debug(f'Iterating through rows to build expression... df has {len(df)} rows...')
+	logger.debug(f'Iterating through rows to build expression... df has {len(df)} rows...')
 	expression_list_rows = []
 	for index, row in df.iterrows():
 		expression_list_rows += [m_list_expression_generator(row.to_list())]
@@ -125,5 +126,5 @@ def remove_folder_and_contents(folder_location):
 	'''
 	import shutil
 	if os.path.exists(folder_location):
-		logging.info(f'Removing Dir and Contents -> {folder_location}')
+		logger.info(f'Removing Dir and Contents -> {folder_location}')
 		shutil.rmtree(folder_location)

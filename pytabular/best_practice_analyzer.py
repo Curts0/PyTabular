@@ -1,4 +1,5 @@
 import logging
+logger = logging.getLogger('PyTabular')
 import requests as r
 import atexit
 import json
@@ -18,7 +19,7 @@ Auto_Remove = True) -> str:
 	Returns:
 		str: File Path for the newly downloaded BPA.
 	'''
-	logging.info(f'Downloading BPA from {Download_Location}')
+	logger.info(f'Downloading BPA from {Download_Location}')
 	folder_location = os.path.join(os.getcwd(),Folder)
 	if os.path.exists(folder_location) == False:
 		os.makedirs(folder_location)
@@ -27,7 +28,7 @@ Auto_Remove = True) -> str:
 	with open(file_location, 'w', encoding='utf-8') as bpa:
 		json.dump(response.json(), bpa, ensure_ascii=False, indent= 4)
 	if Auto_Remove:
-		logging.debug(f'Registering removal on termination... For {folder_location}')
+		logger.debug(f'Registering removal on termination... For {folder_location}')
 		atexit.register(remove_folder_and_contents, folder_location)
 	return file_location
 
@@ -35,7 +36,7 @@ class BPA:
 	'''Setting BPA Class for future work...
 	'''	
 	def __init__(self, File_Path:str = 'Default') -> None:
-		logging.debug(f'Initializing BPA Class:: {File_Path}')
+		logger.debug(f'Initializing BPA Class:: {File_Path}')
 		if File_Path == 'Default':
 			self.Location: str = Download_BPA_File()
 		else:
