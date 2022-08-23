@@ -32,18 +32,18 @@ class Tabular:
 		logger.debug(f'Initializing Tabular Class')
 		self.Server = Server() #[Server](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet)
 		self.Server.Connect(CONNECTION_STR)
-		logger.debug(f'Connected to Server - {self.Server.Name}')
+		logger.info(f'Connected to Server - {self.Server.Name}')
 		self.Catalog = self.Server.ConnectionInfo.Catalog
 		logger.debug(f'Received Catalog - {self.Catalog}')
 		try:
 			self.Database = [database for database in self.Server.Databases.GetEnumerator() if database.Name == self.Catalog][0]
 		except:
 			logger.error(f'Unable to find Database... {self.Catalog}')
-		logger.debug(f'Connected to Database - {self.Database.Name}')
+		logger.info(f'Connected to Database - {self.Database.Name}')
 		self.CompatibilityLevel: int = self.Database.CompatibilityLevel
 		self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
 		self.Model = self.Database.Model
-		logger.debug(f'Connected to Model - {self.Model.Name}')
+		logger.info(f'Connected to Model - {self.Model.Name}')
 		self.DaxConnection = AdomdConnection()
 		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
 		self.Reload_Model_Info()
@@ -290,15 +290,15 @@ class Tabular:
 		Returns:
 			pd.DataFrame: Returns dataframe with results
 		'''
-		logger.info(f'Query Called...')
+		logger.debug(f'Beginning to Query...')
 		try:
-			logger.debug(f'Attempting to Open Connection...')
+			logger.debug(f'Attempting to Open Adomd Connection...')
 			self.DaxConnection.Open()
 			logger.debug(f'Connected!')
 		except: 
 			logger.debug(f'Connection skipped already connected...')
 			pass
-		logger.debug(f'Querying Model with Query...')
+		logger.info(f'Querying Model with Query...')
 		Query =  AdomdCommand(Query_Str, self.DaxConnection).ExecuteReader()
 		logger.debug(f'Determining Field Count...')
 		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
@@ -306,7 +306,7 @@ class Tabular:
 		logger.debug(f'Converting Results into List...')
 		while Query.Read():
 			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))])
-		logger.debug(f'Data retrieved and closing query...')
+		logger.info(f'Data retrieved and closing query...')
 		Query.Close()
 		logger.debug(f'Converting to Pandas DataFrame...')
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
