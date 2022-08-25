@@ -1,11 +1,11 @@
 import pytabular
-from pytabular import localsecret
+import local as l
 import pytest
 import pandas as pd
 from Microsoft.AnalysisServices.Tabular import Database
 
-aas = pytabular.Tabular(localsecret.CONNECTION_STR['FIN 500'])
-gen2 = pytabular.Tabular(localsecret.CONNECTION_STR['GEN2TEST'])
+aas = pytabular.Tabular(l.AAS)
+gen2 = pytabular.Tabular(l.GEN2)
 testing_parameters = [(aas),(gen2)]
 testingtable = 'PyTestTable'
 

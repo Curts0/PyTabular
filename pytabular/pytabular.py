@@ -9,7 +9,7 @@ logger.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions, TraceEventClass, TraceEventSubclass, TraceEventCollection, TraceColumn
 
 logger.debug('Importing Other Packages...')
-from typing import List, Union, Callable
+from typing import Any, Dict, List, Optional, Union, Callable
 from collections.abc import Iterable
 from collections import namedtuple
 import requests as r
@@ -64,6 +64,7 @@ class Tabular:
 		self.Columns = [column for table in self.Tables for column in table.Columns.GetEnumerator()]
 		self.Partitions = [partition for table in self.Tables for partition in table.Partitions.GetEnumerator()]
 		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
+		self.Database.Refresh()
 		return True
 	def Disconnect(self) -> bool:
 		'''Disconnects from Model
@@ -72,51 +73,102 @@ class Tabular:
 			bool: True if successful
 		'''
 		logger.debug(f'Disconnecting from - {self.Server.Name}')
-		self.Server.Disconnect()
-		
-		if self.Server.Connected:
-			logger.error(f'Disconnect Unsuccessful')
-			return False
-		else:
-			logger.debug(f'Disconnect Successful')
-			return True	
-	def Refresh(self, Object:Union[str,Table,Partition,Iterable], RefreshType=RefreshType.Full, Run:bool = True) -> None:
-		'''Input Object(s) to be refreshed in the tabular model. Combine with .SaveChanges() to actually run the refresh on the model.
+		return self.Server.Disconnect()
+
+	def Refresh(self,
+		Object:Union[
+			str, Table, Partition, Dict[str, Any],
+			Iterable[str, Table, Partition, Dict[str, Any]]
+			],
+		RefreshType:RefreshType = RefreshType.Full,
+		Tracing = False) -> None:
+		'''Refreshes table(s) and partition(s).
 
 		Args:
-			Object (Union[str,Table,Partition,Iterable]): Can be str(table name only), Table object, Partition object, or an iterable combination of the three.
-			RefreshType (_type_, optional): [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
-		'''
+			Object (Union[ str, Table, Partition, Dict[str, Any], Iterable[str, Table, Partition, Dict[str, Any]] ]): Designed to handle a few different ways of selecting a refresh.  
+			str == 'Table_Name'  
+			Table == Table Object  
+			Partition == Partition Object  
+			Dict[str, Any] == A way to specify a partition of group of partitions. For ex: {'Table_Name':'Partition1'} or {'Table_Name':['Partition1','Partition2']}. NOTE you can also change out the strings for partition or tables objects.
+			RefreshType (RefreshType, optional): See [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
+			Tracing (bool, optional): Currently just some basic tracing to track refreshes. Defaults to False.
+
+		Raises:
+			Exception: Raises exception if unable to find table or partition via string.
+
+
+		Returns:
+			WIP: WIP
+		'''		
 		logger.debug(f'Beginning RequestRefresh cadence...')
+
 		def Refresh_Report(Property_Changes):
 			logger.debug(f'Running Refresh Report...')
 			for property_change in Property_Changes:
 				if isinstance(property_change.Object,Partition) and property_change.Property_Name == 'RefreshedTime':
 					logger.info(f'{property_change.Object.Table.Name} - {property_change.Object.Name} Refreshed! - {ticks_to_datetime(property_change.New_Value.Ticks).strftime("%m/%d/%Y, %H:%M:%S")}')
 			return True
-		def refresh(object):
-			if isinstance(object,str):
-				logger.info(f'Requesting refresh for {object}')
-				table = [table for table in self.Tables if table.Name == object][0]
-				table.RequestRefresh(RefreshType)
+				
+		def refresh_table(table:Table) -> None:
+			logging.info(f'Requesting refresh for {table.Name}')
+			table.RequestRefresh(RefreshType)
+
+		def refresh_partition(partition:Partition) -> None:
+			logging.info(f'Requesting refresh for {partition.Table.Name}|{partition.Name}')
+			partition.RequestRefresh(RefreshType)
+
+		def refresh_dict(partition_dict:Dict) -> None:
+			for table in partition_dict.keys():
+				table_object = find_table(table) if isinstance(table,str) else table
+				def handle_partitions(object):
+					if isinstance(object,str):
+						refresh_partition(find_partition(table_object, object))
+					elif isinstance(object,Partition):
+						refresh_partition(object)
+					else:
+						[handle_partitions(obj) for obj in object]
+				handle_partitions(partition_dict[table])
+				
+
+		def find_table(table_str:str) -> Table:
+			result = self.Model.Tables.Find(table_str)
+			if result is None:
+				raise Exception(f"Unable to find table! from {table_str}")
+			logging.debug(f'Found table {result.Name}')
+			return result
+
+		def find_partition(table:Table, partition_str:str) -> Partition:
+			result = table.Partitions.Find(partition_str)
+			if result is None:
+				raise Exception(f"Unable to find partition! {table.Name}|{partition_str}")
+			logging.debug(f'Found partition {result.Table.Name}|{result.Name}')
+			return result
+
+		def refresh(Object):
+			if isinstance(Object,str):
+				refresh_table(find_table(Object))
+			elif isinstance(Object, Dict):
+				refresh_dict(Object)
+			elif isinstance(Object, Table):
+				refresh_table(Object)
+			elif isinstance(Object, Partition):
+				refresh_partition(Object)
 			else:
-				logger.info(f'Requesting refresh for {object.Name}')
-				object.RequestRefresh(RefreshType)
-		
-		
-		if isinstance(Object,Iterable) and isinstance(Object,str) == False:
-			[refresh(object) for object in Object]
-		else:
-			refresh(Object)
-      
-		if Run:
+				[refresh(object) for object in Object]
+		refresh(Object)
+		if Tracing:
 			rt = Refresh_Trace(self)
 			rt.Start()
-			m = self.SaveChanges()
+
+		m = self.SaveChanges()
+
+		if Tracing:
 			rt.Stop()
 			rt.Drop()
-			Refresh_Report(m.Property_Changes)
-		return m.Property_Changes
+
+		Refresh_Report(m.Property_Changes)
+
+		return m
 	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
@@ -137,7 +189,7 @@ class Tabular:
 		logger.info(f'Executing SaveChanges()...')
 		Model_Save_Results = self.Model.SaveChanges()
 		if isinstance(Model_Save_Results.Impact, type(None)):
-			logger.warning(f'No changes detected on save for {self.Model.Name}')
+			logger.warning(f'No changes detected on save for {self.Server.Name}')
 			return None
 		else:
 			Property_Changes = Model_Save_Results.Impact.PropertyChanges
