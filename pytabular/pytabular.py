@@ -2,19 +2,17 @@ import logging
 logger = logging.getLogger('PyTabular')
 
 logger.debug(f'Importing Microsoft.AnalysisServices.Tabular')
-from Microsoft.AnalysisServices.Tabular import Server, Database, RefreshType, DataType, ConnectionDetails, ColumnType, MetadataPermission, Table, DataColumn, Partition, MPartitionSource, PartitionSourceType, Trace, TraceEvent, TraceEventHandler
+from Microsoft.AnalysisServices.Tabular import Server, RefreshType, ColumnType, Table, DataColumn, Partition, MPartitionSource
 logger.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
 from Microsoft.AnalysisServices.AdomdClient import (AdomdCommand, AdomdConnection)
 logger.debug(f'Importing Microsoft.AnalysisServices')
-from Microsoft.AnalysisServices import UpdateOptions, TraceEventClass, TraceEventSubclass, TraceEventCollection, TraceColumn
+from Microsoft.AnalysisServices import UpdateOptions
 
 logger.debug('Importing Other Packages...')
-from typing import Any, Dict, List, Optional, Union, Callable
+from typing import Any, Dict, List, Union
 from collections.abc import Iterable
 from collections import namedtuple
-import requests as r
 import pandas as pd
-import json
 import os
 import subprocess
 import atexit
@@ -89,7 +87,7 @@ class Tabular:
 			str == 'Table_Name'  
 			Table == Table Object  
 			Partition == Partition Object  
-			Dict[str, Any] == A way to specify a partition of group of partitions. For ex: {'Table_Name':'Partition1'} or {'Table_Name':['Partition1','Partition2']}. NOTE you can also change out the strings for partition or tables objects.
+			Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {'Table_Name':'Partition1'} or {'Table_Name':['Partition1','Partition2']}. NOTE you can also change out the strings for partition or tables objects.
 			RefreshType (RefreshType, optional): See [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
 			Tracing (bool, optional): Currently just some basic tracing to track refreshes. Defaults to False.
 
@@ -197,10 +195,11 @@ class Tabular:
 			Added_Subtree_Roots = Model_Save_Results.Impact.AddedSubtreeRoots
 			Removed_Objects = Model_Save_Results.Impact.RemovedObjects
 			Removed_Subtree_Roots = Model_Save_Results.Impact.RemovedSubtreeRoots
-			Changes = namedtuple("Changes","Property_Changes Added_Objects Added_Subtree_Roots Removed_Objects Removed_Subtree_Roots")
-			[property_changes(Property_Changes), Added_Objects, Added_Subtree_Roots, Removed_Objects, Removed_Subtree_Roots]
+			Xmla_Results = Model_Save_Results.XmlaResults
+			Changes = namedtuple("Changes","Property_Changes Added_Objects Added_Subtree_Roots Removed_Objects Removed_Subtree_Roots Xmla_Results")
+			[property_changes(Property_Changes), Added_Objects, Added_Subtree_Roots, Removed_Objects, Removed_Subtree_Roots, Xmla_Results]
 			self.Reload_Model_Info()
-			return Changes(property_changes(Property_Changes), Added_Objects, Added_Subtree_Roots, Removed_Objects, Removed_Subtree_Roots)
+			return Changes(property_changes(Property_Changes), Added_Objects, Added_Subtree_Roots, Removed_Objects, Removed_Subtree_Roots, Xmla_Results)
 	def Backup_Table(self,table_str:str) -> bool:
 		'''USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.  
 		It will add suffix '_backup' to all objects.  
@@ -358,7 +357,7 @@ class Tabular:
 		logger.debug(f'Converting Results into List...')
 		while Query.Read():
 			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))])
-		logger.info(f'Data retrieved and closing query...')
+		logger.debug(f'Data retrieved and closing query...')
 		Query.Close()
 		logger.debug(f'Converting to Pandas DataFrame...')
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
