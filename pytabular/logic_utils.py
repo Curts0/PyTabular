@@ -128,3 +128,17 @@ def remove_folder_and_contents(folder_location):
 	if os.path.exists(folder_location):
 		logger.info(f'Removing Dir and Contents -> {folder_location}')
 		shutil.rmtree(folder_location)
+
+def remove_suffix(input_string, suffix):
+	'''Adding for >3.9 compatiblity. (Stackoverflow Answer)[https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix]
+
+	Args:
+		input_string (str): input string to remove suffix from
+		suffix (str): suffix to be removed
+
+	Returns:
+		str: input_str with suffix removed
+	'''
+	if suffix and input_string.endswith(suffix):
+		return input_string[:-len(suffix)]
+	return input_string

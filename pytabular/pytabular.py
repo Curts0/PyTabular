@@ -10,14 +10,14 @@ logger.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions
 
 logger.debug('Importing Other Packages...')
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, TYPE_CHECKING
 from collections.abc import Iterable
 from collections import namedtuple
 import pandas as pd
 import os
 import subprocess
 import atexit
-from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype, ticks_to_datetime
+from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype, ticks_to_datetime, remove_suffix
 from tabular_tracing import Refresh_Trace
 
 
@@ -75,8 +75,7 @@ class Tabular:
 		return self.Server.Disconnect()
 	def Refresh(self,
 		Object:Union[
-			str, Table, Partition, Dict[str, Any],
-			Iterable[str, Table, Partition, Dict[str, Any]]
+			str, Table, Partition, Dict[str, Any]
 			],
 		RefreshType:RefreshType = RefreshType.Full,
 		Tracing = False) -> None:
@@ -232,15 +231,15 @@ class Tabular:
 		logger.info('Adding Table to Model as backup')
 		self.Model.Tables.Add(table)
 		logger.info('Finding Necessary Relationships... Cloning...')
-		relationships = [relationship.Clone() for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == table.Name.removesuffix('_backup') or relationship.FromTable.Name == table.Name.removesuffix('_backup')]
+		relationships = [relationship.Clone() for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == remove_suffix(table.Name,'_backup') or relationship.FromTable.Name == remove_suffix(table.Name,'_backup')]
 		logger.info('Renaming Relationships')
 		rename(relationships)
 		logger.info('Switching Relationships to Clone Table & Column')
 		for relationship in relationships:
 			logger.debug(f'Renaming - {relationship.Name}')
-			if relationship.ToTable.Name == table.Name.removesuffix('_backup'):
+			if relationship.ToTable.Name == remove_suffix(table.Name,'_backup'):
 				relationship.set_ToColumn(table.Columns.Find(f'{relationship.ToColumn.Name}_backup'))
-			elif relationship.FromTable.Name == table.Name.removesuffix('_backup'):
+			elif relationship.FromTable.Name == remove_suffix(table.Name,'_backup'):
 				relationship.set_FromColumn(table.Columns.Find(f'{relationship.FromColumn.Name}_backup'))
 			logger.debug(f'Adding {relationship.Name} to {self.Model.Name}')
 			self.Model.Relationships.Add(relationship)
@@ -315,7 +314,7 @@ class Tabular:
 		def dename(items):
 			for item in items:
 				logger.debug(f'Removing Suffix for {item.Name}')
-				item.RequestRename(f'{item.Name}'.removesuffix('_backup'))
+				item.RequestRename(remove_suffix(item.Name,'_backup'))
 				logger.debug(f'Saving Changes... for {item.Name}')
 				self.Model.SaveChanges()
 		logger.info(f'Name changes for Columns...')
@@ -329,7 +328,7 @@ class Tabular:
 		logger.info(f'Name changes for Relationships...')
 		dename(backup_relationships)
 		logger.info(f'Name changes for Backup Table...')
-		backup.RequestRename(backup.Name.removesuffix('_backup'))
+		backup.RequestRename(remove_suffix(backup.Name,'_backup'))
 		self.SaveChanges()
 		return True
 	def Query(self,Query_Str:str) -> Union[pd.DataFrame,str,int]:
