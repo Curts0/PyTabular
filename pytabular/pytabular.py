@@ -1,22 +1,23 @@
 import logging
+from pathlib import Path
 logger = logging.getLogger('PyTabular')
 
 logger.debug(f'Importing Microsoft.AnalysisServices.Tabular')
-from Microsoft.AnalysisServices.Tabular import Server, RefreshType, ColumnType, Table, DataColumn, Partition, MPartitionSource
+from Microsoft.AnalysisServices.Tabular import Server, RefreshType, ColumnType, Table, DataColumn, Partition, MPartitionSource, Measure
 logger.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
 from Microsoft.AnalysisServices.AdomdClient import (AdomdCommand, AdomdConnection)
 logger.debug(f'Importing Microsoft.AnalysisServices')
 from Microsoft.AnalysisServices import UpdateOptions
 
 logger.debug('Importing Other Packages...')
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, TYPE_CHECKING
 from collections.abc import Iterable
 from collections import namedtuple
 import pandas as pd
 import os
 import subprocess
 import atexit
-from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype, ticks_to_datetime
+from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype, ticks_to_datetime, remove_suffix
 from tabular_tracing import Refresh_Trace
 
 
@@ -51,7 +52,7 @@ class Tabular:
 		
 		pass
 	def __repr__(self) -> str:
-		return f'{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\n{self.Database.EstimatedSize} Estimated Size\n{len(self.Tables)} Tables\n{len(self.Columns)} Columns\n{len(self.Partitions)} Partitions\n{len(self.Measures)} Measures'
+		return f'{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\nEstimated Size::{self.Database.EstimatedSize}\nTables::{len(self.Tables)}\nColumns::{len(self.Columns)}\nPartitions::{len(self.Partitions)}\nMeasures::{len(self.Measures)}'
 	def Reload_Model_Info(self) -> bool:
 		'''Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
 
@@ -72,11 +73,9 @@ class Tabular:
 		'''
 		logger.debug(f'Disconnecting from - {self.Server.Name}')
 		return self.Server.Disconnect()
-
 	def Refresh(self,
 		Object:Union[
-			str, Table, Partition, Dict[str, Any],
-			Iterable[str, Table, Partition, Dict[str, Any]]
+			str, Table, Partition, Dict[str, Any]
 			],
 		RefreshType:RefreshType = RefreshType.Full,
 		Tracing = False) -> None:
@@ -167,7 +166,7 @@ class Tabular:
 		Refresh_Report(m.Property_Changes)
 
 		return m
-	def Update(self, UpdateOptions:UpdateOptions =UpdateOptions.ExpandFull) -> None:
+	def Update(self, UpdateOptions:UpdateOptions = UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
 		Args:
@@ -232,15 +231,15 @@ class Tabular:
 		logger.info('Adding Table to Model as backup')
 		self.Model.Tables.Add(table)
 		logger.info('Finding Necessary Relationships... Cloning...')
-		relationships = [relationship.Clone() for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == table.Name.removesuffix('_backup') or relationship.FromTable.Name == table.Name.removesuffix('_backup')]
+		relationships = [relationship.Clone() for relationship in self.Model.Relationships.GetEnumerator() if relationship.ToTable.Name == remove_suffix(table.Name,'_backup') or relationship.FromTable.Name == remove_suffix(table.Name,'_backup')]
 		logger.info('Renaming Relationships')
 		rename(relationships)
 		logger.info('Switching Relationships to Clone Table & Column')
 		for relationship in relationships:
 			logger.debug(f'Renaming - {relationship.Name}')
-			if relationship.ToTable.Name == table.Name.removesuffix('_backup'):
+			if relationship.ToTable.Name == remove_suffix(table.Name,'_backup'):
 				relationship.set_ToColumn(table.Columns.Find(f'{relationship.ToColumn.Name}_backup'))
-			elif relationship.FromTable.Name == table.Name.removesuffix('_backup'):
+			elif relationship.FromTable.Name == remove_suffix(table.Name,'_backup'):
 				relationship.set_FromColumn(table.Columns.Find(f'{relationship.FromColumn.Name}_backup'))
 			logger.debug(f'Adding {relationship.Name} to {self.Model.Name}')
 			self.Model.Relationships.Add(relationship)
@@ -315,7 +314,7 @@ class Tabular:
 		def dename(items):
 			for item in items:
 				logger.debug(f'Removing Suffix for {item.Name}')
-				item.RequestRename(f'{item.Name}'.removesuffix('_backup'))
+				item.RequestRename(remove_suffix(item.Name,'_backup'))
 				logger.debug(f'Saving Changes... for {item.Name}')
 				self.Model.SaveChanges()
 		logger.info(f'Name changes for Columns...')
@@ -329,18 +328,27 @@ class Tabular:
 		logger.info(f'Name changes for Relationships...')
 		dename(backup_relationships)
 		logger.info(f'Name changes for Backup Table...')
-		backup.RequestRename(backup.Name.removesuffix('_backup'))
+		backup.RequestRename(remove_suffix(backup.Name,'_backup'))
 		self.SaveChanges()
 		return True
-	def Query(self,Query_Str:str) -> pd.DataFrame:
+	def Query(self,Query_Str:str) -> Union[pd.DataFrame,str,int]:
 		'''	Executes Query on Model and Returns Results in Pandas DataFrame
 
 		Args:
-			Query_Str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See https://docs.microsoft.com/en-us/dax/dax-queries 
+			Query_Str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].  
+			Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.  
+			It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]
 
 		Returns:
 			pd.DataFrame: Returns dataframe with results
 		'''
+
+		if os.path.isfile(Query_Str):
+			logging.debug(f'File path detected, reading file... -> {Query_Str}',)
+			with open(Query_Str,'r') as file:
+				Query_Str = str(file.read())
+				
+		
 		logger.debug(f'Beginning to Query...')
 		try:
 			logger.debug(f'Attempting to Open Adomd Connection...')
@@ -361,6 +369,9 @@ class Tabular:
 		Query.Close()
 		logger.debug(f'Converting to Pandas DataFrame...')
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
+		if len(df) == 1 and len(df.columns) == 1:
+			logging.debug(f'Returning single value...')
+			return df.iloc[0][df.columns[0]]
 		return df
 	def Query_Every_Column(self,query_function:str='COUNTROWS(VALUES(_))') -> pd.DataFrame:
 		'''This will dynamically create a query to pull all columns from the model and run the query function.
