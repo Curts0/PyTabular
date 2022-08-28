@@ -110,14 +110,18 @@
 <pre><code class="language-python">    import pytabular
     model = pytabular.Tabular(CONNECTION_STR)
 </code></pre>
-<p>DAX Query</p>
-<pre><code class="language-python">    model.Query(DAX_QUERY)
+<p>Query Model</p>
+<pre><code class="language-python">    #Run basic queries
+    DAX_QUERY = &quot;EVALUATE TOPN(100, 'Table1')&quot;
+    model.Query(DAX_QUERY) #returns pd.DataFrame()
 
-    #Example Dax Query
-    #EVALUATE
-    #TOPN(100,'Table1')
+    #or...
+    DMV_QUERY = &quot;select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES&quot;
+    model.Query(DMV_QUERY) #returns pd.DataFrame()
 
-    # Returns a Pandas DataFrame
+    #or...
+    SINGLE_VALUE_QUERY_EX = &quot;EVALUATE {1}&quot;
+    model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
 </code></pre>
 <p>See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh Tables and Partitions</a>.</p>
 <pre><code class="language-python">    #You have a few options when refreshing. 
@@ -215,5 +219,5 @@
 
 <!--
 MkDocs version : 1.3.1
-Build Date UTC : 2022-08-26 16:45:03.080686+00:00
+Build Date UTC : 2022-08-28 19:54:18.837897+00:00
 -->

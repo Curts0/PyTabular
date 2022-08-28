@@ -73,6 +73,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#bpa_violations_to_df">BPA_Violations_To_DF</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#last_x_interval">Last_X_Interval</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -156,6 +158,31 @@ If group_partition == True and the table has multiple partitions, then df.groupb
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Super simple right now. Just splits into two columns.. The object in violation and the rule.</li>
+</ul>
+<hr />
+<h3 id="last_x_interval">Last_X_Interval</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L67">source</a></p>
+<pre><code class="language-python">.Last_X_Interval(
+   Model: pytabular.Tabular, Measure: Union[str, pytabular.pytabular.Measure],
+   Column_Name: Union[str, None] = None,
+   Date_Column_Identifier: str = &quot;'Date'[DATE_DTE_KEY]&quot;,
+   Number_Of_Intervals: int = 90, Interval: str = 'DAY'
+)
+</code></pre>
+<hr />
+<p>Pulls the Last X Interval (Ex Last 90 Days) of a specific measure.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>Model</strong> (pytabular.Tabular) : Tabular Model to perform query on.</li>
+<li><strong>Measure</strong> (Union[str,pytabular.pytabular.Measure]) : Measure to query. If string, will first check for a measure in the model with that name, otherwise will assume it is a DAX Expression (Ex SUM(FactTable[ColumnValue]) ) and perform that as expression</li>
+<li><strong>Column_Name</strong> (Union[str,None], optional) : Column Name to be outputted in DataFrame. You can provide your own otherwise will take from the Measure Name. Defaults to "Result".</li>
+<li><strong>Date_Column_Identifier</strong> (str, optional) : Date column dax identifier. Defaults to "'Date'[DATE_DTE_KEY]".</li>
+<li><strong>Number_Of_Intervals</strong> (int, optional) : This is used to plug in the variables for <a href="https://docs.microsoft.com/en-us/dax/datesinperiod-function-dax">DATESINPERIOD</a>. Defaults to 90.</li>
+<li><strong>Interval</strong> (str, optional) : Sames as Number_Of_Intervals. Used to plug in parameters of DAX function <a href="https://docs.microsoft.com/en-us/dax/datesinperiod-function-dax">DATESINPERIOD</a>. Defaults to "DAY". Possible options are "DAY", "MONTH", "QUARTER", and "YEAR"</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Pandas DataFrame of results.</li>
 </ul>
               
             </div>
