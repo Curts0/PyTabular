@@ -3,7 +3,7 @@ from pathlib import Path
 logger = logging.getLogger('PyTabular')
 
 logger.debug(f'Importing Microsoft.AnalysisServices.Tabular')
-from Microsoft.AnalysisServices.Tabular import Server, RefreshType, ColumnType, Table, DataColumn, Partition, MPartitionSource
+from Microsoft.AnalysisServices.Tabular import Server, RefreshType, ColumnType, Table, DataColumn, Partition, MPartitionSource, Measure
 logger.debug(f'Importing Microsoft.AnalysisServices.AdomdClient')
 from Microsoft.AnalysisServices.AdomdClient import (AdomdCommand, AdomdConnection)
 logger.debug(f'Importing Microsoft.AnalysisServices')

@@ -26,7 +26,7 @@ clr.AddReference('Microsoft.AnalysisServices')
 
 logger.debug(f"Importing specifics in module...")
 from . pytabular import Tabular
-from . basic_checks import Return_Zero_Row_Tables, Table_Last_Refresh_Times, BPA_Violations_To_DF
+from . basic_checks import Return_Zero_Row_Tables, Table_Last_Refresh_Times, BPA_Violations_To_DF, Last_X_Interval
 from . logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype
 from . tabular_tracing import Base_Trace, Refresh_Trace
 from . tabular_editor import Tabular_Editor

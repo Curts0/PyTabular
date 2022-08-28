@@ -32,6 +32,7 @@ pages:
       - Return_Zero_Row_Tables
       - Table_Last_Refresh_Times
       - BPA_Violations_To_DF
+      - Last_X_Interval
   - page: "Logic Utils.md"
     source: 'pytabular/logic_utils.py'
     functions:
