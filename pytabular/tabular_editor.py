@@ -17,7 +17,7 @@ Auto_Remove = True) -> str:
 		Auto_Remove (bool, optional): Boolean to determine auto removal of files once script exits. Defaults to True.
 
 	Returns:
-		str: _description_
+		str: File path of TabularEditor.exe
 	'''
 	logger.info(f'Downloading Tabular Editor 2...')
 	logger.info(f'From... {Download_Location}')

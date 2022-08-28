@@ -23,8 +23,8 @@ def test_database(model):
 
 @pytest.mark.parametrize("model",testing_parameters)
 def test_query(model):
-	df = model.Query('EVALUATE {1}')
-	assert df.iloc[0]['[Value]'] == 1
+	result = model.Query('EVALUATE {1}')
+	assert result == 1
 
 
 def remove_testing_table(model):

@@ -21,16 +21,20 @@ In your python environment, import pytabular and call the main Tabular Class. On
     model = pytabular.Tabular(CONNECTION_STR)
 ```
 
-DAX Query
+Query Model
 
 ```python
-    model.Query(DAX_QUERY)
-    
-    #Example Dax Query
-    #EVALUATE
-    #TOPN(100,'Table1')
+    #Run basic queries
+    DAX_QUERY = "EVALUATE TOPN(100, 'Table1')"
+    model.Query(DAX_QUERY) #returns pd.DataFrame()
 
-    # Returns a Pandas DataFrame
+    #or...
+    DMV_QUERY = "select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"
+    model.Query(DMV_QUERY) #returns pd.DataFrame()
+
+    #or...
+    SINGLE_VALUE_QUERY_EX = "EVALUATE {1}"
+    model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
 ```
 
 See [Refresh Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh).
