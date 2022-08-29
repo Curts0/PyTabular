@@ -37,3 +37,4 @@ include-package-data = true
 
 [tool.pytest.ini_options]
 filterwarnings = ["ignore::DeprecationWarning"]
+addopts = "-vv"
