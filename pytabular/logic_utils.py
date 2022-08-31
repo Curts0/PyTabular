@@ -142,3 +142,14 @@ def remove_suffix(input_string, suffix):
 	if suffix and input_string.endswith(suffix):
 		return input_string[:-len(suffix)]
 	return input_string
+
+def sql_wrap_count_around_query(original_query:str) -> str:
+	'''Simple string formating to get the total row count of a sql query.
+
+	Args:
+		original_query (str): Regular sql query to get count of.
+
+	Returns:
+		str: f"SELECT COUNT(1) FROM ({original_query}) temp_table"
+	'''	
+	return f"SELECT COUNT(1) FROM ({original_query}) temp_table"
