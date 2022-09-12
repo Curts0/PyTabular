@@ -6,7 +6,7 @@
 
 ### What is it?
 
-PyTabular is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/)
+PyTabular is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/). PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features.
 
 ### Getting Started
 
@@ -21,25 +21,49 @@ In your python environment, import pytabular and call the main Tabular Class. On
     model = pytabular.Tabular(CONNECTION_STR)
 ```
 
-DAX Query
+Query Model
 
 ```python
-    model.Query(DAX_QUERY)
-    # Returns a Pandas DataFrame
+    #Run basic queries
+    DAX_QUERY = "EVALUATE TOPN(100, 'Table1')"
+    model.Query(DAX_QUERY) #returns pd.DataFrame()
+
+    #or...
+    DMV_QUERY = "select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"
+    model.Query(DMV_QUERY) #returns pd.DataFrame()
+
+    #or...
+    SINGLE_VALUE_QUERY_EX = "EVALUATE {1}"
+    model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
 ```
 
-[Refresh Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh)
+See [Refresh Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh).
 
 ```python
-    #Can be str(table name only), Table object, Partition object, or an iterable combination of the three.
+    #You have a few options when refreshing. 
     model.Refresh('Table Name')
-    tables_to_refresh = ['Table Name 1', 'Table Name 2', <Table Class>, <Partition Class>]
-    #Queue up the tables and partitions that you want to refresh.
-    model.Refresh(tables_to_refresh)
-    #NOTE if you monitor the logs you will notice a Trace is executed on the refreshes.
+
+    #or...
+    model.Refresh(['Table1','Table2','Table3'])
+
+    #or...
+    model.Refresh(<Table Class>)
+
+    #or...
+    model.Refresh(<Partition Class>)
+
+    #or...
+    model.Refresh({'Table Name':'Partition Name'})
+
+    #or any kind of weird combination like
+    model.Refresh([{<Table Class>:<Partition Class>,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
+
+    #Add Tracing=True for simple Traces tracking the refresh.
+    model.Refresh(['Table1','Table2'], Tracing=True)
+
 ```
 
-Built In Dax Query Helpers
+Built In Dax Query Helpers. In-case you want to run some quick queries similar to what vertipaq analyzer will do when getting row counts.
 ```python
 
     #Query Every Column
@@ -57,14 +81,14 @@ Built In Dax Query Helpers
     '''
 ```
 
-Backup & Revert a Table in Memory
+Backup & Revert a Table in Memory. USE WITH CAUTION, obviously not in PROD. I have been experimenting with this concept. 
 ```python
     model.Backup_Table('TableName') #This will backup the table with surround items (columns,measures,relationships,roles,hierarchies,etc.) and will add a suffix of '_backup'
     #Make any changes to your original table and then revert or delete backup as necessary
     model.Revert_Table('TableName') #This will essentially replace your original with _backup
 ```
 
-Run BPA from TE2
+Run BPA from TE2. Roadmap to make this more robust, and allow you to run all the command line interfaces that TE2 has to offer.
 ```python
     TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
     BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json

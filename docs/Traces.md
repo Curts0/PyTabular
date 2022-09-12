@@ -2,7 +2,7 @@
 
 
 ## Base_Trace
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L10)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L11)
 ```python 
 Base_Trace(
    Tabular_Class, Trace_Events: List[TraceEvent],
@@ -29,7 +29,7 @@ Generates Trace to be run on Server. This is the base class to customize the typ
 
 
 ### .Build
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L37)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L38)
 ```python
 .Build()
 ```
@@ -44,7 +44,7 @@ Run on initialization. This will take the inputed arguments for the class and at
 
 
 ### .Arguments
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L62)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L63)
 ```python
 .Arguments(
    Trace_Events: List[TraceEvent], Trace_Event_Columns: List[TraceColumn],
@@ -54,7 +54,7 @@ Run on initialization. This will take the inputed arguments for the class and at
 
 
 ### .Add
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L65)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L66)
 ```python
 .Add()
 ```
@@ -69,7 +69,7 @@ Runs on initialization. Adds built Trace to the Server.
 
 
 ### .Update
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L74)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L75)
 ```python
 .Update()
 ```
@@ -84,7 +84,7 @@ Runs on initialization. Syncs with Server.
 
 
 ### .Start
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L83)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L84)
 ```python
 .Start()
 ```
@@ -99,7 +99,7 @@ Call when you want to start the Trace
 
 
 ### .Stop
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L92)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L93)
 ```python
 .Stop()
 ```
@@ -114,7 +114,7 @@ Call when you want to stop the Trace
 
 
 ### .Drop
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L101)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L102)
 ```python
 .Drop()
 ```
@@ -129,7 +129,7 @@ Call when you want to drop the Trace
 
 
 ### .Query_DMV_For_Event_Categories
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L110)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L111)
 ```python
 .Query_DMV_For_Event_Categories()
 ```
@@ -147,7 +147,7 @@ Internal use. Called during the building process to locate allowed columns for e
 
 
 ## Refresh_Trace
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L138)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L139)
 ```python 
 Refresh_Trace(
    Tabular_Class,
@@ -158,7 +158,7 @@ Refresh_Trace(
    TraceColumn.CurrentTime, TraceColumn.ObjectName, TraceColumn.ObjectPath,
    TraceColumn.DatabaseName, TraceColumn.SessionID, TraceColumn.TextData,
    TraceColumn.EventClass, TraceColumn.ProgressTotal],
-   Handler: Callable = default_refresh_handler
+   Handler: Callable = refresh_handler
 )
 ```
 

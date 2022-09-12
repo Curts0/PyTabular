@@ -2,7 +2,7 @@
 
 
 ## BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/best_practice_analyzer.py\#L34)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/best_practice_analyzer.py\#L35)
 ```python 
 BPA(
    File_Path: str = 'Default'
@@ -18,7 +18,7 @@ Setting BPA Class for future work...
 
 
 ### Download_BPA_File
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/best_practice_analyzer.py\#L8)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/best_practice_analyzer.py\#L9)
 ```python
 .Download_BPA_File(
    Download_Location: str = 'https: //raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json',
