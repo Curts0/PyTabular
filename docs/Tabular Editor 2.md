@@ -2,7 +2,7 @@
 
 
 ## Tabular_Editor
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_editor.py\#L38)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_editor.py\#L39)
 ```python 
 Tabular_Editor(
    EXE_File_Path: str = 'Default'
@@ -18,7 +18,7 @@ Setting Tabular_Editor Class for future work.
 
 
 ### Download_Tabular_Editor
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_editor.py\#L8)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_editor.py\#L9)
 ```python
 .Download_Tabular_Editor(
    Download_Location: str = 'https: //github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip',
@@ -39,5 +39,5 @@ Runs a request.get() to retrieve the zip file from web. Will unzip response and 
 
 **Returns**
 
-* **str**  : _description_
+* **str**  : File path of TabularEditor.exe
 

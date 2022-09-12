@@ -23,8 +23,9 @@ def test_database(model):
 
 @pytest.mark.parametrize("model",testing_parameters)
 def test_query(model):
-	result = model.Query('EVALUATE {1}')
-	assert result == 1
+	int_result = model.Query('EVALUATE {1}')
+	text_result = model.Query('EVALUATE {"Hello World"}')
+	assert int_result == 1 and text_result == 'Hello World'
 
 
 def remove_testing_table(model):
@@ -41,7 +42,8 @@ def test_pre_table_checks(model):
 @pytest.mark.parametrize("model",testing_parameters)
 def test_create_table(model):
 	df = pd.DataFrame(data={'col1':[1,2,3],'col2':['four','five','six']})
-	assert model.Create_Table(df,testingtable)
+	model.Create_Table(df,testingtable)
+	assert len(model.Query(f"EVALUATE {testingtable}")) == 3
 
 @pytest.mark.parametrize("model",testing_parameters)
 def test_backingup_table(model):

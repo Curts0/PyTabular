@@ -130,7 +130,7 @@ class Base_Trace:
 		return Event_Categories
 
 
-def default_refresh_handler(source, args):
+def refresh_handler(source, args):
 	if args.EventSubclass == TraceEventSubclass.ReadData:
 		logger.debug(f'{args.ProgressTotal} - {args.ObjectPath}')
 	else:
@@ -144,5 +144,5 @@ class Refresh_Trace(Base_Trace):
 	'''	
 	def __init__(self, Tabular_Class, Trace_Events: List[TraceEvent] = [TraceEventClass.ProgressReportBegin,TraceEventClass.ProgressReportCurrent,TraceEventClass.ProgressReportEnd,TraceEventClass.ProgressReportError],
 	Trace_Event_Columns: List[TraceColumn] = [TraceColumn.EventSubclass,TraceColumn.CurrentTime, TraceColumn.ObjectName, TraceColumn.ObjectPath, TraceColumn.DatabaseName, TraceColumn.SessionID, TraceColumn.TextData, TraceColumn.EventClass, TraceColumn.ProgressTotal],
-	Handler: Callable = default_refresh_handler) -> None:
+	Handler: Callable = refresh_handler) -> None:
 		super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)

@@ -2,7 +2,7 @@
 
 
 ### ticks_to_datetime
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L11)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L12)
 ```python
 .ticks_to_datetime(
    ticks: int
@@ -27,7 +27,7 @@ Converts a C# System DateTime Tick into a Python DateTime
 
 
 ### pandas_datatype_to_tabular_datatype
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L22)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L23)
 ```python
 .pandas_datatype_to_tabular_datatype(
    df: pd.DataFrame
@@ -52,7 +52,7 @@ WiP takes dataframe columns and gets respective tabular column datatype.  ([NumP
 
 
 ### pd_dataframe_to_m_expression
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L76)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L77)
 ```python
 .pd_dataframe_to_m_expression(
    df: pd.DataFrame
@@ -94,7 +94,7 @@ Source
 
 
 ### remove_folder_and_contents
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L120)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L121)
 ```python
 .remove_folder_and_contents(
    folder_location
@@ -108,4 +108,30 @@ Internal used in tabular_editor.py and best_practice_analyzer.py.
 **Args**
 
 * **folder_location** (str) : Folder path to remove directory and contents.
+
+
+----
+
+
+### remove_suffix
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L132)
+```python
+.remove_suffix(
+   input_string, suffix
+)
+```
+
+---
+Adding for >3.9 compatiblity. (Stackoverflow Answer)[https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix]
+
+
+**Args**
+
+* **input_string** (str) : input string to remove suffix from
+* **suffix** (str) : suffix to be removed
+
+
+**Returns**
+
+* **str**  : input_str with suffix removed
 

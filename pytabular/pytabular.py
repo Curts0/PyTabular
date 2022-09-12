@@ -17,6 +17,8 @@ import pandas as pd
 import os
 import subprocess
 import atexit
+
+
 from logic_utils import pd_dataframe_to_m_expression, pandas_datatype_to_tabular_datatype, ticks_to_datetime, remove_suffix
 from tabular_tracing import Refresh_Trace
 
@@ -349,7 +351,6 @@ class Tabular:
 				Query_Str = str(file.read())
 				
 		
-		logger.debug(f'Beginning to Query...')
 		try:
 			logger.debug(f'Attempting to Open Adomd Connection...')
 			self.DaxConnection.Open()
@@ -357,7 +358,7 @@ class Tabular:
 		except: 
 			logger.debug(f'Connection skipped already connected...')
 			pass
-		logger.info(f'Querying Model with Query...')
+		logger.info(f'Querying Model...')
 		Query =  AdomdCommand(Query_Str, self.DaxConnection).ExecuteReader()
 		logger.debug(f'Determining Field Count...')
 		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
