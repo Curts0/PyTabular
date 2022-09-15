@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python_tabular"
-version = "0.0.91"
+version = "0.0.90"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
