@@ -92,5 +92,5 @@ Run BPA from TE2. Roadmap to make this more robust, and allow you to run all the
 ```python
     TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
     BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
-    model.Analyze_BPA(TE2.EXE_Path,BPA.Location) #This will output a list of BPA violations...
+    model.Analyze_BPA(TE2.EXE,BPA.Location) #This will output a list of BPA violations...
 ```
