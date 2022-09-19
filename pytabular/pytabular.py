@@ -24,14 +24,23 @@ from tabular_tracing import Refresh_Trace
 
 
 class Tabular:
-	'''Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+	'''Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet). You can use this class as your main way to interact with your model.
 
 	Args:
 		CONNECTION_STR (str): Valid [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions) for connecting to a Tabular Model.
+	Attributes:
+		Server (Server): See [Server MS Docs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet).
+		Catalog (str): Name of Database. See [Catalog MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.connectioninfo.catalog?view=analysisservices-dotnet#microsoft-analysisservices-connectioninfo-catalog).
+		Model (Model): See [Model MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.model?view=analysisservices-dotnet).
+		AdomdConnection (AdomdConnection): For querying. See [AdomdConnection MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomdconnection?view=analysisservices-dotnet). Connection made from parts of the originally provided connection string.
+		Tables (List[Table]): Easy access list of tables from model. See [Table MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
+		Columns (List[Column]): Easy access list of columns from model. See [Column MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet).
+		Partitions (List[Partition]): Easy access list of partitions from model. See [Partition MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.partition?view=analysisservices-dotnet).
+		Measures (List[Measure]): Easy access list of measures from model. See [Measure MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table.measures?view=analysisservices-dotnet#microsoft-analysisservices-tabular-table-measures).
 	'''	
 	def __init__(self,CONNECTION_STR:str):
 		logger.debug(f'Initializing Tabular Class')
-		self.Server = Server() #[Server](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet)
+		self.Server = Server()
 		self.Server.Connect(CONNECTION_STR)
 		logger.info(f'Connected to Server - {self.Server.Name}')
 		self.Catalog = self.Server.ConnectionInfo.Catalog
@@ -39,14 +48,16 @@ class Tabular:
 		try:
 			self.Database = [database for database in self.Server.Databases.GetEnumerator() if database.Name == self.Catalog][0]
 		except:
-			logger.error(f'Unable to find Database... {self.Catalog}')
+			err_msg = f'Unable to find Database... {self.Catalog}'
+			logger.error(err_msg)
+			raise Exception(err_msg)
 		logger.info(f'Connected to Database - {self.Database.Name}')
 		self.CompatibilityLevel: int = self.Database.CompatibilityLevel
 		self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
 		self.Model = self.Database.Model
 		logger.info(f'Connected to Model - {self.Model.Name}')
-		self.DaxConnection = AdomdConnection()
-		self.DaxConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
+		self.AdomdConnection = AdomdConnection()
+		self.AdomdConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
 		self.Reload_Model_Info()
 		logger.debug(f'Class Initialization Completed')
 		logger.debug(f'Registering Disconnect on Termination...')
@@ -353,13 +364,13 @@ class Tabular:
 		
 		try:
 			logger.debug(f'Attempting to Open Adomd Connection...')
-			self.DaxConnection.Open()
+			self.AdomdConnection.Open()
 			logger.debug(f'Connected!')
 		except: 
 			logger.debug(f'Connection skipped already connected...')
 			pass
 		logger.info(f'Querying Model...')
-		Query =  AdomdCommand(Query_Str, self.DaxConnection).ExecuteReader()
+		Query =  AdomdCommand(Query_Str, self.AdomdConnection).ExecuteReader()
 		logger.debug(f'Determining Field Count...')
 		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
 		Results = list()
@@ -428,10 +439,10 @@ class Tabular:
 		Returns:
 			List[str]: Assuming no failure, will return list of BPA violations. Else will return error from command line.
 		'''		
-		#Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.DaxConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
+		#Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.AdomdConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
 		#start /wait 
 		logger.debug(f'Beginning request to talk with TE2 & Find BPA...')
-		cmd = f"{Tabular_Editor_Exe} \"Provider=MSOLAP;{self.DaxConnection.ConnectionString}\" {self.Database.Name} -B \"{os.getcwd()}\\Model.bim\" -A {Best_Practice_Analyzer} -V/?"
+		cmd = f"{Tabular_Editor_Exe} \"Provider=MSOLAP;{self.AdomdConnection.ConnectionString}\" {self.Database.Name} -B \"{os.getcwd()}\\Model.bim\" -A {Best_Practice_Analyzer} -V/?"
 		logger.debug(f'Command Generated')
 		logger.debug(f'Submitting Command...')
 		sp = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE,stderr=subprocess.PIPE,universal_newlines=True)
