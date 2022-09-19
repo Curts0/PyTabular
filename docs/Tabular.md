@@ -11,7 +11,7 @@ Tabular(
 
 
 ---
-Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet)
+Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet). You can use this class as your main way to interact with your model.
 
 
 **Args**
@@ -19,12 +19,24 @@ Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https:
 * **CONNECTION_STR** (str) : Valid [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions) for connecting to a Tabular Model.
 
 
+**Attributes**
+
+* **Server** (Server) : See [Server MS Docs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet).
+* **Catalog** (str) : Name of Database. See [Catalog MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.connectioninfo.catalog?view=analysisservices-dotnet#microsoft-analysisservices-connectioninfo-catalog).
+* **Model** (Model) : See [Model MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.model?view=analysisservices-dotnet).
+* **AdomdConnection** (AdomdConnection) : For querying. See [AdomdConnection MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomdconnection?view=analysisservices-dotnet). Connection made from parts of the originally provided connection string.
+* **Tables** (List[Table]) : Easy access list of tables from model. See [Table MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
+* **Columns** (List[Column]) : Easy access list of columns from model. See [Column MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet).
+* **Partitions** (List[Partition]) : Easy access list of partitions from model. See [Partition MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.partition?view=analysisservices-dotnet).
+* **Measures** (List[Measure]) : Easy access list of measures from model. See [Measure MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table.measures?view=analysisservices-dotnet#microsoft-analysisservices-tabular-table-measures).
+
+
 
 **Methods:**
 
 
 ### .Reload_Model_Info
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L58)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L69)
 ```python
 .Reload_Model_Info()
 ```
@@ -39,7 +51,7 @@ Runs on __init__ iterates through details, can be called after any model changes
 
 
 ### .Disconnect
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L70)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L81)
 ```python
 .Disconnect()
 ```
@@ -54,7 +66,7 @@ Disconnects from Model
 
 
 ### .Refresh
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L78)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L89)
 ```python
 .Refresh(
    Object: Union[str, Table, Partition, Dict[str, Any]],
@@ -89,7 +101,7 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 
 
 ### .Update
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L171)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L182)
 ```python
 .Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
@@ -111,14 +123,14 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 
 
 ### .SaveChanges
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L182)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L193)
 ```python
 .SaveChanges()
 ```
 
 
 ### .Backup_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L204)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L215)
 ```python
 .Backup_Table(
    table_str: str
@@ -142,7 +154,7 @@ Refresh is performed from source during backup.
 
 
 ### .Revert_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L271)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L282)
 ```python
 .Revert_Table(
    table_str: str
@@ -170,7 +182,7 @@ Example scenario ->
 
 
 ### .Query
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L336)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L347)
 ```python
 .Query(
    Query_Str: str
@@ -194,7 +206,7 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 
 
 ### .Query_Every_Column
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L377)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L388)
 ```python
 .Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
@@ -217,7 +229,7 @@ This will dynamically create a query to pull all columns from the model and run 
 
 
 ### .Query_Every_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L399)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L410)
 ```python
 .Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
@@ -240,7 +252,7 @@ It will replace the _ with the table to run.
 
 
 ### .Analyze_BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L419)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L430)
 ```python
 .Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
@@ -265,7 +277,7 @@ Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
 
 
 ### .Create_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L443)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L454)
 ```python
 .Create_Table(
    df: pd.DataFrame, table_name: str
