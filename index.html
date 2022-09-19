@@ -99,18 +99,20 @@
               
                 <h1 id="pytabular">PyTabular</h1>
 <p><a href="https://badge.fury.io/py/python-tabular"><img alt="PyPI version" src="https://badge.fury.io/py/python-tabular.svg" /></a>
+<a href="https://pepy.tech/project/python-tabular"><img alt="Downloads" src="https://pepy.tech/badge/python-tabular" /></a>
 <a href="https://github.com/Curts0/PyTabular/actions/workflows/readthedocs.yml"><img alt="readthedocs" src="https://github.com/Curts0/PyTabular/actions/workflows/readthedocs.yml/badge.svg" /></a>
 <a href="https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment/badge.svg" /></a></p>
 <h3 id="what-is-it">What is it?</h3>
-<p>PyTabular is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. The package should have the dll files included when you import it. See <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features.</p>
+<p>PyTabular (python-tabular in <a href="https://pypi.org/project/python-tabular/">pypi</a>) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. The package should have the dll files included when you import it. See <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.11 and run those tests through a local AAS and Gen2 model.</p>
 <h3 id="getting-started">Getting Started</h3>
-<pre><code class="language-powershell">python3 -m pip install python_tabular
+<p>See the <a href="https://pypi.org/project/python-tabular/">Pypi project</a> for available version.</p>
+<pre><code class="language-powershell">python3 -m pip install python-tabular
 </code></pre>
 <p>In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.</p>
 <pre><code class="language-python">    import pytabular
     model = pytabular.Tabular(CONNECTION_STR)
 </code></pre>
-<p>Query Model</p>
+<p>You can query your models with the Query method from your tabular class. For Dax Queries, it will need the full Dax syntax. See <a href="https://dax.guide/st/evaluate/">EVALUATE example</a>. This will return a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>. If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See <a href="https://curts0.github.io/PyTabular/Tabular/#query">PyTabular Docs for Query</a>.</p>
 <pre><code class="language-python">    #Run basic queries
     DAX_QUERY = &quot;EVALUATE TOPN(100, 'Table1')&quot;
     model.Query(DAX_QUERY) #returns pd.DataFrame()
@@ -123,7 +125,7 @@
     SINGLE_VALUE_QUERY_EX = &quot;EVALUATE {1}&quot;
     model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
 </code></pre>
-<p>See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh Tables and Partitions</a>.</p>
+<p>Refresh method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">PyTabular Docs for Refreshing Tables and Partitions</a>. Most basic way to refresh is input the table name string. The method will search for table and output exeption if unable to find it. For partitions you will need a key, value combination. Example, {'Table1':'Partition1'}. You can also take the key value pair and iterate through a group of partitions. Example, {'Table1':['Partition1','Partition2']}. Rather than providing a string, you can also input the actual class. See below for those examples, and you can acess them from the built in attributes self.Tables, self.Partitions or explore through the .Net classes yourself in self.Model.Tables.</p>
 <pre><code class="language-python">    #You have a few options when refreshing. 
     model.Refresh('Table Name')
 
@@ -155,19 +157,19 @@
     model.Query_Every_Table() #Will return pd.DataFrame()
 
     '''
-    NOTE, notice the default values for the query_function argument. 
+    NOTE the default values for the query_function argument. 
     Query_Every_Column will get COUNTROWS(VALUES(_))
     and Query_Every_Table() will get COUNTROWS(_)
     with '_' being replaced with the dax identifier to the table or column in question.
     You can replace this str with anything you want. For example output the MIN(_) or MAX(_) of each column rather than the default queries.
     '''
 </code></pre>
-<p>Backup &amp; Revert a Table in Memory. USE WITH CAUTION, obviously not in PROD. I have been experimenting with this concept. </p>
+<p>Backup &amp; Revert a Table in Memory. USE WITH CAUTION, obviously not in PROD. I have been experimenting with this concept. Made for selfish reason. Will probably get removed and I'll keep in my own local version.</p>
 <pre><code class="language-python">    model.Backup_Table('TableName') #This will backup the table with surround items (columns,measures,relationships,roles,hierarchies,etc.) and will add a suffix of '_backup'
     #Make any changes to your original table and then revert or delete backup as necessary
     model.Revert_Table('TableName') #This will essentially replace your original with _backup
 </code></pre>
-<p>Run BPA from TE2. Roadmap to make this more robust, and allow you to run all the command line interfaces that TE2 has to offer.</p>
+<p>Run BPA from TE2. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities. Two classes exist in the model in very basic form write now. But you can call pytabular.TE2() to download or specify and existing TE2 exe. The same goes for pytabular.BPA(). Input your own location for a BPA json file or will download one. Roadmap to make this more flexible.</p>
 <pre><code class="language-python">    TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
     BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
     model.Analyze_BPA(TE2.EXE,BPA.Location) #This will output a list of BPA violations...
@@ -219,5 +221,5 @@
 
 <!--
 MkDocs version : 1.3.1
-Build Date UTC : 2022-09-15 21:43:52.660031+00:00
+Build Date UTC : 2022-09-19 17:45:43.916145+00:00
 -->
