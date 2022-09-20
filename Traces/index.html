@@ -67,8 +67,6 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#drop">.Drop</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#query_dmv_for_event_categories">.Query_DMV_For_Event_Categories</a>
-    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#refresh_trace">Refresh_Trace</a>
@@ -200,16 +198,6 @@
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>None</strong>  : Returns None. Unless unsuccessful then it will return the error from Server.</li>
-</ul>
-<h3 id="query_dmv_for_event_categories">.Query_DMV_For_Event_Categories</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L111">source</a></p>
-<pre><code class="language-python">.Query_DMV_For_Event_Categories()
-</code></pre>
-<hr />
-<p>Internal use. Called during the building process to locate allowed columns for event categories. This is done by executing a Tabular().Query() on the DISCOVER_EVENT_CATEGORIES table in the DMV. Then the function will parse the results, as it is xml inside of rows.</p>
-<p><strong>Returns</strong></p>
-<ul>
-<li><strong><em>type</em></strong>  : <em>description</em></li>
 </ul>
 <hr />
 <h2 id="refresh_trace">Refresh_Trace</h2>

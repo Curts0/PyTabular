@@ -47,6 +47,20 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#if-blank-table-then-refresh-table">If blank table, then refresh table.</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#sneak-in-a-refresh">Sneak in a refresh.</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#show-refresh-times-in-model">Show refresh times in model.</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#if-bpa-violation-then-revert-deployment">If BPA Violation, then revert deployment.</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#backup-revert-a-table">Backup &amp; Revert a Table.</a>
+    </li>
+        </ul>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -109,70 +123,89 @@
 <pre><code class="language-powershell">python3 -m pip install python-tabular
 </code></pre>
 <p>In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.</p>
-<pre><code class="language-python">    import pytabular
-    model = pytabular.Tabular(CONNECTION_STR)
+<pre><code class="language-python">import pytabular
+model = pytabular.Tabular(CONNECTION_STR)
 </code></pre>
 <p>You can query your models with the Query method from your tabular class. For Dax Queries, it will need the full Dax syntax. See <a href="https://dax.guide/st/evaluate/">EVALUATE example</a>. This will return a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>. If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See <a href="https://curts0.github.io/PyTabular/Tabular/#query">PyTabular Docs for Query</a>.</p>
-<pre><code class="language-python">    #Run basic queries
-    DAX_QUERY = &quot;EVALUATE TOPN(100, 'Table1')&quot;
-    model.Query(DAX_QUERY) #returns pd.DataFrame()
+<pre><code class="language-python">#Run basic queries
+DAX_QUERY = &quot;EVALUATE TOPN(100, 'Table1')&quot;
+model.Query(DAX_QUERY) #returns pd.DataFrame()
 
-    #or...
-    DMV_QUERY = &quot;select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES&quot;
-    model.Query(DMV_QUERY) #returns pd.DataFrame()
+#or...
+DMV_QUERY = &quot;select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES&quot;
+model.Query(DMV_QUERY) #returns pd.DataFrame()
 
-    #or...
-    SINGLE_VALUE_QUERY_EX = &quot;EVALUATE {1}&quot;
-    model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
+#or...
+SINGLE_VALUE_QUERY_EX = &quot;EVALUATE {1}&quot;
+model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
 </code></pre>
 <p>Refresh method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">PyTabular Docs for Refreshing Tables and Partitions</a>. Most basic way to refresh is input the table name string. The method will search for table and output exeption if unable to find it. For partitions you will need a key, value combination. Example, {'Table1':'Partition1'}. You can also take the key value pair and iterate through a group of partitions. Example, {'Table1':['Partition1','Partition2']}. Rather than providing a string, you can also input the actual class. See below for those examples, and you can acess them from the built in attributes self.Tables, self.Partitions or explore through the .Net classes yourself in self.Model.Tables.</p>
-<pre><code class="language-python">    #You have a few options when refreshing. 
-    model.Refresh('Table Name')
+<pre><code class="language-python">#You have a few options when refreshing. 
+model.Refresh('Table Name')
 
-    #or...
-    model.Refresh(['Table1','Table2','Table3'])
+#or...
+model.Refresh(['Table1','Table2','Table3'])
 
-    #or...
-    model.Refresh(&lt;Table Class&gt;)
+#or...
+model.Refresh(&lt;Table Class&gt;)
 
-    #or...
-    model.Refresh(&lt;Partition Class&gt;)
+#or...
+model.Refresh(&lt;Partition Class&gt;)
 
-    #or...
-    model.Refresh({'Table Name':'Partition Name'})
+#or...
+model.Refresh({'Table Name':'Partition Name'})
 
-    #or any kind of weird combination like
-    model.Refresh([{&lt;Table Class&gt;:&lt;Partition Class&gt;,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
+#or any kind of weird combination like
+model.Refresh([{&lt;Table Class&gt;:&lt;Partition Class&gt;,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
 
-    #Add Tracing=True for simple Traces tracking the refresh.
-    model.Refresh(['Table1','Table2'], Tracing=True)
-
+#Add Tracing=True for simple Traces tracking the refresh.
+model.Refresh(['Table1','Table2'], Tracing=True)
 </code></pre>
-<p>Built In Dax Query Helpers. In-case you want to run some quick queries similar to what vertipaq analyzer will do when getting row counts.</p>
-<pre><code class="language-python">
-    #Query Every Column
-    model.Query_Every_Column() #Will return pd.DataFrame()
-
-    #Query Every Table
-    model.Query_Every_Table() #Will return pd.DataFrame()
-
-    '''
-    NOTE the default values for the query_function argument. 
-    Query_Every_Column will get COUNTROWS(VALUES(_))
-    and Query_Every_Table() will get COUNTROWS(_)
-    with '_' being replaced with the dax identifier to the table or column in question.
-    You can replace this str with anything you want. For example output the MIN(_) or MAX(_) of each column rather than the default queries.
-    '''
+<h3 id="use-cases">Use Cases</h3>
+<h5 id="if-blank-table-then-refresh-table">If blank table, then refresh table.</h5>
+<p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#return_zero_row_tables">Return_Zero_Row_Tables</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class.</p>
+<pre><code class="language-python">import pytabular
+model = pytabular.Tabular(CONNECTION_STR)
+tables = pytabular.Return_Zero_Row_Tables()
+if len(tables) &gt; 0:
+    model.Refresh(tables, Tracing = True) #Add a trace in there for some fun.
 </code></pre>
-<p>Backup &amp; Revert a Table in Memory. USE WITH CAUTION, obviously not in PROD. I have been experimenting with this concept. Made for selfish reason. Will probably get removed and I'll keep in my own local version.</p>
-<pre><code class="language-python">    model.Backup_Table('TableName') #This will backup the table with surround items (columns,measures,relationships,roles,hierarchies,etc.) and will add a suffix of '_backup'
-    #Make any changes to your original table and then revert or delete backup as necessary
-    model.Revert_Table('TableName') #This will essentially replace your original with _backup
+<h5 id="sneak-in-a-refresh">Sneak in a refresh.</h5>
+<p>This will use the method <a href="https://curts0.github.io/PyTabular/Tabular/#is_process">Is_Process</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class. It will check the DMV to see if any jobs are currently running classified as processing.</p>
+<pre><code class="language-python">import pytabular
+model = pytabular.Tabular(CONNECTION_STR)
+if model.Is_Process():
+    #do what you want if there is a refresh happening
+else:
+    model.Refresh(TABLES_OR_PARTITIONS_TO_REFRESH)
 </code></pre>
-<p>Run BPA from TE2. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities. Two classes exist in the model in very basic form write now. But you can call pytabular.TE2() to download or specify and existing TE2 exe. The same goes for pytabular.BPA(). Input your own location for a BPA json file or will download one. Roadmap to make this more flexible.</p>
-<pre><code class="language-python">    TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
-    BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
-    model.Analyze_BPA(TE2.EXE,BPA.Location) #This will output a list of BPA violations...
+<h5 id="show-refresh-times-in-model">Show refresh times in model.</h5>
+<p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#table_last_refresh_times">Table_Last_Refresh_Times</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#create_table">Create_Table</a> from the Tabular class. It will search through the model for all tables and partitions and pull the 'RefreshedTime' property from it. It will return results into a pandas dataframe, which will then be converted into an M expression used for a new table.</p>
+<pre><code class="language-python">import pytabular
+model = pytabular.Tabular(CONNECTION_STR)
+df = pytabular.Table_Last_Refresh_Times(model, group_partition = False)
+model.Create_Table(df, 'Refresh Times')
+</code></pre>
+<h5 id="if-bpa-violation-then-revert-deployment">If BPA Violation, then revert deployment.</h5>
+<p>Uses a few things. First the <a href="https://curts0.github.io/PyTabular/Best%20Practice%20Analyzer/#bpa">BPA Class</a>, then the <a href="https://curts0.github.io/PyTabular/Tabular%20Editor%202/">TE2 Class</a>, and will finish with the <a href="https://curts0.github.io/PyTabular/Tabular/#analyze_bpa">Analyze_BPA</a> method. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities.</p>
+<pre><code class="language-python">import pytabular
+model = pytabular.Tabular(CONNECTION_STR)
+TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
+BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+results = model.Analyze_BPA(TE2.EXE,BPA.Location)
+
+if len(results) &gt; 0:
+    #Revert deployment here!
+</code></pre>
+<h5 id="backup-revert-a-table">Backup &amp; Revert a Table.</h5>
+<p>USE WITH CAUTION, obviously not in PROD. I have been experimenting with this concept. Made for selfish reasons. Will probably get removed and I'll keep in my own local version. But fun to work with. Uses two methods. <a href="https://curts0.github.io/PyTabular/Tabular/#backup_table">Backup_Table</a> and <a href="https://curts0.github.io/PyTabular/Tabular/#revert_table">Revert_Table</a></p>
+<pre><code class="language-python">import pytabular
+model = pytabular.Tabular(CONNECTION_STR)
+model.Backup_Table('TableName') #This will backup the table with surround items (columns,measures,relationships,roles,hierarchies,etc.) and will add a suffix of '_backup'
+#-----------#
+#Make any changes to your original table and then revert or delete backup as necessary
+#-----------#
+model.Revert_Table('TableName') #This will essentially replace your original with _backup
 </code></pre>
               
             </div>
@@ -221,5 +254,5 @@
 
 <!--
 MkDocs version : 1.3.1
-Build Date UTC : 2022-09-19 17:45:43.916145+00:00
+Build Date UTC : 2022-09-20 23:11:19.089408+00:00
 -->
