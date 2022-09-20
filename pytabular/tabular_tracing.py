@@ -25,7 +25,7 @@ class Base_Trace:
 		self.Trace = Trace(self.Name, self.ID)
 		logger.debug(f'Trace {self.Trace.Name} created...')
 		self.Tabular_Class = Tabular_Class
-		self.Event_Categories = self.Query_DMV_For_Event_Categories()
+		self.Event_Categories = self._Query_DMV_For_Event_Categories()
 
 		self.Trace_Events = Trace_Events
 		self.Trace_Event_Columns = Trace_Event_Columns
@@ -108,7 +108,7 @@ class Base_Trace:
 		logger.info(f'Dropping {self.Name} in {self.Tabular_Class.Server.Name}')
 		return self.Trace.Drop()
 
-	def Query_DMV_For_Event_Categories(self):
+	def _Query_DMV_For_Event_Categories(self):
 		'''Internal use. Called during the building process to locate allowed columns for event categories. This is done by executing a Tabular().Query() on the DISCOVER_EVENT_CATEGORIES table in the DMV. Then the function will parse the results, as it is xml inside of rows.
 
 		Returns:
