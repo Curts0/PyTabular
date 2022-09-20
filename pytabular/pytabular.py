@@ -78,6 +78,14 @@ class Tabular:
 		self.Measures = [measure for table in self.Tables for measure in table.Measures.GetEnumerator()]
 		self.Database.Refresh()
 		return True
+	def Is_Process(self) -> bool:
+		'''Run method to check if Processing is occurring. Will query DMV $SYSTEM.DISCOVER_JOBS to see if any processing is happening.
+
+		Returns:
+			bool: True if DMV shows Process, False if not.
+		'''		
+		_jobs_df = self.Query("select * from $SYSTEM.DISCOVER_JOBS")
+		return True if len(_jobs_df[_jobs_df['JOB_DESCRIPTION']=='Process']) > 0 else False
 	def Disconnect(self) -> bool:
 		'''Disconnects from Model
 
@@ -112,12 +120,15 @@ class Tabular:
 		'''		
 		logger.debug(f'Beginning RequestRefresh cadence...')
 
-		def Refresh_Report(Property_Changes):
+		def _Refresh_Report(Property_Changes) -> pd.DataFrame:
 			logger.debug(f'Running Refresh Report...')
+			refresh_data = []
 			for property_change in Property_Changes:
 				if isinstance(property_change.Object,Partition) and property_change.Property_Name == 'RefreshedTime':
-					logger.info(f'{property_change.Object.Table.Name} - {property_change.Object.Name} Refreshed! - {ticks_to_datetime(property_change.New_Value.Ticks).strftime("%m/%d/%Y, %H:%M:%S")}')
-			return True
+					table, partition, refreshed_time = property_change.Object.Table.Name, property_change.Object.Name, ticks_to_datetime(property_change.New_Value.Ticks)
+					logger.info(f'{table} - {partition} Refreshed! - {refreshed_time.strftime("%m/%d/%Y, %H:%M:%S")}')
+					refresh_data += [[table, partition, refreshed_time]]
+			return pd.DataFrame(refresh_data, columns=['Table','Partition','Refreshed Time'])
 				
 		def refresh_table(table:Table) -> None:
 			logging.info(f'Requesting refresh for {table.Name}')
@@ -176,9 +187,7 @@ class Tabular:
 			rt.Stop()
 			rt.Drop()
 
-		Refresh_Report(m.Property_Changes)
-
-		return m
+		return _Refresh_Report(m.Property_Changes)
 	def Update(self, UpdateOptions:UpdateOptions = UpdateOptions.ExpandFull) -> None:
 		'''[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
 
