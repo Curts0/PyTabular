@@ -128,21 +128,6 @@ Call when you want to drop the Trace
 * **None**  : Returns None. Unless unsuccessful then it will return the error from Server.
 
 
-### .Query_DMV_For_Event_Categories
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/tabular_tracing.py\#L111)
-```python
-.Query_DMV_For_Event_Categories()
-```
-
----
-Internal use. Called during the building process to locate allowed columns for event categories. This is done by executing a Tabular().Query() on the DISCOVER_EVENT_CATEGORIES table in the DMV. Then the function will parse the results, as it is xml inside of rows.
-
-
-**Returns**
-
-* **_type_**  : _description_
-
-
 ----
 
 
