@@ -34,8 +34,8 @@ def test_basic_query(model):
 
 @pytest.mark.parametrize("model",testing_parameters)
 def test_file_query(model):
-	singlevaltest = 'test\\singlevaltest.dax'
-	dfvaltest = 'test\\dfvaltest.dax'
+	singlevaltest = l.SINGLEVALTESTPATH
+	dfvaltest = l.DFVALTESTPATH
 	dfreplication = pd.DataFrame({'[Value1]':(1,3),'[Value2]':(2,4)})
 	assert model.Query(singlevaltest) == 1 and model.Query(dfvaltest).equals(dfreplication)
 
