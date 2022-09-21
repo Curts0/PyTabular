@@ -10,6 +10,10 @@ testing_parameters = [(aas),(gen2)]
 testingtable = 'PyTestTable'
 
 @pytest.mark.parametrize("model",testing_parameters)
+def test_sanity_check(model):
+	assert 1 == 1
+
+@pytest.mark.parametrize("model",testing_parameters)
 def test_connection(model):
 	'''
 	Does a quick check to the Tabular Class
@@ -22,10 +26,18 @@ def test_database(model):
 	assert isinstance(model.Database,Database)
 
 @pytest.mark.parametrize("model",testing_parameters)
-def test_query(model):
+def test_basic_query(model):
 	int_result = model.Query('EVALUATE {1}')
 	text_result = model.Query('EVALUATE {"Hello World"}')
 	assert int_result == 1 and text_result == 'Hello World'
+
+
+@pytest.mark.parametrize("model",testing_parameters)
+def test_file_query(model):
+	singlevaltest = 'test\\singlevaltest.dax'
+	dfvaltest = 'test\\dfvaltest.dax'
+	dfreplication = pd.DataFrame({'[Value1]':(1,3),'[Value2]':(2,4)})
+	assert model.Query(singlevaltest) == 1 and model.Query(dfvaltest).equals(dfreplication)
 
 
 def remove_testing_table(model):
@@ -65,4 +77,4 @@ def test_table_removal(model):
 def test_bpa(model):
 	te2 = pytabular.Tabular_Editor().EXE
 	bpa = pytabular.BPA().Location
-	assert model.Analyze_BPA(te2,bpa) 
+	assert isinstance(model.Analyze_BPA(te2,bpa), list)
