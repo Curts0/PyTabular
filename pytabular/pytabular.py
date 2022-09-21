@@ -372,26 +372,21 @@ class Tabular:
 				
 		
 		try:
-			logger.debug(f'Attempting to Open Adomd Connection...')
+			logger.debug(f'Setting first initial Adomd Connection...')
 			self.AdomdConnection.Open()
 			logger.debug(f'Connected!')
 		except: 
-			logger.debug(f'Connection skipped already connected...')
 			pass
 		logger.info(f'Querying Model...')
 		Query =  AdomdCommand(Query_Str, self.AdomdConnection).ExecuteReader()
-		logger.debug(f'Determining Field Count...')
 		Column_Headers = [(index,Query.GetName(index)) for index in range(0,Query.FieldCount)]
 		Results = list()
-		logger.debug(f'Converting Results into List...')
 		while Query.Read():
 			Results.append([Query.GetValue(index) for index in range(0,len(Column_Headers))])
-		logger.debug(f'Data retrieved and closing query...')
 		Query.Close()
-		logger.debug(f'Converting to Pandas DataFrame...')
+		logger.debug(f'Data retrieved... reading...')
 		df = pd.DataFrame(Results,columns=[value for _,value in Column_Headers])
 		if len(df) == 1 and len(df.columns) == 1:
-			logging.debug(f'Returning single value...')
 			return df.iloc[0][df.columns[0]]
 		return df
 	def Query_Every_Column(self,query_function:str='COUNTROWS(VALUES(_))') -> pd.DataFrame:
