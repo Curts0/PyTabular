@@ -103,7 +103,7 @@
               
                 <h1 id="_1"></h1>
 <h3 id="return_zero_row_tables">Return_Zero_Row_Tables</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L9">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L11">source</a></p>
 <pre><code class="language-python">.Return_Zero_Row_Tables(
    model: pytabular.Tabular
 )
@@ -120,13 +120,13 @@
 </ul>
 <hr />
 <h3 id="table_last_refresh_times">Table_Last_Refresh_Times</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L23">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L26">source</a></p>
 <pre><code class="language-python">.Table_Last_Refresh_Times(
    model: pytabular.Tabular, group_partition: bool = True
 )
 </code></pre>
 <hr />
-<p>Returns pd.DataFrame of tables with their latest refresh time. 
+<p>Returns pd.DataFrame of tables with their latest refresh time.
 Optional 'group_partition' variable, default is True.
 If False an extra column will be include to have the last refresh time to the grain of the partition
 Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')</p>
@@ -142,7 +142,7 @@ If group_partition == True and the table has multiple partitions, then df.groupb
 </ul>
 <hr />
 <h3 id="bpa_violations_to_df">BPA_Violations_To_DF</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L51">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L67">source</a></p>
 <pre><code class="language-python">.BPA_Violations_To_DF(
    model: pytabular.Tabular, te2: str, bpa: str
 )
@@ -161,7 +161,7 @@ If group_partition == True and the table has multiple partitions, then df.groupb
 </ul>
 <hr />
 <h3 id="last_x_interval">Last_X_Interval</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L67">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L87">source</a></p>
 <pre><code class="language-python">.Last_X_Interval(
    Model: pytabular.Tabular, Measure: Union[str, pytabular.pytabular.Measure],
    Column_Name: Union[str, None] = None,

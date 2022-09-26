@@ -105,7 +105,7 @@
               
                 <h1 id="_1"></h1>
 <h3 id="ticks_to_datetime">ticks_to_datetime</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L12">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L11">source</a></p>
 <pre><code class="language-python">.ticks_to_datetime(
    ticks: int
 )
@@ -139,27 +139,27 @@
 </ul>
 <hr />
 <h3 id="pd_dataframe_to_m_expression">pd_dataframe_to_m_expression</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L77">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L89">source</a></p>
 <pre><code class="language-python">.pd_dataframe_to_m_expression(
    df: pd.DataFrame
 )
 </code></pre>
 <hr />
-<p>This will take a pandas dataframe and convert to an m expression<br />
-For example this DF:<br />
-   col1  col2<br />
-0   1     3<br />
-1   2     4  </p>
-<p>|<br />
-|<br />
-V  </p>
-<p>Will convert to this expression string:<br />
-let<br />
-Source=#table({"col1","col2"},<br />
-{<br />
-{"1","3"},{"2","4"}<br />
-})<br />
-in<br />
+<p>This will take a pandas dataframe and convert to an m expression
+For example this DF:
+   col1  col2
+0   1     3
+1   2     4</p>
+<p>|
+|
+V</p>
+<p>Will convert to this expression string:
+let
+Source=#table({"col1","col2"},
+{
+{"1","3"},{"2","4"}
+})
+in
 Source</p>
 <p><strong>Args</strong></p>
 <ul>
@@ -171,7 +171,7 @@ Source</p>
 </ul>
 <hr />
 <h3 id="remove_folder_and_contents">remove_folder_and_contents</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L121">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L140">source</a></p>
 <pre><code class="language-python">.remove_folder_and_contents(
    folder_location
 )
@@ -184,7 +184,7 @@ Source</p>
 </ul>
 <hr />
 <h3 id="remove_suffix">remove_suffix</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L132">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L153">source</a></p>
 <pre><code class="language-python">.remove_suffix(
    input_string, suffix
 )
