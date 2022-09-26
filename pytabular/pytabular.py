@@ -27,6 +27,8 @@ from logic_utils import (
 from tabular_tracing import Refresh_Trace
 
 logger = logging.getLogger("PyTabular")
+
+
 class Tabular:
     """Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet). You can use this class as your main way to interact with your model.
 
