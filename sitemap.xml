@@ -2,37 +2,42 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://curts0.github.io/PyTabular/</loc>
-         <lastmod>2022-09-26</lastmod>
+         <lastmod>2022-09-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/Best%20Practice%20Analyzer/</loc>
-         <lastmod>2022-09-26</lastmod>
+         <lastmod>2022-09-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/Examples/</loc>
-         <lastmod>2022-09-26</lastmod>
+         <lastmod>2022-09-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/Logic%20Utils/</loc>
-         <lastmod>2022-09-26</lastmod>
+         <lastmod>2022-09-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/Tabular%20Editor%202/</loc>
-         <lastmod>2022-09-26</lastmod>
+         <lastmod>2022-09-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/Tabular/</loc>
-         <lastmod>2022-09-26</lastmod>
+         <lastmod>2022-09-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/Traces/</loc>
-         <lastmod>2022-09-26</lastmod>
+         <lastmod>2022-09-27</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/contributing/</loc>
+         <lastmod>2022-09-27</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
