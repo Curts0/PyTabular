@@ -134,4 +134,4 @@ for file_path in LIST_OF_FILE_PATHS:
 ```
 
 ### Contributing
-See (CONTRIBUTING.md)[CONTRIBUTING.md]
+See [CONTRIBUTING.md](CONTRIBUTING.md)
