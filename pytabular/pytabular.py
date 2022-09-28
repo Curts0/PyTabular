@@ -566,10 +566,8 @@ class Tabular:
         Returns:
                 List[str]: Assuming no failure, will return list of BPA violations. Else will return error from command line.
         """
-        # Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.AdomdConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
-        # start /wait
         logger.debug("Beginning request to talk with TE2 & Find BPA...")
-        cmd = f'{Tabular_Editor_Exe} "Provider=MSOLAP;{self.AdomdConnection.ConnectionString}" {self.Database.Name} -B "{os.getcwd()}\\Model.bim" -A {Best_Practice_Analyzer} -V/?'
+        cmd = f'{Tabular_Editor_Exe} "Provider=MSOLAP;{self.Adomd.ConnectionString}" {self.Database.Name} -B "{os.getcwd()}\\Model.bim" -A {Best_Practice_Analyzer} -V/?'
         logger.debug("Command Generated")
         logger.debug("Submitting Command...")
         sp = subprocess.Popen(

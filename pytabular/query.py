@@ -9,14 +9,19 @@ logger = logging.getLogger("PyTabular")
 
 
 class Connection(AdomdConnection):
-    '''[Adomd Connection]
+    """Subclass for [Adomdclient](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient?view=analysisservices-dotnet). With some extra items on top.
+    Right now designed for internal use. For example, Query method in the Tabular class is just a wrapper for this class' Query method... So use that instead.
 
     Args:
         AdomdConnection (_type_): _description_
-    '''    
+    """
+
     def __init__(self, Server) -> None:
         super().__init__()
-        self.ConnectionString = f"{Server.ConnectionString}Password='{Server.ConnectionInfo.Password}'"
+        self.ConnectionString = (
+            f"{Server.ConnectionString}Password='{Server.ConnectionInfo.Password}'"
+        )
+
     def Query(self, Query_Str: str) -> Union[pd.DataFrame, str, int]:
         """Executes Query on Model and Returns Results in Pandas DataFrame
 
