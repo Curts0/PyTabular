@@ -2,7 +2,7 @@
 
 
 ### Return_Zero_Row_Tables
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L9)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L11)
 ```python
 .Return_Zero_Row_Tables(
    model: pytabular.Tabular
@@ -27,7 +27,7 @@ Returns list of table names of those that are returning isna()
 
 
 ### Table_Last_Refresh_Times
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L23)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L26)
 ```python
 .Table_Last_Refresh_Times(
    model: pytabular.Tabular, group_partition: bool = True
@@ -35,7 +35,7 @@ Returns list of table names of those that are returning isna()
 ```
 
 ---
-Returns pd.DataFrame of tables with their latest refresh time. 
+Returns pd.DataFrame of tables with their latest refresh time.
 Optional 'group_partition' variable, default is True.
 If False an extra column will be include to have the last refresh time to the grain of the partition
 Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')
@@ -56,7 +56,7 @@ If group_partition == True and the table has multiple partitions, then df.groupb
 
 
 ### BPA_Violations_To_DF
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L51)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L67)
 ```python
 .BPA_Violations_To_DF(
    model: pytabular.Tabular, te2: str, bpa: str
@@ -83,7 +83,7 @@ Runs BPA Analyzer from TE2 and outputs result into a DF.
 
 
 ### Last_X_Interval
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L67)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/basic_checks.py\#L87)
 ```python
 .Last_X_Interval(
    Model: pytabular.Tabular, Measure: Union[str, pytabular.pytabular.Measure],

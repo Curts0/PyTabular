@@ -4,6 +4,7 @@ nav:
     - Home: index.md
     - Tabular: Tabular.md
     - Trace: Traces.md
+    - Queries: Queries.md
     - Best Practice Analyzer: Best Practice Analyzer.md
     - Tabular Editor: Tabular Editor 2.md
     - Logic Utils: Logic Utils.md

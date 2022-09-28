@@ -24,6 +24,7 @@ from logic_utils import (
     ticks_to_datetime,
     remove_suffix,
 )
+from query import Connection
 from tabular_tracing import Refresh_Trace
 
 logger = logging.getLogger("PyTabular")
@@ -67,8 +68,7 @@ class Tabular:
         self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
         self.Model = self.Database.Model
         logger.info(f"Connected to Model - {self.Model.Name}")
-        self.AdomdConnection = AdomdConnection()
-        self.AdomdConnection.ConnectionString = f"{self.Server.ConnectionString}Password='{self.Server.ConnectionInfo.Password}'"
+        self.Adomd = Connection(self.Server)
         self.Reload_Model_Info()
         logger.debug("Class Initialization Completed")
         logger.debug("Registering Disconnect on Termination...")
@@ -504,36 +504,7 @@ class Tabular:
         Returns:
                 pd.DataFrame: Returns dataframe with results
         """
-
-        if os.path.isfile(Query_Str):
-            logging.debug(
-                f"File path detected, reading file... -> {Query_Str}",
-            )
-            with open(Query_Str, "r") as file:
-                Query_Str = str(file.read())
-
-        try:
-            logger.debug("Setting first initial Adomd Connection...")
-            self.AdomdConnection.Open()
-            logger.debug("Connected!")
-        except Exception:
-            pass
-        logger.info("Querying Model...")
-        Query = AdomdCommand(Query_Str, self.AdomdConnection).ExecuteReader()
-        Column_Headers = [
-            (index, Query.GetName(index)) for index in range(0, Query.FieldCount)
-        ]
-        Results = list()
-        while Query.Read():
-            Results.append(
-                [Query.GetValue(index) for index in range(0, len(Column_Headers))]
-            )
-        Query.Close()
-        logger.debug("Data retrieved... reading...")
-        df = pd.DataFrame(Results, columns=[value for _, value in Column_Headers])
-        if len(df) == 1 and len(df.columns) == 1:
-            return df.iloc[0][df.columns[0]]
-        return df
+        return self.Adomd.Query(Query_Str)
 
     def Query_Every_Column(
         self, query_function: str = "COUNTROWS(VALUES(_))"
@@ -595,10 +566,8 @@ class Tabular:
         Returns:
                 List[str]: Assuming no failure, will return list of BPA violations. Else will return error from command line.
         """
-        # Working TE2 Script in Python os.system(f"start /wait {te2.EXE_Path} \"Provider=MSOLAP;{model.AdomdConnection.ConnectionString}\" FINANCE -B \"{os.getcwd()}\\Model.bim\" -A {l.BPA_LOCAL_FILE_PATH} -V/?")
-        # start /wait
         logger.debug("Beginning request to talk with TE2 & Find BPA...")
-        cmd = f'{Tabular_Editor_Exe} "Provider=MSOLAP;{self.AdomdConnection.ConnectionString}" {self.Database.Name} -B "{os.getcwd()}\\Model.bim" -A {Best_Practice_Analyzer} -V/?'
+        cmd = f'{Tabular_Editor_Exe} "Provider=MSOLAP;{self.Adomd.ConnectionString}" {self.Database.Name} -B "{os.getcwd()}\\Model.bim" -A {Best_Practice_Analyzer} -V/?'
         logger.debug("Command Generated")
         logger.debug("Submitting Command...")
         sp = subprocess.Popen(

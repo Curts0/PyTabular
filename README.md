@@ -102,7 +102,7 @@ Uses a few things. First the [BPA Class](https://curts0.github.io/PyTabular/Best
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
+TE2 = pytabular.Tabular_Editor() #Feel free to input your TE2 File path or this will download for you.
 BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
 results = model.Analyze_BPA(TE2.EXE,BPA.Location)
 
