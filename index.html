@@ -77,6 +77,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="Queries/">Queries</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="Best%20Practice%20Analyzer/">Best Practice Analyzer</a>
                 </li>
               </ul>
@@ -199,7 +203,7 @@ model.Create_Table(df, 'Refresh Times')
 <p>Uses a few things. First the <a href="https://curts0.github.io/PyTabular/Best%20Practice%20Analyzer/#bpa">BPA Class</a>, then the <a href="https://curts0.github.io/PyTabular/Tabular%20Editor%202/">TE2 Class</a>, and will finish with the <a href="https://curts0.github.io/PyTabular/Tabular/#analyze_bpa">Analyze_BPA</a> method. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
+TE2 = pytabular.Tabular_Editor() #Feel free to input your TE2 File path or this will download for you.
 BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
 results = model.Analyze_BPA(TE2.EXE,BPA.Location)
 
@@ -273,5 +277,5 @@ for file_path in LIST_OF_FILE_PATHS:
 
 <!--
 MkDocs version : 1.4.0
-Build Date UTC : 2022-09-27 17:54:32.039113+00:00
+Build Date UTC : 2022-09-28 21:07:20.857611+00:00
 -->
