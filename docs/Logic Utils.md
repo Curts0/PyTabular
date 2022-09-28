@@ -2,7 +2,7 @@
 
 
 ### ticks_to_datetime
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L12)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L11)
 ```python
 .ticks_to_datetime(
    ticks: int
@@ -52,7 +52,7 @@ WiP takes dataframe columns and gets respective tabular column datatype.  ([NumP
 
 
 ### pd_dataframe_to_m_expression
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L77)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L89)
 ```python
 .pd_dataframe_to_m_expression(
    df: pd.DataFrame
@@ -60,23 +60,23 @@ WiP takes dataframe columns and gets respective tabular column datatype.  ([NumP
 ```
 
 ---
-This will take a pandas dataframe and convert to an m expression  
-For example this DF:  
-   col1  col2  
-0   1     3  
-1   2     4  
-  
-|  
-|  
-V  
+This will take a pandas dataframe and convert to an m expression
+For example this DF:
+   col1  col2
+0   1     3
+1   2     4
 
-Will convert to this expression string:  
-let  
-Source=#table({"col1","col2"},  
-{  
-{"1","3"},{"2","4"}  
-})  
-in  
+|
+|
+V
+
+Will convert to this expression string:
+let
+Source=#table({"col1","col2"},
+{
+{"1","3"},{"2","4"}
+})
+in
 Source
 
 
@@ -94,7 +94,7 @@ Source
 
 
 ### remove_folder_and_contents
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L121)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L140)
 ```python
 .remove_folder_and_contents(
    folder_location
@@ -114,7 +114,7 @@ Internal used in tabular_editor.py and best_practice_analyzer.py.
 
 
 ### remove_suffix
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L132)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/logic_utils.py\#L153)
 ```python
 .remove_suffix(
    input_string, suffix

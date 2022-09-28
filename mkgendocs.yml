@@ -9,6 +9,10 @@ pages:
     source: 'pytabular/pytabular.py'
     classes:
       - Tabular
+  - page: "Queries.md"
+    source: 'pytabular/query.py'
+    classes:
+      - Connection
   - page: "Traces.md"
     source: 'pytabular/tabular_tracing.py'
     classes:
