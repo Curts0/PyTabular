@@ -179,9 +179,9 @@ class Base_Trace:
 
 def refresh_handler(source, args):
     if args.EventSubclass == TraceEventSubclass.ReadData:
-        logger.debug(f"{args.ProgressTotal} - {args.ObjectPath}")
+        logger.info(f"{args.ProgressTotal} - {args.ObjectPath}")
     else:
-        logger.debug(f"{args.EventClass} - {args.EventSubclass} - {args.ObjectName}")
+        logger.info(f"{args.EventClass} - {args.EventSubclass} - {args.ObjectName}")
 
 
 class Refresh_Trace(Base_Trace):
