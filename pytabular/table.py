@@ -2,7 +2,7 @@ import logging
 
 from Microsoft.AnalysisServices.Tabular import Table
 import pandas as pd
-
+from typing import List
 logger = logging.getLogger("PyTabular")
 
 
@@ -40,7 +40,13 @@ class PyTable:
         return self.Model.Refresh(self.Name, *args, **kwargs)
 
 
-class PyTables(list):
+class PyTables(List[PyTable]):
+    '''Iterable group of PyTables to run through. `__getitem__` overriden to accept int or str for table name.
+    For example `PyTables['Table Name1']` and `PyTables[0]` both work.
+
+    Args:
+        List (PyTable): List of PyTable
+    '''    
     def __init__(self, tables, model) -> None:
         self._tables = tables
         self.Model = model
@@ -48,7 +54,7 @@ class PyTables(list):
     def __repr__(self) -> str:
         return self._tables
 
-    def __getitem__(self, table):
+    def __getitem__(self, table) -> PyTable:
         if isinstance(table, str):
             return [
                 pytable
