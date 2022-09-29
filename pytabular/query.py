@@ -44,7 +44,7 @@ class Connection(AdomdConnection):
         if self.State.value__ == 0:
             logger.info("Checking initial Adomd Connection...")
             self.Open()
-            logger.info("Connected!")
+            logger.info(f"Connected! Session ID - {self.SessionID}")
 
         logger.debug("Querying Model...")
         Query = AdomdCommand(Query_Str, self).ExecuteReader()
