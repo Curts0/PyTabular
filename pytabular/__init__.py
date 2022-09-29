@@ -10,7 +10,7 @@ logging.basicConfig(
     datefmt="%y/%m/%d %H:%M:%S %z",
 )
 logger = logging.getLogger("PyTabular")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 logger.info("Logging configured...")
 logger.info(f"To update PyTabular logger...")
 logger.info(f">>> import logging")
@@ -31,11 +31,11 @@ sys.path.append(os.path.dirname(__file__))
 logger.debug(f"Beginning CLR references...")
 import clr
 
-logger.debug("Adding Reference Microsoft.AnalysisServices.AdomdClient")
+logger.info("Adding Reference Microsoft.AnalysisServices.AdomdClient")
 clr.AddReference("Microsoft.AnalysisServices.AdomdClient")
-logger.debug("Adding Reference Microsoft.AnalysisServices.Tabular")
+logger.info("Adding Reference Microsoft.AnalysisServices.Tabular")
 clr.AddReference("Microsoft.AnalysisServices.Tabular")
-logger.debug("Adding Reference Microsoft.AnalysisServices")
+logger.info("Adding Reference Microsoft.AnalysisServices")
 clr.AddReference("Microsoft.AnalysisServices")
 
 logger.debug(f"Importing specifics in module...")
@@ -54,4 +54,4 @@ from .tabular_tracing import Base_Trace, Refresh_Trace
 from .tabular_editor import Tabular_Editor
 from .best_practice_analyzer import BPA
 
-logger.info(f"Import successful...")
+logger.debug(f"Import successful...")
