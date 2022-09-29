@@ -41,13 +41,12 @@ class Connection(AdomdConnection):
             with open(Query_Str, "r") as file:
                 Query_Str = str(file.read())
 
-        try:
-            logger.debug("Setting first initial Adomd Connection...")
+        if self.State.value__ == 0:
+            logger.info("Checking initial Adomd Connection...")
             self.Open()
-            logger.debug("Connected!")
-        except Exception:
-            pass
-        logger.info("Querying Model...")
+            logger.info("Connected!")
+
+        logger.debug("Querying Model...")
         Query = AdomdCommand(Query_Str, self).ExecuteReader()
         Column_Headers = [
             (index, Query.GetName(index)) for index in range(0, Query.FieldCount)
