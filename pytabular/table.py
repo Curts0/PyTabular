@@ -63,3 +63,6 @@ class PyTables(List[PyTable]):
             ][-1]
         else:
             return self._tables[table]
+    def __iter__(self):
+        for table in self._tables:
+            yield table
