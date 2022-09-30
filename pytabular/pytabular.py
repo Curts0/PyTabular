@@ -90,17 +90,8 @@ class Tabular:
             [
                 PyTable(table, self)
                 for table in self.Model.Tables.GetEnumerator()
-            ],
-            self,
+            ]
         )
-        self.Columns = [
-            column for table in self.Tables for column in table.Columns.GetEnumerator()
-        ]
-        self.Partitions = [
-            partition
-            for table in self.Tables
-            for partition in table.Partitions.GetEnumerator()
-        ]
         self.Measures = [
             measure
             for table in self.Tables
@@ -529,7 +520,8 @@ class Tabular:
         logger.debug(f"Function to be run: {query_function}")
         logger.debug("Dynamically creating DAX query...")
         query_str = "EVALUATE UNION(\n"
-        for column in self.Columns:
+        columns = [column for table in self.Tables for column in table.Columns]
+        for column in columns:
             if column.Type != ColumnType.RowNumber:
                 table_name = column.Table.get_Name()
                 column_name = column.get_Name()
