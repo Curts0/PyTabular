@@ -1,26 +1,31 @@
 import logging
 
 from Microsoft.AnalysisServices.Tabular import Table
+from object import PyObject
 import pandas as pd
-from typing import List
+from partition import PyPartition, PyPartitions
+from column import PyColumn, PyColumns
+from pytabular.object import PyObjects
 logger = logging.getLogger("PyTabular")
 
 
-class PyTable:
+class PyTable(PyObject):
     '''Wrapper for [Microsoft.AnalysisServices.Tabular](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
-    With a few other bells and whistles added to it.
+    With a few other bells and whistles added to it. You can use the table to access the nested Columns and Partitions.
+
+    Attributes:
+        Partitions
     '''    
-    def __init__(self, table, model) -> None:
-        self._table = table
+    def __init__(self, object, model) -> None:
+        super().__init__(object)
         self.Model = model
+        self.Partitions = PyPartitions([
+            PyPartition(partition, self) for partition in self._object.Partitions.GetEnumerator()
+            ])
+        self.Columns = PyColumns([
+            PyColumn(column, self) for column in self._object.Columns.GetEnumerator()
+        ])
 
-    def __repr__(self) -> str:
-        return self.Name
-
-    def __getattr__(self, attr):
-        if attr in self.__dict__:
-            return getattr(self, attr)
-        return getattr(self._table, attr)
 
     def Row_Count(self) -> int:
         '''Method to return count of rows. Simple Dax Query:
@@ -34,35 +39,12 @@ class PyTable:
     def Refresh(self, *args, **kwargs) -> pd.DataFrame:
         '''Same method from Model Refresh, you can pass through any extra parameters. For example:
         `Tabular().Tables['Table Name'].Refresh(Tracing = True)`
-        Returns:
+        Returns: 
             pd.DataFrame: Returns pandas dataframe with some refresh details
         '''        
-        return self.Model.Refresh(self.Name, *args, **kwargs)
+        return self.Model.Refresh(self._object, *args, **kwargs)
 
 
-class PyTables(List[PyTable]):
-    '''Iterable group of PyTables to run through. `__getitem__` overriden to accept int or str for table name.
-    For example `PyTables['Table Name1']` and `PyTables[0]` both work.
-
-    Args:
-        List (PyTable): List of PyTable
-    '''    
-    def __init__(self, tables, model) -> None:
-        self._tables = tables
-        self.Model = model
-
-    def __repr__(self) -> str:
-        return self._tables
-
-    def __getitem__(self, table) -> PyTable:
-        if isinstance(table, str):
-            return [
-                pytable
-                for pytable in self._tables
-                if table == pytable.Name
-            ][-1]
-        else:
-            return self._tables[table]
-    def __iter__(self):
-        for table in self._tables:
-            yield table
+class PyTables(PyObjects):
+    def __init__(self, objects) -> None:
+        super().__init__(objects)
