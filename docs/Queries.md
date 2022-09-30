@@ -25,7 +25,7 @@ Right now designed for internal use. For example, Query method in the Tabular cl
 
 
 ### .Query
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/query.py\#L21)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/query.py\#L25)
 ```python
 .Query(
    Query_Str: str
