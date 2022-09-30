@@ -25,18 +25,18 @@ Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https:
 * **Catalog** (str) : Name of Database. See [Catalog MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.connectioninfo.catalog?view=analysisservices-dotnet#microsoft-analysisservices-connectioninfo-catalog).
 * **Model** (Model) : See [Model MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.model?view=analysisservices-dotnet).
 * **AdomdConnection** (AdomdConnection) : For querying. See [AdomdConnection MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomdconnection?view=analysisservices-dotnet). Connection made from parts of the originally provided connection string.
-* **Tables** (PyTables[PyTable]) : Wrappers for [Table MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
+* **Tables** (PyTables[PyTable]) : Wrappers for [Table MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet). So you have the full capabilities of what the MS Docs offer and a few others. Like `Tabular().Tables['Table Name'].Row_Count()`. Or you can find a table via `Tabular().Tables[0]` or `Tabular().Tables['Table Name']`
 * **Columns** (List[Column]) : Easy access list of columns from model. See [Column MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet).
 * **Partitions** (List[Partition]) : Easy access list of partitions from model. See [Partition MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.partition?view=analysisservices-dotnet).
 * **Measures** (List[Measure]) : Easy access list of measures from model. See [Measure MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table.measures?view=analysisservices-dotnet#microsoft-analysisservices-tabular-table-measures).
-So you have the full capabilities of what the MS Docs offer and a few others. Like `Tabular().Tables['Table Name'].Row_Count()`. Or you can find a table via `Tabular().Tables[0]` or `Tabular().Tables['Table Name']`
+
 
 
 **Methods:**
 
 
 ### .Reload_Model_Info
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L84)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L83)
 ```python
 .Reload_Model_Info()
 ```
@@ -51,7 +51,7 @@ Runs on __init__ iterates through details, can be called after any model changes
 
 
 ### .Is_Process
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L113)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L112)
 ```python
 .Is_Process()
 ```
@@ -66,7 +66,7 @@ Run method to check if Processing is occurring. Will query DMV $SYSTEM.DISCOVER_
 
 
 ### .Disconnect
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L126)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L125)
 ```python
 .Disconnect()
 ```
@@ -81,7 +81,7 @@ Disconnects from Model
 
 
 ### .Refresh
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L135)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L134)
 ```python
 .Refresh(
    Object: Union[str, Table, Partition, Dict[str, Any]],
@@ -116,7 +116,7 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 
 
 ### .Update
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L247)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L246)
 ```python
 .Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
@@ -138,14 +138,14 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 
 
 ### .SaveChanges
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L259)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L258)
 ```python
 .SaveChanges()
 ```
 
 
 ### .Backup_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L310)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L309)
 ```python
 .Backup_Table(
    table_str: str
@@ -169,7 +169,7 @@ Refresh is performed from source during backup.
 
 
 ### .Revert_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L408)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L407)
 ```python
 .Revert_Table(
    table_str: str
@@ -197,7 +197,7 @@ Example scenario ->
 
 
 ### .Query
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L504)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L503)
 ```python
 .Query(
    Query_Str: str
@@ -221,7 +221,7 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 
 
 ### .Query_Every_Column
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L517)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L516)
 ```python
 .Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
@@ -244,7 +244,7 @@ This will dynamically create a query to pull all columns from the model and run 
 
 
 ### .Query_Every_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L542)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L541)
 ```python
 .Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
@@ -267,7 +267,7 @@ It will replace the _ with the table to run.
 
 
 ### .Analyze_BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L563)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L562)
 ```python
 .Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
@@ -292,7 +292,7 @@ Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
 
 
 ### .Create_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L596)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L595)
 ```python
 .Create_Table(
    df: pd.DataFrame, table_name: str
