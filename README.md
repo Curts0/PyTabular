@@ -40,6 +40,26 @@ FILE_PATH = 'C:\\FILEPATHEXAMPLE\\file.dax' #or file.txt
 model.Query(FILE_PATH) #Will return same logic as above, single values if possible else will return pd.DataFrame()
 ```
 
+You can also explore your tables, partitions, and columns. Via the Attributes from your Tabular class.
+```python
+#Explore tables...
+dir(model.Tables['Table Name'])
+
+#Explore columns & partitions
+dir(model.Tables['Table Name'].Partitions['Partition Name'])
+
+#Only a few features right now, but check out the built in methods.
+model.Tables['Table Name'].Refresh(Tracing = True)
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Refresh(Tracing = True)
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Last_Refresh()
+#or
+model.Tables['Table Name'].Row_Count()
+#or
+model.Tables['Table Name'].Columns['Column Name'].Distinct_Count()
+```
+
 Refresh method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See [PyTabular Docs for Refreshing Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh). Most basic way to refresh is input the table name string. The method will search for table and output exeption if unable to find it. For partitions you will need a key, value combination. Example, {'Table1':'Partition1'}. You can also take the key value pair and iterate through a group of partitions. Example, {'Table1':['Partition1','Partition2']}. Rather than providing a string, you can also input the actual class. See below for those examples, and you can acess them from the built in attributes self.Tables, self.Partitions or explore through the .Net classes yourself in self.Model.Tables.
 ```python
 #You have a few options when refreshing. 
