@@ -73,6 +73,18 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="Table/">Table</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="Partition/">Partition</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="Column/">Column</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="Traces/">Trace</a>
                 </li>
               </ul>
@@ -126,7 +138,7 @@
 <a href="https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment/badge.svg" /></a>
 <a href="https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml"><img alt="flake8" src="https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml/badge.svg?branch=master" /></a></p>
 <h3 id="what-is-it">What is it?</h3>
-<p><a href="https://github.com/Curts0/PyTabular">PyTabular</a> (python-tabular in <a href="https://pypi.org/project/python-tabular/">pypi</a>) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. The package should have the dll files included when you import it. See <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.</p>
+<p><a href="https://github.com/Curts0/PyTabular">PyTabular</a> (python-tabular in <a href="https://pypi.org/project/python-tabular/">pypi</a>) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. Current, this build is tested and working on Windows Operating System only. Help is needed to expand this for other operating systems. The package should have the dll files included when you import it. See <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.</p>
 <h3 id="getting-started">Getting Started</h3>
 <p>See the <a href="https://pypi.org/project/python-tabular/">Pypi project</a> for available version.</p>
 <pre><code class="language-powershell">python3 -m pip install python-tabular
@@ -151,6 +163,24 @@ model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
 #or...
 FILE_PATH = 'C:\\FILEPATHEXAMPLE\\file.dax' #or file.txt
 model.Query(FILE_PATH) #Will return same logic as above, single values if possible else will return pd.DataFrame()
+</code></pre>
+<p>You can also explore your tables, partitions, and columns. Via the Attributes from your Tabular class.</p>
+<pre><code class="language-python">#Explore tables...
+dir(model.Tables['Table Name'])
+
+#Explore columns &amp; partitions
+dir(model.Tables['Table Name'].Partitions['Partition Name'])
+
+#Only a few features right now, but check out the built in methods.
+model.Tables['Table Name'].Refresh(Tracing = True)
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Refresh(Tracing = True)
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Last_Refresh()
+#or
+model.Tables['Table Name'].Row_Count()
+#or
+model.Tables['Table Name'].Columns['Column Name'].Distinct_Count()
 </code></pre>
 <p>Refresh method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">PyTabular Docs for Refreshing Tables and Partitions</a>. Most basic way to refresh is input the table name string. The method will search for table and output exeption if unable to find it. For partitions you will need a key, value combination. Example, {'Table1':'Partition1'}. You can also take the key value pair and iterate through a group of partitions. Example, {'Table1':['Partition1','Partition2']}. Rather than providing a string, you can also input the actual class. See below for those examples, and you can acess them from the built in attributes self.Tables, self.Partitions or explore through the .Net classes yourself in self.Model.Tables.</p>
 <pre><code class="language-python">#You have a few options when refreshing. 
@@ -277,5 +307,5 @@ for file_path in LIST_OF_FILE_PATHS:
 
 <!--
 MkDocs version : 1.4.0
-Build Date UTC : 2022-09-28 21:07:20.857611+00:00
+Build Date UTC : 2022-10-01 15:34:36.729808+00:00
 -->

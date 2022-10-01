@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Tabular%20Editor%202/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Partition/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Tabular Editor - PyTabular</title>
+    <title>Partition - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Tabular Editor";
-        var mkdocs_page_input_path = "Tabular Editor 2.md";
-        var mkdocs_page_url = "/PyTabular/Tabular%20Editor%202/";
+        var mkdocs_page_name = "Partition";
+        var mkdocs_page_input_path = "Partition.md";
+        var mkdocs_page_url = "/PyTabular/Partition/";
       </script>
     
     <script src="../js/jquery-3.6.0.min.js" defer></script>
@@ -52,8 +52,20 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Table/">Table</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partition</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Partition</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#pypartition">PyPartition</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.Last_Refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.Refresh</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pypartitions">PyPartitions</a>
+    </li>
+    </ul>
                 </li>
               </ul>
               <ul>
@@ -72,16 +84,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Best%20Practice%20Analyzer/">Best Practice Analyzer</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Tabular Editor</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#tabular_editor">Tabular_Editor</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#download_tabular_editor">Download_Tabular_Editor</a>
-    </li>
-        </ul>
-    </li>
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular%20Editor%202/">Tabular Editor</a>
                 </li>
               </ul>
               <ul>
@@ -106,7 +110,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Tabular Editor</li>
+      <li>Partition</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -116,40 +120,56 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="_1"></h1>
-<h2 id="tabular_editor">Tabular_Editor</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L44">source</a></p>
-<pre><code class="language-python">Tabular_Editor(
-   EXE_File_Path: str = 'Default'
+<h2 id="pypartition">PyPartition</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L11">source</a></p>
+<pre><code class="language-python">PyPartition(
+   object, table
 )
 </code></pre>
 <hr />
-<p>Setting Tabular_Editor Class for future work.</p>
-<hr />
-<h3 id="download_tabular_editor">Download_Tabular_Editor</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L11">source</a></p>
-<pre><code class="language-python">.Download_Tabular_Editor(
-   Download_Location: str = 'https: //github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip',
-   Folder: str = 'Tabular_Editor_2', Auto_Remove = True
-)
-</code></pre>
-<hr />
-<p>Runs a request.get() to retrieve the zip file from web. Will unzip response and store in directory. Will also register the removal of the new directory and files when exiting program.</p>
+<p>Wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition?view=analysisservices-dotnet">Microsoft.AnalysisServices.Partition</a>.
+With a few other bells and whistles added to it. WIP</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Download_Location</strong> (str, optional) : File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.</li>
-<li><strong>Folder</strong> (str, optional) : New Folder Location. Defaults to 'Tabular_Editor_2'.</li>
-<li><strong>Auto_Remove</strong> (bool, optional) : Boolean to determine auto removal of files once script exits. Defaults to True.</li>
+<li><strong>Table</strong>  : Parent Table to the Column</li>
 </ul>
+<p><strong>Methods:</strong></p>
+<h3 id="last_refresh">.Last_Refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L23">source</a></p>
+<pre><code class="language-python">.Last_Refresh()
+</code></pre>
+<hr />
+<p>Queries <code>RefreshedTime</code> attribute in the partition and converts from C# Ticks to Python datetime</p>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>str</strong>  : File path of TabularEditor.exe</li>
+<li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
 </ul>
+<h3 id="refresh">.Refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L31">source</a></p>
+<pre><code class="language-python">.Refresh(
+   *args, **kwargs
+)
+</code></pre>
+<hr />
+<p>Same method from Model Refresh, you can pass through any extra parameters. For example:
+<code>Tabular().Tables['Table Name'].Partitions[0].Refresh(Tracing = True)</code></p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
+</ul>
+<hr />
+<h2 id="pypartitions">PyPartitions</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L40">source</a></p>
+<pre><code class="language-python">PyPartitions(
+   objects
+)
+</code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../Best%20Practice%20Analyzer/" class="btn btn-neutral float-left" title="Best Practice Analyzer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../Logic%20Utils/" class="btn btn-neutral float-right" title="Logic Utils">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Table/" class="btn btn-neutral float-left" title="Table"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Column/" class="btn btn-neutral float-right" title="Column">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -172,10 +192,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../Best%20Practice%20Analyzer/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Table/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../Logic%20Utils/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../Column/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
