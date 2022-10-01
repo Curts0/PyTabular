@@ -10,6 +10,7 @@ testing_parameters = [(aas), (gen2)]
 testingtablename = 'PyTestTable'
 testingtabledf = pd.DataFrame(data={'col1': [1, 2, 3], 'col2': ['four', 'five', 'six']})
 
+
 @pytest.mark.parametrize("model", testing_parameters)
 def test_sanity_check(model):
     assert 1 == 1
@@ -50,9 +51,11 @@ def test_file_query(model):
 def test_query_every_table(model):
     assert len(model.Query_Every_Table()) > 0
 
+
 @pytest.mark.parametrize("model", testing_parameters)
 def test_query_every_column(model):
     assert len(model.Query_Every_Column()) > 0
+
 
 def remove_testing_table(model):
     table_check = [
@@ -87,9 +90,11 @@ def test_create_table(model):
         model.Query(f"EVALUATE {testingtablename}")
     ) == 3
 
+
 @pytest.mark.parametrize("model", testing_parameters)
 def test_pytables_count(model):
     assert model.Tables[testingtablename].Row_Count() > 0
+
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_backingup_table(model):
