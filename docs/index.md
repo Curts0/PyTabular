@@ -7,7 +7,7 @@
 [![flake8](https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml/badge.svg?branch=master)](https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml)
 ### What is it?
 
-[PyTabular](https://github.com/Curts0/PyTabular) (python-tabular in [pypi](https://pypi.org/project/python-tabular/)) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/). PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.
+[PyTabular](https://github.com/Curts0/PyTabular) (python-tabular in [pypi](https://pypi.org/project/python-tabular/)) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). Current, this build is tested and working on Windows Operating System only. Help is needed to expand this for other operating systems. The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/). PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.
 
 ### Getting Started
 See the [Pypi project](https://pypi.org/project/python-tabular/) for available version.
@@ -102,7 +102,7 @@ Uses a few things. First the [BPA Class](https://curts0.github.io/PyTabular/Best
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-TE2 = pytabular.TE2() #Feel free to input your TE2 File path or this will download for you.
+TE2 = pytabular.Tabular_Editor() #Feel free to input your TE2 File path or this will download for you.
 BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
 results = model.Analyze_BPA(TE2.EXE,BPA.Location)
 

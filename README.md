@@ -7,7 +7,7 @@
 [![flake8](https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml/badge.svg?branch=master)](https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml)
 ### What is it?
 
-[PyTabular](https://github.com/Curts0/PyTabular) (python-tabular in [pypi](https://pypi.org/project/python-tabular/)) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/). PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.
+[PyTabular](https://github.com/Curts0/PyTabular) (python-tabular in [pypi](https://pypi.org/project/python-tabular/)) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). Current, this build is tested and working on Windows Operating System only. Help is needed to expand this for other operating systems. The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/). PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.
 
 ### Getting Started
 See the [Pypi project](https://pypi.org/project/python-tabular/) for available version.
@@ -38,6 +38,26 @@ model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
 #or...
 FILE_PATH = 'C:\\FILEPATHEXAMPLE\\file.dax' #or file.txt
 model.Query(FILE_PATH) #Will return same logic as above, single values if possible else will return pd.DataFrame()
+```
+
+You can also explore your tables, partitions, and columns. Via the Attributes from your Tabular class.
+```python
+#Explore tables...
+dir(model.Tables['Table Name'])
+
+#Explore columns & partitions
+dir(model.Tables['Table Name'].Partitions['Partition Name'])
+
+#Only a few features right now, but check out the built in methods.
+model.Tables['Table Name'].Refresh(Tracing = True)
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Refresh(Tracing = True)
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Last_Refresh()
+#or
+model.Tables['Table Name'].Row_Count()
+#or
+model.Tables['Table Name'].Columns['Column Name'].Distinct_Count()
 ```
 
 Refresh method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See [PyTabular Docs for Refreshing Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh). Most basic way to refresh is input the table name string. The method will search for table and output exeption if unable to find it. For partitions you will need a key, value combination. Example, {'Table1':'Partition1'}. You can also take the key value pair and iterate through a group of partitions. Example, {'Table1':['Partition1','Partition2']}. Rather than providing a string, you can also input the actual class. See below for those examples, and you can acess them from the built in attributes self.Tables, self.Partitions or explore through the .Net classes yourself in self.Model.Tables.

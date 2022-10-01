@@ -25,6 +25,7 @@ from logic_utils import (
     remove_suffix,
 )
 from query import Connection
+from table import PyTable, PyTables
 from tabular_tracing import Refresh_Trace
 
 logger = logging.getLogger("PyTabular")
@@ -40,7 +41,7 @@ class Tabular:
             Catalog (str): Name of Database. See [Catalog MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.connectioninfo.catalog?view=analysisservices-dotnet#microsoft-analysisservices-connectioninfo-catalog).
             Model (Model): See [Model MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.model?view=analysisservices-dotnet).
             AdomdConnection (AdomdConnection): For querying. See [AdomdConnection MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomdconnection?view=analysisservices-dotnet). Connection made from parts of the originally provided connection string.
-            Tables (List[Table]): Easy access list of tables from model. See [Table MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
+            Tables (PyTables[PyTable]): Wrappers for [Table MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet). So you have the full capabilities of what the MS Docs offer and a few others. Like `Tabular().Tables['Table Name'].Row_Count()`. Or you can find a table via `Tabular().Tables[0]` or `Tabular().Tables['Table Name']`
             Columns (List[Column]): Easy access list of columns from model. See [Column MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet).
             Partitions (List[Partition]): Easy access list of partitions from model. See [Partition MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.partition?view=analysisservices-dotnet).
             Measures (List[Measure]): Easy access list of measures from model. See [Measure MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table.measures?view=analysisservices-dotnet#microsoft-analysisservices-tabular-table-measures).
@@ -85,15 +86,9 @@ class Tabular:
         Returns:
                 bool: True if successful
         """
-        self.Tables = [table for table in self.Model.Tables.GetEnumerator()]
-        self.Columns = [
-            column for table in self.Tables for column in table.Columns.GetEnumerator()
-        ]
-        self.Partitions = [
-            partition
-            for table in self.Tables
-            for partition in table.Partitions.GetEnumerator()
-        ]
+        self.Tables = PyTables(
+            [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
+        )
         self.Measures = [
             measure
             for table in self.Tables
@@ -509,8 +504,7 @@ class Tabular:
     def Query_Every_Column(
         self, query_function: str = "COUNTROWS(VALUES(_))"
     ) -> pd.DataFrame:
-        """This will dynamically create a query to pull all columns from the model and run the query function.
-        <br/>It will replace the _ with the column to run.
+        """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
 
         Args:
                 query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
@@ -522,7 +516,8 @@ class Tabular:
         logger.debug(f"Function to be run: {query_function}")
         logger.debug("Dynamically creating DAX query...")
         query_str = "EVALUATE UNION(\n"
-        for column in self.Columns:
+        columns = [column for table in self.Tables for column in table.Columns]
+        for column in columns:
             if column.Type != ColumnType.RowNumber:
                 table_name = column.Table.get_Name()
                 column_name = column.get_Name()

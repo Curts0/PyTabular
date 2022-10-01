@@ -13,6 +13,21 @@ pages:
     source: 'pytabular/query.py'
     classes:
       - Connection
+  - page: "Table.md"
+    source: 'pytabular/table.py'
+    classes:
+      - PyTable
+      - PyTables
+  - page: "Partition.md"
+    source: 'pytabular/partition.py'
+    classes:
+      - PyPartition
+      - PyPartitions
+  - page: "Column.md"
+    source: 'pytabular/column.py'
+    classes:
+      - PyColumn
+      - PyColumns
   - page: "Traces.md"
     source: 'pytabular/tabular_tracing.py'
     classes:
