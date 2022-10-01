@@ -1,4 +1,7 @@
-class PyObject:
+from abc import ABC
+
+
+class PyObject(ABC):
     def __init__(self, object) -> None:
         self._object = object
 
@@ -10,6 +13,7 @@ class PyObject:
             return getattr(self, attr)
         return getattr(self._object, attr)
 
+
 class PyObjects:
     def __init__(self, objects) -> None:
         self._objects = objects
@@ -19,15 +23,15 @@ class PyObjects:
 
     def __getitem__(self, object):
         if isinstance(object, str):
-            return [
-                pyobject
-                for pyobject in self._objects
-                if object == pyobject.Name
-            ][-1]
+            return [pyobject for pyobject in self._objects if object == pyobject.Name][
+                -1
+            ]
         else:
             return self._objects[object]
+
     def __iter__(self):
         for object in self._objects:
             yield object
+
     def __len__(self):
         return len(self._objects)

@@ -87,10 +87,7 @@ class Tabular:
                 bool: True if successful
         """
         self.Tables = PyTables(
-            [
-                PyTable(table, self)
-                for table in self.Model.Tables.GetEnumerator()
-            ]
+            [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
         self.Measures = [
             measure
@@ -507,8 +504,7 @@ class Tabular:
     def Query_Every_Column(
         self, query_function: str = "COUNTROWS(VALUES(_))"
     ) -> pd.DataFrame:
-        """This will dynamically create a query to pull all columns from the model and run the query function.
-        <br/>It will replace the _ with the column to run.
+        """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
 
         Args:
                 query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
