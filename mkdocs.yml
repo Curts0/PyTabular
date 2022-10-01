@@ -3,6 +3,9 @@ site_url: https://curts0.github.io/PyTabular/
 nav:
     - Home: index.md
     - Tabular: Tabular.md
+    - Table: Table.md
+    - Partition: Partition.md
+    - Column: Column.md
     - Trace: Traces.md
     - Queries: Queries.md
     - Best Practice Analyzer: Best Practice Analyzer.md

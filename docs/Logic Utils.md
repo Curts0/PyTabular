@@ -122,7 +122,7 @@ Internal used in tabular_editor.py and best_practice_analyzer.py.
 ```
 
 ---
-Adding for >3.9 compatiblity. (Stackoverflow Answer)[https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix]
+Adding for >3.9 compatiblity. [Stackoverflow Answer](https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix)
 
 
 **Args**

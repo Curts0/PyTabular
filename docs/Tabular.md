@@ -51,7 +51,7 @@ Runs on __init__ iterates through details, can be called after any model changes
 
 
 ### .Is_Process
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L112)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L100)
 ```python
 .Is_Process()
 ```
@@ -66,7 +66,7 @@ Run method to check if Processing is occurring. Will query DMV $SYSTEM.DISCOVER_
 
 
 ### .Disconnect
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L125)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L113)
 ```python
 .Disconnect()
 ```
@@ -81,7 +81,7 @@ Disconnects from Model
 
 
 ### .Refresh
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L134)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L122)
 ```python
 .Refresh(
    Object: Union[str, Table, Partition, Dict[str, Any]],
@@ -116,7 +116,7 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 
 
 ### .Update
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L246)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L234)
 ```python
 .Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
@@ -138,14 +138,14 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 
 
 ### .SaveChanges
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L258)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L246)
 ```python
 .SaveChanges()
 ```
 
 
 ### .Backup_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L309)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L297)
 ```python
 .Backup_Table(
    table_str: str
@@ -169,7 +169,7 @@ Refresh is performed from source during backup.
 
 
 ### .Revert_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L407)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L395)
 ```python
 .Revert_Table(
    table_str: str
@@ -197,7 +197,7 @@ Example scenario ->
 
 
 ### .Query
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L503)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L491)
 ```python
 .Query(
    Query_Str: str
@@ -221,7 +221,7 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 
 
 ### .Query_Every_Column
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L516)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L504)
 ```python
 .Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
@@ -229,8 +229,7 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 ```
 
 ---
-This will dynamically create a query to pull all columns from the model and run the query function.
-<br/>It will replace the _ with the column to run.
+This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
 
 
 **Args**
@@ -244,7 +243,7 @@ This will dynamically create a query to pull all columns from the model and run 
 
 
 ### .Query_Every_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L541)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L529)
 ```python
 .Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
@@ -267,7 +266,7 @@ It will replace the _ with the table to run.
 
 
 ### .Analyze_BPA
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L562)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L550)
 ```python
 .Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
@@ -292,7 +291,7 @@ Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
 
 
 ### .Create_Table
-[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L595)
+[source](https://github.com/Curts0/PyTabular\blob\master\pytabular/pytabular.py\#L583)
 ```python
 .Create_Table(
    df: pd.DataFrame, table_name: str
