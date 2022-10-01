@@ -33,8 +33,12 @@ class Connection(AdomdConnection):
         Returns:
                 pd.DataFrame: Returns dataframe with results
         """
+        try:
+            is_file = os.path.isfile(Query_Str)
+        except Exception:
+            is_file = False
 
-        if os.path.isfile(Query_Str):
+        if is_file:
             logging.debug(
                 f"File path detected, reading file... -> {Query_Str}",
             )
