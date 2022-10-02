@@ -154,6 +154,11 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+# Vim swap files
+*.swp
+*.swo
+*.swn
+
 # Project-specific
 __pycache__
 /.vscode
