@@ -78,7 +78,7 @@ class Tabular:
         pass
 
     def __repr__(self) -> str:
-        return f"{self.Server.Name}::{self.Database.Name}::{self.Model.Name}\nEstimated Size::{self.Database.EstimatedSize}\nTables::{len(self.Tables)}\nColumns::{len(self.Columns)}\nPartitions::{len(self.Partitions)}\nMeasures::{len(self.Measures)}"
+        return f"Server::{self.Server.Name}\nDatabase::{self.Database.Name}\nModel::{self.Model.Name}\nEstimated Size::{self.Database.EstimatedSize}"
 
     def Reload_Model_Info(self) -> bool:
         """Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
