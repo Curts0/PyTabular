@@ -48,6 +48,11 @@ def test_file_query(model):
 
 
 @pytest.mark.parametrize("model", testing_parameters)
+def test_repr_str(model):
+    assert isinstance(model.__repr__(), str)
+
+
+@pytest.mark.parametrize("model", testing_parameters)
 def test_query_every_table(model):
     assert len(model.Query_Every_Table()) > 0
 
