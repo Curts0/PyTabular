@@ -1,6 +1,5 @@
 import logging
 
-from Microsoft.AnalysisServices.Tabular import Table
 from object import PyObject
 import pandas as pd
 from partition import PyPartition, PyPartitions
