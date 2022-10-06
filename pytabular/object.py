@@ -35,3 +35,8 @@ class PyObjects:
 
     def __len__(self):
         return len(self._objects)
+    
+    def Find(self, object_str):
+        return [
+            object for object in self._objects if object_str.lower() in object.Name.lower()
+        ]

@@ -88,11 +88,6 @@ class Tabular:
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
-        self.Measures = [
-            measure
-            for table in self.Tables
-            for measure in table.Measures.GetEnumerator()
-        ]
         self.Database.Refresh()
         return True
 

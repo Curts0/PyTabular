@@ -83,7 +83,7 @@ def BPA_Violations_To_DF(model: pytabular.Tabular, te2: str, bpa: str) -> pd.Dat
     columns = ["Object", "Violation"]
     return pd.DataFrame(data, columns=columns)
 
-
+'''
 def Last_X_Interval(
     Model: pytabular.Tabular,
     Measure: Union[str, pytabular.pytabular.Measure],
@@ -131,3 +131,4 @@ def Last_X_Interval(
         f"Running query for {Column_Name} in the last {Number_Of_Intervals} {Interval}s..."
     )
     return Model.Query(Query_Str)
+'''
