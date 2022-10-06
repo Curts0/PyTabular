@@ -1,9 +1,9 @@
 import logging
-
 from object import PyObject
 import pandas as pd
 from partition import PyPartition, PyPartitions
 from column import PyColumn, PyColumns
+from measure import PyMeasure, PyMeasures
 from pytabular.object import PyObjects
 
 logger = logging.getLogger("PyTabular")
@@ -30,6 +30,9 @@ class PyTable(PyObject):
         )
         self.Columns = PyColumns(
             [PyColumn(column, self) for column in self._object.Columns.GetEnumerator()]
+        )
+        self.Measures = PyMeasures(
+            [PyMeasure(measure, self) for measure in self._object.Measures.GetEnumerator()]
         )
 
     def Row_Count(self) -> int:
