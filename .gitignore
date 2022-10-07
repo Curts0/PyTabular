@@ -167,6 +167,7 @@ __pycache__
 /TE2
 setup.py
 notes.txt
+adhoc.py
 *.bim
 *.csv
 docs/_config.yml# Byte-compiled / optimized / DLL files
