@@ -25,6 +25,9 @@ from logic_utils import (
 )
 from query import Connection
 from table import PyTable, PyTables
+from partition import PyPartitions
+from column import PyColumns
+from measure import PyMeasures
 from tabular_tracing import Refresh_Trace
 
 logger = logging.getLogger("PyTabular")
@@ -87,6 +90,15 @@ class Tabular:
         """
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
+        )
+        self.Partitions = PyPartitions(
+            [partition for table in self.Tables for partition in table.Partitions]
+        )
+        self.Columns = PyColumns(
+            [column for table in self.Tables for column in table.Columns]
+        )
+        self.Measures = PyMeasures(
+            [measure for table in self.Tables for measure in table.Measures]
         )
         self.Database.Refresh()
         return True
