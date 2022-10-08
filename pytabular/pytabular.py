@@ -8,9 +8,8 @@ from Microsoft.AnalysisServices.Tabular import (
     DataColumn,
     Partition,
     MPartitionSource,
-    Measure,
 )
-from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
+
 from Microsoft.AnalysisServices import UpdateOptions
 from typing import Any, Dict, List, Union
 from collections import namedtuple
@@ -26,6 +25,9 @@ from logic_utils import (
 )
 from query import Connection
 from table import PyTable, PyTables
+from partition import PyPartitions
+from column import PyColumns
+from measure import PyMeasures
 from tabular_tracing import Refresh_Trace
 
 logger = logging.getLogger("PyTabular")
@@ -89,11 +91,15 @@ class Tabular:
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
-        self.Measures = [
-            measure
-            for table in self.Tables
-            for measure in table.Measures.GetEnumerator()
-        ]
+        self.Partitions = PyPartitions(
+            [partition for table in self.Tables for partition in table.Partitions]
+        )
+        self.Columns = PyColumns(
+            [column for table in self.Tables for column in table.Columns]
+        )
+        self.Measures = PyMeasures(
+            [measure for table in self.Tables for measure in table.Measures]
+        )
         self.Database.Refresh()
         return True
 
@@ -194,7 +200,7 @@ class Tabular:
             result = self.Model.Tables.Find(table_str)
             if result is None:
                 raise Exception(f"Unable to find table! from {table_str}")
-            logging.debug(f"Found table {result.Name}")
+            logger.debug(f"Found table {result.Name}")
             return result
 
         def find_partition(table: Table, partition_str: str) -> Partition:
@@ -203,7 +209,7 @@ class Tabular:
                 raise Exception(
                     f"Unable to find partition! {table.Name}|{partition_str}"
                 )
-            logging.debug(f"Found partition {result.Table.Name}|{result.Name}")
+            logger.debug(f"Found partition {result.Table.Name}|{result.Name}")
             return result
 
         def refresh(Object):
@@ -619,6 +625,6 @@ class Tabular:
             f"Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}"
         )
         self.Model.Tables.Add(new_table)
-        self.Refresh([new_table])
+        self.Refresh([new_table], Tracing=True)
         self.SaveChanges()
         return True

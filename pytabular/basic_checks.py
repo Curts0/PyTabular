@@ -4,6 +4,7 @@ import pytabular
 from logic_utils import ticks_to_datetime
 import sys
 import pandas as pd
+from measure import PyMeasure
 
 logger = logging.getLogger("PyTabular")
 
@@ -86,7 +87,7 @@ def BPA_Violations_To_DF(model: pytabular.Tabular, te2: str, bpa: str) -> pd.Dat
 
 def Last_X_Interval(
     Model: pytabular.Tabular,
-    Measure: Union[str, pytabular.pytabular.Measure],
+    Measure: Union[str, PyMeasure],
     Column_Name: Union[str, None] = None,
     Date_Column_Identifier: str = "'Date'[DATE_DTE_KEY]",
     Number_Of_Intervals: int = 90,
@@ -105,7 +106,7 @@ def Last_X_Interval(
     Returns:
             pd.DataFrame: Pandas DataFrame of results.
     """
-    if isinstance(Measure, str):
+    if isinstance(PyMeasure, str):
         try:
             Measure = [
                 measure for measure in Model.Measures if measure.Name == Measure

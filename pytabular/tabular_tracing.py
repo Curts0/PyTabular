@@ -177,11 +177,68 @@ class Base_Trace:
         return Event_Categories
 
 
-def refresh_handler(source, args):
-    if args.EventSubclass == TraceEventSubclass.ReadData:
-        logger.info(f"{args.ProgressTotal} - {args.ObjectPath}")
+def _refresh_handler(source, args):
+    TextData = args.TextData.replace("<ccon>", "").replace("</ccon>", "")
+
+    if (
+        args.EventClass == TraceEventClass.ProgressReportCurrent
+        and args.EventSubclass == TraceEventSubclass.ReadData
+    ):
+        logger.info(
+            f"Total Rows Read {args.ProgressTotal} From Table '{args.ObjectPath.split('.')[-2]}' Partition '{args.ObjectPath.split('.')[-1]}' "
+        )
+
+    elif (
+        args.EventClass == TraceEventClass.ProgressReportEnd
+        and args.EventSubclass == TraceEventSubclass.ReadData
+    ):
+        if args.ProgressTotal == 0:
+            logger.warning(
+                f"{'::'.join(args.ObjectPath.split('.')[-2:])} QUERIED {args.ProgressTotal} ROWS!"
+            )
+        else:
+            logger.info(
+                f"Finished Reading {'::'.join(args.ObjectPath.split('.')[-2:])} for {args.ProgressTotal} Rows!"
+            )
+
+    elif args.EventSubclass == TraceEventSubclass.SwitchingDictionary:
+        logger.warning(f"{TextData}")
+
+    elif (
+        args.EventClass == TraceEventClass.ProgressReportBegin
+        and args.EventSubclass
+        in [
+            TraceEventSubclass.TabularSequencePoint,
+            TraceEventSubclass.TabularRefresh,
+            TraceEventSubclass.Process,
+            TraceEventSubclass.VertiPaq,
+            TraceEventSubclass.CompressSegment,
+            TraceEventSubclass.TabularCommit,
+            TraceEventSubclass.RelationshipBuildPrepare,
+            TraceEventSubclass.AnalyzeEncodeData,
+            TraceEventSubclass.ReadData,
+        ]
+    ):
+        logger.info(f"{TextData}")
+
+    elif (
+        args.EventClass == TraceEventClass.ProgressReportEnd
+        and args.EventSubclass
+        in [
+            TraceEventSubclass.TabularSequencePoint,
+            TraceEventSubclass.TabularRefresh,
+            TraceEventSubclass.Process,
+            TraceEventSubclass.VertiPaq,
+            TraceEventSubclass.CompressSegment,
+            TraceEventSubclass.TabularCommit,
+            TraceEventSubclass.RelationshipBuildPrepare,
+            TraceEventSubclass.AnalyzeEncodeData,
+        ]
+    ):
+        logger.info(f"{TextData}")
+
     else:
-        logger.info(f"{args.EventClass} - {args.EventSubclass} - {args.ObjectName}")
+        logger.debug(f"{args.EventClass}::{args.EventSubclass}::{TextData}")
 
 
 class Refresh_Trace(Base_Trace):
@@ -211,6 +268,6 @@ class Refresh_Trace(Base_Trace):
             TraceColumn.EventClass,
             TraceColumn.ProgressTotal,
         ],
-        Handler: Callable = refresh_handler,
+        Handler: Callable = _refresh_handler,
     ) -> None:
         super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)

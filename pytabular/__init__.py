@@ -3,11 +3,10 @@ import logging
 import os
 import sys
 import platform
+from rich.logging import RichHandler
 
 logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s::%(module)s::%(funcName)s::%(levelname)s::%(message)s",
-    datefmt="%y/%m/%d %H:%M:%S %z",
+    level=logging.DEBUG, format="%(message)s", datefmt="[%x]", handlers=[RichHandler()]
 )
 logger = logging.getLogger("PyTabular")
 logger.setLevel(logging.INFO)

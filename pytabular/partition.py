@@ -3,7 +3,6 @@ import logging
 from object import PyObject, PyObjects
 from logic_utils import ticks_to_datetime
 import pandas as pd
-from typing import List
 
 logger = logging.getLogger("PyTabular")
 
