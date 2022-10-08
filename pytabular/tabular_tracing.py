@@ -178,43 +178,63 @@ class Base_Trace:
 
 
 def _refresh_handler(source, args):
-    TextData = args.TextData.replace('<ccon>','').replace('</ccon>','')
+    TextData = args.TextData.replace("<ccon>", "").replace("</ccon>", "")
 
-    if args.EventClass == TraceEventClass.ProgressReportCurrent and args.EventSubclass == TraceEventSubclass.ReadData:
-        logger.info(f"{args.ProgressTotal}::{'::'.join(args.ObjectPath.split('.')[-2:])}")
+    if (
+        args.EventClass == TraceEventClass.ProgressReportCurrent
+        and args.EventSubclass == TraceEventSubclass.ReadData
+    ):
+        logger.info(
+            f"Total Rows Read {args.ProgressTotal} From Table '{args.ObjectPath.split('.')[-2]}' Partition '{args.ObjectPath.split('.')[-1]}' "
+        )
 
-    elif args.EventClass == TraceEventClass.ProgressReportEnd and args.EventSubclass == TraceEventSubclass.ReadData:
+    elif (
+        args.EventClass == TraceEventClass.ProgressReportEnd
+        and args.EventSubclass == TraceEventSubclass.ReadData
+    ):
         if args.ProgressTotal == 0:
-            logger.warning(f"{'::'.join(args.ObjectPath.split('.')[-2:])} QUERIED {args.ProgressTotal} ROWS!")
+            logger.warning(
+                f"{'::'.join(args.ObjectPath.split('.')[-2:])} QUERIED {args.ProgressTotal} ROWS!"
+            )
         else:
-            logger.info(f"Finished Reading {'::'.join(args.ObjectPath.split('.')[-2:])} for {args.ProgressTotal} Rows!")
+            logger.info(
+                f"Finished Reading {'::'.join(args.ObjectPath.split('.')[-2:])} for {args.ProgressTotal} Rows!"
+            )
 
     elif args.EventSubclass == TraceEventSubclass.SwitchingDictionary:
         logger.warning(f"{TextData}")
 
-    elif args.EventClass == TraceEventClass.ProgressReportBegin and args.EventSubclass in [
-        TraceEventSubclass.TabularSequencePoint,
-        TraceEventSubclass.TabularRefresh,
-        TraceEventSubclass.Process,
-        TraceEventSubclass.VertiPaq,
-        TraceEventSubclass.CompressSegment,
-        TraceEventSubclass.TabularCommit,
-        TraceEventSubclass.RelationshipBuildPrepare,
-        TraceEventSubclass.AnalyzeEncodeData,
-        TraceEventSubclass.ReadData
-    ]:
+    elif (
+        args.EventClass == TraceEventClass.ProgressReportBegin
+        and args.EventSubclass
+        in [
+            TraceEventSubclass.TabularSequencePoint,
+            TraceEventSubclass.TabularRefresh,
+            TraceEventSubclass.Process,
+            TraceEventSubclass.VertiPaq,
+            TraceEventSubclass.CompressSegment,
+            TraceEventSubclass.TabularCommit,
+            TraceEventSubclass.RelationshipBuildPrepare,
+            TraceEventSubclass.AnalyzeEncodeData,
+            TraceEventSubclass.ReadData,
+        ]
+    ):
         logger.info(f"{TextData}")
 
-    elif args.EventClass == TraceEventClass.ProgressReportEnd and args.EventSubclass in [
-        TraceEventSubclass.TabularSequencePoint,
-        TraceEventSubclass.TabularRefresh,
-        TraceEventSubclass.Process,
-        TraceEventSubclass.VertiPaq,
-        TraceEventSubclass.CompressSegment,
-        TraceEventSubclass.TabularCommit,
-        TraceEventSubclass.RelationshipBuildPrepare,
-        TraceEventSubclass.AnalyzeEncodeData
-    ]:
+    elif (
+        args.EventClass == TraceEventClass.ProgressReportEnd
+        and args.EventSubclass
+        in [
+            TraceEventSubclass.TabularSequencePoint,
+            TraceEventSubclass.TabularRefresh,
+            TraceEventSubclass.Process,
+            TraceEventSubclass.VertiPaq,
+            TraceEventSubclass.CompressSegment,
+            TraceEventSubclass.TabularCommit,
+            TraceEventSubclass.RelationshipBuildPrepare,
+            TraceEventSubclass.AnalyzeEncodeData,
+        ]
+    ):
         logger.info(f"{TextData}")
 
     else:
@@ -246,7 +266,7 @@ class Refresh_Trace(Base_Trace):
             TraceColumn.SessionID,
             TraceColumn.TextData,
             TraceColumn.EventClass,
-            TraceColumn.ProgressTotal
+            TraceColumn.ProgressTotal,
         ],
         Handler: Callable = _refresh_handler,
     ) -> None:
