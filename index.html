@@ -147,6 +147,10 @@
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
 </code></pre>
+<p>I'm a big fan of logging, if you don't want any just get the logger and disable it.</p>
+<pre><code class="language-python">import pytabular
+pytabular.logger.disabled = True
+</code></pre>
 <p>You can query your models with the Query method from your tabular class. For Dax Queries, it will need the full Dax syntax. See <a href="https://dax.guide/st/evaluate/">EVALUATE example</a>. This will return a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>. If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See <a href="https://curts0.github.io/PyTabular/Tabular/#query">PyTabular Docs for Query</a>.</p>
 <pre><code class="language-python">#Run basic queries
 DAX_QUERY = &quot;EVALUATE TOPN(100, 'Table1')&quot;
@@ -201,8 +205,26 @@ model.Refresh({'Table Name':'Partition Name'})
 #or any kind of weird combination like
 model.Refresh([{&lt;Table Class&gt;:&lt;Partition Class&gt;,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
 
+#You can even run through the Tables &amp; Partition Attributes
+model.Tables['Table Name'].Refresh()
+
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Refresh()
+
 #Add Tracing=True for simple Traces tracking the refresh.
 model.Refresh(['Table1','Table2'], Tracing=True)
+</code></pre>
+<p>It's not uncommon to need to run through some checks on specific Tables, Partitions, Columns, Etc...</p>
+<pre><code class="language-python">#Get Row Count from model
+model.Tables['Table Name'].Row_Count()
+
+#Get Last Refresh time from a partition
+model.Tables['Table Name'].Last_Refresh()
+
+#Get Distinct Count or Values from a Column
+model.Tables['Table Name'].Columns['Column Name'].Distinct_Count()
+#or
+model.Tables['Table Name'].Columns['Column Name'].Values()
 </code></pre>
 <h3 id="use-cases">Use Cases</h3>
 <h4 id="if-blank-table-then-refresh-table">If blank table, then refresh table.</h4>
@@ -307,5 +329,5 @@ for file_path in LIST_OF_FILE_PATHS:
 
 <!--
 MkDocs version : 1.4.0
-Build Date UTC : 2022-10-04 13:17:35.468146+00:00
+Build Date UTC : 2022-10-08 19:00:27.046663+00:00
 -->

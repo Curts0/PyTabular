@@ -141,7 +141,7 @@
               
                 <h1 id="_1"></h1>
 <h2 id="tabular">Tabular</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L34">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L36">source</a></p>
 <pre><code class="language-python">Tabular(
    CONNECTION_STR: str
 )
@@ -165,7 +165,7 @@
 </ul>
 <p><strong>Methods:</strong></p>
 <h3 id="reload_model_info">.Reload_Model_Info</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L83">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L85">source</a></p>
 <pre><code class="language-python">.Reload_Model_Info()
 </code></pre>
 <hr />
@@ -175,7 +175,7 @@
 <li><strong>bool</strong>  : True if successful</li>
 </ul>
 <h3 id="is_process">.Is_Process</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L100">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L106">source</a></p>
 <pre><code class="language-python">.Is_Process()
 </code></pre>
 <hr />
@@ -185,7 +185,7 @@
 <li><strong>bool</strong>  : True if DMV shows Process, False if not.</li>
 </ul>
 <h3 id="disconnect">.Disconnect</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L113">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L119">source</a></p>
 <pre><code class="language-python">.Disconnect()
 </code></pre>
 <hr />
@@ -195,7 +195,7 @@
 <li><strong>bool</strong>  : True if successful</li>
 </ul>
 <h3 id="refresh">.Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L122">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L128">source</a></p>
 <pre><code class="language-python">.Refresh(
    Object: Union[str, Table, Partition, Dict[str, Any]],
    RefreshType: RefreshType = RefreshType.Full, Tracing = False
@@ -222,7 +222,7 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 <li><strong>WIP</strong>  : WIP</li>
 </ul>
 <h3 id="update">.Update</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L234">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L240">source</a></p>
 <pre><code class="language-python">.Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
 )
@@ -238,11 +238,11 @@ Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {
 <li><strong>None</strong>  : Placeholder to eventually change.</li>
 </ul>
 <h3 id="savechanges">.SaveChanges</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L246">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L252">source</a></p>
 <pre><code class="language-python">.SaveChanges()
 </code></pre>
 <h3 id="backup_table">.Backup_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L297">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L303">source</a></p>
 <pre><code class="language-python">.Backup_Table(
    table_str: str
 )
@@ -260,7 +260,7 @@ Refresh is performed from source during backup.</p>
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
 <h3 id="revert_table">.Revert_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L395">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L401">source</a></p>
 <pre><code class="language-python">.Revert_Table(
    table_str: str
 )
@@ -282,7 +282,7 @@ Example scenario -&gt;
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
 <h3 id="query">.Query</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L491">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L497">source</a></p>
 <pre><code class="language-python">.Query(
    Query_Str: str
 )
@@ -300,7 +300,7 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="query_every_column">.Query_Every_Column</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L504">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L510">source</a></p>
 <pre><code class="language-python">.Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
 )
@@ -316,7 +316,7 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
 </ul>
 <h3 id="query_every_table">.Query_Every_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L529">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L535">source</a></p>
 <pre><code class="language-python">.Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
 )
@@ -333,7 +333,7 @@ It will replace the _ with the table to run.</p>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="analyze_bpa">.Analyze_BPA</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L550">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L556">source</a></p>
 <pre><code class="language-python">.Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
 )
@@ -352,7 +352,7 @@ It will replace the _ with the table to run.</p>
 <li>Assuming no failure, will return list of BPA violations. Else will return error from command line.</li>
 </ul>
 <h3 id="create_table">.Create_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L583">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L589">source</a></p>
 <pre><code class="language-python">.Create_Table(
    df: pd.DataFrame, table_name: str
 )

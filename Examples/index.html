@@ -119,7 +119,7 @@
               
                 <h1 id="_1"></h1>
 <h3 id="return_zero_row_tables">Return_Zero_Row_Tables</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L11">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L12">source</a></p>
 <pre><code class="language-python">.Return_Zero_Row_Tables(
    model: pytabular.Tabular
 )
@@ -136,7 +136,7 @@
 </ul>
 <hr />
 <h3 id="table_last_refresh_times">Table_Last_Refresh_Times</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L26">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L27">source</a></p>
 <pre><code class="language-python">.Table_Last_Refresh_Times(
    model: pytabular.Tabular, group_partition: bool = True
 )
@@ -158,7 +158,7 @@ If group_partition == True and the table has multiple partitions, then df.groupb
 </ul>
 <hr />
 <h3 id="bpa_violations_to_df">BPA_Violations_To_DF</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L67">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L68">source</a></p>
 <pre><code class="language-python">.BPA_Violations_To_DF(
    model: pytabular.Tabular, te2: str, bpa: str
 )
@@ -177,9 +177,9 @@ If group_partition == True and the table has multiple partitions, then df.groupb
 </ul>
 <hr />
 <h3 id="last_x_interval">Last_X_Interval</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L87">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/basic_checks.py/#L88">source</a></p>
 <pre><code class="language-python">.Last_X_Interval(
-   Model: pytabular.Tabular, Measure: Union[str, pytabular.pytabular.Measure],
+   Model: pytabular.Tabular, Measure: Union[str, PyMeasure],
    Column_Name: Union[str, None] = None,
    Date_Column_Identifier: str = &quot;'Date'[DATE_DTE_KEY]&quot;,
    Number_Of_Intervals: int = 90, Interval: str = 'DAY'

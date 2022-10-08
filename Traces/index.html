@@ -230,7 +230,7 @@ then it will return the error from Server.</li>
 </ul>
 <hr />
 <h2 id="refresh_trace">Refresh_Trace</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L187">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L244">source</a></p>
 <pre><code class="language-python">Refresh_Trace(
    Tabular_Class,
    Trace_Events: List[TraceEvent] = [TraceEventClass.ProgressReportBegin,
@@ -240,7 +240,7 @@ then it will return the error from Server.</li>
    TraceColumn.CurrentTime, TraceColumn.ObjectName, TraceColumn.ObjectPath,
    TraceColumn.DatabaseName, TraceColumn.SessionID, TraceColumn.TextData,
    TraceColumn.EventClass, TraceColumn.ProgressTotal],
-   Handler: Callable = refresh_handler
+   Handler: Callable = _refresh_handler
 )
 </code></pre>
 <hr />
