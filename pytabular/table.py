@@ -32,7 +32,10 @@ class PyTable(PyObject):
             [PyColumn(column, self) for column in self._object.Columns.GetEnumerator()]
         )
         self.Measures = PyMeasures(
-            [PyMeasure(measure, self) for measure in self._object.Measures.GetEnumerator()]
+            [
+                PyMeasure(measure, self)
+                for measure in self._object.Measures.GetEnumerator()
+            ]
         )
 
     def Row_Count(self) -> int:

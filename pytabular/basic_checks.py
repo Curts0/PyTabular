@@ -5,6 +5,7 @@ from logic_utils import ticks_to_datetime
 import sys
 import pandas as pd
 from measure import PyMeasure
+
 logger = logging.getLogger("PyTabular")
 
 
