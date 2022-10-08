@@ -7,7 +7,7 @@ from Microsoft.AnalysisServices.Tabular import (
     Table,
     DataColumn,
     Partition,
-    MPartitionSource
+    MPartitionSource,
 )
 
 from Microsoft.AnalysisServices import UpdateOptions
@@ -156,7 +156,8 @@ class Tabular:
             refresh_data = []
             for property_change in Property_Changes:
                 if (
-                    isinstance(property_change.Object, Partition) and property_change.Property_Name == "RefreshedTime"
+                    isinstance(property_change.Object, Partition)
+                    and property_change.Property_Name == "RefreshedTime"
                 ):
                     table, partition, refreshed_time = (
                         property_change.Object.Table.Name,
@@ -336,7 +337,8 @@ class Tabular:
         relationships = [
             relationship.Clone()
             for relationship in self.Model.Relationships.GetEnumerator()
-            if relationship.ToTable.Name == remove_suffix(table.Name, "_backup") or relationship.FromTable.Name == remove_suffix(table.Name, "_backup")
+            if relationship.ToTable.Name == remove_suffix(table.Name, "_backup")
+            or relationship.FromTable.Name == remove_suffix(table.Name, "_backup")
         ]
         logger.info("Renaming Relationships")
         rename(relationships)
@@ -420,13 +422,15 @@ class Tabular:
         main_relationships = [
             relationship
             for relationship in self.Model.Relationships.GetEnumerator()
-            if relationship.ToTable.Name == main.Name or relationship.FromTable.Name == main.Name
+            if relationship.ToTable.Name == main.Name
+            or relationship.FromTable.Name == main.Name
         ]
         logger.debug("Finding backup relationships")
         backup_relationships = [
             relationship
             for relationship in self.Model.Relationships.GetEnumerator()
-            if relationship.ToTable.Name == backup.Name or relationship.FromTable.Name == backup.Name
+            if relationship.ToTable.Name == backup.Name
+            or relationship.FromTable.Name == backup.Name
         ]
 
         def remove_role_permissions():
@@ -621,6 +625,6 @@ class Tabular:
             f"Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}"
         )
         self.Model.Tables.Add(new_table)
-        self.Refresh([new_table])
+        self.Refresh([new_table], Tracing=True)
         self.SaveChanges()
         return True

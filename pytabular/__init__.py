@@ -3,11 +3,10 @@ import logging
 import os
 import sys
 import platform
+from rich.logging import RichHandler
 
 logging.basicConfig(
-    level=logging.DEBUG,
-    format="%(asctime)s::%(module)s::%(funcName)s::%(levelname)s::%(message)s",
-    datefmt="%y/%m/%d %H:%M:%S %z",
+    level=logging.DEBUG, format="%(message)s", datefmt="[%x]", handlers=[RichHandler()]
 )
 logger = logging.getLogger("PyTabular")
 logger.setLevel(logging.INFO)
@@ -44,7 +43,7 @@ from .basic_checks import (
     Return_Zero_Row_Tables,
     Table_Last_Refresh_Times,
     BPA_Violations_To_DF,
-    Last_X_Interval
+    Last_X_Interval,
 )
 from .logic_utils import (
     pd_dataframe_to_m_expression,
