@@ -13,7 +13,8 @@ dependencies = [
     "clr-loader==0.1.7",
     "xmltodict==0.13.0",
     "pandas",
-    "requests"
+    "requests",
+    "rich"
 ]
 description = "Connect to your tabular model and perform operations programmatically"
 readme = "README.md"
