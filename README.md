@@ -21,6 +21,12 @@ import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
 ```
 
+I'm a big fan of logging, if you don't want any just get the logger and disable it.
+```python
+import pytabular
+pytabular.logger.disabled = True
+```
+
 You can query your models with the Query method from your tabular class. For Dax Queries, it will need the full Dax syntax. See [EVALUATE example](https://dax.guide/st/evaluate/). This will return a [Pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html). If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See [PyTabular Docs for Query](https://curts0.github.io/PyTabular/Tabular/#query).
 ```python
 #Run basic queries
@@ -80,9 +86,30 @@ model.Refresh({'Table Name':'Partition Name'})
 #or any kind of weird combination like
 model.Refresh([{<Table Class>:<Partition Class>,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
 
+#You can even run through the Tables & Partition Attributes
+model.Tables['Table Name'].Refresh()
+
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].Refresh()
+
 #Add Tracing=True for simple Traces tracking the refresh.
 model.Refresh(['Table1','Table2'], Tracing=True)
 ```
+
+It's not uncommon to need to run through some checks on specific Tables, Partitions, Columns, Etc...
+```python
+#Get Row Count from model
+model.Tables['Table Name'].Row_Count()
+
+#Get Last Refresh time from a partition
+model.Tables['Table Name'].Last_Refresh()
+
+#Get Distinct Count or Values from a Column
+model.Tables['Table Name'].Columns['Column Name'].Distinct_Count()
+#or
+model.Tables['Table Name'].Columns['Column Name'].Values()
+```
+
 
 ### Use Cases
 

@@ -200,7 +200,7 @@ class Tabular:
             result = self.Model.Tables.Find(table_str)
             if result is None:
                 raise Exception(f"Unable to find table! from {table_str}")
-            logging.debug(f"Found table {result.Name}")
+            logger.debug(f"Found table {result.Name}")
             return result
 
         def find_partition(table: Table, partition_str: str) -> Partition:
@@ -209,7 +209,7 @@ class Tabular:
                 raise Exception(
                     f"Unable to find partition! {table.Name}|{partition_str}"
                 )
-            logging.debug(f"Found partition {result.Table.Name}|{result.Name}")
+            logger.debug(f"Found partition {result.Table.Name}|{result.Name}")
             return result
 
         def refresh(Object):
