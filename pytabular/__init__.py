@@ -4,9 +4,14 @@ import os
 import sys
 import platform
 from rich.logging import RichHandler
+from rich import pretty
 
+pretty.install()
 logging.basicConfig(
-    level=logging.DEBUG, format="%(message)s", datefmt="[%x]", handlers=[RichHandler()]
+    level=logging.DEBUG,
+    format="%(message)s",
+    datefmt="[%H:%M:%S]",
+    handlers=[RichHandler()],
 )
 logger = logging.getLogger("PyTabular")
 logger.setLevel(logging.INFO)
