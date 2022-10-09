@@ -1,12 +1,28 @@
 from abc import ABC
+from rich.console import Console
+from rich.table import Table
 
 
 class PyObject(ABC):
     def __init__(self, object) -> None:
         self._object = object
+        self._display = Table(title=self.Name)
+        self._display.add_column(
+            "Properties", justify="right", style="cyan", no_wrap=True
+        )
+        self._display.add_column("", justify="left", style="magenta", no_wrap=False)
+        self._display.add_row("Name", self._object.Name)
+        self._display.add_row("ObjectType", str(self._object.ObjectType))
+        if not str(self._object.ObjectType) == "Model":
+            self._display.add_row("ParentName", self._object.Parent.Name)
+            self._display.add_row(
+                "ParentObjectType",
+                str(self._object.Parent.ObjectType),
+                end_section=True,
+            )
 
-    def __repr__(self) -> str:
-        return self.Name
+    def __rich_repr__(self) -> str:
+        Console().print(self._display)
 
     def __getattr__(self, attr):
         if attr in self.__dict__:

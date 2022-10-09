@@ -16,6 +16,10 @@ class PyMeasure(PyObject):
     def __init__(self, object, table) -> None:
         super().__init__(object)
         self.Table = table
+        self._display.add_row("Expression", self._object.Expression, end_section=True)
+        self._display.add_row("DisplayFolder", self._object.DisplayFolder)
+        self._display.add_row("IsHidden", str(self._object.IsHidden))
+        self._display.add_row("FormatString", self._object.FormatString)
 
 
 class PyMeasures(PyObjects):

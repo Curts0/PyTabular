@@ -29,11 +29,12 @@ from partition import PyPartitions
 from column import PyColumns
 from measure import PyMeasures
 from tabular_tracing import Refresh_Trace
+from object import PyObject
 
 logger = logging.getLogger("PyTabular")
 
 
-class Tabular:
+class Tabular(PyObject):
     """Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet). You can use this class as your main way to interact with your model.
 
     Args:
@@ -71,16 +72,32 @@ class Tabular:
         self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
         self.Model = self.Database.Model
         logger.info(f"Connected to Model - {self.Model.Name}")
+        super().__init__(self.Model)
         self.Adomd = Connection(self.Server)
         self.Reload_Model_Info()
+
+        self._display.add_row(
+            "EstimatedSize",
+            str(round(self.Database.EstimatedSize / 1000000000, 2)) + " GB",
+            end_section=True,
+        )
+        self._display.add_row("# of Tables", str(len(self.Tables)))
+        self._display.add_row("# of Partitions", str(len(self.Partitions)))
+        self._display.add_row("# of Columns", str(len(self.Columns)))
+        self._display.add_row(
+            "# of Measures", str(len(self.Measures)), end_section=True
+        )
+        self._display.add_row("Database", self.Database.Name)
+        self._display.add_row("Server", self.Server.Name)
+
         logger.debug("Class Initialization Completed")
         logger.debug("Registering Disconnect on Termination...")
         atexit.register(self.Disconnect)
 
         pass
 
-    def __repr__(self) -> str:
-        return f"Server::{self.Server.Name}\nDatabase::{self.Database.Name}\nModel::{self.Model.Name}\nEstimated Size::{self.Database.EstimatedSize}"
+    # def __repr__(self) -> str:
+    #    return f"Server::{self.Server.Name}\nDatabase::{self.Database.Name}\nModel::{self.Model.Name}\nEstimated Size::{self.Database.EstimatedSize}"
 
     def Reload_Model_Info(self) -> bool:
         """Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()

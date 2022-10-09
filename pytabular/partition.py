@@ -18,6 +18,14 @@ class PyPartition(PyObject):
     def __init__(self, object, table) -> None:
         super().__init__(object)
         self.Table = table
+        self._display.add_row("Mode", str(self._object.Mode))
+        self._display.add_row("State", str(self._object.State))
+        self._display.add_row(
+            "SourceType", str(self._object.SourceType), end_section=True
+        )
+        self._display.add_row(
+            "RefreshedTime", self.Last_Refresh().strftime("%m/%d/%Y, %H:%M:%S")
+        )
 
     def Last_Refresh(self):
         """Queries `RefreshedTime` attribute in the partition and converts from C# Ticks to Python datetime
