@@ -5,6 +5,7 @@ from partition import PyPartition, PyPartitions
 from column import PyColumn, PyColumns
 from measure import PyMeasure, PyMeasures
 from pytabular.object import PyObjects
+from logic_utils import ticks_to_datetime
 
 logger = logging.getLogger("PyTabular")
 
@@ -36,6 +37,21 @@ class PyTable(PyObject):
                 PyMeasure(measure, self)
                 for measure in self._object.Measures.GetEnumerator()
             ]
+        )
+        self._display.add_row("# of Partitions", str(len(self.Partitions)))
+        self._display.add_row("# of Columns", str(len(self.Columns)))
+        self._display.add_row(
+            "# of Measures", str(len(self.Measures)), end_section=True
+        )
+        self._display.add_row("Description", self._object.Description, end_section=True)
+        self._display.add_row("DataCategory", str(self._object.DataCategory))
+        self._display.add_row("IsHidden", str(self._object.IsHidden))
+        self._display.add_row("IsPrivate", str(self._object.IsPrivate))
+        self._display.add_row(
+            "ModifiedTime",
+            ticks_to_datetime(self._object.ModifiedTime.Ticks).strftime(
+                "%m/%d/%Y, %H:%M:%S"
+            ),
         )
 
     def Row_Count(self) -> int:

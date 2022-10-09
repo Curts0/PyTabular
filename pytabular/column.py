@@ -17,6 +17,17 @@ class PyColumn(PyObject):
     def __init__(self, object, table) -> None:
         super().__init__(object)
         self.Table = table
+        self._display.add_row(
+            "Description", str(self._object.Description), end_section=True
+        )
+        self._display.add_row("DataType", str(self._object.DataType))
+        self._display.add_row("EncodingHint", str(self._object.EncodingHint))
+        self._display.add_row("IsAvailableInMDX", str(self._object.IsAvailableInMDX))
+        self._display.add_row("IsHidden", str(self._object.IsHidden))
+        self._display.add_row("IsKey", str(self._object.IsKey))
+        self._display.add_row("IsNullable", str(self._object.IsNullable))
+        self._display.add_row("State", str(self._object.State))
+        self._display.add_row("DisplayFolder", str(self._object.DisplayFolder))
 
     def Distinct_Count(self, No_Blank=False) -> int:
         """Get [DISTINCTCOUNT](https://learn.microsoft.com/en-us/dax/distinctcount-function-dax) of Column.

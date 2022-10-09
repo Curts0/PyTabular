@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python_tabular"
-version = "0.1.7"
+version = "0.1.8"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
@@ -12,9 +12,9 @@ dependencies = [
     "pythonnet==3.0.0a2",
     "clr-loader==0.1.7",
     "xmltodict==0.13.0",
-    "pandas",
-    "requests",
-    "rich"
+    "pandas>=1.4.3",
+    "requests>=2.28.1",
+    "rich>=12.5.1"
 ]
 description = "Connect to your tabular model and perform operations programmatically"
 readme = "README.md"
