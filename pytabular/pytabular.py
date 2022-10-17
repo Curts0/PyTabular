@@ -2,7 +2,6 @@ import logging
 
 from Microsoft.AnalysisServices.Tabular import (
     Server,
-    RefreshType,
     ColumnType,
     Table,
     DataColumn,
@@ -11,7 +10,7 @@ from Microsoft.AnalysisServices.Tabular import (
 )
 
 from Microsoft.AnalysisServices import UpdateOptions
-from typing import Any, Dict, List, Union
+from typing import List, Union
 from collections import namedtuple
 import pandas as pd
 import os
@@ -20,16 +19,16 @@ import atexit
 from logic_utils import (
     pd_dataframe_to_m_expression,
     pandas_datatype_to_tabular_datatype,
-    ticks_to_datetime,
     remove_suffix,
 )
-from query import Connection
+
 from table import PyTable, PyTables
 from partition import PyPartitions
 from column import PyColumns
 from measure import PyMeasures
-from tabular_tracing import Refresh_Trace
 from object import PyObject
+from refresh import PyRefresh
+from query import Connection
 
 logger = logging.getLogger("PyTabular")
 
@@ -51,6 +50,8 @@ class Tabular(PyObject):
     """
 
     def __init__(self, CONNECTION_STR: str):
+
+        # Connecting to model...
         logger.debug("Initializing Tabular Class")
         self.Server = Server()
         self.Server.Connect(CONNECTION_STR)
@@ -72,10 +73,15 @@ class Tabular(PyObject):
         self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
         self.Model = self.Database.Model
         logger.info(f"Connected to Model - {self.Model.Name}")
-        super().__init__(self.Model)
-        self.Adomd = Connection(self.Server)
+        self.Adomd: Connection = Connection(self.Server)
+
+        # Build PyObjects
         self.Reload_Model_Info()
 
+        # Run subclass init
+        super().__init__(self.Model)
+
+        # Building rich table display for repr
         self._display.add_row(
             "EstimatedSize",
             str(round(self.Database.EstimatedSize / 1000000000, 2)) + " GB",
@@ -90,14 +96,12 @@ class Tabular(PyObject):
         self._display.add_row("Database", self.Database.Name)
         self._display.add_row("Server", self.Server.Name)
 
+        # Finished and registering disconnect
         logger.debug("Class Initialization Completed")
         logger.debug("Registering Disconnect on Termination...")
         atexit.register(self.Disconnect)
 
         pass
-
-    # def __repr__(self) -> str:
-    #    return f"Server::{self.Server.Name}\nDatabase::{self.Database.Name}\nModel::{self.Model.Name}\nEstimated Size::{self.Database.EstimatedSize}"
 
     def Reload_Model_Info(self) -> bool:
         """Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
@@ -105,6 +109,8 @@ class Tabular(PyObject):
         Returns:
                 bool: True if successful
         """
+        self.Database.Refresh()
+
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
@@ -117,7 +123,6 @@ class Tabular(PyObject):
         self.Measures = PyMeasures(
             [measure for table in self.Tables for measure in table.Measures]
         )
-        self.Database.Refresh()
         return True
 
     def Is_Process(self) -> bool:
@@ -142,117 +147,22 @@ class Tabular(PyObject):
         logger.debug(f"Disconnecting from - {self.Server.Name}")
         return self.Server.Disconnect()
 
-    def Refresh(
-        self,
-        Object: Union[str, Table, Partition, Dict[str, Any]],
-        RefreshType: RefreshType = RefreshType.Full,
-        Tracing=False,
-    ) -> None:
-        """Refreshes table(s) and partition(s).
+    def Refresh(self, *args, **kwargs) -> pd.DataFrame:
+        """PyRefresh Class to handle refreshes of model.
 
         Args:
-                Object (Union[ str, Table, Partition, Dict[str, Any], Iterable[str, Table, Partition, Dict[str, Any]] ]): Designed to handle a few different ways of selecting a refresh.
-                str == 'Table_Name'
-                Table == Table Object
-                Partition == Partition Object
-                Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {'Table_Name':'Partition1'} or {'Table_Name':['Partition1','Partition2']}. NOTE you can also change out the strings for partition or tables objects.
-                RefreshType (RefreshType, optional): See [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
-                Tracing (bool, optional): Currently just some basic tracing to track refreshes. Defaults to False.
-
-        Raises:
-                Exception: Raises exception if unable to find table or partition via string.
-
+            model (Tabular): Main Tabular Class
+            object (Union[str, PyTable, PyPartition, Dict[str, Any]]): Designed to handle a few different ways of selecting a refresh. Can be a string of 'Table Name' or dict of {'Table Name': 'Partition Name'} or even some combination with the actual PyTable and PyPartition classes.
+            trace (Base_Trace, optional): Set to `None` if no Tracing is desired, otherwise you can use default trace or create your own. Defaults to Refresh_Trace.
+            refresh_checks (Refresh_Check_Collection, optional): Add your `Refresh_Check`'s into a `Refresh_Check_Collection`. Defaults to Refresh_Check_Collection().
+            default_row_count_check (bool, optional): Quick built in check will fail the refresh if post check row count is zero. Defaults to True.
+            refresh_type (RefreshType, optional): Input RefreshType desired. Defaults to RefreshType.Full.
 
         Returns:
-                WIP: WIP
+            pd.DataFrame
         """
-        logger.debug("Beginning RequestRefresh cadence...")
-
-        def _Refresh_Report(Property_Changes) -> pd.DataFrame:
-            logger.debug("Running Refresh Report...")
-            refresh_data = []
-            for property_change in Property_Changes:
-                if (
-                    isinstance(property_change.Object, Partition)
-                    and property_change.Property_Name == "RefreshedTime"
-                ):
-                    table, partition, refreshed_time = (
-                        property_change.Object.Table.Name,
-                        property_change.Object.Name,
-                        ticks_to_datetime(property_change.New_Value.Ticks),
-                    )
-                    logger.info(
-                        f'{table} - {partition} Refreshed! - {refreshed_time.strftime("%m/%d/%Y, %H:%M:%S")}'
-                    )
-                    refresh_data += [[table, partition, refreshed_time]]
-            return pd.DataFrame(
-                refresh_data, columns=["Table", "Partition", "Refreshed Time"]
-            )
-
-        def refresh_table(table: Table) -> None:
-            logging.info(f"Requesting refresh for {table.Name}")
-            table.RequestRefresh(RefreshType)
-
-        def refresh_partition(partition: Partition) -> None:
-            logging.info(
-                f"Requesting refresh for {partition.Table.Name}|{partition.Name}"
-            )
-            partition.RequestRefresh(RefreshType)
-
-        def refresh_dict(partition_dict: Dict) -> None:
-            for table in partition_dict.keys():
-                table_object = find_table(table) if isinstance(table, str) else table
-
-                def handle_partitions(object):
-                    if isinstance(object, str):
-                        refresh_partition(find_partition(table_object, object))
-                    elif isinstance(object, Partition):
-                        refresh_partition(object)
-                    else:
-                        [handle_partitions(obj) for obj in object]
-
-                handle_partitions(partition_dict[table])
-
-        def find_table(table_str: str) -> Table:
-            result = self.Model.Tables.Find(table_str)
-            if result is None:
-                raise Exception(f"Unable to find table! from {table_str}")
-            logger.debug(f"Found table {result.Name}")
-            return result
-
-        def find_partition(table: Table, partition_str: str) -> Partition:
-            result = table.Partitions.Find(partition_str)
-            if result is None:
-                raise Exception(
-                    f"Unable to find partition! {table.Name}|{partition_str}"
-                )
-            logger.debug(f"Found partition {result.Table.Name}|{result.Name}")
-            return result
-
-        def refresh(Object):
-            if isinstance(Object, str):
-                refresh_table(find_table(Object))
-            elif isinstance(Object, Dict):
-                refresh_dict(Object)
-            elif isinstance(Object, Table):
-                refresh_table(Object)
-            elif isinstance(Object, Partition):
-                refresh_partition(Object)
-            else:
-                [refresh(object) for object in Object]
-
-        refresh(Object)
-        if Tracing:
-            rt = Refresh_Trace(self)
-            rt.Start()
-
-        m = self.SaveChanges()
-
-        if Tracing:
-            rt.Stop()
-            rt.Drop()
-
-        return _Refresh_Report(m.Property_Changes)
+        r = PyRefresh(self, *args, **kwargs)
+        return r.Run()
 
     def Update(self, UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull) -> None:
         """[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
@@ -410,7 +320,8 @@ class Tabular(PyObject):
 
         clone_role_permissions()
         logger.info(f"Refreshing Clone... {table.Name}")
-        self.Refresh([table])
+        self.Reload_Model_Info()
+        self.Refresh(table.Name, default_row_count_check=False)
         logger.info(f"Updating Model {self.Model.Name}")
         self.SaveChanges()
         return True
@@ -642,6 +553,7 @@ class Tabular(PyObject):
             f"Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}"
         )
         self.Model.Tables.Add(new_table)
-        self.Refresh([new_table], Tracing=True)
         self.SaveChanges()
+        self.Reload_Model_Info()
+        self.Refresh(new_table.Name)
         return True
