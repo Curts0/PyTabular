@@ -13,6 +13,12 @@ pages:
     source: 'pytabular/query.py'
     classes:
       - Connection
+  - page: "Refreshes.md"
+    source: 'pytabular/refresh.py'
+    classes:
+      - PyRefresh
+      - Refresh_Check
+      - Refresh_Check_Collection
   - page: "Table.md"
     source: 'pytabular/table.py'
     classes:
