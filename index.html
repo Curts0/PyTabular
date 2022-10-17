@@ -61,6 +61,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#loop-through-and-query-dax-files">Loop through and query Dax files</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#advanced-refreshing-with-pre-and-post-checks">Advanced Refreshing with Pre and Post Checks</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a>
@@ -138,7 +140,7 @@
 <a href="https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment"><img alt="pages-build-deployment" src="https://github.com/Curts0/PyTabular/actions/workflows/pages/pages-build-deployment/badge.svg" /></a>
 <a href="https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml"><img alt="flake8" src="https://github.com/Curts0/PyTabular/actions/workflows/flake8.yml/badge.svg?branch=master" /></a></p>
 <h3 id="what-is-it">What is it?</h3>
-<p><a href="https://github.com/Curts0/PyTabular">PyTabular</a> (python-tabular in <a href="https://pypi.org/project/python-tabular/">pypi</a>) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. Current, this build is tested and working on Windows Operating System only. Help is needed to expand this for other operating systems. The package should have the dll files included when you import it. See <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.</p>
+<p><a href="https://github.com/Curts0/PyTabular">PyTabular</a> (python-tabular in <a href="https://pypi.org/project/python-tabular/">pypi</a>) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. Currently, this build is tested and working on Windows Operating System only. Help is needed to expand this for other operating systems. The package should have the dll files included when you import it. See <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.</p>
 <h3 id="getting-started">Getting Started</h3>
 <p>See the <a href="https://pypi.org/project/python-tabular/">Pypi project</a> for available version.</p>
 <pre><code class="language-powershell">python3 -m pip install python-tabular
@@ -211,8 +213,8 @@ model.Tables['Table Name'].Refresh()
 #or
 model.Tables['Table Name'].Partitions['Partition Name'].Refresh()
 
-#Add Tracing=True for simple Traces tracking the refresh.
-model.Refresh(['Table1','Table2'], Tracing=True)
+#Default Tracing happens automatically, but can be removed by -- 
+model.Refresh(['Table1','Table2'], trace = None)
 </code></pre>
 <p>It's not uncommon to need to run through some checks on specific Tables, Partitions, Columns, Etc...</p>
 <pre><code class="language-python">#Get Row Count from model
@@ -231,7 +233,7 @@ model.Tables['Table Name'].Columns['Column Name'].Values()
 <p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#return_zero_row_tables">Return_Zero_Row_Tables</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-tables = pytabular.Return_Zero_Row_Tables()
+tables = pytabular.Return_Zero_Row_Tables(model)
 if len(tables) &gt; 0:
     model.Refresh(tables, Tracing = True) #Add a trace in there for some fun.
 </code></pre>
@@ -279,6 +281,34 @@ model = pytabular.Tabular(CONNECTION_STR)
 LIST_OF_FILE_PATHS = ['C:\\FilePath\\file1.dax','C:\\FilePath\\file1.txt','C:\\FilePath\\file2.dax','C:\\FilePath\\file2.txt']
 for file_path in LIST_OF_FILE_PATHS:
     model.Query(file_path)
+</code></pre>
+<h4 id="advanced-refreshing-with-pre-and-post-checks">Advanced Refreshing with Pre and Post Checks</h4>
+<p>Maybe you are introducing new logic to a fact table, and you need to ensure that a measure checking last month values never changes. To do that you can take advantage of the <code>Refresh_Check</code> and <code>Refresh_Check_Collection</code> classes (Sorry, I know the documentation stinks right now). But using those you can build out something that would first check the results of the measure, then refresh, then check the results of the measure after refresh, and lastly perform your desired check. In this case the <code>pre</code> value matches the <code>post</code> value. When refreshing and your pre does not equal post, it would fail and give an assertion error in your logging.</p>
+<pre><code class="language-python">from pytabular import Tabular
+from pytabular.refresh import Refresh_Check, Refresh_Check_Collection
+
+model = Tabular(CONNECTION_STR)
+
+# This is our custom check that we want to run after refresh.
+# Does the pre refresh value match the post refresh value.
+def sum_of_sales_assertion(pre, post):
+    return pre == post
+
+# This is where we put it all together into the `Refresh_Check` class. Give it a name, give it a query to run, and give it the assertion you want to make.
+sum_of_last_month_sales = Refresh_Check(
+    'Last Month Sales',
+    lambda: model.Query(&quot;EVALUATE {[Last Month Sales]}&quot;)
+    ,sum_of_sales_assertion
+)
+
+# Here we are adding it to a `Refresh_Check_Collection` because you can have more than on `Refresh_Check` to run.
+all_refresh_check = Refresh_Check_Collection([sum_of_last_month_sales])
+
+model.Refresh(
+    'Fact Table Name',
+    refresh_checks = Refresh_Check_Collection([sum_of_last_month_sales])
+
+)
 </code></pre>
 <h3 id="contributing">Contributing</h3>
 <p>See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a></p>
@@ -328,6 +358,6 @@ for file_path in LIST_OF_FILE_PATHS:
 </html>
 
 <!--
-MkDocs version : 1.4.0
-Build Date UTC : 2022-10-09 18:22:09.418073+00:00
+MkDocs version : 1.4.1
+Build Date UTC : 2022-10-17 22:04:37.239415+00:00
 -->

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Refreshes/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Refreshes - PyTabular</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Refreshes";
+        var mkdocs_page_input_path = "Refreshes.md";
+        var mkdocs_page_url = "/PyTabular/Refreshes/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> PyTabular
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Tabular</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Table/">Table</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partition</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Column/">Column</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Queries</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Best%20Practice%20Analyzer/">Best Practice Analyzer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular%20Editor%202/">Tabular Editor</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logic%20Utils/">Logic Utils</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Examples/">Examples</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PyTabular</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Refreshes</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1"></h1>
+<h2 id="pyrefresh">PyRefresh</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L154">source</a></p>
+<pre><code class="language-python">PyRefresh(
+   model, object: Union[str, PyTable, PyPartition, Dict[str, Any]],
+   trace: Base_Trace = Refresh_Trace,
+   refresh_checks: Refresh_Check_Collection = Refresh_Check_Collection(),
+   default_row_count_check: bool = True, refresh_type: RefreshType = RefreshType.Full
+)
+</code></pre>
+<p><strong>Methods:</strong></p>
+<h3 id="run">.Run</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L300">source</a></p>
+<pre><code class="language-python">.Run()
+</code></pre>
+<hr />
+<h2 id="refresh_check">Refresh_Check</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L18">source</a></p>
+<pre><code class="language-python">Refresh_Check(
+   name, function, assertion = None
+)
+</code></pre>
+<p><strong>Methods:</strong></p>
+<h3 id="name">.name</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L38">source</a></p>
+<pre><code class="language-python">.name()
+</code></pre>
+<hr />
+<p>Get your custom name of refresh check.</p>
+<h3 id="function">.function</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L51">source</a></p>
+<pre><code class="language-python">.function()
+</code></pre>
+<hr />
+<p>Get the function that is used to run a pre and post check.</p>
+<h3 id="pre">.pre</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L64">source</a></p>
+<pre><code class="language-python">.pre()
+</code></pre>
+<hr />
+<p>Get the pre value that is the result from the pre refresh check.</p>
+<h3 id="post">.post</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L77">source</a></p>
+<pre><code class="language-python">.post()
+</code></pre>
+<hr />
+<p>Get the post value that is the result from the post refresh check.</p>
+<h3 id="assertion">.assertion</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L90">source</a></p>
+<pre><code class="language-python">.assertion()
+</code></pre>
+<hr />
+<p>Get the assertion that is the result from the post refresh check.</p>
+<h3 id="pre_check">.Pre_Check</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L112">source</a></p>
+<pre><code class="language-python">.Pre_Check()
+</code></pre>
+<h3 id="post_check">.Post_Check</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L116">source</a></p>
+<pre><code class="language-python">.Post_Check()
+</code></pre>
+<h3 id="assertion_1">.Assertion</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L121">source</a></p>
+<pre><code class="language-python">.Assertion()
+</code></pre>
+<hr />
+<h2 id="refresh_check_collection">Refresh_Check_Collection</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L136">source</a></p>
+<pre><code class="language-python">Refresh_Check_Collection(
+   refresh_checks: Refresh_Check = []
+)
+</code></pre>
+<p><strong>Methods:</strong></p>
+<h3 id="add_refresh_check">.add_refresh_check</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L150">source</a></p>
+<pre><code class="language-python">.add_refresh_check(
+   refresh_check: Refresh_Check
+)
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
