@@ -2,7 +2,6 @@ import logging
 
 from Microsoft.AnalysisServices.Tabular import (
     Server,
-    RefreshType,
     ColumnType,
     Table,
     DataColumn,
@@ -22,13 +21,14 @@ from logic_utils import (
     pandas_datatype_to_tabular_datatype,
     remove_suffix,
 )
-from query import Connection
+
 from table import PyTable, PyTables
 from partition import PyPartitions
 from column import PyColumns
 from measure import PyMeasures
 from object import PyObject
 from refresh import PyRefresh
+from query import Connection
 
 logger = logging.getLogger("PyTabular")
 
@@ -50,6 +50,8 @@ class Tabular(PyObject):
     """
 
     def __init__(self, CONNECTION_STR: str):
+
+        # Connecting to model...
         logger.debug("Initializing Tabular Class")
         self.Server = Server()
         self.Server.Connect(CONNECTION_STR)
@@ -71,10 +73,15 @@ class Tabular(PyObject):
         self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
         self.Model = self.Database.Model
         logger.info(f"Connected to Model - {self.Model.Name}")
-        super().__init__(self.Model)
-        self.Adomd = Connection(self.Server)
+        self.Adomd: Connection = Connection(self.Server)
+
+        # Build PyObjects
         self.Reload_Model_Info()
 
+        # Run subclass init
+        super().__init__(self.Model)
+
+        # Building rich table display for repr
         self._display.add_row(
             "EstimatedSize",
             str(round(self.Database.EstimatedSize / 1000000000, 2)) + " GB",
@@ -89,6 +96,7 @@ class Tabular(PyObject):
         self._display.add_row("Database", self.Database.Name)
         self._display.add_row("Server", self.Server.Name)
 
+        # Finished and registering disconnect
         logger.debug("Class Initialization Completed")
         logger.debug("Registering Disconnect on Termination...")
         atexit.register(self.Disconnect)
@@ -101,6 +109,8 @@ class Tabular(PyObject):
         Returns:
                 bool: True if successful
         """
+        self.Database.Refresh()
+
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
@@ -113,7 +123,6 @@ class Tabular(PyObject):
         self.Measures = PyMeasures(
             [measure for table in self.Tables for measure in table.Measures]
         )
-        self.Database.Refresh()
         return True
 
     def Is_Process(self) -> bool:
@@ -138,24 +147,19 @@ class Tabular(PyObject):
         logger.debug(f"Disconnecting from - {self.Server.Name}")
         return self.Server.Disconnect()
 
-    def Refresh(self, *args, **kwargs) -> None:
-        """Refreshes table(s) and partition(s).
+    def Refresh(self, *args, **kwargs) -> pd.DataFrame:
+        """PyRefresh Class to handle refreshes of model.
 
         Args:
-                object (Union[ str, Table, Partition, Dict[str, Any], Iterable[str, Table, Partition, Dict[str, Any]] ]): Designed to handle a few different ways of selecting a refresh.
-                str == 'Table_Name'
-                Table == Table Object
-                Partition == Partition Object
-                Dict[str, Any] == A way to specify a partition of group of partitions. For ex. {'Table_Name':'Partition1'} or {'Table_Name':['Partition1','Partition2']}. NOTE you can also change out the strings for partition or tables objects.
-                refresh_type (RefreshType, optional): See [RefreshType](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.refreshtype?view=analysisservices-dotnet). Defaults to RefreshType.Full.
-                tracing (bool, optional): Currently just some basic tracing to track refreshes. Defaults to False.
-
-        Raises:
-                Exception: Raises exception if unable to find table or partition via string.
-
+            model (Tabular): Main Tabular Class
+            object (Union[str, PyTable, PyPartition, Dict[str, Any]]): Designed to handle a few different ways of selecting a refresh. Can be a string of 'Table Name' or dict of {'Table Name': 'Partition Name'} or even some combination with the actual PyTable and PyPartition classes.
+            trace (Base_Trace, optional): Set to `None` if no Tracing is desired, otherwise you can use default trace or create your own. Defaults to Refresh_Trace.
+            refresh_checks (Refresh_Check_Collection, optional): Add your `Refresh_Check`'s into a `Refresh_Check_Collection`. Defaults to Refresh_Check_Collection().
+            default_row_count_check (bool, optional): Quick built in check will fail the refresh if post check row count is zero. Defaults to True.
+            refresh_type (RefreshType, optional): Input RefreshType desired. Defaults to RefreshType.Full.
 
         Returns:
-                WIP: WIP
+            pd.DataFrame
         """
         r = PyRefresh(self, *args, **kwargs)
         return r.Run()
@@ -316,7 +320,8 @@ class Tabular(PyObject):
 
         clone_role_permissions()
         logger.info(f"Refreshing Clone... {table.Name}")
-        self.Refresh([table])
+        self.Reload_Model_Info()
+        self.Refresh(table.Name, default_row_count_check=False)
         logger.info(f"Updating Model {self.Model.Name}")
         self.SaveChanges()
         return True
@@ -548,6 +553,7 @@ class Tabular(PyObject):
             f"Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}"
         )
         self.Model.Tables.Add(new_table)
-        self.Refresh([new_table], Tracing=True)
         self.SaveChanges()
+        self.Reload_Model_Info()
+        self.Refresh(new_table.Name)
         return True
