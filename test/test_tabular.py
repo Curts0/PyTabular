@@ -7,8 +7,8 @@ from Microsoft.AnalysisServices.Tabular import Database
 aas = pytabular.Tabular(local.AAS)
 gen2 = pytabular.Tabular(local.GEN2)
 testing_parameters = [(aas), (gen2)]
-testingtablename = 'PyTestTable'
-testingtabledf = pd.DataFrame(data={'col1': [1, 2, 3], 'col2': ['four', 'five', 'six']})
+testingtablename = "PyTestTable"
+testingtabledf = pd.DataFrame(data={"col1": [1, 2, 3], "col2": ["four", "five", "six"]})
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -18,10 +18,10 @@ def test_sanity_check(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_connection(model):
-    '''
+    """
     Does a quick check to the Tabular Class
     To ensure that it can connnect
-    '''
+    """
     assert model.Server.Connected
 
 
@@ -32,19 +32,17 @@ def test_database(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_basic_query(model):
-    int_result = model.Query('EVALUATE {1}')
+    int_result = model.Query("EVALUATE {1}")
     text_result = model.Query('EVALUATE {"Hello World"}')
-    assert int_result == 1 and text_result == 'Hello World'
+    assert int_result == 1 and text_result == "Hello World"
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_file_query(model):
     singlevaltest = local.SINGLEVALTESTPATH
     dfvaltest = local.DFVALTESTPATH
-    dfdupe = pd.DataFrame({'[Value1]': (1, 3), '[Value2]': (2, 4)})
-    assert (
-        model.Query(singlevaltest) == 1 and model.Query(dfvaltest).equals(dfdupe)
-    )
+    dfdupe = pd.DataFrame({"[Value1]": (1, 3), "[Value2]": (2, 4)})
+    assert model.Query(singlevaltest) == 1 and model.Query(dfvaltest).equals(dfdupe)
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -65,8 +63,7 @@ def test_query_every_column(model):
 def remove_testing_table(model):
     table_check = [
         table
-        for table
-        in model.Model.Tables.GetEnumerator()
+        for table in model.Model.Tables.GetEnumerator()
         if testingtablename in table.Name
     ]
     for table in table_check:
@@ -77,23 +74,23 @@ def remove_testing_table(model):
 @pytest.mark.parametrize("model", testing_parameters)
 def test_pre_table_checks(model):
     remove_testing_table(model)
-    assert len(
-        [
-            table
-            for table
-            in model.Model.Tables.GetEnumerator()
-            if testingtablename in table.Name
-        ]
-    ) == 0
+    assert (
+        len(
+            [
+                table
+                for table in model.Model.Tables.GetEnumerator()
+                if testingtablename in table.Name
+            ]
+        )
+        == 0
+    )
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_create_table(model):
-    df = pd.DataFrame(data={'col1': [1, 2, 3], 'col2': ['four', 'five', 'six']})
+    df = pd.DataFrame(data={"col1": [1, 2, 3], "col2": ["four", "five", "six"]})
     model.Create_Table(df, testingtablename)
-    assert len(
-        model.Query(f"EVALUATE {testingtablename}")
-    ) == 3
+    assert len(model.Query(f"EVALUATE {testingtablename}")) == 3
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -104,40 +101,46 @@ def test_pytables_count(model):
 @pytest.mark.parametrize("model", testing_parameters)
 def test_backingup_table(model):
     model.Backup_Table(testingtablename)
-    assert len(
-        [
-            table
-            for table
-            in model.Model.Tables.GetEnumerator()
-            if f'{testingtablename}_backup' == table.Name
-        ]
-    ) == 1
+    assert (
+        len(
+            [
+                table
+                for table in model.Model.Tables.GetEnumerator()
+                if f"{testingtablename}_backup" == table.Name
+            ]
+        )
+        == 1
+    )
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_revert_table(model):
     model.Revert_Table(testingtablename)
-    assert len(
-        [
-            table
-            for table
-            in model.Model.Tables.GetEnumerator()
-            if f'{testingtablename}' == table.Name
-        ]
-    ) == 1
+    assert (
+        len(
+            [
+                table
+                for table in model.Model.Tables.GetEnumerator()
+                if f"{testingtablename}" == table.Name
+            ]
+        )
+        == 1
+    )
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_table_removal(model):
     remove_testing_table(model)
-    assert len(
-        [
-            table
-            for table
-            in model.Model.Tables.GetEnumerator()
-            if testingtablename in table.Name
-        ]
-    ) == 0
+    assert (
+        len(
+            [
+                table
+                for table in model.Model.Tables.GetEnumerator()
+                if testingtablename in table.Name
+            ]
+        )
+        == 0
+    )
 
 
 @pytest.mark.parametrize("model", testing_parameters)
