@@ -41,7 +41,7 @@ class PyPartition(PyObject):
         Returns:
             pd.DataFrame: Returns pandas dataframe with some refresh details
         """
-        return self.Table.Model.Refresh(self._object, *args, **kwargs)
+        return self.Table.Model.Refresh(self.Name, *args, **kwargs)
 
 
 class PyPartitions(PyObjects):
