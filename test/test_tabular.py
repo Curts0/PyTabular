@@ -99,6 +99,16 @@ def test_pytables_count(model):
 
 
 @pytest.mark.parametrize("model", testing_parameters)
+def test_pytables_refresh(model):
+    assert model.Tables[testingtablename].Refresh()
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_pypartitions_refresh(model):
+    assert model.Tables[testingtablename].Partitions[0].Refresh()
+
+
+@pytest.mark.parametrize("model", testing_parameters)
 def test_backingup_table(model):
     model.Backup_Table(testingtablename)
     assert (

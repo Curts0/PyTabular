@@ -199,6 +199,7 @@ class PyRefresh:
             ]
 
             def row_count_assertion(pre, post):
+                post = 0 if post is None else post
                 return post > 0
 
             for table in set(tables):
