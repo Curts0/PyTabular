@@ -100,12 +100,12 @@ def test_pytables_count(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_pytables_refresh(model):
-    assert model.Tables[testingtablename].Refresh()
+    assert len(model.Tables[testingtablename].Refresh()) > 0
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_pypartitions_refresh(model):
-    assert model.Tables[testingtablename].Partitions[0].Refresh()
+    assert len(model.Tables[testingtablename].Partitions[0].Refresh()) > 0
 
 
 @pytest.mark.parametrize("model", testing_parameters)
