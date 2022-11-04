@@ -69,7 +69,7 @@ class PyTable(PyObject):
         Returns:
             pd.DataFrame: Returns pandas dataframe with some refresh details
         """
-        return self.Model.Refresh(self._object, *args, **kwargs)
+        return self.Model.Refresh(self.Name, *args, **kwargs)
 
 
 class PyTables(PyObjects):
