@@ -57,8 +57,14 @@ class Connection(AdomdConnection):
         ]
         Results = list()
         while Query.Read():
+            """This is a bit garbage will need to refactor later but fixing issue with System.Decimal conversion"""
             Results.append(
-                [Query.GetValue(index) for index in range(0, len(Column_Headers))]
+                [
+                    Query.GetValue(index)
+                    if Query.GetDataTypeName((index)) not in ("Object", "Decimal")
+                    else Query.GetValue(index).ToDouble(Query.GetValue(index))
+                    for index in range(0, len(Column_Headers))
+                ]
             )
         Query.Close()
         logger.debug("Data retrieved... reading...")

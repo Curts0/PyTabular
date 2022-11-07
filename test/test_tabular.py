@@ -37,6 +37,20 @@ def test_basic_query(model):
     assert int_result == 1 and text_result == "Hello World"
 
 
+datatype_queries = [
+    ["this is a string", '"this is a string"'],
+    [1, 1],
+    [1000.78, "CONVERT(1000.78,CURRENCY)"],
+]
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_datatype_query(model):
+    for query in datatype_queries:
+        result = model.Query(f"EVALUATE {{{query[1]}}}")
+        assert result == query[0]
+
+
 @pytest.mark.parametrize("model", testing_parameters)
 def test_file_query(model):
     singlevaltest = local.SINGLEVALTESTPATH
