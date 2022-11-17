@@ -63,6 +63,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#advanced-refreshing-with-pre-and-post-checks">Advanced Refreshing with Pre and Post Checks</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query-as-another-user">Query as Another User</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a>
@@ -310,6 +312,38 @@ model.Refresh(
 
 )
 </code></pre>
+<h4 id="query-as-another-user">Query as Another User</h4>
+<p>There are plenty of tools that allow you to query as an 'Effective User' inheriting their security when querying. This is an extremely valuable concept built natively into the .Net apis. My only gripe is they were all UI based. This allows you to programmatically connect as an effective user and query in Python. You could easily loop through all your users to run tests on their security.</p>
+<pre><code class="language-python">import pytabular as p
+
+#Connect to your model like usual...
+model = p.Tabular(CONNECTION_STR)
+
+#This will be the query I run...
+query_str = '''
+EVALUATE
+SUMMARIZE(
+    'Product Dimension',
+    'Product Dimension'[Product Name],
+    &quot;Total Product Sales&quot;, [Total Sales]
+)
+'''
+#This will be the user I want to query as...
+user_email = 'user1@company.com'
+
+#Base line, to query as the user connecting to the model.
+model.Query(query_str)
+
+#Option 1, Connect via connection class...
+user1 = p.Connection(model.Server, Effective_User = user_email)
+user1.Query(query_str)
+
+#Option 2, Just add Effective_User
+model.Query(query_str, Effective_User = user_email)
+
+#PyTabular will do it's best to handle multiple accounts...
+#So you won't have to reconnect on every query
+</code></pre>
 <h3 id="contributing">Contributing</h3>
 <p>See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a></p>
               
@@ -359,5 +393,5 @@ model.Refresh(
 
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2022-11-08 18:45:14.512887+00:00
+Build Date UTC : 2022-11-17 20:44:37.514904+00:00
 -->
