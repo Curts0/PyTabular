@@ -210,5 +210,39 @@ model.Refresh(
 )
 ```
 
+#### Query as Another User
+There are plenty of tools that allow you to query as an 'Effective User' inheriting their security when querying. This is an extremely valuable concept built natively into the .Net apis. My only gripe is they were all UI based. This allows you to programmatically connect as an effective user and query in Python. You could easily loop through all your users to run tests on their security.
+```python
+import pytabular as p
+
+#Connect to your model like usual...
+model = p.Tabular(CONNECTION_STR)
+
+#This will be the query I run...
+query_str = '''
+EVALUATE
+SUMMARIZE(
+    'Product Dimension',
+    'Product Dimension'[Product Name],
+    "Total Product Sales", [Total Sales]
+)
+'''
+#This will be the user I want to query as...
+user_email = 'user1@company.com'
+
+#Base line, to query as the user connecting to the model.
+model.Query(query_str)
+
+#Option 1, Connect via connection class...
+user1 = p.Connection(model.Server, Effective_User = user_email)
+user1.Query(query_str)
+
+#Option 2, Just add Effective_User
+model.Query(query_str, Effective_User = user_email)
+
+#PyTabular will do it's best to handle multiple accounts...
+#So you won't have to reconnect on every query
+```
+
 ### Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)

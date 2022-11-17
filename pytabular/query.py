@@ -16,11 +16,14 @@ class Connection(AdomdConnection):
         AdomdConnection (_type_): _description_
     """
 
-    def __init__(self, Server) -> None:
+    def __init__(self, Server, Effective_User=None) -> None:
         super().__init__()
-        self.ConnectionString = (
+        connection_string = (
             f"{Server.ConnectionString}Password='{Server.ConnectionInfo.Password}'"
         )
+        if Effective_User is not None:
+            connection_string += f";EffectiveUserName={Effective_User}"
+        self.ConnectionString = connection_string
 
     def Query(self, Query_Str: str) -> Union[pd.DataFrame, str, int]:
         """Executes Query on Model and Returns Results in Pandas DataFrame

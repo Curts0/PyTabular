@@ -60,5 +60,6 @@ from .logic_utils import (
 from .tabular_tracing import Base_Trace, Refresh_Trace
 from .tabular_editor import Tabular_Editor
 from .best_practice_analyzer import BPA
+from .query import Connection
 
 logger.debug(f"Import successful...")
