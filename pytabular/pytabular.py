@@ -74,7 +74,7 @@ class Tabular(PyObject):
         self.Model = self.Database.Model
         logger.info(f"Connected to Model - {self.Model.Name}")
         self.Adomd: Connection = Connection(self.Server)
-
+        self.Effective_Users = dict()
         # Build PyObjects
         self.Reload_Model_Info()
 
@@ -422,18 +422,32 @@ class Tabular(PyObject):
         self.SaveChanges()
         return True
 
-    def Query(self, Query_Str: str) -> Union[pd.DataFrame, str, int]:
+    def Query(
+        self, Query_Str: str, Effective_User: str = None
+    ) -> Union[pd.DataFrame, str, int]:
         """Executes Query on Model and Returns Results in Pandas DataFrame
 
         Args:
                 Query_Str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
                 Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.
                 It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]
+                Effective_User (str): User you wish to query as.
 
         Returns:
                 pd.DataFrame: Returns dataframe with results
         """
-        return self.Adomd.Query(Query_Str)
+        if Effective_User is None:
+            return self.Adomd.Query(Query_Str)
+        else:
+            try:
+                conn = self.Effective_Users[Effective_User]
+                if isinstance(conn, Connection):
+                    conn.Query(Query_Str)
+            except Exception:
+                conn = Connection(self.Server, Effective_User=Effective_User)
+                self.Effective_Users[Effective_User] = conn
+
+            return conn.Query(Query_Str)
 
     def Query_Every_Column(
         self, query_function: str = "COUNTROWS(VALUES(_))"
