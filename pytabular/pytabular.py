@@ -75,6 +75,7 @@ class Tabular(PyObject):
         logger.info(f"Connected to Model - {self.Model.Name}")
         self.Adomd: Connection = Connection(self.Server)
         self.Effective_Users = dict()
+        self.PyRefresh = PyRefresh
         # Build PyObjects
         self.Reload_Model_Info()
 
@@ -161,8 +162,7 @@ class Tabular(PyObject):
         Returns:
             pd.DataFrame
         """
-        r = PyRefresh(self, *args, **kwargs)
-        return r.Run()
+        return self.PyRefresh(self, *args, **kwargs).Run()
 
     def Update(self, UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull) -> None:
         """[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
