@@ -149,8 +149,10 @@ class Refresh_Check_Collection:
 
     def add_refresh_check(self, refresh_check: Refresh_Check):
         self._refresh_checks.append(refresh_check)
+
     def remove_refresh_check(self, refresh_check: Refresh_Check):
         self._refresh_checks.remove(refresh_check)
+
     def clear_refresh_checks(self):
         self._refresh_checks.clear()
 
@@ -201,9 +203,11 @@ class PyRefresh:
                 for refresh_dict in self._objects_to_refresh
                 for table in refresh_dict.keys()
             ]
+
             def row_count_assertion(pre, post):
                 post = 0 if post is None else post
                 return post > 0
+
             for table in set(tables):
                 check = Refresh_Check(
                     f"{table.Name} Row Count", table.Row_Count, row_count_assertion
