@@ -150,6 +150,12 @@ class Refresh_Check_Collection:
     def add_refresh_check(self, refresh_check: Refresh_Check):
         self._refresh_checks.append(refresh_check)
 
+    def remove_refresh_check(self, refresh_check: Refresh_Check):
+        self._refresh_checks.remove(refresh_check)
+
+    def clear_refresh_checks(self):
+        self._refresh_checks.clear()
+
 
 class PyRefresh:
     def __init__(
@@ -217,6 +223,7 @@ class PyRefresh:
             self.trace.Drop()
         for check in self._checks:
             check.Post_Check()
+            self._checks.remove_refresh_check(check)
         pass
 
     def _get_trace(self) -> Base_Trace:

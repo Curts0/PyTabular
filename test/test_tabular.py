@@ -6,7 +6,7 @@ from Microsoft.AnalysisServices.Tabular import Database
 
 aas = pytabular.Tabular(local.AAS)
 gen2 = pytabular.Tabular(local.GEN2)
-testing_parameters = [(aas), (gen2)]
+testing_parameters = [pytest.param(aas, id="AAS"), pytest.param(gen2, id="GEN2")]
 testingtablename = "PyTestTable"
 testingtabledf = pd.DataFrame(data={"col1": [1, 2, 3], "col2": ["four", "five", "six"]})
 
