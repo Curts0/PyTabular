@@ -42,7 +42,7 @@ class Connection(AdomdConnection):
             is_file = False
 
         if is_file:
-            logging.debug(
+            logger.debug(
                 f"File path detected, reading file... -> {Query_Str}",
             )
             with open(Query_Str, "r") as file:
