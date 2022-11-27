@@ -65,6 +65,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#query-as-another-user">Query as Another User</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh-related-tables">Refresh Related Tables</a>
+    </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a>
@@ -344,6 +346,19 @@ model.Query(query_str, Effective_User = user_email)
 #PyTabular will do it's best to handle multiple accounts...
 #So you won't have to reconnect on every query
 </code></pre>
+<h4 id="refresh-related-tables">Refresh Related Tables</h4>
+<p>Ever need to refresh related tables of a Fact? Now should be a lot easier.</p>
+<pre><code class="language-python">import pytabular as p
+
+#Connect to model
+model = p.Tabular(CONNECTION_STR)
+
+#Get related tables
+tables = model.Tables[TABLE_NAME].Related()
+
+#Now just refresh like usual...
+tables.Refresh()
+</code></pre>
 <h3 id="contributing">Contributing</h3>
 <p>See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a></p>
               
@@ -393,5 +408,5 @@ model.Query(query_str, Effective_User = user_email)
 
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2022-11-23 18:35:47.967688+00:00
+Build Date UTC : 2022-11-27 19:40:34.859803+00:00
 -->
