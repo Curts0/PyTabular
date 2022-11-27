@@ -244,5 +244,20 @@ model.Query(query_str, Effective_User = user_email)
 #So you won't have to reconnect on every query
 ```
 
+#### Refresh Related Tables
+Ever need to refresh related tables of a Fact? Now should be a lot easier.
+```python
+import pytabular as p
+
+#Connect to model
+model = p.Tabular(CONNECTION_STR)
+
+#Get related tables
+tables = model.Tables[TABLE_NAME].Related()
+
+#Now just refresh like usual...
+tables.Refresh()
+```
+
 ### Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)

@@ -70,6 +70,7 @@ class PyTable(PyObject):
             pd.DataFrame: Returns pandas dataframe with some refresh details
         """
         return self.Model.Refresh(self, *args, **kwargs)
+
     def Related(self):
         return self.Model.Relationships.Related(self)
 
@@ -83,7 +84,7 @@ class PyTables(PyObjects):
 
     def __init__(self, objects) -> None:
         super().__init__(objects)
-    def Refresh(self):
+
+    def Refresh(self, *args, **kwargs):
         model = self._objects[0].Model
-        return model.Refresh(self)
-        
+        return model.Refresh(self, *args, **kwargs)

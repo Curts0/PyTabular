@@ -117,7 +117,10 @@ class Tabular(PyObject):
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
         self.Relationships = PyRelationships(
-            [PyRelationship(relationship, self) for relationship in self.Model.Relationships.GetEnumerator()]
+            [
+                PyRelationship(relationship, self)
+                for relationship in self.Model.Relationships.GetEnumerator()
+            ]
         )
         self.Partitions = PyPartitions(
             [partition for table in self.Tables for partition in table.Partitions]
