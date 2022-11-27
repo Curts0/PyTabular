@@ -83,3 +83,7 @@ class PyTables(PyObjects):
 
     def __init__(self, objects) -> None:
         super().__init__(objects)
+    def Refresh(self):
+        model = self._objects[0].Model
+        return model.Refresh(self)
+        

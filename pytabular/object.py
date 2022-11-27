@@ -33,9 +33,12 @@ class PyObject(ABC):
 class PyObjects:
     def __init__(self, objects) -> None:
         self._objects = objects
+        self._display = Table(title="PyObject Collection")
+        for index, obj in enumerate(self._objects):
+            self._display.add_row(str(index), obj.Name)
 
-    def __repr__(self) -> str:
-        return f"{len(self._objects)}"
+    def __rich_repr__(self) -> str:
+        Console().print(self._display)
 
     def __getitem__(self, object):
         if isinstance(object, str):

@@ -53,4 +53,4 @@ class PyRelationships(PyObjects):
         to_tables = [rel.To_Table for rel in self._objects if rel.From_Table.Name == table_to_find]
         from_tables = [rel.From_Table for rel in self._objects if rel.To_Table.Name == table_to_find]
         to_tables += from_tables
-        return  to_tables
+        return  PyTables(to_tables)

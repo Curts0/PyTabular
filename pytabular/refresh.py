@@ -8,7 +8,7 @@ from Microsoft.AnalysisServices.Tabular import (
 import pandas as pd
 from logic_utils import ticks_to_datetime
 from typing import Union, Dict, Any
-from table import PyTable
+from table import PyTable, PyTables
 from partition import PyPartition
 from abc import ABC
 
@@ -275,6 +275,8 @@ class PyRefresh:
         logger.debug(f"Requesting Refresh for {object}")
         if isinstance(object, str):
             self._refresh_table(self._find_table(object))
+        elif isinstance(object, PyTables):
+            [self._refresh_table(table) for table in object]
         elif isinstance(object, Dict):
             self._refresh_dict(object)
         elif isinstance(object, PyTable):
