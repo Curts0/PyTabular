@@ -26,6 +26,7 @@ from table import PyTable, PyTables
 from partition import PyPartitions
 from column import PyColumns
 from measure import PyMeasures
+from relationship import PyRelationship, PyRelationships
 from object import PyObject
 from refresh import PyRefresh
 from query import Connection
@@ -114,6 +115,9 @@ class Tabular(PyObject):
 
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
+        )
+        self.Relationships = PyRelationships(
+            [PyRelationship(relationship, self) for relationship in self.Model.Relationships.GetEnumerator()]
         )
         self.Partitions = PyPartitions(
             [partition for table in self.Tables for partition in table.Partitions]

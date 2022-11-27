@@ -58,3 +58,4 @@ class PyObjects:
             for object in self._objects
             if object_str.lower() in object.Name.lower()
         ]
+
