@@ -33,7 +33,7 @@ class PyObject(ABC):
 class PyObjects:
     def __init__(self, objects) -> None:
         self._objects = objects
-        self._display = Table(title="PyObject Collection")
+        self._display = Table(title=str(self.__class__.mro()[0]))
         for index, obj in enumerate(self._objects):
             self._display.add_row(str(index), obj.Name)
 
@@ -56,8 +56,9 @@ class PyObjects:
         return len(self._objects)
 
     def Find(self, object_str):
-        return [
+        items = [
             object
             for object in self._objects
             if object_str.lower() in object.Name.lower()
         ]
+        return self.__class__.mro()[0](items)
