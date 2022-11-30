@@ -175,3 +175,17 @@ def sql_wrap_count_around_query(original_query: str) -> str:
             str: f"SELECT COUNT(1) FROM ({original_query}) temp_table"
     """
     return f"SELECT COUNT(1) FROM ({original_query}) temp_table"
+
+
+def get_sub_list(lst: list, n: int) -> list:
+    """Nest list by n amount...
+    `get_sub_list([1,2,3,4,5,6],2) == [[1,2],[3,4],[5,6]]`
+
+    Args:
+        lst (list): List to nest.
+        n (int): Amount to nest list.
+
+    Returns:
+        list: Nested list.
+    """
+    return [lst[i: i + n] for i in range(0, len(lst), n)]
