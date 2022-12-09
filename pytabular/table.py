@@ -6,6 +6,7 @@ from column import PyColumn, PyColumns
 from measure import PyMeasure, PyMeasures
 from pytabular.object import PyObjects
 from logic_utils import ticks_to_datetime
+from datetime import datetime
 
 logger = logging.getLogger("PyTabular")
 
@@ -70,6 +71,17 @@ class PyTable(PyObject):
             pd.DataFrame: Returns pandas dataframe with some refresh details
         """
         return self.Model.Refresh(self, *args, **kwargs)
+
+    def Last_Refresh(self) -> datetime:
+        """Will query each partition for the last refresh time then select the max
+
+        Returns:
+            datetime: Last refresh time in datetime format
+        """
+        partition_refreshes = [
+            partition.Last_Refresh() for partition in self.Partitions
+        ]
+        return max(partition_refreshes)
 
     def Related(self):
         return self.Model.Relationships.Related(self)
