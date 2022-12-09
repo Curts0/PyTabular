@@ -54,6 +54,7 @@ class Connection(AdomdConnection):
             logger.info(f"Connected! Session ID - {self.SessionID}")
 
         logger.debug("Querying Model...")
+        logger.debug(Query_Str)
         Query = AdomdCommand(Query_Str, self).ExecuteReader()
         Column_Headers = [
             (index, Query.GetName(index)) for index in range(0, Query.FieldCount)
