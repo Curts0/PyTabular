@@ -58,3 +58,14 @@ def test_pyobjects_adding(model):
     table = model.Tables.Find(testingtablename)
     table += table
     assert len(table) == 2
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_nonetype_decimal_bug(model):
+    query_str = """
+    EVALUATE
+    {
+        (1, CONVERT( 1.24, CURRENCY ), "Hello"), (2, CONVERT( 87661, CURRENCY ), "World"), (3,,"Test")
+    }
+    """
+    assert len(model.Query(query_str)) == 3
