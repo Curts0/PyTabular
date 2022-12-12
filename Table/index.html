@@ -57,6 +57,8 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#refresh">.Refresh</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.Last_Refresh</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#related">.Related</a>
     </li>
         </ul>
@@ -127,7 +129,7 @@
               
                 <h1 id="_1"></h1>
 <h2 id="pytable">PyTable</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L13">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L14">source</a></p>
 <pre><code class="language-python">PyTable(
    object, model
 )
@@ -143,7 +145,7 @@ With a few other bells and whistles added to it. You can use the table to access
 </ul>
 <p><strong>Methods:</strong></p>
 <h3 id="row_count">.Row_Count</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L57">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L58">source</a></p>
 <pre><code class="language-python">.Row_Count()
 </code></pre>
 <hr />
@@ -154,7 +156,7 @@ With a few other bells and whistles added to it. You can use the table to access
 <li><strong>int</strong>  : Number of rows using <a href="https://learn.microsoft.com/en-us/dax/countrows-function-dax">COUNTROWS</a>.</li>
 </ul>
 <h3 id="refresh">.Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L66">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L67">source</a></p>
 <pre><code class="language-python">.Refresh(
    *args, **kwargs
 )
@@ -166,13 +168,23 @@ With a few other bells and whistles added to it. You can use the table to access
 <ul>
 <li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
 </ul>
+<h3 id="last_refresh">.Last_Refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L75">source</a></p>
+<pre><code class="language-python">.Last_Refresh()
+</code></pre>
+<hr />
+<p>Will query each partition for the last refresh time then select the max</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>datetime</strong>  : Last refresh time in datetime format</li>
+</ul>
 <h3 id="related">.Related</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L74">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L86">source</a></p>
 <pre><code class="language-python">.Related()
 </code></pre>
 <hr />
 <h2 id="pytables">PyTables</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L78">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L90">source</a></p>
 <pre><code class="language-python">PyTables(
    objects
 )
@@ -185,7 +197,7 @@ With a few other bells and whistles added to it. You can use the table to access
 </ul>
 <p><strong>Methods:</strong></p>
 <h3 id="refresh_1">.Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L88">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L100">source</a></p>
 <pre><code class="language-python">.Refresh(
    *args, **kwargs
 )
