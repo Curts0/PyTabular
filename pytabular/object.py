@@ -1,6 +1,7 @@
 from abc import ABC
 from rich.console import Console
 from rich.table import Table
+from collections.abc import Iterable
 
 
 class PyObject(ABC):
@@ -54,6 +55,15 @@ class PyObjects:
 
     def __len__(self):
         return len(self._objects)
+
+    def __iadd__(self, obj):
+        if isinstance(obj, Iterable):
+            self._objects.__iadd__(obj._objects)
+        else:
+            self._objects.__iadd__([obj])
+
+        self.__init__(self._objects)
+        return self
 
     def Find(self, object_str):
         items = [

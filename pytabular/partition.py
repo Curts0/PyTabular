@@ -3,6 +3,7 @@ import logging
 from object import PyObject, PyObjects
 from logic_utils import ticks_to_datetime
 import pandas as pd
+from datetime import datetime
 
 logger = logging.getLogger("PyTabular")
 
@@ -27,7 +28,7 @@ class PyPartition(PyObject):
             "RefreshedTime", self.Last_Refresh().strftime("%m/%d/%Y, %H:%M:%S")
         )
 
-    def Last_Refresh(self):
+    def Last_Refresh(self) -> datetime:
         """Queries `RefreshedTime` attribute in the partition and converts from C# Ticks to Python datetime
 
         Returns:

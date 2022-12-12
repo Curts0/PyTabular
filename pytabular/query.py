@@ -1,6 +1,7 @@
 import logging
 import os
 from typing import Union
+from logic_utils import get_value_to_df
 import pandas as pd
 from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
 
@@ -54,18 +55,16 @@ class Connection(AdomdConnection):
             logger.info(f"Connected! Session ID - {self.SessionID}")
 
         logger.debug("Querying Model...")
+        logger.debug(Query_Str)
         Query = AdomdCommand(Query_Str, self).ExecuteReader()
         Column_Headers = [
             (index, Query.GetName(index)) for index in range(0, Query.FieldCount)
         ]
         Results = list()
         while Query.Read():
-            """This is a bit garbage will need to refactor later but fixing issue with System.Decimal conversion"""
             Results.append(
                 [
-                    Query.GetValue(index).ToDouble(Query.GetValue(index))
-                    if Query.GetDataTypeName((index)) in ("Decimal")
-                    else Query.GetValue(index)
+                    get_value_to_df(Query, index)
                     for index in range(0, len(Column_Headers))
                 ]
             )

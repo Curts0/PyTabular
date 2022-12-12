@@ -152,7 +152,7 @@ class Tabular(PyObject):
         Returns:
                 bool: True if successful
         """
-        logger.debug(f"Disconnecting from - {self.Server.Name}")
+        logger.info(f"Disconnecting from - {self.Server.Name}")
         return self.Server.Disconnect()
 
     def Refresh(self, *args, **kwargs) -> pd.DataFrame:
