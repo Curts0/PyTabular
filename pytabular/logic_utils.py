@@ -4,6 +4,7 @@ import os
 from typing import Dict, List
 import pandas as pd
 from Microsoft.AnalysisServices.Tabular import DataType
+from Microsoft.AnalysisServices.AdomdClient import AdomdDataReader
 
 logger = logging.getLogger("PyTabular")
 
@@ -189,3 +190,21 @@ def get_sub_list(lst: list, n: int) -> list:
         list: Nested list.
     """
     return [lst[i : i + n] for i in range(0, len(lst), n)]
+
+
+def get_value_to_df(Query: AdomdDataReader, index: int):
+    """Gets the values from the AdomdDataReader to convert the .Net Object
+    into a tangible python value to work with in pandas.
+    Lots of room for improvement on this one.
+
+    Args:
+        Query (AdomdDataReader): [AdomdDataReader](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomddatareader?view=analysisservices-dotnet)
+        index (int): Index of the value to perform the logic on.
+    """
+    if (
+        Query.GetDataTypeName((index)) in ("Decimal")
+        and Query.GetValue(index) is not None
+    ):
+        return Query.GetValue(index).ToDouble(Query.GetValue(index))
+    else:
+        return Query.GetValue(index)
