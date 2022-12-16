@@ -63,7 +63,7 @@ class Tabular(PyObject):
             self.Database = [
                 database
                 for database in self.Server.Databases.GetEnumerator()
-                if database.Name == self.Catalog
+                if database.Name == self.Catalog or self.Catalog is None
             ][0]
         except Exception:
             err_msg = f"Unable to find Database... {self.Catalog}"

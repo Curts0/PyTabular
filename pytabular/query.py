@@ -19,9 +19,13 @@ class Connection(AdomdConnection):
 
     def __init__(self, Server, Effective_User=None) -> None:
         super().__init__()
-        connection_string = (
-            f"{Server.ConnectionString}Password='{Server.ConnectionInfo.Password}'"
-        )
+        if Server.ConnectionInfo.Password is None:
+            connection_string = Server.ConnectionString
+        else:
+            connection_string = (
+                f"{Server.ConnectionString}Password='{Server.ConnectionInfo.Password}'"
+            )
+        logger.debug(f"{connection_string}")
         if Effective_User is not None:
             connection_string += f";EffectiveUserName={Effective_User}"
         self.ConnectionString = connection_string
