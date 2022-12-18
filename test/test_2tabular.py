@@ -1,6 +1,7 @@
 import local
 import pytest
 import pandas as pd
+import pytabular as p
 from test.config import testingtablename, testing_parameters
 
 
@@ -69,3 +70,15 @@ def test_nonetype_decimal_bug(model):
     }
     """
     assert len(model.Query(query_str)) == 3
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_Table_Last_Refresh_Times(model):
+    """Really just testing the the function completes successfully and returns df"""
+    assert isinstance(p.Table_Last_Refresh_Times(model), pd.DataFrame) is True
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_Return_Zero_Row_Tables(model):
+    """Testing that `Return_Zero_Row_Tables`"""
+    assert isinstance(p.Return_Zero_Row_Tables(model), list) is True
