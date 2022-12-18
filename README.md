@@ -93,7 +93,7 @@ model.Tables['Table Name'].Refresh()
 model.Tables['Table Name'].Partitions['Partition Name'].Refresh()
 
 #Default Tracing happens automatically, but can be removed by -- 
-model.Refresh(['Table1','Table2'], trace = None)
+model.Refresh(['Table1','Table2'], Tracing = None)
 ```
 
 It's not uncommon to need to run through some checks on specific Tables, Partitions, Columns, Etc...
