@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/contributing/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/PBI%20Helper/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Contributing Guidelines - PyTabular</title>
+    <title>PBI Helper - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Contributing Guidelines";
-        var mkdocs_page_input_path = "contributing.md";
-        var mkdocs_page_url = "/PyTabular/contributing/";
+        var mkdocs_page_name = "PBI Helper";
+        var mkdocs_page_input_path = "PBI Helper.md";
+        var mkdocs_page_url = "/PyTabular/PBI%20Helper/";
       </script>
     
     <script src="../js/jquery-3.6.0.min.js" defer></script>
@@ -76,8 +76,12 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Tabular%20Editor%202/">Tabular Editor</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../PBI%20Helper/">PBI Helper</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">PBI Helper</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#find_local_pbi_instances">find_local_pbi_instances</a>
+    </li>
+    </ul>
                 </li>
               </ul>
               <ul>
@@ -102,7 +106,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Contributing Guidelines</li>
+      <li>PBI Helper</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -111,19 +115,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="contributing-guidelines">Contributing Guidelines</h1>
+                <h1 id="_1"></h1>
+<h3 id="find_local_pbi_instances">find_local_pbi_instances</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pbi_helper.py/#L67">source</a></p>
+<pre><code class="language-python">.find_local_pbi_instances()
+</code></pre>
+<hr />
+<p>The real genius is from this <a href="https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs">Dax Studio PowerBIHelper</a>.
+I just wanted it in python not C#, so reverse engineered what DaxStudio did.
+It will run some powershell scripts to pull the appropriate info.
+Then will spit out a list with tuples inside.
+You can use the connection string to connect to your model with pytabular.</p>
+<p><strong>Returns</strong></p>
 <ul>
-<li>Work will be distributed under MIT license</li>
-<li>Pull request into main will run a flake8 test. flake8 will need to pass before pull request will be accepted</li>
-<li>Updates of any kind are welcome! Even just letting me know of the issues. Or updating doc strings</li>
-<li>Limit any external modules, see pyproject.toml for dependencies</li>
-<li>Goal of project is to help connect the python world and the tabular model world for some easier programmatic execution on models. </li>
-<li>Docstrings follow google <a href="https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html">docstring format</a></li>
-<li>See actions, once main updated, <a href="https://github.com/davidenunes/mkgendocs">mkgendocs</a> is used to auto create documentation</li>
+<li><strong>list</strong>  : Example -  <code>[('PBI File Name1','localhost:{port}'),('PBI File Name2','localhost:{port}')]</code></li>
 </ul>
               
             </div>
           </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Tabular%20Editor%202/" class="btn btn-neutral float-left" title="Tabular Editor"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Logic%20Utils/" class="btn btn-neutral float-right" title="Logic Utils">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
 
   <hr/>
 
@@ -145,6 +158,10 @@
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
+      <span><a href="../Tabular%20Editor%202/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Logic%20Utils/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
