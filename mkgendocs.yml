@@ -51,6 +51,8 @@ pages:
       - Download_Tabular_Editor
     classes:
       - Tabular_Editor
+  - page: "PBI Helper.md"
+  - source: 'pytabular/pbi_helper.py'
   - page: "Examples.md"
     source: 'pytabular/basic_checks.py'
     functions:
