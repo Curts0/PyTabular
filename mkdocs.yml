@@ -10,6 +10,7 @@ nav:
     - Queries: Queries.md
     - Best Practice Analyzer: Best Practice Analyzer.md
     - Tabular Editor: Tabular Editor 2.md
+    - PBI Helper: PBI Helper.md
     - Logic Utils: Logic Utils.md
     - Examples: Examples.md
 theme: readthedocs
