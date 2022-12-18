@@ -52,7 +52,9 @@ pages:
     classes:
       - Tabular_Editor
   - page: "PBI Helper.md"
-  - source: 'pytabular/pbi_helper.py'
+    source: 'pytabular/pbi_helper.py'
+    functions:
+      - find_local_pbi_instances
   - page: "Examples.md"
     source: 'pytabular/basic_checks.py'
     functions:
