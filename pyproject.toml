@@ -14,8 +14,7 @@ dependencies = [
     "xmltodict==0.13.0",
     "pandas>=1.4.3",
     "requests>=2.28.1",
-    "rich>=12.5.1",
-    "pre-commit"
+    "rich>=12.5.1"
 ]
 description = "Connect to your tabular model and perform operations programmatically"
 readme = "README.md"
