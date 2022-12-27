@@ -3,6 +3,11 @@ import subprocess
 
 
 def get_msmdsrv() -> list:
+    '''Runs powershel command to retrieve the ProcessId from Get-CimInstance where Name == 'msmdsrv.exe'.
+
+    Returns:
+        list: returns ProcessId(s) in list format to account for multiple PBIX files open at the same time.
+    '''
     p.logger.debug("Retrieving msmdsrv.exe(s)")
     msmdsrv = subprocess.check_output(
         [
@@ -16,6 +21,14 @@ def get_msmdsrv() -> list:
 
 
 def get_port_number(msmdsrv: str) -> str:
+    '''Gets the local port number of given msmdsrv ProcessId. Via PowerShell.
+
+    Args:
+        msmdsrv (str): A ProcessId returned from `get_msmdsrv()`. 
+
+    Returns:
+        str: `LocalPort` returned for specific ProcessId.
+    '''
     port = subprocess.check_output(
         [
             "powershell",
@@ -28,6 +41,14 @@ def get_port_number(msmdsrv: str) -> str:
 
 
 def get_parent_id(msmdsrv: str) -> str:
+    '''Gets ParentProcessId via PowerShell from the msmdsrv ProcessId.
+
+    Args:
+        msmdsrv (str):  A ProcessId returned from `get_msmdsrv()`.
+
+    Returns:
+        str: Returns ParentProcessId in `str` format.
+    '''
     parent = subprocess.check_output(
         [
             "powershell",
@@ -40,6 +61,14 @@ def get_parent_id(msmdsrv: str) -> str:
 
 
 def get_parent_title(parent_id: str) -> str:
+    '''Takes the ParentProcessId and gets the name of the PBIX file.
+
+    Args:
+        parent_id (str): Takes ParentProcessId which can be retrieved from `get_parent_id(msmdsrv)`
+
+    Returns:
+        str: Returns str of title of PBIX file.
+    '''
     pbi_title_suffixes: list = [
         " \u002D Power BI Desktop",  # Dash Punctuation - minus hyphen
         " \u2212 Power BI Desktop",  # Math Symbol - minus sign
@@ -59,6 +88,14 @@ def get_parent_title(parent_id: str) -> str:
 
 
 def create_connection_str(port_number: str) -> str:
+    '''This takes the port number and adds to connection string. This is pretty bland right now, may improve later.
+
+    Args:
+        port_number (str): Port Number retrieved from `get_port_number(msmdsrv)`.
+
+    Returns:
+        str: _description_
+    '''
     connection_str = f"Data Source=localhost:{port_number}"
     p.logger.debug(f"Local Connection Str - {connection_str}")
     return connection_str
