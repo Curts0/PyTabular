@@ -35,18 +35,19 @@ dll = os.path.join(os.path.dirname(__file__), "dll")
 sys.path.append(dll)
 sys.path.append(os.path.dirname(__file__))
 
-logger.debug(f"Beginning CLR references...")
+logger.info(f"Beginning CLR references...")
 import clr
 
-logger.debug("Adding Reference Microsoft.AnalysisServices.AdomdClient")
+logger.info("Adding Reference Microsoft.AnalysisServices.AdomdClient")
 clr.AddReference("Microsoft.AnalysisServices.AdomdClient")
-logger.debug("Adding Reference Microsoft.AnalysisServices.Tabular")
+logger.info("Adding Reference Microsoft.AnalysisServices.Tabular")
 clr.AddReference("Microsoft.AnalysisServices.Tabular")
-logger.debug("Adding Reference Microsoft.AnalysisServices")
+logger.info("Adding Reference Microsoft.AnalysisServices")
 clr.AddReference("Microsoft.AnalysisServices")
 
-logger.debug(f"Importing specifics in module...")
+logger.info(f"Importing specifics in module...")
 from .pytabular import Tabular
+
 from .basic_checks import (
     Return_Zero_Row_Tables,
     Table_Last_Refresh_Times,
@@ -63,4 +64,4 @@ from .best_practice_analyzer import BPA
 from .query import Connection
 from .pbi_helper import find_local_pbi_instances
 
-logger.debug(f"Import successful...")
+logger.info(f"Import successful...")
