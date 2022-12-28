@@ -58,7 +58,7 @@ from .logic_utils import (
     pd_dataframe_to_m_expression,
     pandas_datatype_to_tabular_datatype,
 )
-from .tabular_tracing import Base_Trace, Refresh_Trace
+from .tabular_tracing import Base_Trace, Refresh_Trace, Query_Monitor
 from .tabular_editor import Tabular_Editor
 from .best_practice_analyzer import BPA
 from .query import Connection

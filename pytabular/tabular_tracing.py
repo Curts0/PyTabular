@@ -3,7 +3,12 @@ import random
 import xmltodict
 from typing import List, Callable
 from Microsoft.AnalysisServices.Tabular import Trace, TraceEvent, TraceEventHandler
-from Microsoft.AnalysisServices import TraceColumn, TraceEventClass, TraceEventSubclass
+from Microsoft.AnalysisServices import (
+    TraceColumn,
+    TraceEventClass,
+    TraceEventSubclass,
+)
+import atexit
 
 logger = logging.getLogger("PyTabular")
 
@@ -52,6 +57,7 @@ class Base_Trace:
         self.Build()
         self.Add()
         self.Update()
+        atexit.register(self.Drop)
 
     def Build(self) -> bool:
         """Run on initialization.
@@ -271,3 +277,43 @@ class Refresh_Trace(Base_Trace):
         Handler: Callable = _refresh_handler,
     ) -> None:
         super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)
+
+
+def _query_monitor_handler(source, args):
+    total_secs = args.Duration / 1000
+    domain_site = args.NTUserName.find("\\")
+    if domain_site > 0:
+        user = args.NTUserName[domain_site + 1 :]
+    else:
+        user = args.NTUserName
+    logger.info(f"{args.EventSubclass} by {user} in {args.ApplicationName}")
+    logger.info(
+        f"From {args.StartTime} to {args.EndTime} for {str(total_secs)} seconds"
+    )
+    if args.Severity == 3:
+        logger.error(f"Query failure... {str(args.Error)}")
+        logger.error(f"{args.TextData}")
+    logger.debug(f"{args.TextData}")
+
+
+class Query_Monitor(Base_Trace):
+    def __init__(
+        self,
+        Tabular_Class,
+        Trace_Events: List[TraceEvent] = [TraceEventClass.QueryEnd],
+        Trace_Event_Columns: List[TraceColumn] = [
+            TraceColumn.EventSubclass,
+            TraceColumn.StartTime,
+            TraceColumn.EndTime,
+            TraceColumn.Duration,
+            TraceColumn.Severity,
+            TraceColumn.Error,
+            TraceColumn.NTUserName,
+            TraceColumn.DatabaseName,
+            TraceColumn.ApplicationName,
+            TraceColumn.TextData,
+        ],
+        Handler: Callable = _query_monitor_handler,
+    ) -> None:
+        super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)
+        logger.info("Query text lives in DEBUG, adjust logging to see query text.")
