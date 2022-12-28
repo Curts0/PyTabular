@@ -20,6 +20,7 @@ from logic_utils import (
     pd_dataframe_to_m_expression,
     pandas_datatype_to_tabular_datatype,
     remove_suffix,
+    remove_file,
 )
 
 from table import PyTable, PyTables
@@ -517,7 +518,9 @@ class Tabular(PyObject):
                 List[str]: Assuming no failure, will return list of BPA violations. Else will return error from command line.
         """
         logger.debug("Beginning request to talk with TE2 & Find BPA...")
-        cmd = f'{Tabular_Editor_Exe} "Provider=MSOLAP;{self.Adomd.ConnectionString}" {self.Database.Name} -B "{os.getcwd()}\\Model.bim" -A {Best_Practice_Analyzer} -V/?'
+        bim_file_location = f"{os.getcwd()}\\Model.bim"
+        atexit.register(remove_file, bim_file_location)
+        cmd = f'{Tabular_Editor_Exe} "Provider=MSOLAP;{self.Adomd.ConnectionString}" {self.Database.Name} -B "{bim_file_location}" -A {Best_Practice_Analyzer} -V/?'
         logger.debug("Command Generated")
         logger.debug("Submitting Command...")
         sp = subprocess.Popen(

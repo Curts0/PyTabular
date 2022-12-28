@@ -151,6 +151,17 @@ def remove_folder_and_contents(folder_location):
         shutil.rmtree(folder_location)
 
 
+def remove_file(file_path):
+    """Just `os.remove()` but wanted a `logger.info()` with it.
+
+    Args:
+        file_path: [See os.remove](https://docs.python.org/3/library/os.html)
+    """
+    logger.info(f"Removing file - {file_path}")
+    os.remove(file_path)
+    pass
+
+
 def remove_suffix(input_string, suffix):
     """Adding for >3.9 compatiblity. [Stackoverflow Answer](https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix)
 
