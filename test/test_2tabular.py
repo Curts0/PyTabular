@@ -1,8 +1,7 @@
-import local
 import pytest
 import pandas as pd
 import pytabular as p
-from test.config import testingtablename, testing_parameters
+from test.config import testingtablename, testing_parameters, get_test_path
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -28,8 +27,8 @@ def test_datatype_query(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_file_query(model):
-    singlevaltest = local.SINGLEVALTESTPATH
-    dfvaltest = local.DFVALTESTPATH
+    singlevaltest = get_test_path() + "\\singlevaltest.dax"
+    dfvaltest = get_test_path() + "\\dfvaltest.dax"
     dfdupe = pd.DataFrame({"[Value1]": (1, 3), "[Value2]": (2, 4)})
     assert model.Query(singlevaltest) == 1 and model.Query(dfvaltest).equals(dfdupe)
 

@@ -1,5 +1,10 @@
-from test.config import aas, gen2, testingtablename, testingtabledf
+from test.config import (
+    local_pbix,
+    testingtablename,
+    testingtabledf,
+)
 import pytabular as p
+import subprocess
 
 
 def pytest_report_header(config):
@@ -13,21 +18,21 @@ def remove_testing_table(model):
         if testingtablename in table.Name
     ]
     for table in table_check:
+        p.logger.info(f"Removing table {table.Name} from {model.Server.Name}")
         model.Model.Tables.Remove(table)
     model.SaveChanges()
 
 
 def pytest_sessionstart(session):
     p.logger.info("Executing pytest setup...")
-    remove_testing_table(aas)
-    remove_testing_table(gen2)
-    aas.Create_Table(testingtabledf, testingtablename)
-    gen2.Create_Table(testingtabledf, testingtablename)
+    remove_testing_table(local_pbix)
+    local_pbix.Create_Table(testingtabledf, testingtablename)
     return True
 
 
 def pytest_sessionfinish(session, exitstatus):
     p.logger.info("Executing pytest cleanup...")
-    remove_testing_table(aas)
-    remove_testing_table(gen2)
+    remove_testing_table(local_pbix)
+    p.logger.info("Finding and closing PBIX file...")
+    subprocess.run(["powershell", "Stop-Process -Name PBIDesktop"])
     return True
