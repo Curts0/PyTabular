@@ -2,10 +2,8 @@
 These were designed selfishly for my own uses.
 So seperating out, to one day sunset and remove.
 """
-from test.config import aas, gen2, testingtablename
+from test.config import testing_parameters, testingtablename
 import pytest
-
-testing_parameters = [pytest.param(aas, id="AAS"), pytest.param(gen2, id="GEN2")]
 
 
 @pytest.mark.parametrize("model", testing_parameters)

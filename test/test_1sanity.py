@@ -1,8 +1,6 @@
-from test.config import aas, gen2
 import pytest
 from Microsoft.AnalysisServices.Tabular import Database
-
-testing_parameters = [pytest.param(aas, id="AAS"), pytest.param(gen2, id="GEN2")]
+from test.config import testing_parameters
 
 
 @pytest.mark.parametrize("model", testing_parameters)
