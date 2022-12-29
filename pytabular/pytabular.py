@@ -78,7 +78,7 @@ class Tabular(PyObject):
         self.Model = self.Database.Model
         logger.info(f"Connected to Model - {self.Model.Name}")
         self.Adomd: Connection = Connection(self.Server)
-        self.Effective_Users = dict()
+        self.Effective_Users: dict = {}
         self.PyRefresh = PyRefresh
         # Build PyObjects
         self.Reload_Model_Info()
@@ -89,7 +89,7 @@ class Tabular(PyObject):
         # Building rich table display for repr
         self._display.add_row(
             "EstimatedSize",
-            str(round(self.Database.EstimatedSize / 1000000000, 2)) + " GB",
+            f"{round(self.Database.EstimatedSize / 1000000000, 2)} GB",
             end_section=True,
         )
         self._display.add_row("# of Tables", str(len(self.Tables)))
@@ -105,8 +105,6 @@ class Tabular(PyObject):
         logger.debug("Class Initialization Completed")
         logger.debug("Registering Disconnect on Termination...")
         atexit.register(self.Disconnect)
-
-        pass
 
     def Reload_Model_Info(self) -> bool:
         """Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
@@ -124,7 +122,10 @@ class Tabular(PyObject):
         )
 
         self.Tables = PyTables(
-            [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
+            [
+                PyTable(table, self) 
+                for table in self.Model.Tables.GetEnumerator()
+            ]
         )
         self.Relationships = PyRelationships(
             [
@@ -455,16 +456,16 @@ class Tabular(PyObject):
         """
         if Effective_User is None:
             return self.Adomd.Query(Query_Str)
-        else:
-            try:
-                conn = self.Effective_Users[Effective_User]
-                if isinstance(conn, Connection):
-                    conn.Query(Query_Str)
-            except Exception:
-                conn = Connection(self.Server, Effective_User=Effective_User)
-                self.Effective_Users[Effective_User] = conn
 
-            return conn.Query(Query_Str)
+        try:
+            conn = self.Effective_Users[Effective_User]
+            if isinstance(conn, Connection):
+                conn.Query(Query_Str)
+        except Exception:
+            conn = Connection(self.Server, Effective_User=Effective_User)
+            self.Effective_Users[Effective_User] = conn
+
+        return conn.Query(Query_Str)
 
     def Query_Every_Column(
         self, query_function: str = "COUNTROWS(VALUES(_))"
@@ -590,3 +591,26 @@ class Tabular(PyObject):
         self.Reload_Model_Info()
         self.Refresh(new_table.Name)
         return True
+
+    def get_dependancies(self, object: str, object_table: str) -> pd.DataFrame:
+        """Returns the dependant columns of a measure"""
+        dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{object}' and [TABLE] = '{object_table}'"
+        return self.Query(dmv_query)
+
+    def get_sample_values(
+        self, column: str, table: str, top_n: int = 3
+    ) -> pd.DataFrame:
+        column_to_sample = f"'{table}'[{column}]"
+        dax_query = f"""EVALUATE 
+                            TOPNSKIP(
+                                {top_n}, 
+                                0, 
+                                FILTER( 
+                                    VALUES({column_to_sample}),  
+                                    NOT ISBLANK({column_to_sample}) && LEN({column_to_sample}) > 0
+                                ), 
+                                1
+                            ) 
+                            ORDER BY {column_to_sample}
+                    """
+        return self.Query(dax_query)
