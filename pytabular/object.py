@@ -7,8 +7,8 @@ from collections.abc import Iterable
 class PyObject(ABC):
     def __init__(self, object) -> None:
         self._object = object
-        if str(self._object.ObjectType) == 'ObjectTranslation':
-            self._display = Table(title=self.Object.Name)    
+        if str(self._object.ObjectType) == "ObjectTranslation":
+            self._display = Table(title=self.Object.Name)
             self._display.add_column(
                 "Properties", justify="right", style="cyan", no_wrap=True
             )
@@ -17,7 +17,11 @@ class PyObject(ABC):
             self._display.add_row("Name", self._object.Object.Name)
             self._display.add_row("ObjectType", str(self._object.Object.ObjectType))
             self._display.add_row("ParentName", self._object.Object.Parent.Name)
-            self._display.add_row("ParentObjectType",str(self._object.Object.Parent.ObjectType),end_section=True)
+            self._display.add_row(
+                "ParentObjectType",
+                str(self._object.Object.Parent.ObjectType),
+                end_section=True,
+            )
 
         else:
             self._display = Table(title=self.Name)
@@ -25,7 +29,7 @@ class PyObject(ABC):
                 "Properties", justify="right", style="cyan", no_wrap=True
             )
             self._display.add_column("", justify="left", style="magenta", no_wrap=False)
-            
+
             self._display.add_row("Name", self._object.Name)
             self._display.add_row("ObjectType", str(self._object.ObjectType))
             if str(self._object.ObjectType) not in "Model":

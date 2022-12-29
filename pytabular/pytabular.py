@@ -117,7 +117,10 @@ class Tabular(PyObject):
         self.Database.Refresh()
 
         self.Cultures = PyCultures(
-            [PyCulture(culture, self) for culture in self.Model.Cultures.GetEnumerator()]
+            [
+                PyCulture(culture, self)
+                for culture in self.Model.Cultures.GetEnumerator()
+            ]
         )
 
         self.Tables = PyTables(
