@@ -6,7 +6,6 @@ from Microsoft.AnalysisServices.Tabular import (
     Table,
     DataColumn,
     Partition,
-    Culture,
     MPartitionSource,
 )
 
@@ -122,10 +121,7 @@ class Tabular(PyObject):
         )
 
         self.Tables = PyTables(
-            [
-                PyTable(table, self) 
-                for table in self.Model.Tables.GetEnumerator()
-            ]
+            [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
         self.Relationships = PyRelationships(
             [
@@ -591,26 +587,3 @@ class Tabular(PyObject):
         self.Reload_Model_Info()
         self.Refresh(new_table.Name)
         return True
-
-    def get_dependancies(self, object: str, object_table: str) -> pd.DataFrame:
-        """Returns the dependant columns of a measure"""
-        dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{object}' and [TABLE] = '{object_table}'"
-        return self.Query(dmv_query)
-
-    def get_sample_values(
-        self, column: str, table: str, top_n: int = 3
-    ) -> pd.DataFrame:
-        column_to_sample = f"'{table}'[{column}]"
-        dax_query = f"""EVALUATE 
-                            TOPNSKIP(
-                                {top_n}, 
-                                0, 
-                                FILTER( 
-                                    VALUES({column_to_sample}),  
-                                    NOT ISBLANK({column_to_sample}) && LEN({column_to_sample}) > 0
-                                ), 
-                                1
-                            ) 
-                            ORDER BY {column_to_sample}
-                    """
-        return self.Query(dax_query)
