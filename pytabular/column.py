@@ -29,6 +29,25 @@ class PyColumn(PyObject):
         self._display.add_row("State", str(self._object.State))
         self._display.add_row("DisplayFolder", str(self._object.DisplayFolder))
 
+    def get_sample_values(
+        self, top_n: int = 3
+    ) -> pd.DataFrame:
+        '''Get sample values of column.'''
+        column_to_sample = f"'{self.Table.Name}'[{self.Name}]"
+        dax_query = f"""EVALUATE 
+                            TOPNSKIP(
+                                {top_n}, 
+                                0, 
+                                FILTER( 
+                                    VALUES({column_to_sample}),  
+                                    NOT ISBLANK({column_to_sample}) && LEN({column_to_sample}) > 0
+                                ), 
+                                1
+                            ) 
+                            ORDER BY {column_to_sample}
+                    """
+        return self.Table.Model.Query(dax_query)
+
     def Distinct_Count(self, No_Blank=False) -> int:
         """Get [DISTINCTCOUNT](https://learn.microsoft.com/en-us/dax/distinctcount-function-dax) of Column.
 
