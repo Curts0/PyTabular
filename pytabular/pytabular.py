@@ -6,6 +6,7 @@ from Microsoft.AnalysisServices.Tabular import (
     Table,
     DataColumn,
     Partition,
+    Culture,
     MPartitionSource,
 )
 
@@ -27,6 +28,7 @@ from table import PyTable, PyTables
 from partition import PyPartitions
 from column import PyColumns
 from measure import PyMeasures
+from culture import PyCultures, PyCulture
 from relationship import PyRelationship, PyRelationships
 from object import PyObject
 from refresh import PyRefresh
@@ -113,6 +115,10 @@ class Tabular(PyObject):
                 bool: True if successful
         """
         self.Database.Refresh()
+
+        self.Cultures = PyCultures(
+            [PyCulture(culture, self) for culture in self.Model.Cultures.GetEnumerator()]
+        )
 
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]

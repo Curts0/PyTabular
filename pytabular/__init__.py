@@ -19,10 +19,10 @@ logging.basicConfig(
 logger = logging.getLogger("PyTabular")
 logger.setLevel(logging.INFO)
 logger.info("Logging configured...")
-logger.info(f"To update logging:")
-logger.info(f">>> import logging")
-logger.info(f">>> pytabular.logger.setLevel(level=logging.INFO)")
-logger.info(f"See https://docs.python.org/3/library/logging.html#logging-levels")
+logger.info("To update logging:")
+logger.info(">>> import logging")
+logger.info(">>> pytabular.logger.setLevel(level=logging.INFO)")
+logger.info("See https://docs.python.org/3/library/logging.html#logging-levels")
 
 
 logger.info(f"Python Version::{sys.version}")
@@ -35,7 +35,7 @@ dll = os.path.join(os.path.dirname(__file__), "dll")
 sys.path.append(dll)
 sys.path.append(os.path.dirname(__file__))
 
-logger.info(f"Beginning CLR references...")
+logger.info("Beginning CLR references...")
 import clr
 
 logger.info("Adding Reference Microsoft.AnalysisServices.AdomdClient")
@@ -45,7 +45,7 @@ clr.AddReference("Microsoft.AnalysisServices.Tabular")
 logger.info("Adding Reference Microsoft.AnalysisServices")
 clr.AddReference("Microsoft.AnalysisServices")
 
-logger.info(f"Importing specifics in module...")
+logger.info("Importing specifics in module...")
 from .pytabular import Tabular
 
 from .basic_checks import (
@@ -64,4 +64,4 @@ from .best_practice_analyzer import BPA
 from .query import Connection
 from .pbi_helper import find_local_pbi_instances
 
-logger.info(f"Import successful...")
+logger.info("Import successful...")
