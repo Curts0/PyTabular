@@ -7,38 +7,21 @@ from collections.abc import Iterable
 class PyObject(ABC):
     def __init__(self, object) -> None:
         self._object = object
-        if str(self._object.ObjectType) == "ObjectTranslation":
-            self._display = Table(title=self.Object.Name)
-            self._display.add_column(
-                "Properties", justify="right", style="cyan", no_wrap=True
-            )
-            self._display.add_column("", justify="left", style="magenta", no_wrap=False)
+        self._display = Table(title=self.Name)
+        self._display.add_column(
+            "Properties", justify="right", style="cyan", no_wrap=True
+        )
+        self._display.add_column("", justify="left", style="magenta", no_wrap=False)
 
-            self._display.add_row("Name", self._object.Object.Name)
-            self._display.add_row("ObjectType", str(self._object.Object.ObjectType))
-            self._display.add_row("ParentName", self._object.Object.Parent.Name)
+        self._display.add_row("Name", self.Name)
+        self._display.add_row("ObjectType", str(self.ObjectType))
+        if str(self.ObjectType) not in "Model":
+            self._display.add_row("ParentName", self.Parent.Name)
             self._display.add_row(
                 "ParentObjectType",
-                str(self._object.Object.Parent.ObjectType),
+                str(self.Parent.ObjectType),
                 end_section=True,
             )
-
-        else:
-            self._display = Table(title=self.Name)
-            self._display.add_column(
-                "Properties", justify="right", style="cyan", no_wrap=True
-            )
-            self._display.add_column("", justify="left", style="magenta", no_wrap=False)
-
-            self._display.add_row("Name", self._object.Name)
-            self._display.add_row("ObjectType", str(self._object.ObjectType))
-            if str(self._object.ObjectType) not in "Model":
-                self._display.add_row("ParentName", self._object.Parent.Name)
-                self._display.add_row(
-                    "ParentObjectType",
-                    str(self._object.Parent.ObjectType),
-                    end_section=True,
-                )
 
     def __rich_repr__(self) -> str:
         Console().print(self._display)
@@ -46,7 +29,8 @@ class PyObject(ABC):
     def __getattr__(self, attr):
         if attr in self.__dict__:
             return getattr(self, attr)
-        return getattr(self._object, attr)
+        else:
+            return getattr(self._object, attr)
 
 
 class PyObjects:
