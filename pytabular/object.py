@@ -68,8 +68,7 @@ class PyObjects:
             return self._objects[object]
 
     def __iter__(self):
-        for object in self._objects:
-            yield object
+        yield from self._objects
 
     def __len__(self):
         return len(self._objects)

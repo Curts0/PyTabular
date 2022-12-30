@@ -1,5 +1,5 @@
 import logging
-
+import pandas as pd
 from object import PyObject, PyObjects
 
 logger = logging.getLogger("PyTabular")
@@ -15,11 +15,24 @@ class PyMeasure(PyObject):
 
     def __init__(self, object, table) -> None:
         super().__init__(object)
+
         self.Table = table
+        self.Dependancies = self.get_dependancies(object) 
         self._display.add_row("Expression", self._object.Expression, end_section=True)
         self._display.add_row("DisplayFolder", self._object.DisplayFolder)
         self._display.add_row("IsHidden", str(self._object.IsHidden))
         self._display.add_row("FormatString", self._object.FormatString)
+
+
+    def get_dependancies(self, object) -> pd.DataFrame:
+        """Returns the dependant objects of a measure in a dataframe based on the information in $SYSTEM.DISCOVER_CALC_DEPENDENCY"""
+        return self.Table.Model.Adomd.Query(f"""
+                select * 
+                from $SYSTEM.DISCOVER_CALC_DEPENDENCY 
+                where [OBJECT] = '{object.Name}' 
+                    and [TABLE] = '{object.Table.Name}'
+                """
+            ) 
 
 
 class PyMeasures(PyObjects):

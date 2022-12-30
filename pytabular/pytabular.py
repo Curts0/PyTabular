@@ -71,7 +71,7 @@ class Tabular(PyObject):
         except Exception:
             err_msg = f"Unable to find Database... {self.Catalog}"
             logger.error(err_msg)
-            raise Exception(err_msg)
+            raise Exception(err_msg) 
         logger.info(f"Connected to Database - {self.Database.Name}")
         self.CompatibilityLevel: int = self.Database.CompatibilityLevel
         self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
@@ -151,11 +151,7 @@ class Tabular(PyObject):
                 bool: True if DMV shows Process, False if not.
         """
         _jobs_df = self.Query("select * from $SYSTEM.DISCOVER_JOBS")
-        return (
-            True
-            if len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
-            else False
-        )
+        return len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
 
     def Disconnect(self) -> bool:
         """Disconnects from Model
@@ -591,11 +587,6 @@ class Tabular(PyObject):
         self.Reload_Model_Info()
         self.Refresh(new_table.Name)
         return True
-
-    def get_dependancies(self, object: str, object_table: str) -> pd.DataFrame:
-        """Returns the dependant columns of a measure"""
-        dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{object}' and [TABLE] = '{object_table}'"
-        return self.Query(dmv_query)
 
     def get_sample_values(
         self, column: str, table: str, top_n: int = 3
