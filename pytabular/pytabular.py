@@ -70,7 +70,7 @@ class Tabular(PyObject):
         except Exception:
             err_msg = f"Unable to find Database... {self.Catalog}"
             logger.error(err_msg)
-            raise Exception(err_msg) 
+            raise Exception(err_msg)
         logger.info(f"Connected to Database - {self.Database.Name}")
         self.CompatibilityLevel: int = self.Database.CompatibilityLevel
         self.CompatibilityMode: int = self.Database.CompatibilityMode.value__
