@@ -11,14 +11,16 @@ class PyCulture(PyObject):
         Table: Parent Table to the Object Translations
     """
 
-    def __init__(self, object, table) -> None:
+    def __init__(self, object, model) -> None:
         super().__init__(object)
-        self.Table = table
+        self.Model = model
         self._display.add_row("Culture Name", self._object.Name)
-        self.ObjectTranslations = [
-            PyObjectTranslation(translation, self)
-            for translation in self._object.ObjectTranslations
-        ]
+        self.ObjectTranslations = PyObjectTranslations(
+            [
+                PyObjectTranslation(translation, self)
+                for translation in self._object.ObjectTranslations.GetEnumerator()
+            ]
+        )
 
 
 class PyObjectTranslation(PyObject):
@@ -27,13 +29,21 @@ class PyObjectTranslation(PyObject):
         Table: Child item of the Culture.
     """
 
-    def __init__(self, object, table) -> None:
+    def __init__(self, object, culture) -> None:
+        self.Name = object.Object.Name
+        self.ObjectType = object.Object.ObjectType
+        self.Parent = object.Object.Parent
         super().__init__(object)
-        self.Table = table
+        self.Culture = culture
         self._display.add_row("Object Property", str(self._object.Property))
-        self._display.add_row("Object Value", str(self._object.Value))
+        self._display.add_row("Object Value", self._object.Value)
 
 
 class PyCultures(PyObjects):
+    def __init__(self, objects) -> None:
+        super().__init__(objects)
+
+
+class PyObjectTranslations(PyObjects):
     def __init__(self, objects) -> None:
         super().__init__(objects)
