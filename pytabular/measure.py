@@ -17,7 +17,6 @@ class PyMeasure(PyObject):
         super().__init__(object)
 
         self.Table = table
-        self.Dependancies = self.get_dependancies(object)
         self._display.add_row("Expression", self._object.Expression, end_section=True)
         self._display.add_row("DisplayFolder", self._object.DisplayFolder)
         self._display.add_row("IsHidden", str(self._object.IsHidden))
@@ -27,17 +26,6 @@ class PyMeasure(PyObject):
         """Returns the dependant columns of a measure"""
         dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"
         return self.Table.Model.Query(dmv_query)
-
-    def get_dependancies(self, object) -> pd.DataFrame:
-        """Returns the dependant objects of a measure in a dataframe based on the information in $SYSTEM.DISCOVER_CALC_DEPENDENCY"""
-        return self.Table.Model.Adomd.Query(
-            f"""
-                select * 
-                from $SYSTEM.DISCOVER_CALC_DEPENDENCY 
-                where [OBJECT] = '{object.Name}' 
-                    and [TABLE] = '{object.Table.Name}'
-                """
-        )
 
 
 class PyMeasures(PyObjects):
