@@ -53,7 +53,9 @@ class Connection(AdomdConnection):
             with open(Query_Str, "r") as file:
                 Query_Str = str(file.read())
 
-        if self.State.value__ == 0:
+        if str(self.get_State()) != 'Open':
+            #Works for now, need to update to handle different types of conneciton properties
+            #https://learn.microsoft.com/en-us/dotnet/api/system.data.connectionstate?view=net-7.0
             logger.info("Checking initial Adomd Connection...")
             self.Open()
             logger.info(f"Connected! Session ID - {self.SessionID}")
