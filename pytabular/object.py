@@ -12,13 +12,14 @@ class PyObject(ABC):
             "Properties", justify="right", style="cyan", no_wrap=True
         )
         self._display.add_column("", justify="left", style="magenta", no_wrap=False)
-        self._display.add_row("Name", self._object.Name)
-        self._display.add_row("ObjectType", str(self._object.ObjectType))
-        if not str(self._object.ObjectType) == "Model":
-            self._display.add_row("ParentName", self._object.Parent.Name)
+
+        self._display.add_row("Name", self.Name)
+        self._display.add_row("ObjectType", str(self.ObjectType))
+        if str(self.ObjectType) not in "Model":
+            self._display.add_row("ParentName", self.Parent.Name)
             self._display.add_row(
                 "ParentObjectType",
-                str(self._object.Parent.ObjectType),
+                str(self.Parent.ObjectType),
                 end_section=True,
             )
 
@@ -28,7 +29,8 @@ class PyObject(ABC):
     def __getattr__(self, attr):
         if attr in self.__dict__:
             return getattr(self, attr)
-        return getattr(self._object, attr)
+        else:
+            return getattr(self._object, attr)
 
 
 class PyObjects:
@@ -50,8 +52,7 @@ class PyObjects:
             return self._objects[object]
 
     def __iter__(self):
-        for object in self._objects:
-            yield object
+        yield from self._objects
 
     def __len__(self):
         return len(self._objects)

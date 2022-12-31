@@ -27,6 +27,7 @@ from table import PyTable, PyTables
 from partition import PyPartitions
 from column import PyColumns
 from measure import PyMeasures
+from culture import PyCultures, PyCulture
 from relationship import PyRelationship, PyRelationships
 from object import PyObject
 from refresh import PyRefresh
@@ -76,7 +77,7 @@ class Tabular(PyObject):
         self.Model = self.Database.Model
         logger.info(f"Connected to Model - {self.Model.Name}")
         self.Adomd: Connection = Connection(self.Server)
-        self.Effective_Users = dict()
+        self.Effective_Users: dict = {}
         self.PyRefresh = PyRefresh
         # Build PyObjects
         self.Reload_Model_Info()
@@ -87,7 +88,7 @@ class Tabular(PyObject):
         # Building rich table display for repr
         self._display.add_row(
             "EstimatedSize",
-            str(round(self.Database.EstimatedSize / 1000000000, 2)) + " GB",
+            f"{round(self.Database.EstimatedSize / 1000000000, 2)} GB",
             end_section=True,
         )
         self._display.add_row("# of Tables", str(len(self.Tables)))
@@ -104,8 +105,6 @@ class Tabular(PyObject):
         logger.debug("Registering Disconnect on Termination...")
         atexit.register(self.Disconnect)
 
-        pass
-
     def Reload_Model_Info(self) -> bool:
         """Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
 
@@ -113,6 +112,13 @@ class Tabular(PyObject):
                 bool: True if successful
         """
         self.Database.Refresh()
+
+        self.Cultures = PyCultures(
+            [
+                PyCulture(culture, self)
+                for culture in self.Model.Cultures.GetEnumerator()
+            ]
+        )
 
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
@@ -141,11 +147,7 @@ class Tabular(PyObject):
                 bool: True if DMV shows Process, False if not.
         """
         _jobs_df = self.Query("select * from $SYSTEM.DISCOVER_JOBS")
-        return (
-            True
-            if len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
-            else False
-        )
+        return len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
 
     def Disconnect(self) -> bool:
         """Disconnects from Model
@@ -446,16 +448,16 @@ class Tabular(PyObject):
         """
         if Effective_User is None:
             return self.Adomd.Query(Query_Str)
-        else:
-            try:
-                conn = self.Effective_Users[Effective_User]
-                if isinstance(conn, Connection):
-                    conn.Query(Query_Str)
-            except Exception:
-                conn = Connection(self.Server, Effective_User=Effective_User)
-                self.Effective_Users[Effective_User] = conn
 
-            return conn.Query(Query_Str)
+        try:
+            conn = self.Effective_Users[Effective_User]
+            if isinstance(conn, Connection):
+                conn.Query(Query_Str)
+        except Exception:
+            conn = Connection(self.Server, Effective_User=Effective_User)
+            self.Effective_Users[Effective_User] = conn
+
+        return conn.Query(Query_Str)
 
     def Query_Every_Column(
         self, query_function: str = "COUNTROWS(VALUES(_))"
