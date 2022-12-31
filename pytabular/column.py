@@ -32,19 +32,34 @@ class PyColumn(PyObject):
     def get_sample_values(self, top_n: int = 3) -> pd.DataFrame:
         """Get sample values of column."""
         column_to_sample = f"'{self.Table.Name}'[{self.Name}]"
-        dax_query = f"""EVALUATE
-                            TOPNSKIP(
-                                {top_n},
-                                0,
-                                FILTER(
-                                    VALUES({column_to_sample}),
-                                    NOT ISBLANK({column_to_sample}) && LEN({column_to_sample}) > 0
-                                ),
-                                1
-                            )
-                            ORDER BY {column_to_sample}
-                    """
-        return self.Table.Model.Query(dax_query)
+        try:
+            # adding temporary try except. TOPNSKIP will not work for directquery mode.
+            # Need an efficient way to identify if query is direct query or not.
+            dax_query = f"""EVALUATE
+                                TOPNSKIP(
+                                    {top_n},
+                                    0,
+                                    FILTER(
+                                        VALUES({column_to_sample}),
+                                        NOT ISBLANK({column_to_sample}) && LEN({column_to_sample}) > 0
+                                    ),
+                                    1
+                                )
+                                ORDER BY {column_to_sample}
+                        """
+            return self.Table.Model.Query(dax_query)
+        except Exception:
+            dax_query = f"""
+            EVALUATE
+                TOPN(
+                    {top_n},
+                    FILTER(
+                        VALUES({column_to_sample}),
+                        NOT ISBLANK({column_to_sample}) && LEN({column_to_sample}) > 0
+                    )
+                )
+            """
+            return self.Table.Model.Query(dax_query)
 
     def Distinct_Count(self, No_Blank=False) -> int:
         """Get [DISTINCTCOUNT](https://learn.microsoft.com/en-us/dax/distinctcount-function-dax) of Column.

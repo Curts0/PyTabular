@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import pytabular as p
-from test.config import testingtablename, testing_parameters, get_test_path
+from test.config import testingtablename, testing_parameters, get_test_path, LOCAL_FILE
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -81,3 +81,21 @@ def test_Table_Last_Refresh_Times(model):
 def test_Return_Zero_Row_Tables(model):
     """Testing that `Return_Zero_Row_Tables`"""
     assert isinstance(p.Return_Zero_Row_Tables(model), list) is True
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_get_dependencies(model):
+    if len(model.Measures) > 0:
+        dependencies = model.Measures[0].get_dependencies()
+        assert len(dependencies) > 0
+    else:
+        assert True
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_get_sample_values(model):
+    if LOCAL_FILE[0] == "AdventureWorks Sales":
+        df = model.Columns["Country"].get_sample_values()
+        assert len(df) > 0
+    else:
+        assert True
