@@ -100,3 +100,71 @@ class PyTables(PyObjects):
     def Refresh(self, *args, **kwargs):
         model = self._objects[0].Model
         return model.Refresh(self, *args, **kwargs)
+
+
+    def Query_All(self, query_function: str = "COUNTROWS(_)") -> pd.DataFrame:
+        """This will dynamically create a query to pull all tables from the model and run the query function.
+        It will replace the _ with the table to run.
+
+        Args:
+                query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions. Defaults to 'COUNTROWS(_)'.
+
+        Returns:
+                pd.DataFrame: Returns dataframe with results
+        """
+        logger.info("Querying every table in PyTables...")
+        logger.debug(f"Function to be run: {query_function}")
+        logger.debug("Dynamically creating DAX query...")
+        query_str = "EVALUATE UNION(\n"
+        for table in self:
+            table_name = table.get_Name()
+            dax_table_identifier = f"'{table_name}'"
+            query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",{query_function.replace('_',dax_table_identifier)}),\n"
+        query_str = f"{query_str[:-2]})"
+        return self[0].Model.Query(query_str)
+
+
+    def Zero_Row_Tables(self):
+        """Returns list of table names of those that are returning isna()
+        """
+        query_function: str = "COUNTROWS(_)"
+        df: pd.DataFrame = self.Query_All(query_function)
+        return df[df[f"[{query_function}]"].isna()]["[Table]"].to_list()
+
+
+    def Last_Refresh(
+        self, group_partition: bool = True
+    ) -> pd.DataFrame:
+        """Returns pd.DataFrame of tables with their latest refresh time.
+        Optional 'group_partition' variable, default is True.
+        If False an extra column will be include to have the last refresh time to the grain of the partition
+        Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')
+
+        Args:
+                model (pytabular.Tabular): Tabular Model
+                group_partition (bool, optional): Whether or not you want the grain of the dataframe to be by table or by partition. Defaults to True.
+
+        Returns:
+                pd.DataFrame: pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
+                If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()
+        """
+        data = {
+            "Tables": [partition.Table.Name for table in self for partition in table.Partitions],
+            "Partitions": [partition.Name for table in self for partition in table.Partitions],
+            "RefreshedTime": [
+                partition.Last_Refresh()
+                for table in self for partition in table.Partitions
+            ],
+        }
+        df = pd.DataFrame(data)
+        if group_partition:
+            logger.debug("Grouping together to grain of Table")
+            return (
+                df[["Tables", "RefreshedTime"]]
+                .groupby(by=["Tables"])
+                .max()
+                .reset_index(drop=False)
+            )
+        else:
+            logger.debug("Returning DF")
+            return df

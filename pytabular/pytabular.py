@@ -459,52 +459,6 @@ class Tabular(PyObject):
 
         return conn.Query(Query_Str)
 
-    def Query_Every_Column(
-        self, query_function: str = "COUNTROWS(VALUES(_))"
-    ) -> pd.DataFrame:
-        """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
-
-        Args:
-                query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
-
-        Returns:
-                pd.DataFrame: Returns dataframe with results.
-        """
-        logger.info("Beginning execution of querying every column...")
-        logger.debug(f"Function to be run: {query_function}")
-        logger.debug("Dynamically creating DAX query...")
-        query_str = "EVALUATE UNION(\n"
-        columns = [column for table in self.Tables for column in table.Columns]
-        for column in columns:
-            if column.Type != ColumnType.RowNumber:
-                table_name = column.Table.get_Name()
-                column_name = column.get_Name()
-                dax_identifier = f"'{table_name}'[{column_name}]"
-                query_str += f"ROW(\"Table\",\"{table_name}\",\"Column\",\"{column_name}\",\"{query_function}\",{query_function.replace('_',dax_identifier)}),\n"
-        query_str = f"{query_str[:-2]})"
-        return self.Query(query_str)
-
-    def Query_Every_Table(self, query_function: str = "COUNTROWS(_)") -> pd.DataFrame:
-        """This will dynamically create a query to pull all tables from the model and run the query function.
-        It will replace the _ with the table to run.
-
-        Args:
-                query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions. Defaults to 'COUNTROWS(_)'.
-
-        Returns:
-                pd.DataFrame: Returns dataframe with results
-        """
-        logger.info("Beginning execution of querying every table...")
-        logger.debug(f"Function to be run: {query_function}")
-        logger.debug("Dynamically creating DAX query...")
-        query_str = "EVALUATE UNION(\n"
-        for table in self.Tables:
-            table_name = table.get_Name()
-            dax_table_identifier = f"'{table_name}'"
-            query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",{query_function.replace('_',dax_table_identifier)}),\n"
-        query_str = f"{query_str[:-2]})"
-        return self.Query(query_str)
-
     def Analyze_BPA(
         self, Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
     ) -> List[str]:
