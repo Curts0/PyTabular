@@ -451,9 +451,9 @@ class Tabular(PyObject):
 
         try:
             conn = self.Effective_Users[Effective_User]
-            if isinstance(conn, Connection):
-                conn.Query(Query_Str)
+            logger.debug(f"Effective user found querying as... {Effective_User}")
         except Exception:
+            logger.debug(f"Creating new connection with {Effective_User}")
             conn = Connection(self.Server, Effective_User=Effective_User)
             self.Effective_Users[Effective_User] = conn
 
