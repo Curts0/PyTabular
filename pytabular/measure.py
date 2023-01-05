@@ -23,7 +23,16 @@ class PyMeasure(PyObject):
         self._display.add_row("FormatString", self._object.FormatString)
 
     def get_dependencies(self) -> pd.DataFrame:
-        """Returns the dependant columns of a measure"""
+        """Returns the dependant objects of a measure.
+        Args:
+            self: The Measure Object
+
+        Returns:
+            pd.DataFrame: The Return Value is a Pandas dataframe
+                            which displays all the dependancies 
+                            of the object.             
+
+        """
         dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"
         return self.Table.Model.Query(dmv_query)
 
