@@ -14,17 +14,30 @@ def trim(docstring: str) -> str:
         return ''
 
     lines = docstring.expandtabs().splitlines()
+    # Find the minimum indentation level
     indent = float('inf')
     for line in lines[1:]:
         stripped = line.lstrip()
         if stripped:
             indent = min(indent, line.index(stripped))
 
-    trimmed = [lines[0].strip()]
-    if indent < float('inf'):
-        trimmed += [line[indent:] for line in lines[1:]]
+    # Align all lines to the left
+    trimmed = []
+    for line in lines:
+        stripped = line.lstrip()
+        if stripped:
+            trimmed.append(stripped)
+        else:
+            trimmed.append(line[indent:])
 
-    return '\n'.join(line for line in trimmed if line)
+    # Strip off leading and trailing blank lines
+    while trimmed and not trimmed[-1]:
+        trimmed.pop()
+    while trimmed and not trimmed[0]:
+        trimmed.pop(0)
+
+    return '\n'.join(trimmed)
+
 
 def dataframe_to_dict(df: pd.DataFrame) -> list[dict]:
     """Convert to Dataframe to dictionary and alter columns names with;
