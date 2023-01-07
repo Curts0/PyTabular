@@ -7,16 +7,6 @@ import pytest
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_query_every_table(model):
-    assert len(model.Query_Every_Table()) > 0
-
-
-@pytest.mark.parametrize("model", testing_parameters)
-def test_query_every_column(model):
-    assert len(model.Query_Every_Column()) > 0
-
-
-@pytest.mark.parametrize("model", testing_parameters)
 def test_backingup_table(model):
     model.Backup_Table(testingtablename)
     assert (

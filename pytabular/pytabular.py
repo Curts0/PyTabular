@@ -463,14 +463,15 @@ class Tabular(PyObject):
         self, query_function: str = "COUNTROWS(VALUES(_))"
     ) -> pd.DataFrame:
         """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
-
         Args:
                 query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
-
         Returns:
                 pd.DataFrame: Returns dataframe with results.
         """
         logger.info("Beginning execution of querying every column...")
+        logger.warning(
+            "Query_Every_Column will be deprecated... Use Query_All in PyTables class instead!"
+        )
         logger.debug(f"Function to be run: {query_function}")
         logger.debug("Dynamically creating DAX query...")
         query_str = "EVALUATE UNION(\n"
@@ -487,13 +488,14 @@ class Tabular(PyObject):
     def Query_Every_Table(self, query_function: str = "COUNTROWS(_)") -> pd.DataFrame:
         """This will dynamically create a query to pull all tables from the model and run the query function.
         It will replace the _ with the table to run.
-
         Args:
                 query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions. Defaults to 'COUNTROWS(_)'.
-
         Returns:
                 pd.DataFrame: Returns dataframe with results
         """
+        logger.warning(
+            "Query_Every_Table will be deprecated... Use Query_All in PyTables class instead!"
+        )
         logger.info("Beginning execution of querying every table...")
         logger.debug(f"Function to be run: {query_function}")
         logger.debug("Dynamically creating DAX query...")

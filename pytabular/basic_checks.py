@@ -1,3 +1,10 @@
+"""
+All basic checks will eventually be deprecated for more intuitive methods in the right classes.
+For example, instead of calling the function `Return_Zero_Row_Tables(model)`,
+call the Find_Zero_Rows() method in the PyTables class.
+That way you can dynamically run those methods on a subset of tables,
+instead of only on the entire model.
+"""
 import logging
 from typing import List, Union
 import pytabular
@@ -11,16 +18,17 @@ logger = logging.getLogger("PyTabular")
 
 def Return_Zero_Row_Tables(model: pytabular.Tabular) -> List[str]:
     """Returns list of table names of those that are returning isna()
-
     Args:
             model (pytabular.Tabular): Tabular Model
-
     Returns:
             List[str]: List of table names where DAX COUNTROWS('Table Name') is nan or 0.
     """
-    logger.info(f"Executing Basic Function {sys._getframe(0).f_code.co_name}")
+    logger.warning(
+        "Return_Zero_Row_Tables() will be deprecated. \
+        Instead use Zero_Row_Tables() through the PyTables class."
+    )
     query_function: str = "COUNTROWS(_)"
-    df: pd.DataFrame = model.Query_Every_Table(query_function)
+    df: pd.DataFrame = model.Tables.Query_All(query_function)
     return df[df[f"[{query_function}]"].isna()]["[Table]"].to_list()
 
 
@@ -31,16 +39,18 @@ def Table_Last_Refresh_Times(
     Optional 'group_partition' variable, default is True.
     If False an extra column will be include to have the last refresh time to the grain of the partition
     Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')
-
     Args:
             model (pytabular.Tabular): Tabular Model
             group_partition (bool, optional): Whether or not you want the grain of the dataframe to be by table or by partition. Defaults to True.
-
     Returns:
             pd.DataFrame: pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
             If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()
     """
     logger.info(f"Executing Basic Function {sys._getframe(0).f_code.co_name}")
+    logger.warning(
+        f"{sys._getframe(0).f_code.co_name} will be deprecated... Use Last_Refresh in PyTables class instead!"
+    )
+
     data = {
         "Tables": [partition.Table.Name for partition in model.Partitions],
         "Partitions": [partition.Name for partition in model.Partitions],

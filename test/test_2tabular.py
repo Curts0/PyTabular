@@ -74,13 +74,13 @@ def test_nonetype_decimal_bug(model):
 @pytest.mark.parametrize("model", testing_parameters)
 def test_Table_Last_Refresh_Times(model):
     """Really just testing the the function completes successfully and returns df"""
-    assert isinstance(p.Table_Last_Refresh_Times(model), pd.DataFrame) is True
+    assert isinstance(model.Tables.Last_Refresh(), pd.DataFrame) is True
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_Return_Zero_Row_Tables(model):
     """Testing that `Return_Zero_Row_Tables`"""
-    assert isinstance(p.Return_Zero_Row_Tables(model), list) is True
+    assert isinstance(model.Tables.Find_Zero_Rows(), p.pytabular.PyTables) is True
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -99,3 +99,23 @@ def test_get_sample_values(model):
         assert len(df) > 0
     else:
         assert True
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_query_every_table(model):
+    assert len(model.Tables.Query_All()) > 0
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_query_every_column(model):
+    assert len(model.Tables[0].Columns.Query_All()) > 0
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_query_every_table_deprecate(model):
+    assert len(model.Query_Every_Table()) > 0
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_query_every_column_deprecate(model):
+    assert len(model.Query_Every_Column()) > 0

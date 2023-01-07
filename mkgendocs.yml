@@ -39,6 +39,7 @@ pages:
     classes:
       - Base_Trace
       - Refresh_Trace
+      - Query_Monitor
   - page: "Best Practice Analyzer.md"
     source: 'pytabular/best_practice_analyzer.py'
     functions:
@@ -70,3 +71,9 @@ pages:
       - pd_dataframe_to_m_expression
       - remove_folder_and_contents
       - remove_suffix
+      - remove_file
+      - sql_wrap_count_around_query
+      - get_sub_list
+      - get_value_to_df
+      - dataframe_to_dict
+      - dict_to_markdown_table
