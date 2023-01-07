@@ -249,9 +249,10 @@ def _refresh_handler(source, args):
 
 class Refresh_Trace(Base_Trace):
     """Subclass of Base_Trace. For built-in Refresh Tracing.
+    Run by default when refreshing tables or partitions.
 
     Args:
-            Base_Trace (_type_): _description_
+            Base_Trace (Base_Trace): Base_Trace Class
     """
 
     def __init__(
@@ -297,6 +298,13 @@ def _query_monitor_handler(source, args):
 
 
 class Query_Monitor(Base_Trace):
+    """Subclass of Base_Trace. For built-in Query Monitoring.
+    If you want to see full query text, set logger to debug.
+
+    Args:
+            Base_Trace (Base_Trace): Base_Trace Class
+    """
+
     def __init__(
         self,
         Tabular_Class,

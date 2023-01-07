@@ -118,9 +118,9 @@ This will use the function [Return_Zero_Row_Tables](https://curts0.github.io/PyT
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-tables = pytabular.Return_Zero_Row_Tables(model)
+tables = model.Tables.Find_Zero_Rows()
 if len(tables) > 0:
-    model.Refresh(tables, Tracing = True) #Add a trace in there for some fun.
+    model.Refresh(tables)
 ```
 
 #### Sneak in a refresh.
@@ -139,7 +139,7 @@ This will use the function [Table_Last_Refresh_Times](https://curts0.github.io/P
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-df = pytabular.Table_Last_Refresh_Times(model, group_partition = False)
+df = model.Tables.Last_Refresh()
 model.Create_Table(df, 'Refresh Times')
 ```
 
@@ -155,19 +155,6 @@ results = model.Analyze_BPA(TE2.EXE,BPA.Location)
 
 if len(results) > 0:
     #Revert deployment here!
-```
-
-#### Backup & Revert a Table.
-USE WITH CAUTION, obviously not in PROD. I have been experimenting with this concept. Made for selfish reasons. Will probably get removed and I'll keep in my own local version. But fun to work with. Uses two methods. [Backup_Table](https://curts0.github.io/PyTabular/Tabular/#backup_table) and [Revert_Table](https://curts0.github.io/PyTabular/Tabular/#revert_table)
-
-```python
-import pytabular
-model = pytabular.Tabular(CONNECTION_STR)
-model.Backup_Table('TableName') #This will backup the table with surround items (columns,measures,relationships,roles,hierarchies,etc.) and will add a suffix of '_backup'
-#-----------#
-#Make any changes to your original table and then revert or delete backup as necessary
-#-----------#
-model.Revert_Table('TableName') #This will essentially replace your original with _backup
 ```
 
 #### Loop through and query Dax files
