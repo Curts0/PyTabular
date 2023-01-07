@@ -57,8 +57,6 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#if-bpa-violation-then-revert-deployment">If BPA Violation, then revert deployment.</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#backup-revert-a-table">Backup &amp; Revert a Table.</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#loop-through-and-query-dax-files">Loop through and query Dax files</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#advanced-refreshing-with-pre-and-post-checks">Advanced Refreshing with Pre and Post Checks</a>
@@ -241,9 +239,9 @@ model.Tables['Table Name'].Columns['Column Name'].Values()
 <p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#return_zero_row_tables">Return_Zero_Row_Tables</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-tables = pytabular.Return_Zero_Row_Tables(model)
+tables = model.Tables.Find_Zero_Rows()
 if len(tables) &gt; 0:
-    model.Refresh(tables, Tracing = True) #Add a trace in there for some fun.
+    model.Refresh(tables)
 </code></pre>
 <h4 id="sneak-in-a-refresh">Sneak in a refresh.</h4>
 <p>This will use the method <a href="https://curts0.github.io/PyTabular/Tabular/#is_process">Is_Process</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class. It will check the DMV to see if any jobs are currently running classified as processing.</p>
@@ -258,7 +256,7 @@ else:
 <p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#table_last_refresh_times">Table_Last_Refresh_Times</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#create_table">Create_Table</a> from the Tabular class. It will search through the model for all tables and partitions and pull the 'RefreshedTime' property from it. It will return results into a pandas dataframe, which will then be converted into an M expression used for a new table.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-df = pytabular.Table_Last_Refresh_Times(model, group_partition = False)
+df = model.Tables.Last_Refresh()
 model.Create_Table(df, 'Refresh Times')
 </code></pre>
 <h4 id="if-bpa-violation-then-revert-deployment">If BPA Violation, then revert deployment.</h4>
@@ -271,16 +269,6 @@ results = model.Analyze_BPA(TE2.EXE,BPA.Location)
 
 if len(results) &gt; 0:
     #Revert deployment here!
-</code></pre>
-<h4 id="backup-revert-a-table">Backup &amp; Revert a Table.</h4>
-<p>USE WITH CAUTION, obviously not in PROD. I have been experimenting with this concept. Made for selfish reasons. Will probably get removed and I'll keep in my own local version. But fun to work with. Uses two methods. <a href="https://curts0.github.io/PyTabular/Tabular/#backup_table">Backup_Table</a> and <a href="https://curts0.github.io/PyTabular/Tabular/#revert_table">Revert_Table</a></p>
-<pre><code class="language-python">import pytabular
-model = pytabular.Tabular(CONNECTION_STR)
-model.Backup_Table('TableName') #This will backup the table with surround items (columns,measures,relationships,roles,hierarchies,etc.) and will add a suffix of '_backup'
-#-----------#
-#Make any changes to your original table and then revert or delete backup as necessary
-#-----------#
-model.Revert_Table('TableName') #This will essentially replace your original with _backup
 </code></pre>
 <h4 id="loop-through-and-query-dax-files">Loop through and query Dax files</h4>
 <p>Let's say you have multiple dax queries you would like to store and run through as checks. The <a href="https://curts0.github.io/PyTabular/Tabular/#query">Query</a> method on the Tabular class can also take file paths. Can really be any file type as it's just checking os.path.isfile(). But would suggest .dax or .txt. It will read the file that use that as the new Query_str argument.</p>
@@ -412,5 +400,5 @@ tables.Refresh()
 
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2022-12-31 16:08:15.480165+00:00
+Build Date UTC : 2023-01-07 21:03:20.875545+00:00
 -->

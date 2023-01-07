@@ -70,6 +70,10 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pycolumns">PyColumns</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#query_all">.Query_All</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
@@ -181,6 +185,23 @@ With a few other bells and whistles added to it. WIP</p>
    objects
 )
 </code></pre>
+<p><strong>Methods:</strong></p>
+<h3 id="query_all">.Query_All</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L95">source</a></p>
+<pre><code class="language-python">.Query_All(
+   query_function: str = 'COUNTROWS(VALUES(_))'
+)
+</code></pre>
+<hr />
+<p>This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
+</ul>
               
             </div>
           </div><footer>

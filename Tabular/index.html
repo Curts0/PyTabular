@@ -313,7 +313,7 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
 </ul>
 <h3 id="query_every_table">.Query_Every_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L487">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L488">source</a></p>
 <pre><code class="language-python">.Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
 )
@@ -330,7 +330,7 @@ It will replace the _ with the table to run.</p>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="analyze_bpa">.Analyze_BPA</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L508">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L510">source</a></p>
 <pre><code class="language-python">.Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
 )
@@ -349,7 +349,7 @@ It will replace the _ with the table to run.</p>
 <li>Assuming no failure, will return list of BPA violations. Else will return error from command line.</li>
 </ul>
 <h3 id="create_table">.Create_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L543">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L545">source</a></p>
 <pre><code class="language-python">.Create_Table(
    df: pd.DataFrame, table_name: str
 )

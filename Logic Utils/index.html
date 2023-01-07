@@ -93,6 +93,18 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#remove_suffix">remove_suffix</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#remove_file">remove_file</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#sql_wrap_count_around_query">sql_wrap_count_around_query</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#get_sub_list">get_sub_list</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#get_value_to_df">get_value_to_df</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dataframe_to_dict">dataframe_to_dict</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#dict_to_markdown_table">dict_to_markdown_table</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -220,6 +232,107 @@ Source</p>
 <ul>
 <li><strong>str</strong>  : input_str with suffix removed</li>
 </ul>
+<hr />
+<h3 id="remove_file">remove_file</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L154">source</a></p>
+<pre><code class="language-python">.remove_file(
+   file_path
+)
+</code></pre>
+<hr />
+<p>Just <code>os.remove()</code> but wanted a <code>logger.info()</code> with it.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>file_path</strong>  : <a href="https://docs.python.org/3/library/os.html">See os.remove</a></li>
+</ul>
+<hr />
+<h3 id="sql_wrap_count_around_query">sql_wrap_count_around_query</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L180">source</a></p>
+<pre><code class="language-python">.sql_wrap_count_around_query(
+   original_query: str
+)
+</code></pre>
+<hr />
+<p>Simple string formating to get the total row count of a sql query.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>original_query</strong> (str) : Regular sql query to get count of.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>str</strong>  : f"SELECT COUNT(1) FROM ({original_query}) temp_table"</li>
+</ul>
+<hr />
+<h3 id="get_sub_list">get_sub_list</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L192">source</a></p>
+<pre><code class="language-python">.get_sub_list(
+   lst: list, n: int
+)
+</code></pre>
+<hr />
+<p>Nest list by n amount...
+<code>get_sub_list([1,2,3,4,5,6],2) == [[1,2],[3,4],[5,6]]</code></p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>lst</strong> (list) : List to nest.</li>
+<li><strong>n</strong> (int) : Amount to nest list.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>list</strong>  : Nested list.</li>
+</ul>
+<hr />
+<h3 id="get_value_to_df">get_value_to_df</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L206">source</a></p>
+<pre><code class="language-python">.get_value_to_df(
+   Query: AdomdDataReader, index: int
+)
+</code></pre>
+<hr />
+<p>Gets the values from the AdomdDataReader to convert the .Net Object
+into a tangible python value to work with in pandas.
+Lots of room for improvement on this one.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>Query</strong> (AdomdDataReader) : <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomddatareader?view=analysisservices-dotnet">AdomdDataReader</a></li>
+<li><strong>index</strong> (int) : Index of the value to perform the logic on.</li>
+</ul>
+<hr />
+<h3 id="dataframe_to_dict">dataframe_to_dict</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L224">source</a></p>
+<pre><code class="language-python">.dataframe_to_dict(
+   df
+)
+</code></pre>
+<hr />
+<p>Convert to Dataframe to dictionary and
+alter columns names with;
+- Underscores (_) to spaces
+- All Strings are converted to Title Case.</p>
+<hr />
+<h3 id="dict_to_markdown_table">dict_to_markdown_table</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L238">source</a></p>
+<pre><code class="language-python">.dict_to_markdown_table(
+   list_of_dicts: list, columns_to_include: list = None
+)
+</code></pre>
+<hr />
+<p>Description: Generate a Markdown table based on a list of dictionaries.</p>
+<p><strong>Args</strong></p>
+<p>list_of_dicts       -&gt; List of Dictionaries that need to be converted
+                       to a markdown table.
+columns_to_include  -&gt; Default = None, and all colums are included.
+                       If a list is supplied, those columns will be included.</p>
+<p><strong>Example</strong></p>
+<p>columns = ['Referenced Object Type', 'Referenced Table', 'Referenced Object']
+dict_to_markdown_table(dependancies, columns)</p>
+<hr />
+<p>Result:
+    | Referenced Object Type | Referenced Table | Referenced Object               |
+    | ---------------------- | ---------------- | ------------------------------- |
+    | TABLE                  | Cases            | Cases                           |
+    | COLUMN                 | Cases            | IsClosed                        |
+    | CALC_COLUMN            | Cases            | Resolution Time (Working Hours) |</p>
               
             </div>
           </div><footer>

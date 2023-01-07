@@ -67,6 +67,12 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#refresh_1">.Refresh</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query_all">.Query_All</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#find_zero_rows">.Find_Zero_Rows</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh_1">.Last_Refresh</a>
+    </li>
         </ul>
     </li>
     </ul>
@@ -206,6 +212,50 @@ With a few other bells and whistles added to it. You can use the table to access
    *args, **kwargs
 )
 </code></pre>
+<h3 id="query_all">.Query_All</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L104">source</a></p>
+<pre><code class="language-python">.Query_All(
+   query_function: str = 'COUNTROWS(_)'
+)
+</code></pre>
+<hr />
+<p>This will dynamically create a query to pull all tables from the model and run the query function.
+It will replace the _ with the table to run.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions. Defaults to 'COUNTROWS(_)'.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns dataframe with results</li>
+</ul>
+<h3 id="find_zero_rows">.Find_Zero_Rows</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L125">source</a></p>
+<pre><code class="language-python">.Find_Zero_Rows()
+</code></pre>
+<hr />
+<p>Returns PyTables class of tables with zero rows queried.</p>
+<h3 id="last_refresh_1">.Last_Refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L135">source</a></p>
+<pre><code class="language-python">.Last_Refresh(
+   group_partition: bool = True
+)
+</code></pre>
+<hr />
+<p>Returns pd.DataFrame of tables with their latest refresh time.
+Optional 'group_partition' variable, default is True.
+If False an extra column will be include to have the last refresh time to the grain of the partition
+Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>model</strong> (pytabular.Tabular) : Tabular Model</li>
+<li><strong>group_partition</strong> (bool, optional) : Whether or not you want the grain of the dataframe to be by table or by partition. Defaults to True.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
+If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()</li>
+</ul>
               
             </div>
           </div><footer>

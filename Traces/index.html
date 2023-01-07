@@ -83,6 +83,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#refresh_trace">Refresh_Trace</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#query_monitor">Query_Monitor</a>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -248,10 +250,30 @@ then it will return the error from Server.</li>
 )
 </code></pre>
 <hr />
-<p>Subclass of Base_Trace. For built-in Refresh Tracing.</p>
+<p>Subclass of Base_Trace. For built-in Refresh Tracing.
+Run by default when refreshing tables or partitions.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Base_Trace</strong> (<em>type</em>) : <em>description</em></li>
+<li><strong>Base_Trace</strong> (Base_Trace) : Base_Trace Class</li>
+</ul>
+<hr />
+<h2 id="query_monitor">Query_Monitor</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L300">source</a></p>
+<pre><code class="language-python">Query_Monitor(
+   Tabular_Class, Trace_Events: List[TraceEvent] = [TraceEventClass.QueryEnd],
+   Trace_Event_Columns: List[TraceColumn] = [TraceColumn.EventSubclass,
+   TraceColumn.StartTime, TraceColumn.EndTime, TraceColumn.Duration,
+   TraceColumn.Severity, TraceColumn.Error, TraceColumn.NTUserName,
+   TraceColumn.DatabaseName, TraceColumn.ApplicationName, TraceColumn.TextData],
+   Handler: Callable = _query_monitor_handler
+)
+</code></pre>
+<hr />
+<p>Subclass of Base_Trace. For built-in Query Monitoring.
+If you want to see full query text, set logger to debug.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>Base_Trace</strong> (Base_Trace) : Base_Trace Class</li>
 </ul>
               
             </div>
