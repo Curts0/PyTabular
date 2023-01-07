@@ -80,7 +80,7 @@ def test_Table_Last_Refresh_Times(model):
 @pytest.mark.parametrize("model", testing_parameters)
 def test_Return_Zero_Row_Tables(model):
     """Testing that `Return_Zero_Row_Tables`"""
-    assert isinstance(model.Tables.Zero_Row_Tables(), list) is True
+    assert isinstance(model.Tables.Find_Zero_Rows(), p.pytabular.PyTables) is True
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -109,3 +109,13 @@ def test_query_every_table(model):
 @pytest.mark.parametrize("model", testing_parameters)
 def test_query_every_column(model):
     assert len(model.Tables[0].Columns.Query_All()) > 0
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_query_every_table_deprecate(model):
+    assert len(model.Query_Every_Table()) > 0
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_query_every_column_deprecate(model):
+    assert len(model.Query_Every_Column()) > 0
