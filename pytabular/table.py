@@ -101,7 +101,6 @@ class PyTables(PyObjects):
         model = self._objects[0].Model
         return model.Refresh(self, *args, **kwargs)
 
-
     def Query_All(self, query_function: str = "COUNTROWS(_)") -> pd.DataFrame:
         """This will dynamically create a query to pull all tables from the model and run the query function.
         It will replace the _ with the table to run.
@@ -123,18 +122,17 @@ class PyTables(PyObjects):
         query_str = f"{query_str[:-2]})"
         return self[0].Model.Query(query_str)
 
-
-    def Zero_Row_Tables(self):
-        """Returns list of table names of those that are returning isna()
-        """
+    def Find_Zero_Rows(self):
+        """Returns PyTables class of tables with zero rows queried."""
         query_function: str = "COUNTROWS(_)"
-        df: pd.DataFrame = self.Query_All(query_function)
-        return df[df[f"[{query_function}]"].isna()]["[Table]"].to_list()
+        df = self.Query_All(query_function)
 
+        table_names = df[df[f"[{query_function}]"].isna()]["[Table]"].to_list()
+        logger.debug(f"Found {table_names}")
+        tables = [self[name] for name in table_names]
+        return self.__class__(tables)
 
-    def Last_Refresh(
-        self, group_partition: bool = True
-    ) -> pd.DataFrame:
+    def Last_Refresh(self, group_partition: bool = True) -> pd.DataFrame:
         """Returns pd.DataFrame of tables with their latest refresh time.
         Optional 'group_partition' variable, default is True.
         If False an extra column will be include to have the last refresh time to the grain of the partition
@@ -149,11 +147,16 @@ class PyTables(PyObjects):
                 If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()
         """
         data = {
-            "Tables": [partition.Table.Name for table in self for partition in table.Partitions],
-            "Partitions": [partition.Name for table in self for partition in table.Partitions],
+            "Tables": [
+                partition.Table.Name for table in self for partition in table.Partitions
+            ],
+            "Partitions": [
+                partition.Name for table in self for partition in table.Partitions
+            ],
             "RefreshedTime": [
                 partition.Last_Refresh()
-                for table in self for partition in table.Partitions
+                for table in self
+                for partition in table.Partitions
             ],
         }
         df = pd.DataFrame(data)

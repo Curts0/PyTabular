@@ -92,10 +92,7 @@ class PyColumns(PyObjects):
     def __init__(self, objects) -> None:
         super().__init__(objects)
 
-
-    def Query_All(
-        self, query_function: str = "COUNTROWS(VALUES(_))"
-    ) -> pd.DataFrame:
+    def Query_All(self, query_function: str = "COUNTROWS(VALUES(_))") -> pd.DataFrame:
         """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
 
         Args:
