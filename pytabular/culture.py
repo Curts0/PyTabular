@@ -22,6 +22,15 @@ class PyCulture(PyObject):
             ]
         )
 
+    def get_translation(self, object_name: str, parent_object: str, object_type = 'Caption') -> dict:
+        caption = self.ObjectTranslations.__getitem__(object_name)
+        object_translation = caption.Value
+        display_folder_translation = caption.Value
+        return {
+            "Object Translation": object_translation, 
+            "Display Folder Translation": display_folder_translation
+        }
+
 
 class PyObjectTranslation(PyObject):
     """Wrapper for [Microsoft.AnalysisServices.Cultures]
@@ -32,6 +41,8 @@ class PyObjectTranslation(PyObject):
     def __init__(self, object, culture) -> None:
         self.Name = object.Object.Name
         self.ObjectType = object.Object.ObjectType
+        self.CultureProperty = str(self._object.Property)
+        self.CultureCaption = self._object.Value
         self.Parent = object.Object.Parent
         super().__init__(object)
         self.Culture = culture

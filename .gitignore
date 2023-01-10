@@ -177,3 +177,6 @@ docs/_config.yml# Byte-compiled / optimized / DLL files
 *.py[cod]
 *$py.class
 
+# Test files for new functionality
+test-notebook.ipynb
+test.py

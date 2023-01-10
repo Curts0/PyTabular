@@ -1,7 +1,7 @@
 import logging
 import pandas as pd
 from object import PyObject, PyObjects
-
+from Microsoft.AnalysisServices.Tabular import ColumnType
 
 logger = logging.getLogger("PyTabular")
 
@@ -96,3 +96,26 @@ class PyColumn(PyObject):
 class PyColumns(PyObjects):
     def __init__(self, objects) -> None:
         super().__init__(objects)
+
+    def Query_All(self, query_function: str = "COUNTROWS(VALUES(_))") -> pd.DataFrame:
+        """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
+
+        Args:
+                query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
+
+        Returns:
+                pd.DataFrame: Returns dataframe with results.
+        """
+        logger.info("Beginning execution of querying every column...")
+        logger.debug(f"Function to be run: {query_function}")
+        logger.debug("Dynamically creating DAX query...")
+        query_str = "EVALUATE UNION(\n"
+        columns = [column for column in self]
+        for column in columns:
+            if column.Type != ColumnType.RowNumber:
+                table_name = column.Table.get_Name()
+                column_name = column.get_Name()
+                dax_identifier = f"'{table_name}'[{column_name}]"
+                query_str += f"ROW(\"Table\",\"{table_name}\",\"Column\",\"{column_name}\",\"{query_function}\",{query_function.replace('_',dax_identifier)}),\n"
+        query_str = f"{query_str[:-2]})"
+        return self[0].Table.Model.Query(query_str)

@@ -49,10 +49,10 @@ logger.info("Importing specifics in module...")
 from .pytabular import Tabular
 
 from .basic_checks import (
-    Return_Zero_Row_Tables,
-    Table_Last_Refresh_Times,
     BPA_Violations_To_DF,
     Last_X_Interval,
+    Return_Zero_Row_Tables,
+    Table_Last_Refresh_Times,
 )
 from .logic_utils import (
     pd_dataframe_to_m_expression,
