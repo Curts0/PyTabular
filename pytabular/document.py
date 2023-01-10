@@ -68,7 +68,7 @@ class ModelDocumenter:
             the class setup.
                 - Save Location
                 - Model Friendly Name
-                - Page to be written.
+                - Page to be written
 
         Args:
             content (str): File content to write to file.
