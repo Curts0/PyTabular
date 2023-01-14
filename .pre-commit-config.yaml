@@ -12,6 +12,6 @@ repos:
     -   id: pytest
         name: pytest
         entry: pytest
-        language: script
+        language: system
         pass_filenames: false
         types: [python]
