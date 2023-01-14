@@ -1,3 +1,7 @@
+"""
+`pytabular.py` is where it all started. So there is a lot of old methods that will eventually be deprecated.
+Main class is `Tabular()`. Use that for connecting with your models.
+"""
 import logging
 
 from Microsoft.AnalysisServices.Tabular import (
@@ -186,8 +190,15 @@ class Tabular(PyObject):
         logger.debug("Running Update Request")
         return self.Database.Update(UpdateOptions)
 
-    def SaveChanges(self) -> bool:
+    def SaveChanges(self):
+        """Called after refreshes or any model changes.
+        Currently will return a named tuple of all changes detected. However a ton of room for improvement here.
+        """
+
         def property_changes(Property_Changes):
+            """
+            Returns any property changes.
+            """
             Property_Change = namedtuple(
                 "Property_Change",
                 "New_Value Object Original_Value Property_Name Property_Type",
@@ -238,7 +249,8 @@ class Tabular(PyObject):
             )
 
     def Backup_Table(self, table_str: str) -> bool:
-        """USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
+        """Will be removed. This is experimental with no written pytest for it.
+        Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
         It will add suffix '_backup' to all objects.
         Refresh is performed from source during backup.
 
@@ -254,6 +266,7 @@ class Tabular(PyObject):
         logger.info("Beginning Renames")
 
         def rename(items):
+            """Iterates through items and requests rename."""
             for item in items:
                 item.RequestRename(f"{item.Name}_backup")
                 logger.debug(f"Renamed - {item.Name}")
@@ -294,6 +307,7 @@ class Tabular(PyObject):
             self.Model.Relationships.Add(relationship)
 
         def clone_role_permissions():
+            """Clones the role permissions for table."""
             logger.info("Beginning to handle roles and permissions for table...")
             logger.debug("Finding Roles...")
             roles = [
@@ -337,7 +351,7 @@ class Tabular(PyObject):
         return True
 
     def Revert_Table(self, table_str: str) -> bool:
-        """USE WITH CAUTION, EXPERIMENTAL. This is used in conjunction with Backup_Table().
+        """Will be removed. This is experimental with no written pytest for it. This is used in conjunction with Backup_Table().
         It will take the 'TableName_backup' and replace with the original.
         Example scenario ->
         1. model.Backup_Table('TableName')
@@ -372,6 +386,9 @@ class Tabular(PyObject):
         ]
 
         def remove_role_permissions():
+            """
+            Removes role permissions from table.
+            """
             logger.debug(
                 f"Finding table and column permission in roles to remove from {table_str}"
             )
@@ -405,6 +422,9 @@ class Tabular(PyObject):
         remove_role_permissions()
 
         def dename(items):
+            """
+            Denames all items.
+            """
             for item in items:
                 logger.debug(f"Removing Suffix for {item.Name}")
                 item.RequestRename(remove_suffix(item.Name, "_backup"))
@@ -462,7 +482,7 @@ class Tabular(PyObject):
     def Query_Every_Column(
         self, query_function: str = "COUNTROWS(VALUES(_))"
     ) -> pd.DataFrame:
-        """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
+        """Will be removed. Use `Query_All()` in your `PyColumns` instead. This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
         Args:
                 query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.
         Returns:
@@ -486,7 +506,7 @@ class Tabular(PyObject):
         return self.Query(query_str)
 
     def Query_Every_Table(self, query_function: str = "COUNTROWS(_)") -> pd.DataFrame:
-        """This will dynamically create a query to pull all tables from the model and run the query function.
+        """Will be removed. Use `Query_All()` in your `PyTables` instead. This will dynamically create a query to pull all tables from the model and run the query function.
         It will replace the _ with the table to run.
         Args:
                 query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions. Defaults to 'COUNTROWS(_)'.

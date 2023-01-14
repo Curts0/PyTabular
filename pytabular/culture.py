@@ -1,3 +1,5 @@
+"""`culture.py` is used to house the `PyCulture`, `PyCultures`, and `PyObjectTranslations` classes.
+"""
 import logging
 from object import PyObject, PyObjects
 
@@ -5,7 +7,7 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyCulture(PyObject):
-    """Wrapper for [Microsoft.AnalysisServices.Cultures]
+    """Wrapper for [Cultures](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.culture?view=analysisservices-dotnet).
 
     Args:
         Table: Parent Table to the Object Translations
@@ -24,10 +26,7 @@ class PyCulture(PyObject):
 
 
 class PyObjectTranslation(PyObject):
-    """Wrapper for [Microsoft.AnalysisServices.Cultures]
-    Args:
-        Table: Child item of the Culture.
-    """
+    """Wrapper for [ObjectTranslation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.objecttranslation?view=analysisservices-dotnet)"""
 
     def __init__(self, object, culture) -> None:
         self.Name = object.Object.Name
@@ -40,10 +39,14 @@ class PyObjectTranslation(PyObject):
 
 
 class PyCultures(PyObjects):
+    """Houses grouping of `PyCulture`."""
+
     def __init__(self, objects) -> None:
         super().__init__(objects)
 
 
 class PyObjectTranslations(PyObjects):
+    """Houses grouping of `PyObjectTranslation`."""
+
     def __init__(self, objects) -> None:
         super().__init__(objects)

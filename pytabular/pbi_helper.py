@@ -1,3 +1,9 @@
+"""`pbi_helper.py` was reverse engineered from [DaxStudio PowerBiHelper.cs](https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs).
+So all credit and genius should go to DaxStudio.
+I just wanted it in python...
+The main function is `find_local_pbi_instances()`.
+It will find any open PBIX files on your computer and spit out a connection string for you.
+"""
 import pytabular as p
 import subprocess
 

@@ -1,3 +1,6 @@
+"""
+`refresh.py` is the main file to handle all the components of refreshing your model.
+"""
 from tabular_tracing import Refresh_Trace, Base_Trace
 import logging
 from Microsoft.AnalysisServices.Tabular import (
@@ -17,14 +20,18 @@ logger = logging.getLogger("PyTabular")
 
 
 class Refresh_Check(ABC):
-    def __init__(self, name, function, assertion=None) -> None:
-        """TODO DOCUMENTATION
+    """`Refresh_Check` is an assertion you run after your refreshes.
+    It will run the given `function` before and after refreshes,
+    then run the assertion of before and after. The default given in a refresh is to check row count.
+    It will check row count before, and row count after. Then fail if row count after is zero.
 
-        Args:
-            name (_type_): _description_
-            function (_type_): _description_
-            assertion (_type_, optional): _description_. Defaults to None.
-        """
+    Args:
+        name (str): Name of Refresh_Check
+        function (function): Function to run before and after refresh.
+        assertion (function): Functino that takes a `pre` and `post` argument to output True or False.
+    """
+
+    def __init__(self, name: str, function, assertion=None) -> None:
         super().__init__()
         self._name = name
         self._function = function
@@ -33,6 +40,9 @@ class Refresh_Check(ABC):
         self._post = None
 
     def __repr__(self) -> str:
+        """
+        `__repre__` that returns details on `Refresh_Check`.
+        """
         return f"{self.name} - {self.pre} - {self.post} - {str(self.function)}"
 
     @property
@@ -100,7 +110,16 @@ class Refresh_Check(ABC):
     def assertion(self):
         del self._assertion
 
-    def _check(self, stage):
+    def _check(self, stage: str):
+        """Runs the given function and stores results.
+        Stored in either `self.pre` or `self.post` depending on `stage`.
+
+        Args:
+            stage (str): Either 'Pre' or 'Post'
+
+        Returns:
+            object: Returns the results of the pre or post check.
+        """
         logger.debug(f"Running {stage}-Check for {self.name}")
         results = self.function()
         if stage == "Pre":
@@ -111,15 +130,20 @@ class Refresh_Check(ABC):
         return results
 
     def Pre_Check(self):
+        """Runs `self._check("Pre")`"""
         self._check("Pre")
         pass
 
     def Post_Check(self):
+        """Runs `self._check("Post")` then `self.Assertion()`"""
         self._check("Post")
         self.Assertion()
         pass
 
     def Assertion(self):
+        """Runs the given self.assertion function with `self.pre` and `self.post`.
+        So, `self.assertion(self.pre, self.post)`.
+        """
         if self.assertion is None:
             logger.debug("Skipping assertion none given")
         else:
@@ -135,30 +159,50 @@ class Refresh_Check(ABC):
 
 
 class Refresh_Check_Collection:
-    def __init__(self, refresh_checks: Refresh_Check = []) -> None:
-        """TODO Documentation
+    """Groups together your `Refresh_Checks` to handle multiple types of checks in a single refresh."""
 
-        Args:
-            refresh_checks (Refresh_Check, optional): _description_. Defaults to [].
-        """
+    def __init__(self, refresh_checks: Refresh_Check = []) -> None:
         self._refresh_checks = refresh_checks
         pass
 
     def __iter__(self):
+        """Basic iteration through the different `Refresh_Check`(s)."""
         for refresh_check in self._refresh_checks:
             yield refresh_check
 
     def add_refresh_check(self, refresh_check: Refresh_Check):
+        """Add a Refresh_Check
+
+        Args:
+            refresh_check (Refresh_Check): `Refresh_Check` class.
+        """
         self._refresh_checks.append(refresh_check)
 
     def remove_refresh_check(self, refresh_check: Refresh_Check):
+        """Remove a Refresh_Check
+
+        Args:
+            refresh_check (Refresh_Check): `Refresh_Check` class.
+        """
         self._refresh_checks.remove(refresh_check)
 
     def clear_refresh_checks(self):
+        """Clear Refresh Checks."""
         self._refresh_checks.clear()
 
 
 class PyRefresh:
+    """PyRefresh Class to handle refreshes of model.
+
+    Args:
+        model (Tabular): Main Tabular Class
+        object (Union[str, PyTable, PyPartition, Dict[str, Any]]): Designed to handle a few different ways of selecting a refresh. Can be a string of 'Table Name' or dict of {'Table Name': 'Partition Name'} or even some combination with the actual PyTable and PyPartition classes.
+        trace (Base_Trace, optional): Set to `None` if no Tracing is desired, otherwise you can use default trace or create your own. Defaults to Refresh_Trace.
+        refresh_checks (Refresh_Check_Collection, optional): Add your `Refresh_Check`'s into a `Refresh_Check_Collection`. Defaults to Refresh_Check_Collection().
+        default_row_count_check (bool, optional): Quick built in check will fail the refresh if post check row count is zero. Defaults to True.
+        refresh_type (RefreshType, optional): Input RefreshType desired. Defaults to RefreshType.Full.
+    """
+
     def __init__(
         self,
         model,
@@ -168,16 +212,6 @@ class PyRefresh:
         default_row_count_check: bool = True,
         refresh_type: RefreshType = RefreshType.Full,
     ) -> None:
-        """PyRefresh Class to handle refreshes of model.
-
-        Args:
-            model (Tabular): Main Tabular Class
-            object (Union[str, PyTable, PyPartition, Dict[str, Any]]): Designed to handle a few different ways of selecting a refresh. Can be a string of 'Table Name' or dict of {'Table Name': 'Partition Name'} or even some combination with the actual PyTable and PyPartition classes.
-            trace (Base_Trace, optional): Set to `None` if no Tracing is desired, otherwise you can use default trace or create your own. Defaults to Refresh_Trace.
-            refresh_checks (Refresh_Check_Collection, optional): Add your `Refresh_Check`'s into a `Refresh_Check_Collection`. Defaults to Refresh_Check_Collection().
-            default_row_count_check (bool, optional): Quick built in check will fail the refresh if post check row count is zero. Defaults to True.
-            refresh_type (RefreshType, optional): Input RefreshType desired. Defaults to RefreshType.Full.
-        """
         self.model = model
         self.object = object
         self.trace = trace
@@ -191,6 +225,9 @@ class PyRefresh:
         pass
 
     def _pre_checks(self):
+        """Checks if any `Base_Trace` classes are needed from `Tabular_Tracing.py`.
+        Then checks if any `Refresh_Checks` are needed, along with the default `Row_Count` check.
+        """
         logger.debug("Running Pre-checks")
         if self.trace is not None:
             logger.debug("Getting Trace")
@@ -206,6 +243,7 @@ class PyRefresh:
             ]
 
             def row_count_assertion(pre, post):
+                """Checks if table refreshed zero rows."""
                 post = 0 if post is None else post
                 return post > 0
 
@@ -219,6 +257,9 @@ class PyRefresh:
         pass
 
     def _post_checks(self):
+        """If traces are running it Stops and Drops it.
+        Runs through any `Post_Checks()` in `Refresh_Checks`.
+        """
         if self.trace is not None:
             self.trace.Stop()
             self.trace.Drop()
@@ -229,9 +270,11 @@ class PyRefresh:
         pass
 
     def _get_trace(self) -> Base_Trace:
+        """Creates Trace and creates it in model."""
         return self.trace(self.model)
 
     def _find_table(self, table_str: str) -> Table:
+        """Finds table in `PyTables` class."""
         try:
             result = self.model.Tables[table_str]
         except Exception:
@@ -240,6 +283,7 @@ class PyRefresh:
         return result
 
     def _find_partition(self, table: Table, partition_str: str) -> Partition:
+        """Finds partition in `PyPartitions` class."""
         try:
             result = table.Partitions[partition_str]
         except Exception:
@@ -248,6 +292,7 @@ class PyRefresh:
         return result
 
     def _refresh_table(self, table: PyTable) -> None:
+        """Runs .Net `RequestRefresh()` on table."""
         logging.info(f"Requesting refresh for {table.Name}")
         self._objects_to_refresh += [
             {table: [partition for partition in table.Partitions]}
@@ -255,15 +300,21 @@ class PyRefresh:
         table.RequestRefresh(self.refresh_type)
 
     def _refresh_partition(self, partition: PyPartition) -> None:
+        """Runs .Net `RequestRefresh()` on partition."""
         logging.info(f"Requesting refresh for {partition.Table.Name}|{partition.Name}")
         self._objects_to_refresh += [{partition.Table: [partition]}]
         partition.RequestRefresh(self.refresh_type)
 
     def _refresh_dict(self, partition_dict: Dict) -> None:
+        """Handles refreshes if argument given was a dictionary."""
         for table in partition_dict.keys():
             table_object = self._find_table(table) if isinstance(table, str) else table
 
             def handle_partitions(object):
+                """
+                Figures out if partition argument given is a str or an actual `PyPartition`.
+                Then will run `self._refresh_partition()` appropriately.
+                """
                 if isinstance(object, str):
                     self._refresh_partition(self._find_partition(table_object, object))
                 elif isinstance(object, PyPartition):
@@ -274,6 +325,7 @@ class PyRefresh:
             handle_partitions(partition_dict[table])
 
     def _request_refresh(self, object):
+        """Base method to parse through argument and figure out what needs to be refreshed. Someone please make this better..."""
         logger.debug(f"Requesting Refresh for {object}")
         if isinstance(object, str):
             self._refresh_table(self._find_table(object))
@@ -289,6 +341,14 @@ class PyRefresh:
             [self._request_refresh(obj) for obj in object]
 
     def _refresh_report(self, Property_Changes) -> pd.DataFrame:
+        """Builds a DataFrame that displays details on the refresh.
+
+        Args:
+            Property_Changes: Which is returned from `model.SaveChanges()`
+
+        Returns:
+            pd.DataFrame: DataFrame of refresh details.
+        """
         logger.debug("Running Refresh Report...")
         refresh_data = []
         for property_change in Property_Changes:
@@ -310,6 +370,9 @@ class PyRefresh:
         )
 
     def Run(self) -> None:
+        """Brings it all together. When ready, executes all the pre checks.
+        Then refreshes. Then runs all the post checks.
+        """
         if self.model.Server.Connected is False:
             logger.info(f"{self.Server.Name} - Reconnecting...")
             self.model.Server.Reconnect()

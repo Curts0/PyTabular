@@ -1,3 +1,6 @@
+"""`column.py` houses the main `PyColumn` and `PyColumns` class.
+Once connected to your model, interacting with column(s) will be done through these classes.
+"""
 import logging
 import pandas as pd
 from object import PyObject, PyObjects
@@ -7,8 +10,11 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyColumn(PyObject):
-    """Wrapper for [Microsoft.AnalysisServices.Tabular.Column](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet).
-    With a few other bells and whistles added to it. WIP
+    """Wrapper for [Column](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet).
+    With a few other bells and whistles added to it.
+    Notice the `PyObject` magic method `__getattr__()` will search in `self._object`
+    if it is unable to find it in the default attributes.
+    This let's you also easily check the default .Net properties.
 
     Args:
         Table: Parent Table to the Column
@@ -89,11 +95,19 @@ class PyColumn(PyObject):
 
 
 class PyColumns(PyObjects):
+    """Groups together multiple columns. See `PyObjects` class for what more it can do.
+    You can interact with `PyColumns` straight from model. For ex: `model.Columns`.
+    Or through individual tables `model.Tables[TABLE_NAME].Columns`.
+    You can even filter down with `.Find()`. For example find all columns with `Key` in name.
+    `model.Columns.Find('Key')`.
+    """
+
     def __init__(self, objects) -> None:
         super().__init__(objects)
 
     def Query_All(self, query_function: str = "COUNTROWS(VALUES(_))") -> pd.DataFrame:
-        """This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.
+        """This will dynamically create a query to pull all columns from the model and run the query function.
+        It will replace the _ with the column to run.
 
         Args:
                 query_function (str, optional): Dax query is dynamically building a query with the UNION & ROW DAX Functions.

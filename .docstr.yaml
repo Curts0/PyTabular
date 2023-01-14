@@ -1,0 +1,4 @@
+paths: ["pytabular"]
+verbose: 3
+skip_init: True
+fail_under: 100

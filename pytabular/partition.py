@@ -1,3 +1,7 @@
+"""
+`partition.py` houses the main `PyPartition` and `PyPartitions` class.
+Once connected to your model, interacting with partition(s) will be done through these classes.
+"""
 import logging
 
 from object import PyObject, PyObjects
@@ -9,8 +13,8 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyPartition(PyObject):
-    """Wrapper for [Microsoft.AnalysisServices.Partition](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition?view=analysisservices-dotnet).
-    With a few other bells and whistles added to it. WIP
+    """Wrapper for [Partition](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition?view=analysisservices-dotnet).
+    With a few other bells and whistles added to it.
 
     Args:
         Table: Parent Table to the Column
@@ -46,5 +50,13 @@ class PyPartition(PyObject):
 
 
 class PyPartitions(PyObjects):
+    """
+    Groups together multiple partitions. See `PyObjects` class for what more it can do.
+    You can interact with `PyPartitions` straight from model. For ex: `model.Partitions`.
+    Or through individual tables `model.Tables[TABLE_NAME].Partitions`.
+    You can even filter down with `.Find()`. For example find all partition with `prev-year` in name.
+    `model.Partitions.Find('prev-year')`.
+    """
+
     def __init__(self, objects) -> None:
         super().__init__(objects)
