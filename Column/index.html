@@ -131,21 +131,24 @@
               
                 <h1 id="_1"></h1>
 <h2 id="pycolumn">PyColumn</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L9">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L12">source</a></p>
 <pre><code class="language-python">PyColumn(
    object, table
 )
 </code></pre>
 <hr />
-<p>Wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet">Microsoft.AnalysisServices.Tabular.Column</a>.
-With a few other bells and whistles added to it. WIP</p>
+<p>Wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet">Column</a>.
+With a few other bells and whistles added to it.
+Notice the <code>PyObject</code> magic method <code>__getattr__()</code> will search in <code>self._object</code>
+if it is unable to find it in the default attributes.
+This let's you also easily check the default .Net properties.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>Table</strong>  : Parent Table to the Column</li>
 </ul>
 <p><strong>Methods:</strong></p>
 <h3 id="get_sample_values">.get_sample_values</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L32">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L38">source</a></p>
 <pre><code class="language-python">.get_sample_values(
    top_n: int = 3
 )
@@ -153,7 +156,7 @@ With a few other bells and whistles added to it. WIP</p>
 <hr />
 <p>Get sample values of column.</p>
 <h3 id="distinct_count">.Distinct_Count</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L64">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L70">source</a></p>
 <pre><code class="language-python">.Distinct_Count(
    No_Blank = False
 )
@@ -169,7 +172,7 @@ With a few other bells and whistles added to it. WIP</p>
 <li><strong>int</strong>  : Number of Distinct Count from column. If <code>No_Blank == True</code> then will return number of Distinct Count no blanks.</li>
 </ul>
 <h3 id="values">.Values</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L80">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L86">source</a></p>
 <pre><code class="language-python">.Values()
 </code></pre>
 <hr />
@@ -180,20 +183,27 @@ With a few other bells and whistles added to it. WIP</p>
 </ul>
 <hr />
 <h2 id="pycolumns">PyColumns</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L91">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L97">source</a></p>
 <pre><code class="language-python">PyColumns(
    objects
 )
 </code></pre>
+<hr />
+<p>Groups together multiple columns. See <code>PyObjects</code> class for what more it can do.
+You can interact with <code>PyColumns</code> straight from model. For ex: <code>model.Columns</code>.
+Or through individual tables <code>model.Tables[TABLE_NAME].Columns</code>.
+You can even filter down with <code>.Find()</code>. For example find all columns with <code>Key</code> in name.
+<code>model.Columns.Find('Key')</code>.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="query_all">.Query_All</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L95">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L108">source</a></p>
 <pre><code class="language-python">.Query_All(
    query_function: str = 'COUNTROWS(VALUES(_))'
 )
 </code></pre>
 <hr />
-<p>This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.</p>
+<p>This will dynamically create a query to pull all columns from the model and run the query function.
+It will replace the _ with the column to run.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.</li>

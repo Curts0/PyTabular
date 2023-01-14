@@ -139,23 +139,20 @@
               
                 <h1 id="_1"></h1>
 <h2 id="pytable">PyTable</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L14">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L18">source</a></p>
 <pre><code class="language-python">PyTable(
    object, model
 )
 </code></pre>
 <hr />
-<p>Wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet">Microsoft.AnalysisServices.Tabular.Table</a>.
-With a few other bells and whistles added to it. You can use the table to access the nested Columns and Partitions. WIP</p>
-<p><strong>Attributes</strong></p>
-<ul>
-<li><strong>Model</strong>  : Reference to Tabular class</li>
-<li><strong>Partitions</strong>  : Reference to Table Partitions</li>
-<li><strong>Columns</strong>  : Reference to Table Columns</li>
-</ul>
+<p>Wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet">Table Class</a>.
+With a few other bells and whistles added to it.
+Notice the <code>PyObject</code> magic method <code>__getattr__()</code> will search in <code>self._object</code>
+if it is unable to find it in the default attributes.
+This let's you also easily check the default .Net properties.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="row_count">.Row_Count</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L58">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L60">source</a></p>
 <pre><code class="language-python">.Row_Count()
 </code></pre>
 <hr />
@@ -166,7 +163,7 @@ With a few other bells and whistles added to it. You can use the table to access
 <li><strong>int</strong>  : Number of rows using <a href="https://learn.microsoft.com/en-us/dax/countrows-function-dax">COUNTROWS</a>.</li>
 </ul>
 <h3 id="refresh">.Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L67">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L69">source</a></p>
 <pre><code class="language-python">.Refresh(
    *args, **kwargs
 )
@@ -179,7 +176,7 @@ With a few other bells and whistles added to it. You can use the table to access
 <li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
 </ul>
 <h3 id="last_refresh">.Last_Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L75">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L77">source</a></p>
 <pre><code class="language-python">.Last_Refresh()
 </code></pre>
 <hr />
@@ -189,31 +186,34 @@ With a few other bells and whistles added to it. You can use the table to access
 <li><strong>datetime</strong>  : Last refresh time in datetime format</li>
 </ul>
 <h3 id="related">.Related</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L86">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L88">source</a></p>
 <pre><code class="language-python">.Related()
 </code></pre>
 <hr />
+<p>Returns tables with a relationship with the table in question.</p>
+<hr />
 <h2 id="pytables">PyTables</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L90">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L93">source</a></p>
 <pre><code class="language-python">PyTables(
    objects
 )
 </code></pre>
 <hr />
-<p>Iterator to handle tables. Accessible via <code>Tables</code> attribute in Tabular class.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>PyTable</strong>  : PyTable class</li>
-</ul>
+<p>Groups together multiple tables. See <code>PyObjects</code> class for what more it can do.
+You can interact with <code>PyTables</code> straight from model. For ex: <code>model.Tables</code>.
+You can even filter down with <code>.Find()</code>. For example find all tables with <code>fact</code> in name.
+<code>model.Tables.Find('fact')</code>.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="refresh_1">.Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L100">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L104">source</a></p>
 <pre><code class="language-python">.Refresh(
    *args, **kwargs
 )
 </code></pre>
+<hr />
+<p>Refreshes all <code>PyTable</code>(s) in class.</p>
 <h3 id="query_all">.Query_All</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L104">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L109">source</a></p>
 <pre><code class="language-python">.Query_All(
    query_function: str = 'COUNTROWS(_)'
 )
@@ -230,13 +230,13 @@ It will replace the _ with the table to run.</p>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="find_zero_rows">.Find_Zero_Rows</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L125">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L130">source</a></p>
 <pre><code class="language-python">.Find_Zero_Rows()
 </code></pre>
 <hr />
 <p>Returns PyTables class of tables with zero rows queried.</p>
 <h3 id="last_refresh_1">.Last_Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L135">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L140">source</a></p>
 <pre><code class="language-python">.Last_Refresh(
    group_partition: bool = True
 )

@@ -145,7 +145,7 @@
               
                 <h1 id="_1"></h1>
 <h2 id="tabular">Tabular</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L39">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L43">source</a></p>
 <pre><code class="language-python">Tabular(
    CONNECTION_STR: str
 )
@@ -169,7 +169,7 @@
 </ul>
 <p><strong>Methods:</strong></p>
 <h3 id="reload_model_info">.Reload_Model_Info</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L108">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L112">source</a></p>
 <pre><code class="language-python">.Reload_Model_Info()
 </code></pre>
 <hr />
@@ -179,7 +179,7 @@
 <li><strong>bool</strong>  : True if successful</li>
 </ul>
 <h3 id="is_process">.Is_Process</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L143">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L147">source</a></p>
 <pre><code class="language-python">.Is_Process()
 </code></pre>
 <hr />
@@ -189,7 +189,7 @@
 <li><strong>bool</strong>  : True if DMV shows Process, False if not.</li>
 </ul>
 <h3 id="disconnect">.Disconnect</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L152">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L156">source</a></p>
 <pre><code class="language-python">.Disconnect()
 </code></pre>
 <hr />
@@ -199,7 +199,7 @@
 <li><strong>bool</strong>  : True if successful</li>
 </ul>
 <h3 id="refresh">.Refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L161">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L165">source</a></p>
 <pre><code class="language-python">.Refresh(
    *args, **kwargs
 )
@@ -218,7 +218,7 @@
 <p><strong>Returns</strong></p>
 <p>pd.DataFrame</p>
 <h3 id="update">.Update</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L177">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L181">source</a></p>
 <pre><code class="language-python">.Update(
    UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull
 )
@@ -234,17 +234,21 @@
 <li><strong>None</strong>  : Placeholder to eventually change.</li>
 </ul>
 <h3 id="savechanges">.SaveChanges</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L189">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L193">source</a></p>
 <pre><code class="language-python">.SaveChanges()
 </code></pre>
+<hr />
+<p>Called after refreshes or any model changes.
+Currently will return a named tuple of all changes detected. However a ton of room for improvement here.</p>
 <h3 id="backup_table">.Backup_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L240">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L251">source</a></p>
 <pre><code class="language-python">.Backup_Table(
    table_str: str
 )
 </code></pre>
 <hr />
-<p>USE WITH CAUTION, EXPERIMENTAL. Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
+<p>Will be removed. This is experimental with no written pytest for it.
+Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
 It will add suffix '_backup' to all objects.
 Refresh is performed from source during backup.</p>
 <p><strong>Args</strong></p>
@@ -256,13 +260,13 @@ Refresh is performed from source during backup.</p>
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
 <h3 id="revert_table">.Revert_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L339">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L353">source</a></p>
 <pre><code class="language-python">.Revert_Table(
    table_str: str
 )
 </code></pre>
 <hr />
-<p>USE WITH CAUTION, EXPERIMENTAL. This is used in conjunction with Backup_Table().
+<p>Will be removed. This is experimental with no written pytest for it. This is used in conjunction with Backup_Table().
 It will take the 'TableName_backup' and replace with the original.
 Example scenario -&gt;
 1. model.Backup_Table('TableName')
@@ -278,7 +282,7 @@ Example scenario -&gt;
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
 <h3 id="query">.Query</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L435">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L455">source</a></p>
 <pre><code class="language-python">.Query(
    Query_Str: str, Effective_User: str = None
 )
@@ -297,13 +301,13 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="query_every_column">.Query_Every_Column</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L462">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L482">source</a></p>
 <pre><code class="language-python">.Query_Every_Column(
    query_function: str = 'COUNTROWS(VALUES(_))'
 )
 </code></pre>
 <hr />
-<p>This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.</p>
+<p>Will be removed. Use <code>Query_All()</code> in your <code>PyColumns</code> instead. This will dynamically create a query to pull all columns from the model and run the query function. It will replace the _ with the column to run.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions.</li>
@@ -313,13 +317,13 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
 </ul>
 <h3 id="query_every_table">.Query_Every_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L488">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L508">source</a></p>
 <pre><code class="language-python">.Query_Every_Table(
    query_function: str = 'COUNTROWS(_)'
 )
 </code></pre>
 <hr />
-<p>This will dynamically create a query to pull all tables from the model and run the query function.
+<p>Will be removed. Use <code>Query_All()</code> in your <code>PyTables</code> instead. This will dynamically create a query to pull all tables from the model and run the query function.
 It will replace the _ with the table to run.</p>
 <p><strong>Args</strong></p>
 <ul>
@@ -330,7 +334,7 @@ It will replace the _ with the table to run.</p>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
 <h3 id="analyze_bpa">.Analyze_BPA</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L510">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L530">source</a></p>
 <pre><code class="language-python">.Analyze_BPA(
    Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
 )
@@ -349,7 +353,7 @@ It will replace the _ with the table to run.</p>
 <li>Assuming no failure, will return list of BPA violations. Else will return error from command line.</li>
 </ul>
 <h3 id="create_table">.Create_Table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L545">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L565">source</a></p>
 <pre><code class="language-python">.Create_Table(
    df: pd.DataFrame, table_name: str
 )
