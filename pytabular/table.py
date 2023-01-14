@@ -1,3 +1,7 @@
+"""
+`table.py` houses the main `PyTable` and `PyTables` class.
+Once connected to your model, interacting with table(s) will be done through these classes.
+"""
 import logging
 from object import PyObject
 import pandas as pd
@@ -12,13 +16,11 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyTable(PyObject):
-    """Wrapper for [Microsoft.AnalysisServices.Tabular.Table](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
-    With a few other bells and whistles added to it. You can use the table to access the nested Columns and Partitions. WIP
-
-    Attributes:
-        Model: Reference to Tabular class
-        Partitions: Reference to Table Partitions
-        Columns: Reference to Table Columns
+    """Wrapper for [Table Class](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
+    With a few other bells and whistles added to it.
+    Notice the `PyObject` magic method `__getattr__()` will search in `self._object`
+    if it is unable to find it in the default attributes.
+    This let's you also easily check the default .Net properties.
     """
 
     def __init__(self, object, model) -> None:
@@ -84,20 +86,23 @@ class PyTable(PyObject):
         return max(partition_refreshes)
 
     def Related(self):
+        """Returns tables with a relationship with the table in question."""
         return self.Model.Relationships.Related(self)
 
 
 class PyTables(PyObjects):
-    """Iterator to handle tables. Accessible via `Tables` attribute in Tabular class.
-
-    Args:
-        PyTable: PyTable class
+    """
+    Groups together multiple tables. See `PyObjects` class for what more it can do.
+    You can interact with `PyTables` straight from model. For ex: `model.Tables`.
+    You can even filter down with `.Find()`. For example find all tables with `fact` in name.
+    `model.Tables.Find('fact')`.
     """
 
     def __init__(self, objects) -> None:
         super().__init__(objects)
 
     def Refresh(self, *args, **kwargs):
+        """Refreshes all `PyTable`(s) in class."""
         model = self._objects[0].Model
         return model.Refresh(self, *args, **kwargs)
 

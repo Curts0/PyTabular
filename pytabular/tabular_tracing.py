@@ -1,3 +1,7 @@
+"""`tabular_tracing.py` handles all tracing capabilities in your model.
+It also includes some pre built traces to make life easier.
+Feel free to build your own.
+"""
 import logging
 import random
 import xmltodict
@@ -73,6 +77,7 @@ class Base_Trace:
         [self.Trace.get_Events().Add(te) for te in TE]
 
         def add_column(trace_event, trace_event_column):
+            """Adds the column to trace event."""
             try:
                 trace_event.Columns.Add(trace_event_column)
             except Exception:
@@ -98,6 +103,7 @@ class Base_Trace:
         Trace_Event_Columns: List[TraceColumn],
         Handler: Callable,
     ):
+        """Raises NotImplementedError. Arguments must be created in order for Trace to work."""
         raise NotImplementedError
 
     def Add(self) -> int:
@@ -184,6 +190,9 @@ class Base_Trace:
 
 
 def _refresh_handler(source, args):
+    """Default function called when `Refresh_Trace` is used.
+    It will log various steps of the refresh process.
+    """
     TextData = args.TextData.replace("<ccon>", "").replace("</ccon>", "")
 
     if (
@@ -281,6 +290,9 @@ class Refresh_Trace(Base_Trace):
 
 
 def _query_monitor_handler(source, args):
+    """
+    Default function used with the `Query_Monitor` trace.
+    """
     total_secs = args.Duration / 1000
     domain_site = args.NTUserName.find("\\")
     if domain_site > 0:

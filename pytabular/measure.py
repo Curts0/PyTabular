@@ -1,3 +1,7 @@
+"""
+`measure.py` houses the main `PyMeasure` and `PyMeasures` class.
+Once connected to your model, interacting with measure(s) will be done through these classes.
+"""
 import logging
 import pandas as pd
 from object import PyObject, PyObjects
@@ -29,5 +33,13 @@ class PyMeasure(PyObject):
 
 
 class PyMeasures(PyObjects):
+    """
+    Groups together multiple measures. See `PyObjects` class for what more it can do.
+    You can interact with `PyMeasures` straight from model. For ex: `model.Measures`.
+    Or through individual tables `model.Tables[TABLE_NAME].Measures`.
+    You can even filter down with `.Find()`. For example find all measures with `ratio` in name.
+    `model.Measures.Find('ratio')`.
+    """
+
     def __init__(self, objects) -> None:
         super().__init__(objects)

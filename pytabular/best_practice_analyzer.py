@@ -1,3 +1,10 @@
+"""
+best_practice_analyzer is currently just a POC.
+You can call the BPA class to download or specify your own BPA file.
+It is used with tabular_editor.py to run BPA.
+I did not want to re-invent the wheel,
+so just letting TE2 work it's magic.
+"""
 import logging
 import requests as r
 import atexit
@@ -42,6 +49,12 @@ class BPA:
     """Setting BPA Class for future work..."""
 
     def __init__(self, File_Path: str = "Default") -> None:
+        """BPA class to be used with the TE2 class.
+
+        Args:
+            File_Path (str, optional): See `Download_BPA_File()`. Defaults to "Default".
+            If "Default, then will run `Download_BPA_File()` without args.
+        """
         logger.debug(f"Initializing BPA Class:: {File_Path}")
         if File_Path == "Default":
             self.Location: str = Download_BPA_File()
