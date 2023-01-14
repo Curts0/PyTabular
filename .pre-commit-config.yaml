@@ -3,3 +3,15 @@ repos:
     rev: 6.0.0
     hooks:
     -   id: flake8
+-   repo: https://github.com/HunterMcGushion/docstr_coverage
+    rev: v2.2.0
+    hooks:
+    -   id: docstr-coverage
+-   repo: local
+    hooks:
+    -   id: pytest
+        name: pytest
+        entry: pytest
+        language: script
+        pass_filenames: false
+        types: [python]
