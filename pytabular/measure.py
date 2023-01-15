@@ -3,7 +3,6 @@
 Once connected to your model, interacting with measure(s) will be done through these classes.
 """
 import logging
-
 import pandas as pd
 from object import PyObject, PyObjects
 
