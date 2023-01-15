@@ -1,0 +1,21 @@
+default_stages: [push]
+repos:
+-   repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+    -   id: flake8
+        verbose: true
+-   repo: https://github.com/HunterMcGushion/docstr_coverage
+    rev: v2.2.0
+    hooks:
+    -   id: docstr-coverage
+        verbose: true
+-   repo: local
+    hooks:
+    -   id: pytest
+        name: pytest
+        entry: pytest
+        language: system
+        pass_filenames: false
+        types: [python]
+        verbose: true
