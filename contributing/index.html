@@ -113,13 +113,18 @@
               
                 <h1 id="contributing-guidelines">Contributing Guidelines</h1>
 <ul>
-<li>Work will be distributed under MIT license</li>
-<li>Pull request into main will run a flake8 test. flake8 will need to pass before pull request will be accepted</li>
-<li>Updates of any kind are welcome! Even just letting me know of the issues. Or updating doc strings</li>
+<li>Work will be distributed under MIT license.</li>
+<li>See github actions for checks run on pull request.</li>
+<li>Updates of any kind are welcome! Even just letting me know of the issues. Or updating doc strings...</li>
 <li>Limit any external modules, see pyproject.toml for dependencies</li>
 <li>Goal of project is to help connect the python world and the tabular model world for some easier programmatic execution on models. </li>
-<li>Docstrings follow google <a href="https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html">docstring format</a></li>
-<li>See actions, once main updated, <a href="https://github.com/davidenunes/mkgendocs">mkgendocs</a> is used to auto create documentation</li>
+<li>Install pre-commit. Pre-commit will run pytest, flake8, and docstr-coverage before push.</li>
+</ul>
+<pre><code class="language-powershell">pip install pre-commit
+pre-commit install --hook-type pre-push
+</code></pre>
+<ul>
+<li>This will take a while... pytest will open a PBIX file in repository and run tests on it.</li>
 </ul>
               
             </div>
