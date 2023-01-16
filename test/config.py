@@ -23,7 +23,7 @@ subprocess.run(["powershell", f"Start-Process {adventureworks_path}"])
 
 # Got to be a better way to wait and ensure the PBIX file is open?
 p.logger.info("sleep(30)... Need a better way to wait until PBIX is loaded...")
-sleep(30)
+sleep(20)
 
 LOCAL_FILE = p.find_local_pbi_instances()[0]
 p.logger.info(f"Connecting to... {LOCAL_FILE[0]} - {LOCAL_FILE[1]}")
