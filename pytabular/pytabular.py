@@ -71,7 +71,7 @@ class Tabular(PyObject):
                 for database in self.Server.Databases.GetEnumerator()
                 if database.Name == self.Catalog or self.Catalog is None
             ][0]
-        except Exception:
+        except Exception:  # pragma: no cover
             err_msg = f"Unable to find Database... {self.Catalog}"
             logger.error(err_msg)
             raise Exception(err_msg)
@@ -179,18 +179,6 @@ class Tabular(PyObject):
         """
         return self.PyRefresh(self, *args, **kwargs).Run()
 
-    def Update(self, UpdateOptions: UpdateOptions = UpdateOptions.ExpandFull) -> None:
-        """[Update Model](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.majorobject.update?view=analysisservices-dotnet#microsoft-analysisservices-majorobject-update(microsoft-analysisservices-updateoptions))
-
-        Args:
-                UpdateOptions (UpdateOptions, optional): See above MS Doc link. Defaults to UpdateOptions.ExpandFull.
-
-        Returns:
-                None: Placeholder to eventually change.
-        """
-        logger.debug("Running Update Request")
-        return self.Database.Update(UpdateOptions)
-
     def SaveChanges(self):
         """Called after refreshes or any model changes.
         Currently will return a named tuple of all changes detected. However a ton of room for improvement here.
@@ -251,7 +239,7 @@ class Tabular(PyObject):
                 Xmla_Results,
             )
 
-    def Backup_Table(self, table_str: str) -> bool:
+    def Backup_Table(self, table_str: str) -> bool:  # pragma: no cover
         """Will be removed. This is experimental with no written pytest for it.
         Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
         It will add suffix '_backup' to all objects.
@@ -353,7 +341,7 @@ class Tabular(PyObject):
         self.SaveChanges()
         return True
 
-    def Revert_Table(self, table_str: str) -> bool:
+    def Revert_Table(self, table_str: str) -> bool:  # pragma: no cover
         """Will be removed. This is experimental with no written pytest for it. This is used in conjunction with Backup_Table().
         It will take the 'TableName_backup' and replace with the original.
         Example scenario ->
@@ -472,7 +460,8 @@ class Tabular(PyObject):
         if Effective_User is None:
             return self.Adomd.Query(Query_Str)
 
-        try:
+        try:  # pragma: no cover
+            # This needs a public model with effective users to properly test
             conn = self.Effective_Users[Effective_User]
             logger.debug(f"Effective user found querying as... {Effective_User}")
         except Exception:
