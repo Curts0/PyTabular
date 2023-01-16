@@ -6,6 +6,7 @@ from test.config import testing_parameters, testingtablename
 import pytest
 import pytabular as p
 import pandas as pd
+from test.config import LOCAL_FILE
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -24,7 +25,7 @@ def test_backingup_table(model):
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_revert_table(model):
+def test_revert_table2(model):
     model.Revert_Table(testingtablename)
     assert (
         len(

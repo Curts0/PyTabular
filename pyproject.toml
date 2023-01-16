@@ -41,3 +41,13 @@ include-package-data = true
 [tool.pytest.ini_options]
 filterwarnings = ["ignore::DeprecationWarning"]
 addopts = "-vv"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover"
+]
+[tool.coverage.run]
+include = [
+    "pytabular/*"
+]
+omit = ["*basic_checks.py"]

@@ -115,3 +115,35 @@ def test_reconnect_savechanges(model):
 def test_is_process(model):
     """Checks that `Is_Process()` from `Tabular` class returns bool"""
     assert isinstance(model.Is_Process(), bool)
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_bad_table(model):
+    """Checks for unable to find table exception"""
+    with pytest.raises(Exception):
+        model.Refresh("badtablename")
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_refresh_dict(model):
+    """Checks for refreshing dictionary"""
+    table = model.Tables[testingtablename]
+    refresh = model.Refresh({table.Name: table.Partitions[0].Name})
+    assert isinstance(refresh, pd.DataFrame)
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_refresh_dict_pypartition(model):
+    """Checks for refreshing dictionary"""
+    table = model.Tables[testingtablename]
+    refresh = model.Refresh({table.Name: table.Partitions[0]})
+    assert isinstance(refresh, pd.DataFrame)
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_bad_partition(model):
+    """Checks for refreshing dictionary"""
+    table = model.Tables[testingtablename]
+    with pytest.raises(Exception):
+        model.Refresh({table.Name: table.Partitions[0].Name + "fail"})
+

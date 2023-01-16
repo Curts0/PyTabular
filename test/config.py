@@ -37,6 +37,3 @@ testingtabledf = pd.DataFrame(data={"col1": [1, 2, 3], "col2": ["four", "five", 
 testing_parameters = [
     pytest.param(local_pbix, id=local_pbix.Name),
 ]
-
-
-# os.path.basename(os.getcwd())
