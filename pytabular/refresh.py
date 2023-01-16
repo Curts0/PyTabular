@@ -14,7 +14,6 @@ from typing import Union, Dict, Any
 from table import PyTable, PyTables
 from partition import PyPartition
 from abc import ABC
-import atexit
 
 logger = logging.getLogger("PyTabular")
 
@@ -263,7 +262,6 @@ class PyRefresh:
         if self.trace is not None:
             self.trace.Stop()
             self.trace.Drop()
-            atexit.unregister(self.trace.Drop)
         for check in self._checks:
             check.Post_Check()
             self._checks.remove_refresh_check(check)

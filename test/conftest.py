@@ -7,6 +7,10 @@ import pytabular as p
 import subprocess
 
 
+class testing_storage:
+    query_trace = None
+
+
 def pytest_report_header(config):
     return "PyTabular Local Testing"
 

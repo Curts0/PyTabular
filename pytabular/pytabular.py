@@ -153,14 +153,15 @@ class Tabular(PyObject):
         _jobs_df = self.Query("select * from $SYSTEM.DISCOVER_JOBS")
         return len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
 
-    def Disconnect(self) -> bool:
-        """Disconnects from Model
-
-        Returns:
-                bool: True if successful
-        """
+    def Disconnect(self) -> None:
+        """Disconnects from Model"""
         logger.info(f"Disconnecting from - {self.Server.Name}")
         return self.Server.Disconnect()
+
+    def Reconnect(self) -> None:
+        """Reconnects to Model"""
+        logger.info(f"Reconnecting to {self.Server.Name}")
+        return self.Server.Reconnect()
 
     def Refresh(self, *args, **kwargs) -> pd.DataFrame:
         """PyRefresh Class to handle refreshes of model.
@@ -194,6 +195,8 @@ class Tabular(PyObject):
         """Called after refreshes or any model changes.
         Currently will return a named tuple of all changes detected. However a ton of room for improvement here.
         """
+        if self.Server.Connected is False:
+            self.Reconnect()
 
         def property_changes(Property_Changes):
             """

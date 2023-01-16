@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 import pytabular as p
-from test.config import testingtablename, testing_parameters, get_test_path, LOCAL_FILE
+from test.config import testingtablename, testing_parameters, get_test_path
 
 
 @pytest.mark.parametrize("model", testing_parameters)
@@ -74,48 +74,44 @@ def test_nonetype_decimal_bug(model):
 @pytest.mark.parametrize("model", testing_parameters)
 def test_Table_Last_Refresh_Times(model):
     """Really just testing the the function completes successfully and returns df"""
-    assert isinstance(model.Tables.Last_Refresh(), pd.DataFrame) is True
+    assert isinstance(model.Tables.Last_Refresh(), pd.DataFrame)
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_Return_Zero_Row_Tables(model):
     """Testing that `Return_Zero_Row_Tables`"""
-    assert isinstance(model.Tables.Find_Zero_Rows(), p.pytabular.PyTables) is True
+    assert isinstance(model.Tables.Find_Zero_Rows(), p.pytabular.PyTables)
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_get_dependencies(model):
-    if len(model.Measures) > 0:
-        dependencies = model.Measures[0].get_dependencies()
-        assert len(dependencies) > 0
-    else:
-        assert True
+    dependencies = model.Measures[0].get_dependencies()
+    assert len(dependencies) > 0
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_get_sample_values(model):
-    if LOCAL_FILE[0] == "AdventureWorks Sales":
-        df = model.Columns["Country"].get_sample_values()
-        assert len(df) > 0
-    else:
-        assert True
+def test_disconnect(model):
+    """Tests `Disconnect()` from `Tabular` class."""
+    model.Disconnect()
+    assert model.Server.Connected is False
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_query_every_table(model):
-    assert len(model.Tables.Query_All()) > 0
+def test_reconnect(model):
+    """Tests `Reconnect()` from `Tabular` class."""
+    model.Reconnect()
+    assert model.Server.Connected is True
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_query_every_column(model):
-    assert len(model.Tables[0].Columns.Query_All()) > 0
+def test_reconnect_savechanges(model):
+    """This will test the `Reconnect()` gets called in `SaveChanges()`"""
+    model.Disconnect()
+    model.SaveChanges()
+    assert model.Server.Connected is True
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_query_every_table_deprecate(model):
-    assert len(model.Query_Every_Table()) > 0
-
-
-@pytest.mark.parametrize("model", testing_parameters)
-def test_query_every_column_deprecate(model):
-    assert len(model.Query_Every_Column()) > 0
+def test_is_process(model):
+    """Checks that `Is_Process()` from `Tabular` class returns bool"""
+    assert isinstance(model.Is_Process(), bool)

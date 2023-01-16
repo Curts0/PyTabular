@@ -123,6 +123,9 @@ class Base_Trace:
                 Unless unsuccessful then it will return the error from Server.
         """
         logger.info(f"Updating {self.Name} in {self.Tabular_Class.Server.Name}")
+        if self.Tabular_Class.Server.Connected is False:
+            self.Tabular_Class.Reconnect()
+
         return self.Trace.Update()
 
     def Start(self) -> None:
@@ -153,6 +156,7 @@ class Base_Trace:
                 then it will return the error from Server.
         """
         logger.info(f"Dropping {self.Name} in {self.Tabular_Class.Server.Name}")
+        atexit.unregister(self.Drop)
         return self.Trace.Drop()
 
     def _Query_DMV_For_Event_Categories(self):
