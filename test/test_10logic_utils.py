@@ -35,7 +35,7 @@ suffix_list = [
 )
 def test_remove_suffix(file_name, suffix):
     result = logic_utils.remove_suffix(file_name, suffix)
-    assert not suffix in result
+    assert suffix not in result
 
 
 dfs = [
@@ -62,7 +62,7 @@ def test_remove_dir():
     os.makedirs(dir)
     remove = f"{os.getcwd()}\\{dir}"
     logic_utils.remove_folder_and_contents(remove)
-    assert not dir in os.listdir()
+    assert dir not in os.listdir()
 
 
 def test_remove_file():
@@ -70,4 +70,4 @@ def test_remove_file():
     with open(file_to_delete, "w") as f:
         f.write("Delete this file...")
     logic_utils.remove_file(f"{os.getcwd()}\\{file_to_delete}")
-    assert not file_to_delete in os.listdir()
+    assert file_to_delete not in os.listdir()

@@ -146,4 +146,3 @@ def test_bad_partition(model):
     table = model.Tables[testingtablename]
     with pytest.raises(Exception):
         model.Refresh({table.Name: table.Partitions[0].Name + "fail"})
-

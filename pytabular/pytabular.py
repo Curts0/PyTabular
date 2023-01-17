@@ -13,7 +13,6 @@ from Microsoft.AnalysisServices.Tabular import (
     MPartitionSource,
 )
 
-from Microsoft.AnalysisServices import UpdateOptions
 from typing import List, Union
 from collections import namedtuple
 import pandas as pd

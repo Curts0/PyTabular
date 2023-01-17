@@ -6,7 +6,6 @@ from test.config import testing_parameters, testingtablename
 import pytest
 import pytabular as p
 import pandas as pd
-from test.config import LOCAL_FILE
 
 
 @pytest.mark.parametrize("model", testing_parameters)
