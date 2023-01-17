@@ -155,6 +155,7 @@ class Tabular(PyObject):
     def Disconnect(self) -> None:
         """Disconnects from Model"""
         logger.info(f"Disconnecting from - {self.Server.Name}")
+        atexit.unregister(self.Disconnect)
         return self.Server.Disconnect()
 
     def Reconnect(self) -> None:
