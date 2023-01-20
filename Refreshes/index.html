@@ -113,7 +113,7 @@
               
                 <h1 id="_1"></h1>
 <h2 id="pyrefresh">PyRefresh</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L194">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L193">source</a></p>
 <pre><code class="language-python">PyRefresh(
    model, object: Union[str, PyTable, PyPartition, Dict[str, Any]],
    trace: Base_Trace = Refresh_Trace,
@@ -134,7 +134,7 @@
 </ul>
 <p><strong>Methods:</strong></p>
 <h3 id="run">.Run</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L372">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L370">source</a></p>
 <pre><code class="language-python">.Run()
 </code></pre>
 <hr />
@@ -142,7 +142,7 @@
 Then refreshes. Then runs all the post checks.</p>
 <hr />
 <h2 id="refresh_check">Refresh_Check</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L22">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L21">source</a></p>
 <pre><code class="language-python">Refresh_Check(
    name: str, function, assertion = None
 )
@@ -160,49 +160,49 @@ It will check row count before, and row count after. Then fail if row count afte
 </ul>
 <p><strong>Methods:</strong></p>
 <h3 id="name">.name</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L49">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L48">source</a></p>
 <pre><code class="language-python">.name()
 </code></pre>
 <hr />
 <p>Get your custom name of refresh check.</p>
 <h3 id="function">.function</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L62">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L61">source</a></p>
 <pre><code class="language-python">.function()
 </code></pre>
 <hr />
 <p>Get the function that is used to run a pre and post check.</p>
 <h3 id="pre">.pre</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L75">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L74">source</a></p>
 <pre><code class="language-python">.pre()
 </code></pre>
 <hr />
 <p>Get the pre value that is the result from the pre refresh check.</p>
 <h3 id="post">.post</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L88">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L87">source</a></p>
 <pre><code class="language-python">.post()
 </code></pre>
 <hr />
 <p>Get the post value that is the result from the post refresh check.</p>
 <h3 id="assertion">.assertion</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L101">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L100">source</a></p>
 <pre><code class="language-python">.assertion()
 </code></pre>
 <hr />
 <p>Get the assertion that is the result from the post refresh check.</p>
 <h3 id="pre_check">.Pre_Check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L132">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L131">source</a></p>
 <pre><code class="language-python">.Pre_Check()
 </code></pre>
 <hr />
 <p>Runs <code>self._check("Pre")</code></p>
 <h3 id="post_check">.Post_Check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L137">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L136">source</a></p>
 <pre><code class="language-python">.Post_Check()
 </code></pre>
 <hr />
 <p>Runs <code>self._check("Post")</code> then <code>self.Assertion()</code></p>
 <h3 id="assertion_1">.Assertion</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L143">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L142">source</a></p>
 <pre><code class="language-python">.Assertion()
 </code></pre>
 <hr />
@@ -210,7 +210,7 @@ It will check row count before, and row count after. Then fail if row count afte
 So, <code>self.assertion(self.pre, self.post)</code>.</p>
 <hr />
 <h2 id="refresh_check_collection">Refresh_Check_Collection</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L161">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L160">source</a></p>
 <pre><code class="language-python">Refresh_Check_Collection(
    refresh_checks: Refresh_Check = []
 )
@@ -219,7 +219,7 @@ So, <code>self.assertion(self.pre, self.post)</code>.</p>
 <p>Groups together your <code>Refresh_Checks</code> to handle multiple types of checks in a single refresh.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="add_refresh_check">.add_refresh_check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L173">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L172">source</a></p>
 <pre><code class="language-python">.add_refresh_check(
    refresh_check: Refresh_Check
 )
@@ -231,7 +231,7 @@ So, <code>self.assertion(self.pre, self.post)</code>.</p>
 <li><strong>refresh_check</strong> (Refresh_Check) : <code>Refresh_Check</code> class.</li>
 </ul>
 <h3 id="remove_refresh_check">.remove_refresh_check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L181">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L180">source</a></p>
 <pre><code class="language-python">.remove_refresh_check(
    refresh_check: Refresh_Check
 )
@@ -243,7 +243,7 @@ So, <code>self.assertion(self.pre, self.post)</code>.</p>
 <li><strong>refresh_check</strong> (Refresh_Check) : <code>Refresh_Check</code> class.</li>
 </ul>
 <h3 id="clear_refresh_checks">.clear_refresh_checks</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L189">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L188">source</a></p>
 <pre><code class="language-python">.clear_refresh_checks()
 </code></pre>
 <hr />
