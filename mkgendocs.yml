@@ -72,7 +72,6 @@ pages:
       - remove_folder_and_contents
       - remove_suffix
       - remove_file
-      - sql_wrap_count_around_query
       - get_sub_list
       - get_value_to_df
       - dataframe_to_dict
