@@ -50,4 +50,3 @@ exclude_lines = [
 include = [
     "pytabular/*"
 ]
-omit = ["*basic_checks.py"]
