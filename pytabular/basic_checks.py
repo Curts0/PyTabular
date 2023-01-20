@@ -86,6 +86,10 @@ def BPA_Violations_To_DF(model: pytabular.Tabular, te2: str, bpa: str) -> pd.Dat
     Returns:
             pd.DataFrame: Super simple right now. Just splits into two columns.. The object in violation and the rule.
     """
+    logger.warning(f"{sys._getframe(0).f_code.co_name} will be deprecated...")
+    logger.warning(
+        "Honestly it was dumb I ever made this. You can use model.Analyze_BPA()"
+    )
     results = model.Analyze_BPA(te2, bpa)
     data = [
         rule.replace(" violates rule ", "^").replace('"', "").split("^")
@@ -116,6 +120,11 @@ def Last_X_Interval(
     Returns:
             pd.DataFrame: Pandas DataFrame of results.
     """
+    # pragma: no cover
+    logger.warning(f"{sys._getframe(0).f_code.co_name} will be deprecated...")
+    logger.warning(
+        "Honestly it was dumb I ever made this. Just write the darn thing in DAX"
+    )
     if isinstance(PyMeasure, str):
         try:
             Measure = [

@@ -80,7 +80,7 @@ class Base_Trace:
             """Adds the column to trace event."""
             try:
                 trace_event.Columns.Add(trace_event_column)
-            except Exception:
+            except Exception:  # pragma: no cover
                 logger.warning(f"{trace_event} - {trace_event_column} Skipped")
                 pass
 
@@ -97,14 +97,6 @@ class Base_Trace:
         self.Handler = TraceEventHandler(self.Handler)
         self.Trace.OnEvent += self.Handler
         return True
-
-    def Arguments(
-        Trace_Events: List[TraceEvent],
-        Trace_Event_Columns: List[TraceColumn],
-        Handler: Callable,
-    ):
-        """Raises NotImplementedError. Arguments must be created in order for Trace to work."""
-        raise NotImplementedError
 
     def Add(self) -> int:
         """Runs on initialization. Adds built Trace to the Server.
@@ -123,6 +115,9 @@ class Base_Trace:
                 Unless unsuccessful then it will return the error from Server.
         """
         logger.info(f"Updating {self.Name} in {self.Tabular_Class.Server.Name}")
+        if self.Tabular_Class.Server.Connected is False:
+            self.Tabular_Class.Reconnect()
+
         return self.Trace.Update()
 
     def Start(self) -> None:
@@ -153,6 +148,7 @@ class Base_Trace:
                 then it will return the error from Server.
         """
         logger.info(f"Dropping {self.Name} in {self.Tabular_Class.Server.Name}")
+        atexit.unregister(self.Drop)
         return self.Trace.Drop()
 
     def _Query_DMV_For_Event_Categories(self):
@@ -189,7 +185,7 @@ class Base_Trace:
         return Event_Categories
 
 
-def _refresh_handler(source, args):
+def _refresh_handler(source, args):  # pragma: no cover
     """Default function called when `Refresh_Trace` is used.
     It will log various steps of the refresh process.
     """
@@ -289,7 +285,7 @@ class Refresh_Trace(Base_Trace):
         super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)
 
 
-def _query_monitor_handler(source, args):
+def _query_monitor_handler(source, args):  # pragma: no cover
     """
     Default function used with the `Query_Monitor` trace.
     """
