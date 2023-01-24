@@ -4,7 +4,10 @@ from test.config import (
     testingtabledf,
 )
 import pytabular as p
-import subprocess
+
+
+class testing_storage:
+    query_trace = None
 
 
 def pytest_report_header(config):
@@ -34,5 +37,5 @@ def pytest_sessionfinish(session, exitstatus):
     p.logger.info("Executing pytest cleanup...")
     remove_testing_table(local_pbix)
     p.logger.info("Finding and closing PBIX file...")
-    subprocess.run(["powershell", "Stop-Process -Name PBIDesktop"])
+    # subprocess.run(["powershell", "Stop-Process -Name PBIDesktop"])
     return True

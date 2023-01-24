@@ -1,3 +1,7 @@
+"""
+`query.py` houses a custom `Connection` class that uses the .Net AdomdConnection.
+`Connection` is created automatically when connecting to your model.
+"""
 import logging
 import os
 from typing import Union

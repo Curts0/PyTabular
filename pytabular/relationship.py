@@ -1,7 +1,10 @@
+"""
+`relationship.py` houses the main `PyRelationship` and `PyRelationships` class.
+Once connected to your model, interacting with relationship(s) will be done through these classes.
+"""
 import logging
-from object import PyObject
-from pytabular.object import PyObjects
-from pytabular.table import PyTable, PyTables
+from object import PyObject, PyObjects
+from table import PyTable, PyTables
 
 from Microsoft.AnalysisServices.Tabular import (
     CrossFilteringBehavior,
@@ -14,14 +17,7 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyRelationship(PyObject):
-    """Wrapper for [Microsoft.AnalysisServices.Tabular.Table](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet).
-    With a few other bells and whistles added to it. You can use the table to access the nested Columns and Partitions. WIP
-
-    Attributes:
-        Model: Reference to Tabular class
-        Partitions: Reference to Table Partitions
-        Columns: Reference to Table Columns
-    """
+    """Wrapper for [Relationship Class](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.relationship?view=analysisservices-dotnet)."""
 
     def __init__(self, object, model) -> None:
         super().__init__(object)
@@ -48,16 +44,23 @@ class PyRelationship(PyObject):
 
 
 class PyRelationships(PyObjects):
-    """Iterator to handle tables. Accessible via `Tables` attribute in Tabular class.
-
-    Args:
-        PyTable: PyTable class
+    """
+    Groups together multiple relationships. See `PyObjects` class for what more it can do.
+    You can interact with `PyRelationships` straight from model. For ex: `model.Relationships`.
     """
 
     def __init__(self, objects) -> None:
         super().__init__(objects)
 
-    def Related(self, object: Union[PyTable, str]):
+    def Related(self, object: Union[PyTable, str]) -> PyTables:
+        """Finds related tables of a given table.
+
+        Args:
+            object (Union[PyTable, str]): `PyTable` or str of table name to find related tables for.
+
+        Returns:
+            PyTables: Returns `PyTables` class of the tables in question.
+        """
         table_to_find = object if isinstance(object, str) else object.Name
         to_tables = [
             rel.To_Table

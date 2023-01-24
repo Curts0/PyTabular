@@ -1,3 +1,7 @@
+"""
+This has a `Tabular_Editor` class which will download TE2 from a default location.
+Or you can input your own location.
+"""
 import logging
 import os
 import requests as r
@@ -42,7 +46,9 @@ def Download_Tabular_Editor(
 
 
 class Tabular_Editor:
-    """Setting Tabular_Editor Class for future work."""
+    """Setting Tabular_Editor Class for future work.
+    Mainly runs `Download_Tabular_Editor()`
+    """
 
     def __init__(self, EXE_File_Path: str = "Default") -> None:
         logger.debug(f"Initializing Tabular Editor Class:: {EXE_File_Path}")

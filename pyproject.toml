@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python_tabular"
-version = "0.2.9"
+version = "0.3.2"
 authors = [
   { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
 ]
@@ -41,3 +41,12 @@ include-package-data = true
 [tool.pytest.ini_options]
 filterwarnings = ["ignore::DeprecationWarning"]
 addopts = "-vv"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover"
+]
+[tool.coverage.run]
+include = [
+    "pytabular/*"
+]

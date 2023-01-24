@@ -1,3 +1,5 @@
+"""`logic_utils` used to store multiple functions that are used in many different files.
+"""
 import logging
 import datetime
 import os
@@ -48,43 +50,6 @@ def pandas_datatype_to_tabular_datatype(df: pd.DataFrame) -> Dict:
         column: tabular_datatype_mapping_key[df[column].dtype.kind]
         for column in df.columns
     }
-
-
-def pd_dataframe_to_dax_expression(
-    df: pd.DataFrame = pd.DataFrame(data={"col1": [1.0, 2.0], "col2": [3, 4]})
-) -> str:
-    """
-    This will take a pandas dataframe and convert to a dax expression
-    For example this DF:
-            col1  col2
-    0   1     3
-    1   2     4
-
-    |
-    |
-    V
-
-    Will convert to this expression string:
-    DEFINE
-            TABLE tablename = { ( 1, 3 ), ( 2, 4 ) }
-
-    EVALUATE
-    SELECTCOLUMNS(
-            tablename,
-            "col1", tablename[Value1],
-            "col2", tablename[Value2]
-    )
-    """
-
-    def dax_tableconstructor_rows_expression_generator(
-        list_of_strings: list[str],
-    ) -> str:
-        """
-        Converts list[str] to dax table rows for example ['one','two'] -> '('one','two')'
-        """
-        return
-
-    return True
 
 
 def pd_dataframe_to_m_expression(df: pd.DataFrame) -> str:
@@ -172,21 +137,12 @@ def remove_suffix(input_string, suffix):
     Returns:
             str: input_str with suffix removed
     """
-    if suffix and input_string.endswith(suffix):
-        return input_string[: -len(suffix)]
-    return input_string
-
-
-def sql_wrap_count_around_query(original_query: str) -> str:
-    """Simple string formating to get the total row count of a sql query.
-
-    Args:
-            original_query (str): Regular sql query to get count of.
-
-    Returns:
-            str: f"SELECT COUNT(1) FROM ({original_query}) temp_table"
-    """
-    return f"SELECT COUNT(1) FROM ({original_query}) temp_table"
+    output = (
+        input_string[: -len(suffix)]
+        if suffix and input_string.endswith(suffix)
+        else input_string
+    )
+    return output
 
 
 def get_sub_list(lst: list, n: int) -> list:
