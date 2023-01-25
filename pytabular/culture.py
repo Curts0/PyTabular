@@ -17,11 +17,9 @@ class PyCulture(PyObject):
         super().__init__(object)
         self.Model = model
         self._display.add_row("Culture Name", self._object.Name)
-        self.ObjectTranslations = self.set_translation(
-            self._object.ObjectTranslations.GetEnumerator()
-        )
+        self.ObjectTranslations = self.set_translation()
 
-    def set_translation(self, object_translation):
+    def set_translation(self):
         return [
             {
                 "object_translation": translation.Value,
@@ -29,11 +27,11 @@ class PyCulture(PyObject):
                 "object_parent_name": translation.Object.Parent.Name,
                 "object_type": str(translation.Property),
             }
-            for translation in object_translation
+            for translation in self._object.ObjectTranslations.GetEnumerator()
         ]
 
     def get_translation(
-        self, object_name: str, object_parent_name: str, object_type="Caption"
+        self, object_name: str, object_parent_name: str, object_type: str ="Caption"
     ) -> dict:
         if translations := [
             d
@@ -51,31 +49,8 @@ class PyCulture(PyObject):
             "object_type": "Not Available",
         }
 
-
-class PyObjectTranslation(PyObject):
-    """Wrapper for [ObjectTranslation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.objecttranslation?view=analysisservices-dotnet)"""
-
-    def __init__(self, object, culture) -> None:
-        self.Name = object.Object.Name
-        self.ObjectType = object.Object.ObjectType
-        self.CultureProperty = str(self._object.Property)
-        self.CultureCaption = self._object.Value
-        self.Parent = object.Object.Parent
-        super().__init__(object)
-        self.Culture = culture
-        self._display.add_row("Object Property", str(self._object.Property))
-        self._display.add_row("Object Value", self._object.Value)
-
-
 class PyCultures(PyObjects):
     """Houses grouping of `PyCulture`."""
-
-    def __init__(self, objects) -> None:
-        super().__init__(objects)
-
-
-class PyObjectTranslations(PyObjects):
-    """Houses grouping of `PyObjectTranslation`."""
 
     def __init__(self, objects) -> None:
         super().__init__(objects)
