@@ -62,9 +62,11 @@ class ModelDocumenter:
         self.table_page = self.generate_markdown_table_page()
         self.column_page = self.generate_markdown_column_page()
         self.category_page = self.generate_category_file()
-    
+
     def get_object_caption(self, object_name: str, object_parent: str):
-        return self.culture_object.get_translation(object_name=object_name, object_parent_name=object_parent).get("object_translation")
+        return self.culture_object.get_translation(
+            object_name=object_name, object_parent_name=object_parent
+        ).get("object_translation")
 
     def set_translations(
         self, enable_translations: bool = False, culture: str = "en-US"
@@ -72,14 +74,14 @@ class ModelDocumenter:
         """
         Set translations to active or inactive, depending on the needs of the users.
         """
-        
+
         logger.info(f"Using Translations set to > {enable_translations}")
 
         if enable_translations:
             try:
                 self.culture_object = self.model.Cultures[culture]
-                self.translation_culture = culture 
-                self.translation_include = enable_translations 
+                self.translation_culture = culture
+                self.translation_include = enable_translations
             except IndexError:
                 self.translation_include = False
                 logger.warn(
@@ -166,9 +168,7 @@ class ModelDocumenter:
         # Create General information page.
         if self.general_page:
             self.save_page(
-                content="General Info", 
-                keep_file=True, 
-                page_name=self.general_page_url
+                content="General Info", keep_file=True, page_name=self.general_page_url
             )
 
         if self.measure_page:
@@ -180,9 +180,7 @@ class ModelDocumenter:
 
         if self.table_page:
             self.save_page(
-                content=self.table_page, 
-                keep_file=False, 
-                page_name=self.table_page_url
+                content=self.table_page, keep_file=False, page_name=self.table_page_url
             )
 
         if self.column_page:
@@ -194,13 +192,16 @@ class ModelDocumenter:
 
         if self.roles_page:
             self.save_page(
-                content=self.roles_page, 
-                keep_file=False, 
-                page_name=self.roles_page_url
+                content=self.roles_page, keep_file=False, page_name=self.roles_page_url
             )
 
     def create_markdown_for_measure(self, object: PyMeasure) -> str:
-        object_caption = self.get_object_caption(object_name=object.Name, object_parent=object.Parent.Name) or object.Name
+        object_caption = (
+            self.get_object_caption(
+                object_name=object.Name, object_parent=object.Parent.Name
+            )
+            or object.Name
+        )
         return f"""
 ### {object_caption} 
 Description: {object.Description or 'No Description available'}
@@ -242,20 +243,20 @@ description: This page contains all measures for the {self.model.Name} model, in
 """
         ]
 
-        measures = sorted(self.model.Measures, key=lambda x: x.DisplayFolder, reverse=False)
+        measures = sorted(
+            self.model.Measures, key=lambda x: x.DisplayFolder, reverse=False
+        )
 
         for measure in measures:
             logger.debug(f"Creating docs for {measure.Name}")
-            displayFolder = measure.DisplayFolder or 'Other'
+            displayFolder = measure.DisplayFolder or "Other"
             displayFolder = displayFolder.split("\\")[0]
 
             if prevDisplayFolder != displayFolder:
                 markdown_template.append(f"""## {displayFolder}""")
                 prevDisplayFolder = displayFolder
 
-            markdown_template.append(
-                self.create_markdown_for_measure(measure)
-            )
+            markdown_template.append(self.create_markdown_for_measure(measure))
 
         return "".join(markdown_template)
 
@@ -270,7 +271,12 @@ description: This page contains all measures for the {self.model.Name} model, in
         Returns:
             Markdown text: str -> Will be append to the page text.
         """
-        object_caption = self.get_object_caption(object_name=object.Name, object_parent=object.Parent.Name) or object.Name
+        object_caption = (
+            self.get_object_caption(
+                object_name=object.Name, object_parent=object.Parent.Name
+            )
+            or object.Name
+        )
         return f"""
 ### {object_caption}
 Description: {object.Description or 'No Description available'}
@@ -356,7 +362,12 @@ description: This page contains all columns with Columns for {self.model.Name}, 
         return markdown_template
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
-        object_caption = self.get_object_caption(object_name=object.Name, object_parent=object.Parent.Name) or object.Name
+        object_caption = (
+            self.get_object_caption(
+                object_name=object.Name, object_parent=object.Parent.Name
+            )
+            or object.Name
+        )
         basic_info = f"""
 ### [{object.Parent.Name}]{object_caption}
 Description: {object.Description or 'No Description available'}

@@ -33,8 +33,8 @@ class PyMeasure(PyObject):
 
         Returns:
             pd.DataFrame: The Return Value is a Pandas dataframe
-                            which displays all the dependancies 
-                            of the object.             
+                            which displays all the dependancies
+                            of the object.
 
         """
         dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"

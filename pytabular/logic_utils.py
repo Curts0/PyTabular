@@ -179,15 +179,15 @@ def get_value_to_df(Query: AdomdDataReader, index: int):
 
 def dataframe_to_dict(df: pd.DataFrame) -> list[dict]:
     """Convert to Dataframe to dictionary and alter columns names with;
-        - Underscores (_) to spaces
-        - All Strings are converted to Title Case.
+    - Underscores (_) to spaces
+    - All Strings are converted to Title Case.
 
-        Args:
-            df (pd.DataFrame): Original table that needs to be converted
-                to a list with dicts.
-        
-        Returns:
-            list of dictionaries.
+    Args:
+        df (pd.DataFrame): Original table that needs to be converted
+            to a list with dicts.
+
+    Returns:
+        list of dictionaries.
     """
     list_of_dicts = df.to_dict("records")
     return [
@@ -205,7 +205,7 @@ def dict_to_markdown_table(list_of_dicts: list, columns_to_include: list = None)
         columns_to_include (list): Default = None, and all colums are included.
             If a list is supplied, those columns will be included.
 
-    Returns: 
+    Returns:
         String that will represent a table in Markdown.
 
     Example:

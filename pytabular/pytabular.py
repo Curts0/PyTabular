@@ -138,7 +138,10 @@ class Tabular(PyObject):
         )
 
         self.Cultures = PyCultures(
-            [PyCulture(culture, self) for culture in self.Model.Cultures.GetEnumerator()]
+            [
+                PyCulture(culture, self)
+                for culture in self.Model.Cultures.GetEnumerator()
+            ]
         )
         return True
 
