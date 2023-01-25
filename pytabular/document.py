@@ -30,7 +30,7 @@ class ModelDocumenter:
         self,
         model: Tabular,
         friendly_name: str = str(),
-        save_location: str = "model-docs",
+        save_location: str = "docs",
         general_page_url: str = "1-general-information.md",
         measure_page_url: str = "2-measures.md",
         table_page_url: str = "3-tables.md",
