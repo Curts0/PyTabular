@@ -19,7 +19,7 @@ class PyCulture(PyObject):
         self._display.add_row("Culture Name", self._object.Name)
         self.ObjectTranslations = self.set_translation()
 
-    def set_translation(self):
+    def set_translation(self) -> list[dict]:
         return [
             {
                 "object_translation": translation.Value,
@@ -27,11 +27,11 @@ class PyCulture(PyObject):
                 "object_parent_name": translation.Object.Parent.Name,
                 "object_type": str(translation.Property),
             }
-            for translation in self._object.ObjectTranslations.GetEnumerator()
+            for translation in self._object.ObjectTranslations
         ]
 
     def get_translation(
-        self, object_name: str, object_parent_name: str, object_type: str ="Caption"
+        self, object_name: str, object_parent_name: str, object_type: str = "Caption"
     ) -> dict:
         if translations := [
             d
@@ -42,12 +42,8 @@ class PyCulture(PyObject):
         ]:
             return translations[0]
 
-        return {
-            "object_translation": "Not Available",
-            "object_name": "Not Available",
-            "object_parent_name": "Not Available",
-            "object_type": "Not Available",
-        }
+        return {"object_not_found": "Not Available"}
+
 
 class PyCultures(PyObjects):
     """Houses grouping of `PyCulture`."""

@@ -83,12 +83,6 @@ class Tabular(PyObject):
         self.Adomd: Connection = Connection(self.Server)
         self.Effective_Users: dict = {}
         self.PyRefresh = PyRefresh
-        self.recursion_limit : int = None
-
-        # Set Recursion Limit!! 
-        if self.recursion_limit is not None:
-            logger.info(f"Setting Recursion Limit to: {self.recursion_limit}")
-            sys.setrecursionlimit(self.recursion_limit)
 
         # Build PyObjects
         self.Reload_Model_Info()
@@ -144,10 +138,7 @@ class Tabular(PyObject):
         )
 
         self.Cultures = PyCultures(
-            [
-                PyCulture(culture, self)
-                for culture in self.Model.Cultures.GetEnumerator()
-            ]
+            [PyCulture(culture, self) for culture in self.Model.Cultures.GetEnumerator()]
         )
         return True
 

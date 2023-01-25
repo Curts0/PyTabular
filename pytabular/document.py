@@ -5,6 +5,7 @@ from pathlib import Path
 from measure import PyMeasure
 from table import PyTable
 from column import PyColumn
+from culture import PyCulture
 
 from .pytabular import Tabular
 
@@ -15,31 +16,32 @@ class ModelDocumenter:
     def __init__(
         self,
         model: Tabular,
+        friendly_name: str = str(),
         save_location: str = "model-docs",
         general_page_url: str = "1-general-information.md",
         measure_page_url: str = "2-measures.md",
         table_page_url: str = "3-tables.md",
         column_page_url: str = "4-columns.md",
         roles_page_url: str = "5-roles.md",
-        friendly_name: str = None,
     ):
         self.model = model
-        self.save_path: Path = None
-        self.friendly_name: str = None
+        self.save_path: Path
+        self.friendly_name: str = str()
         self.save_location: str = save_location
 
         # Translation information
-        self.translation_include: bool = False
-        self.translation_culture: str = 'en-US'
+        self.culture_include: bool = False
+        self.culture_selected: str = "en-US"
+        self.culture_object: PyCulture = None
 
         # Documentation Parts
-        self.general_page: str = None
-        self.measure_page: str = None
-        self.table_page: str = None
-        self.column_page: str = None
-        self.roles_page: str = None
+        self.general_page: str = str()
+        self.measure_page: str = str()
+        self.table_page: str = str()
+        self.column_page: str = str()
+        self.roles_page: str = str()
 
-        self.category_file_name: str = '_category_.yml'
+        self.category_file_name: str = "_category_.yml"
         self.general_page_url: str = general_page_url
         self.measure_page_url: str = measure_page_url
         self.table_page_url: str = table_page_url
@@ -47,7 +49,7 @@ class ModelDocumenter:
         self.roles_page_url: str = roles_page_url
 
         # Gen
-        if friendly_name is None:
+        if friendly_name:
             self.friendly_name: str = self.set_model_friendly_name()
         else:
             self.friendly_name: str = friendly_name
@@ -55,33 +57,43 @@ class ModelDocumenter:
         # Initialize Save path so checks can be run against it.
         self.save_path = self.set_save_path()
 
+    def generate_documentation_pages(self) -> None:
         self.measure_page = self.generate_markdown_measure_page()
         self.table_page = self.generate_markdown_table_page()
         self.column_page = self.generate_markdown_column_page()
         self.category_page = self.generate_category_file()
+    
+    def get_object_caption(self, object_name: str, object_parent: str):
+        return self.culture_object.get_translation(object_name=object_name, object_parent_name=object_parent).get("object_translation")
 
-    def set_translations(self, enable_translations: bool = False, culture: str = 'en-US'):
-        """" 
-            Set translations to active or inactive, depending on the needs of the users. 
-        """ 
-        self.translation_include = enable_translations
-        self.translation_culture = culture
+    def set_translations(
+        self, enable_translations: bool = False, culture: str = "en-US"
+    ) -> None:
+        """
+        Set translations to active or inactive, depending on the needs of the users.
+        """
+        
+        logger.info(f"Using Translations set to > {enable_translations}")
 
-        logger.info(f"Using Translations set to {self.translation_include}")
-        if self.translation_include:
+        if enable_translations:
             try:
-                self.model.Cultures[culture]
-            except IndexError as e:
-                logger.warn(f"Culture not found, reverting back to orginal setting. {False}")
+                self.culture_object = self.model.Cultures[culture]
+                self.translation_culture = culture 
+                self.translation_include = enable_translations 
+            except IndexError:
                 self.translation_include = False
+                logger.warn(
+                    "Culture not found, reverting back to orginal setting > False"
+                )
             else:
                 logger.info(f"Setting culture to {self.translation_culture}")
 
-
-
+        else:
+            self.translation_include = enable_translations
 
     def set_model_friendly_name(self):
-        """Replaces the model name to a friendly string,
+        """
+        Replaces the model name to a friendly string,
         so it can be used in an URL.
         """
         return (self.model.Catalog).replace(" ", "-").replace("_", "-").lower()
@@ -89,7 +101,7 @@ class ModelDocumenter:
     def set_save_path(self) -> Path:
         return Path(f"{self.save_location}/{self.friendly_name}")
 
-    def save_page(self, content: str, page_name: str, keep_file: bool = False):
+    def save_page(self, content: str, page_name: str, keep_file: bool = False) -> None:
         """Save the content of the documentation to a file, based on
             the class setup.
                 - Save Location
@@ -117,9 +129,7 @@ class ModelDocumenter:
                 f.write(content)
                 f.close()
 
-        return True
-
-    def save_documentation(self):
+    def save_documentation(self) -> None:
         """Generate documentation of the model, based on the meta-data
             in the model definitions. This first checks if the folder
             exists, and then starts to export the files that are needed
@@ -146,40 +156,54 @@ class ModelDocumenter:
             )
             self.save_path.mkdir(parents=True, exist_ok=True)
 
+        if self.category_page:
+            self.save_page(
+                content=self.category_page,
+                keep_file=True,
+                page_name=self.category_file_name,
+            )
+
         # Create General information page.
-        self.save_page(
-            content="General Info", keep_file=True, page_name=self.general_page_url
-        )
-
-        if self.category_page is not None:
+        if self.general_page:
             self.save_page(
-                content=self.category_page, keep_file=True, page_name=self.category_file_name
-            ) 
-
-        if self.measure_page is not None:
-            self.save_page(
-                content=self.measure_page, keep_file=False, page_name=self.measure_page_url
+                content="General Info", 
+                keep_file=True, 
+                page_name=self.general_page_url
             )
 
-        if self.table_page is not None:
+        if self.measure_page:
             self.save_page(
-                content=self.table_page, keep_file=False, page_name=self.table_page_url
+                content=self.measure_page,
+                keep_file=False,
+                page_name=self.measure_page_url,
             )
 
-        if self.column_page is not None:
+        if self.table_page:
             self.save_page(
-                content=self.column_page, keep_file=False, page_name=self.column_page_url
+                content=self.table_page, 
+                keep_file=False, 
+                page_name=self.table_page_url
             )
 
-        if self.roles_page is not None:
+        if self.column_page:
             self.save_page(
-                content=self.roles_page, keep_file=False, page_name=self.roles_page_url
+                content=self.column_page,
+                keep_file=False,
+                page_name=self.column_page_url,
+            )
+
+        if self.roles_page:
+            self.save_page(
+                content=self.roles_page, 
+                keep_file=False, 
+                page_name=self.roles_page_url
             )
 
     def create_markdown_for_measure(self, object: PyMeasure) -> str:
+        object_caption = self.get_object_caption(object_name=object.Name, object_parent=object.Parent.Name) or object.Name
         return f"""
-### {object.Name} 
-Description: {object.Description}
+### {object_caption} 
+Description: {object.Description or 'No Description available'}
 <dl>
 
 <dt>Display Folder</dt>
@@ -205,7 +229,6 @@ Description: {object.Description}
 ---
 """
 
-    
     def generate_markdown_measure_page(self) -> str:
         prevDisplayFolder = ""
         markdown_template = [
@@ -216,25 +239,23 @@ description: This page contains all measures for the {self.model.Name} model, in
 ---
 
 # Measures for {self.model.Name}
-    """
+"""
         ]
 
-        for measure in self.model.Measures:
-            logger.debug(f'Creating docs for {measure.Name}')
-            displayFolder = measure.DisplayFolder
-            displayFolder = (
-                displayFolder.replace("[m] :", "").replace("[ar] :", "").split("\\")[0]
-            )
+        measures = sorted(self.model.Measures, key=lambda x: x.DisplayFolder, reverse=False)
+
+        for measure in measures:
+            logger.debug(f"Creating docs for {measure.Name}")
+            displayFolder = measure.DisplayFolder or 'Other'
+            displayFolder = displayFolder.split("\\")[0]
 
             if prevDisplayFolder != displayFolder:
-                markdown_template.append(
-                    f"""
-## {displayFolder} 
-                """
-                )
+                markdown_template.append(f"""## {displayFolder}""")
                 prevDisplayFolder = displayFolder
 
-            markdown_template.append(self.create_markdown_for_measure(measure))
+            markdown_template.append(
+                self.create_markdown_for_measure(measure)
+            )
 
         return "".join(markdown_template)
 
@@ -249,9 +270,10 @@ description: This page contains all measures for the {self.model.Name} model, in
         Returns:
             Markdown text: str -> Will be append to the page text.
         """
+        object_caption = self.get_object_caption(object_name=object.Name, object_parent=object.Parent.Name) or object.Name
         return f"""
-### {object.Name}
-Description: {object.Description}
+### {object_caption}
+Description: {object.Description or 'No Description available'}
 <dl>
 <dt>Measures (#)</dt>
 <dd>{len(object.Measures)}</dd>
@@ -285,7 +307,6 @@ Description: {object.Description}
 
 """
 
-
     def generate_markdown_table_page(self) -> str:
         """
         This function generates the markdown tables documentation for the Calculated columns in the Model.
@@ -307,7 +328,6 @@ description: This page contains all columns with tables for {self.model.Name}, i
 
         return markdown_template
 
-
     def generate_markdown_column_page(self) -> str:
         """
         This function generates the markdown tables documentation for the Calculated columns in the Model.
@@ -328,18 +348,18 @@ description: This page contains all columns with Columns for {self.model.Name}, 
                                 """
 
             for column in table.Columns:
-                if 'RowNumber' in column.Name:
-                    continue              
+                if "RowNumber" in column.Name:
+                    continue
 
                 markdown_template += self.create_markdown_for_column(column)
 
         return markdown_template
 
-
     def create_markdown_for_column(self, object: PyColumn) -> str:
+        object_caption = self.get_object_caption(object_name=object.Name, object_parent=object.Parent.Name) or object.Name
         basic_info = f"""
-### [{object.Parent.Name}]{object.Name} 
-Description: {object.Description}
+### [{object.Parent.Name}]{object_caption}
+Description: {object.Description or 'No Description available'}
 <dl>
 <dt>Column Name</dt>
 <dd>{object.Name}</dd>
@@ -368,7 +388,7 @@ Description: {object.Description}
 </dl>
 """
 
-        if str(object.Type) == 'Calculated':
+        if str(object.Type) == "Calculated":
             basic_info += f"""
 ```dax title="Technical: {object.Name}"
 {
@@ -376,14 +396,12 @@ Description: {object.Description}
 }
 ```
     """
-        
-        basic_info
-
-
-
-        return basic_info + """
+        return (
+            basic_info
+            + """
 ---
     """
+        )
 
     def generate_category_file(self):
         return f"""position: 2 # float position is supported
@@ -394,6 +412,5 @@ link:
   type: generated-index
   title: Documentation Overview
 customProps:
-  description: To be added in the future.    
-    
+  description: To be added in the future.
     """

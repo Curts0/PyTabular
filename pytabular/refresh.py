@@ -367,7 +367,7 @@ class PyRefresh:
             refresh_data, columns=["Table", "Partition", "Refreshed Time"]
         )
 
-    def Run(self) -> None:
+    def Run(self) -> pd.DataFrame:
         """Brings it all together. When ready, executes all the pre checks.
         Then refreshes. Then runs all the post checks.
         """

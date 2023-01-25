@@ -97,7 +97,7 @@ def pd_dataframe_to_m_expression(df: pd.DataFrame) -> str:
         f"Iterating through rows to build expression... df has {len(df)} rows..."
     )
     expression_list_rows = []
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         expression_list_rows += [m_list_expression_generator(row.to_list())]
     expression_str += f"\u007b\n{','.join(expression_list_rows)}\n\u007d)\nin\nSource"
     return expression_str
