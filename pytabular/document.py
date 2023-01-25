@@ -203,7 +203,7 @@ class ModelDocumenter:
             or object.Name
         )
         return f"""
-### {object_caption} 
+### {object_caption}
 Description: {object.Description or 'No Description available'}
 <dl>
 

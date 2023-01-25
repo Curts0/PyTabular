@@ -3,7 +3,6 @@
 Main class is `Tabular()`. Use that for connecting with your models.
 """
 import logging
-import sys
 
 from Microsoft.AnalysisServices.Tabular import (
     Server,
