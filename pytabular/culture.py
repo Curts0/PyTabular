@@ -17,20 +17,38 @@ class PyCulture(PyObject):
         super().__init__(object)
         self.Model = model
         self._display.add_row("Culture Name", self._object.Name)
-        self.ObjectTranslations = PyObjectTranslations(
-            [
-                PyObjectTranslation(translation, self)
-                for translation in self._object.ObjectTranslations.GetEnumerator()
-            ]
+        self.ObjectTranslations = self.set_translation(
+            self._object.ObjectTranslations.GetEnumerator()
         )
 
-    def get_translation(self, object_name: str, parent_object: str, object_type = 'Caption') -> dict:
-        caption = self.ObjectTranslations.__getitem__(object_name)
-        object_translation = caption.Value
-        display_folder_translation = caption.Value
+    def set_translation(self, object_translation):
+        return [
+            {
+                "object_translation": translation.Value,
+                "object_name": translation.Object.Name,
+                "object_parent_name": translation.Object.Parent.Name,
+                "object_type": str(translation.Property),
+            }
+            for translation in object_translation
+        ]
+
+    def get_translation(
+        self, object_name: str, object_parent_name: str, object_type="Caption"
+    ) -> dict:
+        if translations := [
+            d
+            for d in self.ObjectTranslations
+            if d["object_name"] == object_name
+            and d["object_type"] == object_type
+            and d["object_parent_name"] == object_parent_name
+        ]:
+            return translations[0]
+
         return {
-            "Object Translation": object_translation, 
-            "Display Folder Translation": display_folder_translation
+            "object_translation": "Not Available",
+            "object_name": "Not Available",
+            "object_parent_name": "Not Available",
+            "object_type": "Not Available",
         }
 
 

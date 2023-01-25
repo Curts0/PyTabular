@@ -3,6 +3,7 @@
 Main class is `Tabular()`. Use that for connecting with your models.
 """
 import logging
+import sys
 
 from Microsoft.AnalysisServices.Tabular import (
     Server,
@@ -82,6 +83,13 @@ class Tabular(PyObject):
         self.Adomd: Connection = Connection(self.Server)
         self.Effective_Users: dict = {}
         self.PyRefresh = PyRefresh
+        self.recursion_limit : int = None
+
+        # Set Recursion Limit!! 
+        if self.recursion_limit is not None:
+            logger.info(f"Setting Recursion Limit to: {self.recursion_limit}")
+            sys.setrecursionlimit(self.recursion_limit)
+
         # Build PyObjects
         self.Reload_Model_Info()
 
@@ -116,13 +124,6 @@ class Tabular(PyObject):
         """
         self.Database.Refresh()
 
-        self.Cultures = PyCultures(
-            [
-                PyCulture(culture, self)
-                for culture in self.Model.Cultures.GetEnumerator()
-            ]
-        )
-
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
@@ -140,6 +141,13 @@ class Tabular(PyObject):
         )
         self.Measures = PyMeasures(
             [measure for table in self.Tables for measure in table.Measures]
+        )
+
+        self.Cultures = PyCultures(
+            [
+                PyCulture(culture, self)
+                for culture in self.Model.Cultures.GetEnumerator()
+            ]
         )
         return True
 

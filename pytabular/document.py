@@ -35,6 +35,7 @@ class ModelDocumenter:
         self.column_page: str = None
         self.roles_page: str = None
 
+        self.category_file_name: str = '_category_.yml'
         self.general_page_url: str = general_page_url
         self.measure_page_url: str = measure_page_url
         self.table_page_url: str = table_page_url
@@ -53,6 +54,8 @@ class ModelDocumenter:
         self.measure_page = self.generate_markdown_measure_page()
         self.table_page = self.generate_markdown_table_page()
         self.column_page = self.generate_markdown_column_page()
+        self.category_page = self.generate_category_file()
+
 
     def set_model_friendly_name(self):
         """Replaces the model name to a friendly string,
@@ -125,6 +128,11 @@ class ModelDocumenter:
             content="General Info", keep_file=True, page_name=self.general_page_url
         )
 
+        if self.category_page is not None:
+            self.save_page(
+                content=self.category_page, keep_file=True, page_name=self.category_file_name
+            ) 
+
         if self.measure_page is not None:
             self.save_page(
                 content=self.measure_page, keep_file=False, page_name=self.measure_page_url
@@ -179,12 +187,12 @@ Description: {object.Description}
         prevDisplayFolder = ""
         markdown_template = [
             f"""---
-    sidebar_position: 3
-    title: Measures
-    description: This page contains all measures for the {self.model.Name} model, including the description, format string, and other technical details.
-    ---
+sidebar_position: 3
+title: Measures
+description: This page contains all measures for the {self.model.Name} model, including the description, format string, and other technical details.
+---
 
-    # Measures for {self.model.Name}
+# Measures for {self.model.Name}
     """
         ]
 
@@ -198,7 +206,7 @@ Description: {object.Description}
             if prevDisplayFolder != displayFolder:
                 markdown_template.append(
                     f"""
-    ## {displayFolder} 
+## {displayFolder} 
                 """
                 )
                 prevDisplayFolder = displayFolder
@@ -219,40 +227,40 @@ Description: {object.Description}
             Markdown text: str -> Will be append to the page text.
         """
         return f"""
-    ### {object.Name}
-    Description: {object.Description}
-    <dl>
-    <dt>Measures (#)</dt>
-    <dd>{len(object.Measures)}</dd>
+### {object.Name}
+Description: {object.Description}
+<dl>
+<dt>Measures (#)</dt>
+<dd>{len(object.Measures)}</dd>
 
-    <dt>Columns (#)</dt>
-    <dd>{len(object.Columns)}</dd>
+<dt>Columns (#)</dt>
+<dd>{len(object.Columns)}</dd>
 
-    <dt>Partitions (#)</dt>
-    <dd>{len(object.Partitions)}</dd>
+<dt>Partitions (#)</dt>
+<dd>{len(object.Partitions)}</dd>
 
-    <dt>Data Category</dt>
-    <dd>{object.DataCategory or "Regular Table"}</dd>
+<dt>Data Category</dt>
+<dd>{object.DataCategory or "Regular Table"}</dd>
 
-    <dt>Is Hidden</dt>
-    <dd>{object.IsHidden}</dd>
+<dt>Is Hidden</dt>
+<dd>{object.IsHidden}</dd>
 
-    <dt>Table Type</dt>
-    <dd>{object.Partitions[0].ObjectType}</dd>
+<dt>Table Type</dt>
+<dd>{object.Partitions[0].ObjectType}</dd>
 
-    <dt>Source Type</dt>
-    <dd>{object.Partitions[0].SourceType}</dd>
-    </dl>
+<dt>Source Type</dt>
+<dd>{object.Partitions[0].SourceType}</dd>
+</dl>
 
-    ```{'dax' if str(object.Partitions[0].SourceType) == 'Calculated' else 'm'} title="Table Source: {object.Name}"
-    {
-        object.Partitions[0].Source.Expression if str(object.Partitions[0].SourceType) != "CalculationGroup" else 'N/A'
-    }
-    ```
+```{'dax' if str(object.Partitions[0].SourceType) == 'Calculated' else 'powerquery'} title="Table Source: {object.Name}"
+{
+    object.Partitions[0].Source.Expression if str(object.Partitions[0].SourceType) != "CalculationGroup" else 'N/A'
+}
+```
 
-    ---
+---
 
-    """
+"""
 
 
     def generate_markdown_table_page(self) -> str:
@@ -262,12 +270,12 @@ Description: {object.Description}
             - Add the Translations for tables.
         """
         markdown_template = f"""---
-    sidebar_position: 2
-    title: Tables
-    description: This page contains all columns with tables for {self.model.Name}, including the description, and technical details.
-    ---
+sidebar_position: 2
+title: Tables
+description: This page contains all columns with tables for {self.model.Name}, including the description, and technical details.
+---
 
-    # Tables {self.model.Name}
+# Tables {self.model.Name}
 
     """
 
@@ -284,16 +292,16 @@ Description: {object.Description}
             - Add the Translations for tables.
         """
         markdown_template = f"""---
-    sidebar_position: 4
-    title: Columns
-    description: This page contains all columns with Columns for {self.model.Name}, including the description, format string, and other technical details.
-    ---
+sidebar_position: 4
+title: Columns
+description: This page contains all columns with Columns for {self.model.Name}, including the description, format string, and other technical details.
+---
 
     """
 
         for table in self.model.Tables:
             markdown_template += f"""
-                                ## Columns: {table.Name}
+## Columns: {table.Name}
                                 """
 
             for column in table.Columns:
@@ -307,35 +315,35 @@ Description: {object.Description}
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
         basic_info = f"""
-    ### [{object.Parent.Name}]{object.Name} 
-    Description: {object.Description}
-    <dl>
-    <dt>Column Name</dt>
-    <dd>{object.Name}</dd>
+### [{object.Parent.Name}]{object.Name} 
+Description: {object.Description}
+<dl>
+<dt>Column Name</dt>
+<dd>{object.Name}</dd>
 
-    <dt>Object Type</dt>
-    <dd>{object.ObjectType}</dd>
+<dt>Object Type</dt>
+<dd>{object.ObjectType}</dd>
 
-    <dt>Type</dt>
-    <dd>{object.Type}</dd>
+<dt>Type</dt>
+<dd>{object.Type}</dd>
 
-    <dt>Is Available In Excel</dt>
-    <dd>{object.IsAvailableInMDX}</dd>
+<dt>Is Available In Excel</dt>
+<dd>{object.IsAvailableInMDX}</dd>
 
-    <dt>Is Hidden</dt>
-    <dd>{object.IsHidden}</dd>
+<dt>Is Hidden</dt>
+<dd>{object.IsHidden}</dd>
 
-    <dt>Data Category</dt>
-    <dd>{object.DataCategory}</dd>
+<dt>Data Category</dt>
+<dd>{object.DataCategory}</dd>
 
-    <dt>Data Type</dt>
-    <dd>{object.DataType}</dd>
+<dt>Data Type</dt>
+<dd>{object.DataType}</dd>
 
-    <dt>DisplayFolder</dt>
-    <dd>{object.DisplayFolder}</dd>
+<dt>DisplayFolder</dt>
+<dd>{object.DisplayFolder}</dd>
 
-    </dl>
-    """
+</dl>
+"""
 
         if str(object.Type) == 'Calculated':
             basic_info += f"""
@@ -352,4 +360,17 @@ Description: {object.Description}
 
         return basic_info + """
 ---
+    """
+
+    def generate_category_file(self):
+        return f"""position: 2 # float position is supported
+label: '{self.model.Catalog}'
+collapsible: true # make the category collapsible
+collapsed: true # keep the category open by default
+link:
+  type: generated-index
+  title: Documentation Overview
+customProps:
+  description: To be added in the future.    
+    
     """
