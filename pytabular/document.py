@@ -1,5 +1,5 @@
 """
-`document.py` is where a specific part of pytabular start. This module can 
+`document.py` is where a specific part of pytabular start. This module can
 generate pages in markdown for use in Docusaurus.
 """
 import logging
