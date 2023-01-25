@@ -28,6 +28,10 @@ class ModelDocumenter:
         self.friendly_name: str = None
         self.save_location: str = save_location
 
+        # Translation information
+        self.translation_include: bool = False
+        self.translation_culture: str = 'en-US'
+
         # Documentation Parts
         self.general_page: str = None
         self.measure_page: str = None
@@ -55,6 +59,25 @@ class ModelDocumenter:
         self.table_page = self.generate_markdown_table_page()
         self.column_page = self.generate_markdown_column_page()
         self.category_page = self.generate_category_file()
+
+    def set_translations(self, enable_translations: bool = False, culture: str = 'en-US'):
+        """" 
+            Set translations to active or inactive, depending on the needs of the users. 
+        """ 
+        self.translation_include = enable_translations
+        self.translation_culture = culture
+
+        logger.info(f"Using Translations set to {self.translation_include}")
+        if self.translation_include:
+            try:
+                self.model.Cultures[culture]
+            except IndexError as e:
+                logger.warn(f"Culture not found, reverting back to orginal setting. {False}")
+                self.translation_include = False
+            else:
+                logger.info(f"Setting culture to {self.translation_culture}")
+
+
 
 
     def set_model_friendly_name(self):
