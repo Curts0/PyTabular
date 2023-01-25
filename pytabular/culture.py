@@ -20,6 +20,10 @@ class PyCulture(PyObject):
         self.ObjectTranslations = self.set_translation()
 
     def set_translation(self) -> list[dict]:
+        """
+        Based on the culture, it creates a list of dicts
+        with all the available translations in the file.
+        """
         return [
             {
                 "object_translation": translation.Value,
@@ -33,6 +37,11 @@ class PyCulture(PyObject):
     def get_translation(
         self, object_name: str, object_parent_name: str, object_type: str = "Caption"
     ) -> dict:
+        """
+        Get Translation makes it possible to seach a specific translation of an object.
+        By default it will search for the "Caption" object type, due to fact that a
+        Display folder and Description can also have translations.
+        """
         if translations := [
             d
             for d in self.ObjectTranslations

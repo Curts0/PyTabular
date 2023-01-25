@@ -13,6 +13,15 @@ logger = logging.getLogger("PyTabular")
 
 
 class ModelDocumenter:
+    """
+    The ModelDocumenter class can generate documentation based on the
+    tabular object model and it will generate it suitable for docusaurus.
+
+    TODO: Add a General Pages template with Roles and RLS Expressions
+    TODO: Create a Sub Page per table for all columns?
+    TODO: Add Depencies per Measure with correct links.
+    """
+
     def __init__(
         self,
         model: Tabular,
@@ -58,12 +67,19 @@ class ModelDocumenter:
         self.save_path = self.set_save_path()
 
     def generate_documentation_pages(self) -> None:
+        """
+        Generate Documentation for each specific part of the model.
+        """
         self.measure_page = self.generate_markdown_measure_page()
         self.table_page = self.generate_markdown_table_page()
         self.column_page = self.generate_markdown_column_page()
         self.category_page = self.generate_category_file()
 
     def get_object_caption(self, object_name: str, object_parent: str):
+        """
+        Retrieves the caption of an object, based on the translations
+        in the culture.
+        """
         return self.culture_object.get_translation(
             object_name=object_name, object_parent_name=object_parent
         ).get("object_translation")
@@ -101,6 +117,9 @@ class ModelDocumenter:
         return (self.model.Catalog).replace(" ", "-").replace("_", "-").lower()
 
     def set_save_path(self) -> Path:
+        """
+        Set the location of the documentation
+        """
         return Path(f"{self.save_location}/{self.friendly_name}")
 
     def save_page(self, content: str, page_name: str, keep_file: bool = False) -> None:
@@ -196,6 +215,10 @@ class ModelDocumenter:
             )
 
     def create_markdown_for_measure(self, object: PyMeasure) -> str:
+        """
+        Create Markdown for a specific measure, that can later on be used
+        for generating the whole measure page.
+        """
         object_caption = (
             self.get_object_caption(
                 object_name=object.Name, object_parent=object.Parent.Name
@@ -231,6 +254,10 @@ Description: {object.Description or 'No Description available'}
 """
 
     def generate_markdown_measure_page(self) -> str:
+        """
+        Based on the measure objects it generates a page based on
+        the docusaurus notation for markdown pages.
+        """
         prevDisplayFolder = ""
         markdown_template = [
             f"""---
@@ -315,9 +342,7 @@ Description: {object.Description or 'No Description available'}
 
     def generate_markdown_table_page(self) -> str:
         """
-        This function generates the markdown tables documentation for the Calculated columns in the Model.
-        TODO:
-            - Add the Translations for tables.
+        This function generates the markdown tables documentation for the tables in the Model.
         """
         markdown_template = f"""---
 sidebar_position: 2
@@ -336,9 +361,7 @@ description: This page contains all columns with tables for {self.model.Name}, i
 
     def generate_markdown_column_page(self) -> str:
         """
-        This function generates the markdown tables documentation for the Calculated columns in the Model.
-        TODO:
-            - Add the Translations for tables.
+        This function generates the markdown for documentation about columns in the Model.
         """
         markdown_template = f"""---
 sidebar_position: 4
@@ -362,6 +385,11 @@ description: This page contains all columns with Columns for {self.model.Name}, 
         return markdown_template
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
+        """
+        Generates the Markdown for a specifc column.
+        If a colums is calculated, then it also shows
+        the expression for that column in DAX.
+        """
         object_caption = (
             self.get_object_caption(
                 object_name=object.Name, object_parent=object.Parent.Name
@@ -415,6 +443,10 @@ Description: {object.Description or 'No Description available'}
         )
 
     def generate_category_file(self):
+        """
+        Docusaurs can generate an index. The category yaml will
+        make that happen.
+        """
         return f"""position: 2 # float position is supported
 label: '{self.model.Catalog}'
 collapsible: true # make the category collapsible
