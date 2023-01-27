@@ -84,9 +84,13 @@ class ModelDocumenter:
         Retrieves the caption of an object, based on the translations
         in the culture.
         """
-        return self.culture_object.get_translation(
-            object_name=object_name, object_parent_name=object_parent
-        ).get("object_translation")
+
+        if self.culture_include:
+            return self.culture_object.get_translation(
+                object_name=object_name, object_parent_name=object_parent
+            ).get("object_translation")
+
+        return object_name
 
     def set_translations(
         self, enable_translations: bool = False, culture: str = "en-US"
