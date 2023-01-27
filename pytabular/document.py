@@ -104,18 +104,18 @@ class ModelDocumenter:
         if enable_translations:
             try:
                 self.culture_object = self.model.Cultures[culture]
-                self.translation_culture = culture
-                self.translation_include = enable_translations
+                self.culture_selected = culture
+                self.culture_include = enable_translations
             except IndexError:
-                self.translation_include = False
+                self.culture_include = False
                 logger.warn(
                     "Culture not found, reverting back to orginal setting > False"
                 )
             else:
-                logger.info(f"Setting culture to {self.translation_culture}")
+                logger.info(f"Setting culture to {self.culture_selected}")
 
         else:
-            self.translation_include = enable_translations
+            self.culture_include = enable_translations
 
     def set_model_friendly_name(self):
         """
@@ -405,7 +405,7 @@ description: This page contains all columns with Columns for {self.model.Name}, 
             or object.Name
         )
         basic_info = f"""
-### [{object.Parent.Name}]{object_caption}
+### {object_caption}
 Description: {object.Description or 'No Description available'}
 <dl>
 <dt>Column Name</dt>
