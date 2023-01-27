@@ -62,7 +62,7 @@ class ModelDocumenter:
         self.roles_page_url: str = roles_page_url
 
         # Gen
-        if friendly_name:
+        if not friendly_name:
             self.friendly_name: str = self.set_model_friendly_name()
         else:
             self.friendly_name: str = friendly_name
