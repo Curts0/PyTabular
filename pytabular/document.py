@@ -22,7 +22,7 @@ class ModelDocumenter:
     tabular object model and it will generate it suitable for docusaurus.
 
     TODO: Add a General Pages template with Roles and RLS Expressions
-    TODO: Create a Sub Page per table for all columns?
+    TODO: Create a Sub Page per table for all columns, instead of one big page?
     TODO: Add Depencies per Measure with correct links.
     """
 
@@ -69,6 +69,16 @@ class ModelDocumenter:
 
         # Initialize Save path so checks can be run against it.
         self.save_path = self.set_save_path()
+
+    def create_object_reference(self, object: str, object_parent: str) -> str:
+        """
+        Create a Custom ID for link sections in the docs.
+        :This is based on the technical names in the model,
+        so not the once in the translations. This makes it
+        possible to link based on dependencies.
+        """
+        url_reference = f"{object_parent}-{object}".replace(" ", "")
+        return f"{{#{url_reference}}}"
 
     def generate_documentation_pages(self) -> None:
         """
@@ -233,9 +243,14 @@ class ModelDocumenter:
             )
             or object.Name
         )
+
+        object_description = (object.Description or 'No Description available').replace('\\n', '')
+
         return f"""
 ### {object_caption}
-Description: {object.Description or 'No Description available'}
+**Description**: 
+> {object_description}
+
 <dl>
 
 <dt>Display Folder</dt>
@@ -312,9 +327,14 @@ description: This page contains all measures for the {self.model.Name} model, in
             )
             or object.Name
         )
+
+        object_description = (object.Description or 'No Description available').replace('\\n', '')
+
         return f"""
 ### {object_caption}
-Description: {object.Description or 'No Description available'}
+**Description**: 
+> {object_description}
+
 <dl>
 <dt>Measures (#)</dt>
 <dd>{len(object.Measures)}</dd>
@@ -381,7 +401,7 @@ description: This page contains all columns with Columns for {self.model.Name}, 
 
         for table in self.model.Tables:
             markdown_template += f"""
-## Columns: {table.Name}
+## Columns for {table.Name}
                                 """
 
             for column in table.Columns:
@@ -404,9 +424,14 @@ description: This page contains all columns with Columns for {self.model.Name}, 
             )
             or object.Name
         )
+
+        object_description = (object.Description or 'No Description available').replace('\\n', '')
+
         basic_info = f"""
-### {object_caption}
-Description: {object.Description or 'No Description available'}
+### {object_caption} {self.create_object_reference(object=object.Name, object_parent=object.Parent.Name)}
+**Description**: 
+> {object_description}
+
 <dl>
 <dt>Column Name</dt>
 <dd>{object.Name}</dd>
@@ -464,4 +489,4 @@ link:
   title: Documentation Overview
 customProps:
   description: To be added in the future.
-    """
+"""
