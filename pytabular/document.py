@@ -244,11 +244,13 @@ class ModelDocumenter:
             or object.Name
         )
 
-        object_description = (object.Description or 'No Description available').replace('\\n', '')
+        object_description = (object.Description or "No Description available").replace(
+            "\\n", ""
+        )
 
         return f"""
 ### {object_caption}
-**Description**: 
+**Description**:
 > {object_description}
 
 <dl>
@@ -281,7 +283,7 @@ class ModelDocumenter:
         Based on the measure objects it generates a page based on
         the docusaurus notation for markdown pages.
         """
-        prevDisplayFolder = ""
+        prev_display_folder = ""
         markdown_template = [
             f"""---
 sidebar_position: 3
@@ -299,12 +301,12 @@ description: This page contains all measures for the {self.model.Name} model, in
 
         for measure in measures:
             logger.debug(f"Creating docs for {measure.Name}")
-            displayFolder = measure.DisplayFolder or "Other"
-            displayFolder = displayFolder.split("\\")[0]
+            display_folder = measure.DisplayFolder or "Other"
+            display_folder = display_folder.split("\\")[0]
 
-            if prevDisplayFolder != displayFolder:
-                markdown_template.append(f"""## {displayFolder}""")
-                prevDisplayFolder = displayFolder
+            if prev_display_folder != display_folder:
+                markdown_template.append(f"""## {display_folder}""")
+                prev_display_folder = display_folder
 
             markdown_template.append(self.create_markdown_for_measure(measure))
 
@@ -328,11 +330,13 @@ description: This page contains all measures for the {self.model.Name} model, in
             or object.Name
         )
 
-        object_description = (object.Description or 'No Description available').replace('\\n', '')
+        object_description = (object.Description or "No Description available").replace(
+            "\\n", ""
+        )
 
         return f"""
 ### {object_caption}
-**Description**: 
+**Description**:
 > {object_description}
 
 <dl>
@@ -425,11 +429,13 @@ description: This page contains all columns with Columns for {self.model.Name}, 
             or object.Name
         )
 
-        object_description = (object.Description or 'No Description available').replace('\\n', '')
+        object_description = (object.Description or "No Description available").replace(
+            "\\n", ""
+        )
 
         basic_info = f"""
 ### {object_caption} {self.create_object_reference(object=object.Name, object_parent=object.Parent.Name)}
-**Description**: 
+**Description**:
 > {object_description}
 
 <dl>
