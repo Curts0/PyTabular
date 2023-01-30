@@ -17,36 +17,45 @@ class PyCulture(PyObject):
         super().__init__(object)
         self.Model = model
         self._display.add_row("Culture Name", self._object.Name)
-        self.ObjectTranslations = PyObjectTranslations(
-            [
-                PyObjectTranslation(translation, self)
-                for translation in self._object.ObjectTranslations.GetEnumerator()
-            ]
-        )
+        self.ObjectTranslations = self.set_translation()
 
+    def set_translation(self) -> list[dict]:
+        """
+        Based on the culture, it creates a list of dicts
+        with all the available translations in the file.
+        """
+        return [
+            {
+                "object_translation": translation.Value,
+                "object_name": translation.Object.Name,
+                "object_parent_name": translation.Object.Parent.Name,
+                "object_type": str(translation.Property),
+            }
+            for translation in self._object.ObjectTranslations
+        ]
 
-class PyObjectTranslation(PyObject):
-    """Wrapper for [ObjectTranslation](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.objecttranslation?view=analysisservices-dotnet)"""
+    def get_translation(
+        self, object_name: str, object_parent_name: str, object_type: str = "Caption"
+    ) -> dict:
+        """
+        Get Translation makes it possible to seach a specific translation of an object.
+        By default it will search for the "Caption" object type, due to fact that a
+        Display folder and Description can also have translations.
+        """
+        if translations := [
+            d
+            for d in self.ObjectTranslations
+            if d["object_name"] == object_name
+            and d["object_type"] == object_type
+            and d["object_parent_name"] == object_parent_name
+        ]:
+            return translations[0]
 
-    def __init__(self, object, culture) -> None:
-        self.Name = object.Object.Name
-        self.ObjectType = object.Object.ObjectType
-        self.Parent = object.Object.Parent
-        super().__init__(object)
-        self.Culture = culture
-        self._display.add_row("Object Property", str(self._object.Property))
-        self._display.add_row("Object Value", self._object.Value)
+        return {"object_not_found": "Not Available"}
 
 
 class PyCultures(PyObjects):
     """Houses grouping of `PyCulture`."""
-
-    def __init__(self, objects) -> None:
-        super().__init__(objects)
-
-
-class PyObjectTranslations(PyObjects):
-    """Houses grouping of `PyObjectTranslation`."""
 
     def __init__(self, objects) -> None:
         super().__init__(objects)

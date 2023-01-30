@@ -97,7 +97,7 @@ def pd_dataframe_to_m_expression(df: pd.DataFrame) -> str:
         f"Iterating through rows to build expression... df has {len(df)} rows..."
     )
     expression_list_rows = []
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         expression_list_rows += [m_list_expression_generator(row.to_list())]
     expression_str += f"\u007b\n{','.join(expression_list_rows)}\n\u007d)\nin\nSource"
     return expression_str
@@ -177,12 +177,17 @@ def get_value_to_df(Query: AdomdDataReader, index: int):
         return Query.GetValue(index)
 
 
-def dataframe_to_dict(df):
-    """
-    Convert to Dataframe to dictionary and
-    alter columns names with;
+def dataframe_to_dict(df: pd.DataFrame) -> list[dict]:
+    """Convert to Dataframe to dictionary and alter columns names with;
     - Underscores (_) to spaces
     - All Strings are converted to Title Case.
+
+    Args:
+        df (pd.DataFrame): Original table that needs to be converted
+            to a list with dicts.
+
+    Returns:
+        list of dictionaries.
     """
     list_of_dicts = df.to_dict("records")
     return [
@@ -191,14 +196,18 @@ def dataframe_to_dict(df):
     ]
 
 
-def dict_to_markdown_table(list_of_dicts: list, columns_to_include: list = None):
+def dict_to_markdown_table(list_of_dicts: list, columns_to_include: list = None) -> str:
     """
     Description: Generate a Markdown table based on a list of dictionaries.
     Args:
-        list_of_dicts       -> List of Dictionaries that need to be converted
-                               to a markdown table.
-        columns_to_include  -> Default = None, and all colums are included.
-                               If a list is supplied, those columns will be included.
+        list_of_dicts (list): List of Dictionaries that need to be converted
+            to a markdown table.
+        columns_to_include (list): Default = None, and all colums are included.
+            If a list is supplied, those columns will be included.
+
+    Returns:
+        String that will represent a table in Markdown.
+
     Example:
         columns = ['Referenced Object Type', 'Referenced Table', 'Referenced Object']
         dict_to_markdown_table(dependancies, columns)

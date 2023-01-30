@@ -35,6 +35,11 @@ class PyColumn(PyObject):
         self._display.add_row("State", str(self._object.State))
         self._display.add_row("DisplayFolder", str(self._object.DisplayFolder))
 
+    def get_dependencies(self) -> pd.DataFrame:
+        """Returns the dependant columns of a measure"""
+        dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"
+        return self.Table.Model.Query(dmv_query)
+
     def get_sample_values(self, top_n: int = 3) -> pd.DataFrame:
         """Get sample values of column."""
         column_to_sample = f"'{self.Table.Name}'[{self.Name}]"

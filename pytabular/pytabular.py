@@ -82,6 +82,7 @@ class Tabular(PyObject):
         self.Adomd: Connection = Connection(self.Server)
         self.Effective_Users: dict = {}
         self.PyRefresh = PyRefresh
+
         # Build PyObjects
         self.Reload_Model_Info()
 
@@ -116,13 +117,6 @@ class Tabular(PyObject):
         """
         self.Database.Refresh()
 
-        self.Cultures = PyCultures(
-            [
-                PyCulture(culture, self)
-                for culture in self.Model.Cultures.GetEnumerator()
-            ]
-        )
-
         self.Tables = PyTables(
             [PyTable(table, self) for table in self.Model.Tables.GetEnumerator()]
         )
@@ -140,6 +134,13 @@ class Tabular(PyObject):
         )
         self.Measures = PyMeasures(
             [measure for table in self.Tables for measure in table.Measures]
+        )
+
+        self.Cultures = PyCultures(
+            [
+                PyCulture(culture, self)
+                for culture in self.Model.Cultures.GetEnumerator()
+            ]
         )
         return True
 

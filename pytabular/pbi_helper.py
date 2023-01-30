@@ -15,15 +15,29 @@ def get_msmdsrv() -> list:
         list: returns ProcessId(s) in list format to account for multiple PBIX files open at the same time.
     """
     p.logger.debug("Retrieving msmdsrv.exe(s)")
-    msmdsrv = subprocess.check_output(
-        [
-            "powershell",
-            """Get-CimInstance -ClassName Win32_Process -Property * -Filter "Name = 'msmdsrv.exe'" | Select-Object -Property ProcessId -ExpandProperty ProcessId""",
-        ]
-    )
-    msmdsrv_id = msmdsrv.decode().strip().splitlines()
-    p.logger.debug(f"ProcessId for msmdsrv.exe {msmdsrv_id}")
-    return msmdsrv_id
+
+    try:
+        msmdsrv = subprocess.check_output(
+            [
+                "powershell",
+                """Get-CimInstance -ClassName Win32_Process -Property * -Filter "Name = 'msmdsrv.exe'" | Select-Object -Property ProcessId -ExpandProperty ProcessId""",
+            ]
+        )
+
+        msmdsrv_id = msmdsrv.decode().strip().splitlines()
+        p.logger.debug(f"ProcessId for msmdsrv.exe {msmdsrv_id}")
+        return msmdsrv_id
+
+    except subprocess.CalledProcessError as e:
+        p.logger.error(
+            f"command '{e.cmd}' return with error (code {e.returncode}): {e.output}"
+        )
+        p.logger.warn(
+            "Check if powershell is availabe in the PATH environment variables."
+        )
+        raise RuntimeError(
+            f"command '{e.cmd}' return with error (code {e.returncode}): {e.output}"
+        ) from e
 
 
 def get_port_number(msmdsrv: str) -> str:

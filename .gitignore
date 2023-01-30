@@ -133,6 +133,9 @@ venv.bak/
 # mkdocs documentation
 /site
 
+# Output for model documentation
+/model-docs
+
 # mypy
 .mypy_cache/
 .dmypy.json
@@ -174,3 +177,6 @@ docs/_config.yml# Byte-compiled / optimized / DLL files
 *.py[cod]
 *$py.class
 
+# Test files for new functionality
+test-notebook.ipynb
+test.py
