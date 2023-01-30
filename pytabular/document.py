@@ -38,8 +38,9 @@ class ModelDocumenter:
         roles_page_url: str = "5-roles.md",
     ):
         self.model = model
-        self.save_path: Path
+        self.model_name = friendly_name or model.Catalog or model.Database.Name
         self.friendly_name: str = str()
+        self.save_path: Path
         self.save_location: str = save_location
 
         # Translation information
@@ -61,12 +62,9 @@ class ModelDocumenter:
         self.column_page_url: str = column_page_url
         self.roles_page_url: str = roles_page_url
 
-        # Gen
-        if not friendly_name:
-            self.friendly_name: str = self.set_model_friendly_name()
-        else:
-            self.friendly_name: str = friendly_name
-
+        # Generate an url friendly name for the model / folder 
+        self.friendly_name: str = self.set_model_friendly_name()
+        
         # Initialize Save path so checks can be run against it.
         self.save_path = self.set_save_path()
 
@@ -132,7 +130,7 @@ class ModelDocumenter:
         Replaces the model name to a friendly string,
         so it can be used in an URL.
         """
-        return (self.model.Catalog).replace(" ", "-").replace("_", "-").lower()
+        return (self.model_name).replace(" ", "-").replace("_", "-").lower()
 
     def set_save_path(self) -> Path:
         """
@@ -487,7 +485,7 @@ description: This page contains all columns with Columns for {self.model.Name}, 
         make that happen.
         """
         return f"""position: 2 # float position is supported
-label: '{self.model.Catalog}'
+label: '{self.model_name}'
 collapsible: true # make the category collapsible
 collapsed: true # keep the category open by default
 link:
