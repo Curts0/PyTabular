@@ -61,6 +61,8 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pycolumn">PyColumn</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#get_dependencies">.get_dependencies</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#get_sample_values">.get_sample_values</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#distinct_count">.Distinct_Count</a>
@@ -147,8 +149,14 @@ This let's you also easily check the default .Net properties.</p>
 <li><strong>Table</strong>  : Parent Table to the Column</li>
 </ul>
 <p><strong>Methods:</strong></p>
-<h3 id="get_sample_values">.get_sample_values</h3>
+<h3 id="get_dependencies">.get_dependencies</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L38">source</a></p>
+<pre><code class="language-python">.get_dependencies()
+</code></pre>
+<hr />
+<p>Returns the dependant columns of a measure</p>
+<h3 id="get_sample_values">.get_sample_values</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L43">source</a></p>
 <pre><code class="language-python">.get_sample_values(
    top_n: int = 3
 )
@@ -156,7 +164,7 @@ This let's you also easily check the default .Net properties.</p>
 <hr />
 <p>Get sample values of column.</p>
 <h3 id="distinct_count">.Distinct_Count</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L72">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L77">source</a></p>
 <pre><code class="language-python">.Distinct_Count(
    No_Blank = False
 )
@@ -172,7 +180,7 @@ This let's you also easily check the default .Net properties.</p>
 <li><strong>int</strong>  : Number of Distinct Count from column. If <code>No_Blank == True</code> then will return number of Distinct Count no blanks.</li>
 </ul>
 <h3 id="values">.Values</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L88">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L93">source</a></p>
 <pre><code class="language-python">.Values()
 </code></pre>
 <hr />
@@ -183,7 +191,7 @@ This let's you also easily check the default .Net properties.</p>
 </ul>
 <hr />
 <h2 id="pycolumns">PyColumns</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L99">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L104">source</a></p>
 <pre><code class="language-python">PyColumns(
    objects
 )
@@ -196,7 +204,7 @@ You can even filter down with <code>.Find()</code>. For example find all columns
 <code>model.Columns.Find('Key')</code>.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="query_all">.Query_All</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L110">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L115">source</a></p>
 <pre><code class="language-python">.Query_All(
    query_function: str = 'COUNTROWS(VALUES(_))'
 )
