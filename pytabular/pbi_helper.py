@@ -16,11 +16,9 @@ def get_msmdsrv() -> list:
     """
     p.logger.debug("Retrieving msmdsrv.exe(s)")
 
-    msmdsrv = ''
-
-    try:    
+    try:
         msmdsrv = subprocess.check_output(
-            [   
+            [
                 "powershell",
                 """Get-CimInstance -ClassName Win32_Process -Property * -Filter "Name = 'msmdsrv.exe'" | Select-Object -Property ProcessId -ExpandProperty ProcessId""",
             ]
@@ -31,14 +29,15 @@ def get_msmdsrv() -> list:
         return msmdsrv_id
 
     except subprocess.CalledProcessError as e:
-        p.logger.error(f"command '{e.cmd}' return with error (code {e.returncode}): {e.output}")
-        p.logger.warn("Check if powershell is availabe in the PATH environment variables.")
+        p.logger.error(
+            f"command '{e.cmd}' return with error (code {e.returncode}): {e.output}"
+        )
+        p.logger.warn(
+            "Check if powershell is availabe in the PATH environment variables."
+        )
         raise RuntimeError(
             f"command '{e.cmd}' return with error (code {e.returncode}): {e.output}"
-        ) from e 
-
-
-    return [-1]
+        ) from e
 
 
 def get_port_number(msmdsrv: str) -> str:
