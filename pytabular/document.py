@@ -62,9 +62,9 @@ class ModelDocumenter:
         self.column_page_url: str = column_page_url
         self.roles_page_url: str = roles_page_url
 
-        # Generate an url friendly name for the model / folder 
+        # Generate an url friendly name for the model / folder
         self.friendly_name: str = self.set_model_friendly_name()
-        
+
         # Initialize Save path so checks can be run against it.
         self.save_path = self.set_save_path()
 
