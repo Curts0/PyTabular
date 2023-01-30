@@ -332,6 +332,19 @@ description: This page contains all measures for the {self.model.Name} model, in
             "\\n", ""
         )
 
+        partition_type = ''
+        partition_source = ''
+
+        if str(object.Partitions[0].SourceType) == 'Calculated':
+            partition_type = 'dax'
+            partition_source = object.Partitions[0].Source.Expression
+        elif str(object.Partitions[0].SourceType) == 'M':
+            partition_type = 'powerquery'
+            partition_source = object.Partitions[0].Source.Expression
+        else:
+            partition_type = 'sql'
+            partition_source = object.Partitions[0].Source.Query
+
         return f"""
 ### {object_caption}
 **Description**:
@@ -360,9 +373,9 @@ description: This page contains all measures for the {self.model.Name} model, in
 <dd>{object.Partitions[0].SourceType}</dd>
 </dl>
 
-```{'dax' if str(object.Partitions[0].SourceType) == 'Calculated' else 'powerquery'} title="Table Source: {object.Name}"
+```{partition_type} title="Table Source: {object.Name}"
 {
-    object.Partitions[0].Source.Expression if str(object.Partitions[0].SourceType) != "CalculationGroup" else 'N/A'
+    partition_source
 }
 ```
 
