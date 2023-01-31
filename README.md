@@ -248,5 +248,18 @@ tables = model.Tables[TABLE_NAME].Related()
 tables.Refresh()
 ```
 
+## Documenting a Model
+
+Args:
+- Docs Location: 
+- Friendly Name: 
+
+### Refreshing a Power BI Premium Model
+
+### Refreshing a Analysis Server Model
+
+### Refreshing a Power BI > Local Model.
+- The Local model doesn't have a name, only an Id. So we need to Supply a "Friendly Name".
+
 ### Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
