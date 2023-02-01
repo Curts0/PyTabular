@@ -2,6 +2,7 @@
 """
 import logging
 from object import PyObject, PyObjects
+from typing import List
 
 logger = logging.getLogger("PyTabular")
 
@@ -19,7 +20,7 @@ class PyCulture(PyObject):
         self._display.add_row("Culture Name", self._object.Name)
         self.ObjectTranslations = self.set_translation()
 
-    def set_translation(self) -> list[dict]:
+    def set_translation(self) -> List[dict]:
         """
         Based on the culture, it creates a list of dicts
         with all the available translations in the file.
@@ -42,16 +43,18 @@ class PyCulture(PyObject):
         By default it will search for the "Caption" object type, due to fact that a
         Display folder and Description can also have translations.
         """
-        if translations := [
-            d
-            for d in self.ObjectTranslations
-            if d["object_name"] == object_name
-            and d["object_type"] == object_type
-            and d["object_parent_name"] == object_parent_name
-        ]:
+        try:
+            # Removed walrus operator so it can be compatible with with python versions before 3.8
+            translations = [
+                d
+                for d in self.ObjectTranslations
+                if d["object_name"] == object_name
+                and d["object_type"] == object_type
+                and d["object_parent_name"] == object_parent_name
+            ]
             return translations[0]
-
-        return {"object_not_found": "Not Available"}
+        except Exception:
+            return {"object_not_found": "Not Available"}
 
 
 class PyCultures(PyObjects):

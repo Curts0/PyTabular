@@ -8,6 +8,7 @@ import pytabular as p
 
 class testing_storage:
     query_trace = None
+    documentation_class = None
 
 
 def pytest_report_header(config):
