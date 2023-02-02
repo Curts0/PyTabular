@@ -40,11 +40,8 @@ class PyObject(ABC):
         Console().print(self._display)
 
     def __getattr__(self, attr):
-        """Searches in `self.__dict__` first, then `self._object`."""
-        if attr in self.__dict__:
-            return getattr(self, attr)
-        else:
-            return getattr(self._object, attr)
+        """Searches in `self._object`"""
+        return getattr(self._object, attr)
 
 
 class PyObjects:
