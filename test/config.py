@@ -27,7 +27,9 @@ def find_local_pbi():
         p.logger.info(f"Opening {adventureworks_path}")
         subprocess.run(["powershell", f"Start-Process {adventureworks_path}"])
         # Got to be a better way to wait and ensure the PBIX file is open?
-        p.logger.info("sleep(30)... Need a better way to wait until PBIX is loaded...")
+        p.logger.warning(
+            "sleep(30)... Need a better way to wait until PBIX is loaded..."
+        )
         sleep(30)
         return p.find_local_pbi_instances()[0]
 
