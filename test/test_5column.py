@@ -38,3 +38,9 @@ def test_get_sample_values(model):
 def test_query_every_column(model):
     """Tests `Query_All()` of PyColumns class."""
     assert isinstance(model.Tables[testingtablename].Columns.Query_All(), pd.DataFrame)
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_dependencies(model):
+    df = model.Tables[0].Columns[1].get_dependencies()
+    assert isinstance(df, pd.DataFrame)

@@ -59,8 +59,7 @@ class PyColumn(PyObject):
                                 ORDER BY {column_to_sample}
                         """
             return self.Table.Model.Query(dax_query)
-        except Exception:  # pragma: no cover
-            # Excluding exception from coverage.py for now...
+        except Exception:
             # This is really tech debt anyways and should be replaced...
             dax_query = f"""
             EVALUATE

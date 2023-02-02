@@ -80,7 +80,7 @@ class Base_Trace:
             """Adds the column to trace event."""
             try:
                 trace_event.Columns.Add(trace_event_column)
-            except Exception:  # pragma: no cover
+            except Exception:
                 logger.warning(f"{trace_event} - {trace_event_column} Skipped")
                 pass
 
@@ -185,7 +185,7 @@ class Base_Trace:
         return Event_Categories
 
 
-def _refresh_handler(source, args):  # pragma: no cover
+def _refresh_handler(source, args):
     """Default function called when `Refresh_Trace` is used.
     It will log various steps of the refresh process.
     """
@@ -285,7 +285,7 @@ class Refresh_Trace(Base_Trace):
         super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)
 
 
-def _query_monitor_handler(source, args):  # pragma: no cover
+def _query_monitor_handler(source, args):
     """
     Default function used with the `Query_Monitor` trace.
     """

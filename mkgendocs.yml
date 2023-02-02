@@ -56,13 +56,6 @@ pages:
     source: 'pytabular/pbi_helper.py'
     functions:
       - find_local_pbi_instances
-  - page: "Examples.md"
-    source: 'pytabular/basic_checks.py'
-    functions:
-      - Return_Zero_Row_Tables
-      - Table_Last_Refresh_Times
-      - BPA_Violations_To_DF
-      - Last_X_Interval
   - page: "Logic Utils.md"
     source: 'pytabular/logic_utils.py'
     functions:

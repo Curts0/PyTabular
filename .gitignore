@@ -176,6 +176,8 @@ adhoc.py
 docs/_config.yml# Byte-compiled / optimized / DLL files
 *.py[cod]
 *$py.class
+/Best_Practice_Analyzer
+/Tabular_Editor_2
 
 # Test files for new functionality
 test-notebook.ipynb
