@@ -17,16 +17,16 @@ import atexit
 logger = logging.getLogger("PyTabular")
 
 
-class Base_Trace:
+class BaseTrace:
     """Generates Trace to be run on Server.
     This is the base class to customize the type of Trace you are looking for.
     [Server Traces](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.server.traces?view=analysisservices-dotnet#microsoft-analysisservices-tabular-server-traces)
 
     Args:
-            Tabular_Class (Tabular): Tabular Class.
-            Trace_Events (List[TraceEvent]): List of Trace Events.
+            tabular_class (Tabular): Tabular Class.
+            trace_events (List[TraceEvent]): List of Trace Events.
             [TraceEventClass](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventclass?view=analysisservices-dotnet)
-            Trace_Event_Columns (List[TraceColumn]): List of Trace Event Columns.
+            trace_event_columns (List[TraceColumn]): List of Trace Event Columns.
             [TraceEventColumn](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tracecolumn?view=analysisservices-dotnet)
             Handler (Callable): Function to call when Trace returns response.
             Input needs to be two arguments.
@@ -37,10 +37,10 @@ class Base_Trace:
 
     def __init__(
         self,
-        Tabular_Class,
-        Trace_Events: List[TraceEvent],
-        Trace_Event_Columns: List[TraceColumn],
-        Handler: Callable,
+        tabular_class,
+        trace_events: List[TraceEvent],
+        trace_event_columns: List[TraceColumn],
+        handler: Callable,
     ) -> None:
         logger.debug("Trace Base Class initializing...")
         self.Name = "PyTabular_" + "".join(
@@ -51,19 +51,19 @@ class Base_Trace:
         self.ID = self.Name.replace("PyTabular_", "")
         self.Trace = Trace(self.Name, self.ID)
         logger.debug(f"Trace {self.Trace.Name} created...")
-        self.Tabular_Class = Tabular_Class
-        self.Event_Categories = self._Query_DMV_For_Event_Categories()
+        self.tabular_class = tabular_class
+        self.Event_Categories = self._query_dmv_for_event_categories()
 
-        self.Trace_Events = Trace_Events
-        self.Trace_Event_Columns = Trace_Event_Columns
-        self.Handler = Handler
+        self.trace_events = trace_events
+        self.trace_event_columns = trace_event_columns
+        self.handler = handler
 
-        self.Build()
-        self.Add()
-        self.Update()
-        atexit.register(self.Drop)
+        self.build()
+        self.add()
+        self.update()
+        atexit.register(self.drop)
 
-    def Build(self) -> bool:
+    def build(self) -> bool:
         """Run on initialization.
         This will take the inputed arguments for the class
         and attempt to build the Trace.
@@ -72,9 +72,9 @@ class Base_Trace:
                 bool: True if successful
         """
         logger.info(f"Building Trace {self.Name}")
-        TE = [TraceEvent(trace_event) for trace_event in self.Trace_Events]
+        te = [TraceEvent(trace_event) for trace_event in self.trace_events]
         logger.debug(f"Adding Events to... {self.Trace.Name}")
-        [self.Trace.get_Events().Add(te) for te in TE]
+        [self.Trace.get_Events().Add(t) for t in te]
 
         def add_column(trace_event, trace_event_column):
             """Adds the column to trace event."""
@@ -87,71 +87,71 @@ class Base_Trace:
         logger.debug("Adding Trace Event Columns...")
         [
             add_column(trace_event, trace_event_column)
-            for trace_event_column in self.Trace_Event_Columns
-            for trace_event in TE
+            for trace_event_column in self.trace_event_columns
+            for trace_event in te
             if str(trace_event_column.value__)
             in self.Event_Categories[str(trace_event.EventID.value__)]
         ]
 
         logger.debug("Adding Handler to Trace...")
-        self.Handler = TraceEventHandler(self.Handler)
-        self.Trace.OnEvent += self.Handler
+        self.handler = TraceEventHandler(self.handler)
+        self.Trace.OnEvent += self.handler
         return True
 
-    def Add(self) -> int:
+    def add(self) -> int:
         """Runs on initialization. Adds built Trace to the Server.
 
         Returns:
                 int: Return int of placement in Server.Traces.get_Item(int)
         """
-        logger.info(f"Adding {self.Name} to {self.Tabular_Class.Server.Name}")
-        return self.Tabular_Class.Server.Traces.Add(self.Trace)
+        logger.info(f"Adding {self.Name} to {self.tabular_class.Server.Name}")
+        return self.tabular_class.Server.Traces.Add(self.Trace)
 
-    def Update(self) -> None:
+    def update(self) -> None:
         """Runs on initialization. Syncs with Server.
 
         Returns:
                 None: Returns None.
                 Unless unsuccessful then it will return the error from Server.
         """
-        logger.info(f"Updating {self.Name} in {self.Tabular_Class.Server.Name}")
-        if self.Tabular_Class.Server.Connected is False:
-            self.Tabular_Class.Reconnect()
+        logger.info(f"Updating {self.Name} in {self.tabular_class.Server.Name}")
+        if self.tabular_class.Server.Connected is False:
+            self.tabular_class.reconnect()
 
         return self.Trace.Update()
 
-    def Start(self) -> None:
+    def start(self) -> None:
         """Call when you want to start the Trace
 
         Returns:
                 None: Returns None.
                 Unless unsuccessful then it will return the error from Server.
         """
-        logger.info(f"Starting {self.Name} in {self.Tabular_Class.Server.Name}")
+        logger.info(f"Starting {self.Name} in {self.tabular_class.Server.Name}")
         return self.Trace.Start()
 
-    def Stop(self) -> None:
+    def stop(self) -> None:
         """Call when you want to stop the Trace
 
         Returns:
                 None: Returns None.
                 Unless unsuccessful then it will return the error from Server.
         """
-        logger.info(f"Stopping {self.Name} in {self.Tabular_Class.Server.Name}")
+        logger.info(f"Stopping {self.Name} in {self.tabular_class.Server.Name}")
         return self.Trace.Stop()
 
-    def Drop(self) -> None:
+    def drop(self) -> None:
         """Call when you want to drop the Trace
 
         Returns:
                 None: Returns None. Unless unsuccessful,
                 then it will return the error from Server.
         """
-        logger.info(f"Dropping {self.Name} in {self.Tabular_Class.Server.Name}")
-        atexit.unregister(self.Drop)
+        logger.info(f"Dropping {self.Name} in {self.tabular_class.Server.Name}")
+        atexit.unregister(self.drop)
         return self.Trace.Drop()
 
-    def _Query_DMV_For_Event_Categories(self):
+    def _query_dmv_for_event_categories(self):
         """Internal use.
         Called during the building process
         to locate allowed columns for event categories.
@@ -163,11 +163,11 @@ class Base_Trace:
         Returns:
                 _type_: _description_
         """
-        Event_Categories = {}
+        event_categories = {}
         events = []
         logger.debug("Querying DMV for columns rules...")
         logger.debug("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES")
-        df = self.Tabular_Class.Query(
+        df = self.tabular_class.query(
             "select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"
         )
         for index, row in df.iterrows():
@@ -179,17 +179,17 @@ class Base_Trace:
             else:
                 events += [xml_data["EVENTCATEGORY"]["EVENTLIST"]["EVENT"]]
         for event in events:
-            Event_Categories[event["ID"]] = [
+            event_categories[event["ID"]] = [
                 column["ID"] for column in event["EVENTCOLUMNLIST"]["EVENTCOLUMN"]
             ]
-        return Event_Categories
+        return event_categories
 
 
 def _refresh_handler(source, args):
-    """Default function called when `Refresh_Trace` is used.
+    """Default function called when `RefreshTrace` is used.
     It will log various steps of the refresh process.
     """
-    TextData = args.TextData.replace("<ccon>", "").replace("</ccon>", "")
+    text_data = args.TextData.replace("<ccon>", "").replace("</ccon>", "")
 
     if (
         args.EventClass == TraceEventClass.ProgressReportCurrent
@@ -213,7 +213,7 @@ def _refresh_handler(source, args):
             )
 
     elif args.EventSubclass == TraceEventSubclass.SwitchingDictionary:
-        logger.warning(f"{TextData}")
+        logger.warning(f"{text_data}")
 
     elif (
         args.EventClass == TraceEventClass.ProgressReportBegin
@@ -230,7 +230,7 @@ def _refresh_handler(source, args):
             TraceEventSubclass.ReadData,
         ]
     ):
-        logger.info(f"{TextData}")
+        logger.info(f"{text_data}")
 
     elif (
         args.EventClass == TraceEventClass.ProgressReportEnd
@@ -246,30 +246,30 @@ def _refresh_handler(source, args):
             TraceEventSubclass.AnalyzeEncodeData,
         ]
     ):
-        logger.info(f"{TextData}")
+        logger.info(f"{text_data}")
 
     else:
-        logger.debug(f"{args.EventClass}::{args.EventSubclass}::{TextData}")
+        logger.debug(f"{args.EventClass}::{args.EventSubclass}::{text_data}")
 
 
-class Refresh_Trace(Base_Trace):
-    """Subclass of Base_Trace. For built-in Refresh Tracing.
+class RefreshTrace(BaseTrace):
+    """Subclass of BaseTrace. For built-in Refresh Tracing.
     Run by default when refreshing tables or partitions.
 
     Args:
-            Base_Trace (Base_Trace): Base_Trace Class
+            BaseTrace (BaseTrace): BaseTrace Class
     """
 
     def __init__(
         self,
-        Tabular_Class,
-        Trace_Events: List[TraceEvent] = [
+        tabular_class,
+        trace_events: List[TraceEvent] = [
             TraceEventClass.ProgressReportBegin,
             TraceEventClass.ProgressReportCurrent,
             TraceEventClass.ProgressReportEnd,
             TraceEventClass.ProgressReportError,
         ],
-        Trace_Event_Columns: List[TraceColumn] = [
+        trace_event_columns: List[TraceColumn] = [
             TraceColumn.EventSubclass,
             TraceColumn.CurrentTime,
             TraceColumn.ObjectName,
@@ -280,9 +280,9 @@ class Refresh_Trace(Base_Trace):
             TraceColumn.EventClass,
             TraceColumn.ProgressTotal,
         ],
-        Handler: Callable = _refresh_handler,
+        handler: Callable = _refresh_handler,
     ) -> None:
-        super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)
+        super().__init__(tabular_class, trace_events, trace_event_columns, handler)
 
 
 def _query_monitor_handler(source, args):
@@ -305,19 +305,19 @@ def _query_monitor_handler(source, args):
     logger.debug(f"{args.TextData}")
 
 
-class Query_Monitor(Base_Trace):
-    """Subclass of Base_Trace. For built-in Query Monitoring.
+class QueryMonitor(BaseTrace):
+    """Subclass of BaseTrace. For built-in Query Monitoring.
     If you want to see full query text, set logger to debug.
 
     Args:
-            Base_Trace (Base_Trace): Base_Trace Class
+            BaseTrace (BaseTrace): BaseTrace Class
     """
 
     def __init__(
         self,
-        Tabular_Class,
-        Trace_Events: List[TraceEvent] = [TraceEventClass.QueryEnd],
-        Trace_Event_Columns: List[TraceColumn] = [
+        tabular_class,
+        trace_events: List[TraceEvent] = [TraceEventClass.QueryEnd],
+        trace_event_columns: List[TraceColumn] = [
             TraceColumn.EventSubclass,
             TraceColumn.StartTime,
             TraceColumn.EndTime,
@@ -329,7 +329,7 @@ class Query_Monitor(Base_Trace):
             TraceColumn.ApplicationName,
             TraceColumn.TextData,
         ],
-        Handler: Callable = _query_monitor_handler,
+        handler: Callable = _query_monitor_handler,
     ) -> None:
-        super().__init__(Tabular_Class, Trace_Events, Trace_Event_Columns, Handler)
+        super().__init__(tabular_class, trace_events, trace_event_columns, handler)
         logger.info("Query text lives in DEBUG, adjust logging to see query text.")

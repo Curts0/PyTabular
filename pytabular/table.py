@@ -57,24 +57,24 @@ class PyTable(PyObject):
             ),
         )
 
-    def Row_Count(self) -> int:
+    def row_count(self) -> int:
         """Method to return count of rows. Simple Dax Query:
         `EVALUATE {COUNTROWS('Table Name')}`
 
         Returns:
             int: Number of rows using [COUNTROWS](https://learn.microsoft.com/en-us/dax/countrows-function-dax).
         """
-        return self.Model.Adomd.Query(f"EVALUATE {{COUNTROWS('{self.Name}')}}")
+        return self.Model.Adomd.query(f"EVALUATE {{COUNTROWS('{self.Name}')}}")
 
-    def Refresh(self, *args, **kwargs) -> pd.DataFrame:
+    def refresh(self, *args, **kwargs) -> pd.DataFrame:
         """Same method from Model Refresh, you can pass through any extra parameters. For example:
         `Tabular().Tables['Table Name'].Refresh(Tracing = True)`
         Returns:
             pd.DataFrame: Returns pandas dataframe with some refresh details
         """
-        return self.Model.Refresh(self, *args, **kwargs)
+        return self.Model.refresh(self, *args, **kwargs)
 
-    def Last_Refresh(self) -> datetime:
+    def last_refresh(self) -> datetime:
         """Will query each partition for the last refresh time then select the max
 
         Returns:
@@ -85,9 +85,9 @@ class PyTable(PyObject):
         ]
         return max(partition_refreshes)
 
-    def Related(self):
+    def related(self):
         """Returns tables with a relationship with the table in question."""
-        return self.Model.Relationships.Related(self)
+        return self.Model.Relationships.related(self)
 
 
 class PyTables(PyObjects):
@@ -101,12 +101,12 @@ class PyTables(PyObjects):
     def __init__(self, objects) -> None:
         super().__init__(objects)
 
-    def Refresh(self, *args, **kwargs):
+    def refresh(self, *args, **kwargs):
         """Refreshes all `PyTable`(s) in class."""
         model = self._objects[0].Model
-        return model.Refresh(self, *args, **kwargs)
+        return model.refresh(self, *args, **kwargs)
 
-    def Query_All(self, query_function: str = "COUNTROWS(_)") -> pd.DataFrame:
+    def query_all(self, query_function: str = "COUNTROWS(_)") -> pd.DataFrame:
         """This will dynamically create a query to pull all tables from the model and run the query function.
         It will replace the _ with the table to run.
 
@@ -125,9 +125,9 @@ class PyTables(PyObjects):
             dax_table_identifier = f"'{table_name}'"
             query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",{query_function.replace('_',dax_table_identifier)}),\n"
         query_str = f"{query_str[:-2]})"
-        return self[0].Model.Query(query_str)
+        return self[0].Model.query(query_str)
 
-    def Find_Zero_Rows(self):
+    def find_zero_rows(self):
         """Returns PyTables class of tables with zero rows queried."""
         query_function: str = "COUNTROWS(_)"
         df = self.Query_All(query_function)
@@ -137,7 +137,7 @@ class PyTables(PyObjects):
         tables = [self[name] for name in table_names]
         return self.__class__(tables)
 
-    def Last_Refresh(self, group_partition: bool = True) -> pd.DataFrame:
+    def last_refresh(self, group_partition: bool = True) -> pd.DataFrame:
         """Returns pd.DataFrame of tables with their latest refresh time.
         Optional 'group_partition' variable, default is True.
         If False an extra column will be include to have the last refresh time to the grain of the partition

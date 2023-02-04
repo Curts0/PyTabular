@@ -6,7 +6,7 @@ from test.config import (
 import pytabular as p
 
 
-class testing_storage:
+class TestStorage:
     query_trace = None
     documentation_class = None
 
@@ -30,7 +30,7 @@ def remove_testing_table(model):
 def pytest_sessionstart(session):
     p.logger.info("Executing pytest setup...")
     remove_testing_table(local_pbix)
-    local_pbix.Create_Table(testingtabledf, testingtablename)
+    local_pbix.create_table(testingtabledf, testingtablename)
     return True
 
 

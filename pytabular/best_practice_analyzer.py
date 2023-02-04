@@ -16,10 +16,10 @@ from logic_utils import remove_folder_and_contents
 logger = logging.getLogger("PyTabular")
 
 
-def Download_BPA_File(
-    Download_Location: str = "https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json",
-    Folder: str = "Best_Practice_Analyzer",
-    Auto_Remove=True,
+def download_bpa_file(
+    download_location: str = "https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json",
+    folder: str = "Best_Practice_Analyzer",
+    auto_remove=True,
 ) -> str:
     """Runs a request.get() to retrieve the json file from web. Will return and store in directory. Will also register the removal of the new directory and file when exiting program.
 
@@ -31,15 +31,15 @@ def Download_BPA_File(
     Returns:
             str: File Path for the newly downloaded BPA.
     """
-    logger.info(f"Downloading BPA from {Download_Location}")
-    folder_location = os.path.join(os.getcwd(), Folder)
+    logger.info(f"Downloading BPA from {download_location}")
+    folder_location = os.path.join(os.getcwd(), folder)
     if os.path.exists(folder_location) is False:
         os.makedirs(folder_location)
-    response = r.get(Download_Location)
-    file_location = os.path.join(folder_location, Download_Location.split("/")[-1])
+    response = r.get(download_location)
+    file_location = os.path.join(folder_location, download_location.split("/")[-1])
     with open(file_location, "w", encoding="utf-8") as bpa:
         json.dump(response.json(), bpa, ensure_ascii=False, indent=4)
-    if Auto_Remove:
+    if auto_remove:
         logger.debug(f"Registering removal on termination... For {folder_location}")
         atexit.register(remove_folder_and_contents, folder_location)
     return file_location
@@ -48,16 +48,16 @@ def Download_BPA_File(
 class BPA:
     """Setting BPA Class for future work..."""
 
-    def __init__(self, File_Path: str = "Default") -> None:
+    def __init__(self, file_path: str = "Default") -> None:
         """BPA class to be used with the TE2 class.
 
         Args:
             File_Path (str, optional): See `Download_BPA_File()`. Defaults to "Default".
             If "Default, then will run `Download_BPA_File()` without args.
         """
-        logger.debug(f"Initializing BPA Class:: {File_Path}")
-        if File_Path == "Default":
-            self.Location: str = Download_BPA_File()
+        logger.debug(f"Initializing BPA Class:: {file_path}")
+        if file_path == "Default":
+            self.location: str = download_bpa_file()
         else:
-            self.Location: str = File_Path
+            self.location: str = file_path
         pass

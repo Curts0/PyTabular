@@ -43,7 +43,7 @@ class Tabular(PyObject):
     """Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet). You can use this class as your main way to interact with your model.
 
     Args:
-            CONNECTION_STR (str): Valid [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions) for connecting to a Tabular Model.
+            connection_str (str): Valid [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions) for connecting to a Tabular Model.
     Attributes:
             Server (Server): See [Server MS Docs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet).
             Catalog (str): Name of Database. See [Catalog MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.connectioninfo.catalog?view=analysisservices-dotnet#microsoft-analysisservices-connectioninfo-catalog).
@@ -55,12 +55,12 @@ class Tabular(PyObject):
             Measures (List[Measure]): Easy access list of measures from model. See [Measure MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table.measures?view=analysisservices-dotnet#microsoft-analysisservices-tabular-table-measures).
     """
 
-    def __init__(self, CONNECTION_STR: str):
+    def __init__(self, connection_str: str):
 
         # Connecting to model...
         logger.debug("Initializing Tabular Class")
         self.Server = Server()
-        self.Server.Connect(CONNECTION_STR)
+        self.Server.Connect(connection_str)
         logger.info(f"Connected to Server - {self.Server.Name}")
         self.Catalog = self.Server.ConnectionInfo.Catalog
         logger.debug(f"Received Catalog - {self.Catalog}")
@@ -84,7 +84,7 @@ class Tabular(PyObject):
         self.PyRefresh = PyRefresh
 
         # Build PyObjects
-        self.Reload_Model_Info()
+        self.reload_model_info()
 
         # Run subclass init
         super().__init__(self.Model)
@@ -107,10 +107,10 @@ class Tabular(PyObject):
         # Finished and registering disconnect
         logger.debug("Class Initialization Completed")
         logger.debug("Registering Disconnect on Termination...")
-        atexit.register(self.Disconnect)
+        atexit.register(self.disconnect)
 
-    def Reload_Model_Info(self) -> bool:
-        """Runs on __init__ iterates through details, can be called after any model changes. Called in SaveChanges()
+    def reload_model_info(self) -> bool:
+        """Runs on __init__ iterates through details, can be called after any model changes. Called in save_changes()
 
         Returns:
                 bool: True if successful
@@ -144,7 +144,7 @@ class Tabular(PyObject):
         )
         return True
 
-    def Is_Process(self) -> bool:
+    def is_process(self) -> bool:
         """Run method to check if Processing is occurring. Will query DMV $SYSTEM.DISCOVER_JOBS to see if any processing is happening.
 
         Returns:
@@ -153,18 +153,18 @@ class Tabular(PyObject):
         _jobs_df = self.Query("select * from $SYSTEM.DISCOVER_JOBS")
         return len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
 
-    def Disconnect(self) -> None:
+    def disconnect(self) -> None:
         """Disconnects from Model"""
         logger.info(f"Disconnecting from - {self.Server.Name}")
-        atexit.unregister(self.Disconnect)
+        atexit.unregister(self.disconnect)
         return self.Server.Disconnect()
 
-    def Reconnect(self) -> None:
+    def reconnect(self) -> None:
         """Reconnects to Model"""
         logger.info(f"Reconnecting to {self.Server.Name}")
         return self.Server.Reconnect()
 
-    def Refresh(self, *args, **kwargs) -> pd.DataFrame:
+    def refresh(self, *args, **kwargs) -> pd.DataFrame:
         """PyRefresh Class to handle refreshes of model.
 
         Args:
@@ -178,69 +178,69 @@ class Tabular(PyObject):
         Returns:
             pd.DataFrame
         """
-        return self.PyRefresh(self, *args, **kwargs).Run()
+        return self.PyRefresh(self, *args, **kwargs).run()
 
-    def SaveChanges(self):
+    def save_changes(self):
         """Called after refreshes or any model changes.
         Currently will return a named tuple of all changes detected. However a ton of room for improvement here.
         """
         if self.Server.Connected is False:
-            self.Reconnect()
+            self.reconnect()
 
-        def property_changes(Property_Changes):
+        def property_changes(property_changes_var):
             """
             Returns any property changes.
             """
-            Property_Change = namedtuple(
-                "Property_Change",
-                "New_Value Object Original_Value Property_Name Property_Type",
+            property_change = namedtuple(
+                "property_change",
+                "new_value object original_value property_name property_type",
             )
             return [
-                Property_Change(
+                property_change(
                     change.NewValue,
                     change.Object,
                     change.OriginalValue,
                     change.PropertyName,
                     change.PropertyType,
                 )
-                for change in Property_Changes.GetEnumerator()
+                for change in property_changes_var.GetEnumerator()
             ]
 
-        logger.info("Executing SaveChanges()...")
-        Model_Save_Results = self.Model.SaveChanges()
-        if isinstance(Model_Save_Results.Impact, type(None)):
+        logger.info("Executing save_changes()...")
+        model_save_results = self.Model.SaveChanges()
+        if isinstance(model_save_results.Impact, type(None)):
             logger.warning(f"No changes detected on save for {self.Server.Name}")
             return None
         else:
-            Property_Changes = Model_Save_Results.Impact.PropertyChanges
-            Added_Objects = Model_Save_Results.Impact.AddedObjects
-            Added_Subtree_Roots = Model_Save_Results.Impact.AddedSubtreeRoots
-            Removed_Objects = Model_Save_Results.Impact.RemovedObjects
-            Removed_Subtree_Roots = Model_Save_Results.Impact.RemovedSubtreeRoots
-            Xmla_Results = Model_Save_Results.XmlaResults
-            Changes = namedtuple(
-                "Changes",
-                "Property_Changes Added_Objects Added_Subtree_Roots Removed_Objects Removed_Subtree_Roots Xmla_Results",
+            property_changes_var = model_save_results.Impact.PropertyChanges
+            added_objects = model_save_results.Impact.AddedObjects
+            added_subtree_roots = model_save_results.Impact.AddedSubtreeRoots
+            removed_objects = model_save_results.Impact.RemovedObjects
+            removed_subtree_roots = model_save_results.Impact.RemovedSubtreeRoots
+            xmla_results = model_save_results.XmlaResults
+            changes = namedtuple(
+                "changes",
+                "property_changes added_objects added_subtree_roots removed_objects removed_subtree_Roots xmla_results",
             )
             [
-                property_changes(Property_Changes),
-                Added_Objects,
-                Added_Subtree_Roots,
-                Removed_Objects,
-                Removed_Subtree_Roots,
-                Xmla_Results,
+                property_changes(property_changes_var),
+                added_objects,
+                added_subtree_roots,
+                removed_objects,
+                removed_subtree_roots,
+                xmla_results,
             ]
-            self.Reload_Model_Info()
-            return Changes(
-                property_changes(Property_Changes),
-                Added_Objects,
-                Added_Subtree_Roots,
-                Removed_Objects,
-                Removed_Subtree_Roots,
-                Xmla_Results,
+            self.reload_model_info()
+            return changes(
+                property_changes(property_changes_var),
+                added_objects,
+                added_subtree_roots,
+                removed_objects,
+                removed_subtree_roots,
+                xmla_results,
             )
 
-    def Backup_Table(self, table_str: str) -> bool:
+    def backup_table(self, table_str: str) -> bool:
         """Will be removed. This is experimental with no written pytest for it.
         Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
         It will add suffix '_backup' to all objects.
@@ -254,7 +254,7 @@ class Tabular(PyObject):
         """
         logger.info("Backup Beginning...")
         logger.debug(f"Cloning {table_str}")
-        table = self.Model.Tables.Find(table_str).Clone()
+        table = self.Model.Tables.find(table_str).Clone()
         logger.info("Beginning Renames")
 
         def rename(items):
@@ -289,11 +289,11 @@ class Tabular(PyObject):
             logger.debug(f"Renaming - {relationship.Name}")
             if relationship.ToTable.Name == remove_suffix(table.Name, "_backup"):
                 relationship.set_ToColumn(
-                    table.Columns.Find(f"{relationship.ToColumn.Name}_backup")
+                    table.Columns.find(f"{relationship.ToColumn.Name}_backup")
                 )
             elif relationship.FromTable.Name == remove_suffix(table.Name, "_backup"):
                 relationship.set_FromColumn(
-                    table.Columns.Find(f"{relationship.FromColumn.Name}_backup")
+                    table.Columns.find(f"{relationship.FromColumn.Name}_backup")
                 )
             logger.debug(f"Adding {relationship.Name} to {self.Model.Name}")
             self.Model.Relationships.Add(relationship)
@@ -326,7 +326,7 @@ class Tabular(PyObject):
                             f"Column - {column.Name} copying permissions to clone..."
                         )
                         column.set_Column(
-                            self.Model.Tables.Find(table.Name).Columns.Find(
+                            self.Model.Tables.find(table.Name).Columns.find(
                                 f"{column.Name}_backup"
                             )
                         )
@@ -336,13 +336,13 @@ class Tabular(PyObject):
 
         clone_role_permissions()
         logger.info(f"Refreshing Clone... {table.Name}")
-        self.Reload_Model_Info()
-        self.Refresh(table.Name, default_row_count_check=False)
+        self.reload_model_info()
+        self.refresh(table.Name, default_row_count_check=False)
         logger.info(f"Updating Model {self.Model.Name}")
-        self.SaveChanges()
+        self.save_changes()
         return True
 
-    def Revert_Table(self, table_str: str) -> bool:
+    def revert_table(self, table_str: str) -> bool:
         """Will be removed. This is experimental with no written pytest for it. This is used in conjunction with Backup_Table().
         It will take the 'TableName_backup' and replace with the original.
         Example scenario ->
@@ -359,9 +359,9 @@ class Tabular(PyObject):
         """
         logger.info(f"Beginning Revert for {table_str}")
         logger.debug(f"Finding original {table_str}")
-        main = self.Model.Tables.Find(table_str)
+        main = self.Model.Tables.find(table_str)
         logger.debug(f"Finding backup {table_str}")
-        backup = self.Model.Tables.Find(f"{table_str}_backup")
+        backup = self.Model.Tables.find(f"{table_str}_backup")
         logger.debug("Finding original relationships")
         main_relationships = [
             relationship
@@ -421,7 +421,7 @@ class Tabular(PyObject):
                 logger.debug(f"Removing Suffix for {item.Name}")
                 item.RequestRename(remove_suffix(item.Name, "_backup"))
                 logger.debug(f"Saving Changes... for {item.Name}")
-                self.Model.SaveChanges()
+                self.Model.save_changes()
 
         logger.info("Name changes for Columns...")
         dename(
@@ -441,11 +441,11 @@ class Tabular(PyObject):
         dename(backup_relationships)
         logger.info("Name changes for Backup Table...")
         backup.RequestRename(remove_suffix(backup.Name, "_backup"))
-        self.SaveChanges()
+        self.save_changes()
         return True
 
-    def Query(
-        self, Query_Str: str, Effective_User: str = None
+    def query(
+        self, query_str: str, effective_user: str = None
     ) -> Union[pd.DataFrame, str, int]:
         """Executes Query on Model and Returns Results in Pandas DataFrame
 
@@ -458,30 +458,30 @@ class Tabular(PyObject):
         Returns:
                 pd.DataFrame: Returns dataframe with results
         """
-        if Effective_User is None:
-            return self.Adomd.Query(Query_Str)
+        if effective_user is None:
+            return self.Adomd.query(query_str)
 
         try:
             # This needs a public model with effective users to properly test
-            conn = self.Effective_Users[Effective_User]
-            logger.debug(f"Effective user found querying as... {Effective_User}")
+            conn = self.effective_users[effective_user]
+            logger.debug(f"Effective user found querying as... {effective_user}")
         except Exception:
-            logger.debug(f"Creating new connection with {Effective_User}")
-            conn = Connection(self.Server, Effective_User=Effective_User)
-            self.Effective_Users[Effective_User] = conn
+            logger.debug(f"Creating new connection with {effective_user}")
+            conn = Connection(self.Server, effective_user=effective_user)
+            self.effective_Users[effective_user] = conn
 
-        return conn.Query(Query_Str)
+        return conn.query(query_str)
 
-    def Analyze_BPA(
-        self, Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
+    def analyze_bpa(
+        self, tabular_editor_exe: str, best_practice_analyzer: str
     ) -> List[str]:
         """Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
         [Tabular Editor BPA](https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html)
         [Tabular Editor Command Line Options](https://docs.tabulareditor.com/te2/Command-line-Options.html)
 
         Args:
-                Tabular_Editor_Exe (str): TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.
-                Best_Practice_Analyzer (str): BPA json file path. Feel free to use class BPA().Location or provide your own. Defualts to 	https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+                tabular_editor_exe (str): TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.
+                best_practice_analyzer (str): BPA json file path. Feel free to use class BPA().Location or provide your own. Defualts to 	https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
 
         Returns:
                 List[str]: Assuming no failure, will return list of BPA violations. Else will return error from command line.
@@ -489,7 +489,7 @@ class Tabular(PyObject):
         logger.debug("Beginning request to talk with TE2 & Find BPA...")
         bim_file_location = f"{os.getcwd()}\\Model.bim"
         atexit.register(remove_file, bim_file_location)
-        cmd = f'{Tabular_Editor_Exe} "Provider=MSOLAP;{self.Adomd.ConnectionString}" {self.Database.Name} -B "{bim_file_location}" -A {Best_Practice_Analyzer} -V/?'
+        cmd = f'{tabular_editor_exe} "Provider=MSOLAP;{self.Adomd.ConnectionString}" {self.Database.Name} -B "{bim_file_location}" -A {best_practice_analyzer} -V/?'
         logger.debug("Command Generated")
         logger.debug("Submitting Command...")
         sp = subprocess.Popen(
@@ -507,7 +507,7 @@ class Tabular(PyObject):
                 output for output in raw_output.split("\n") if "violates rule" in output
             ]
 
-    def Create_Table(self, df: pd.DataFrame, table_name: str) -> bool:
+    def create_table(self, df: pd.DataFrame, table_name: str) -> bool:
         """Creates tables from pd.DataFrame as an M-Partition.
         So will convert the dataframe to M-Partition logic via the M query table constructor.
         Runs refresh and will update model.
@@ -546,7 +546,7 @@ class Tabular(PyObject):
             f"Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}"
         )
         self.Model.Tables.Add(new_table)
-        self.SaveChanges()
-        self.Reload_Model_Info()
-        self.Refresh(new_table.Name)
+        self.save_changes()
+        self.reload_model_info()
+        self.refresh(new_table.Name)
         return True

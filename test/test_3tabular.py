@@ -72,13 +72,13 @@ def test_nonetype_decimal_bug(model):
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_Table_Last_Refresh_Times(model):
+def test_table_last_refresh_times(model):
     """Really just testing the the function completes successfully and returns df"""
     assert isinstance(model.Tables.Last_Refresh(), pd.DataFrame)
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_Return_Zero_Row_Tables(model):
+def test_return_zero_row_tables(model):
     """Testing that `Return_Zero_Row_Tables`"""
     assert isinstance(model.Tables.Find_Zero_Rows(), p.pytabular.PyTables)
 
