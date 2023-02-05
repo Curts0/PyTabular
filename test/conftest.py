@@ -37,6 +37,6 @@ def pytest_sessionstart(session):
 def pytest_sessionfinish(session, exitstatus):
     p.logger.info("Executing pytest cleanup...")
     remove_testing_table(local_pbix)
-    p.logger.info("Finding and closing PBIX file...")
+    # p.logger.info("Finding and closing PBIX file...")
     # subprocess.run(["powershell", "Stop-Process -Name PBIDesktop"])
     return True

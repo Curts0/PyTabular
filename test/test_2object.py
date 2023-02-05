@@ -85,15 +85,15 @@ def test_get_attr(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_iadd_tables(model):
-    a = model.Tables.Find("Sales")
-    b = model.Tables.Find("Date")
+    a = model.Tables.find("Sales")
+    b = model.Tables.find("Date")
     a += b
-    assert len(a.Find("Date")) > 0
+    assert len(a.find("Date")) > 0
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_iadd_table(model):
-    a = model.Tables.Find("Sales")
-    b = model.Tables.Find("Date")[0]
+    a = model.Tables.find("Sales")
+    b = model.Tables.find("Date")[0]
     a += b
-    assert len(a.Find("Date")) > 0
+    assert len(a.find("Date")) > 0

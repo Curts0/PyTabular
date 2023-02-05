@@ -3,43 +3,43 @@
 from test.config import testing_parameters, testingtablename
 import pytest
 import pytabular as p
-from test.conftest import testing_storage
+from test.conftest import TestStorage
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_disconnect_for_trace(model):
-    """Tests `Disconnect()` from `Tabular` class."""
-    model.Disconnect()
+    """Tests `disconnect()` from `Tabular` class."""
+    model.disconnect()
     assert model.Server.Connected is False
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_reconnect_update(model):
-    """This will test the `Reconnect()` gets called in `Update()`
+    """This will test the `reconnect()` gets called in `update()`
     of the `Base_Trace` class.
     """
-    model.Disconnect()
-    model.Tables[testingtablename].Refresh()
+    model.disconnect()
+    model.Tables[testingtablename].refresh()
     assert model.Server.Connected is True
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_query_monitor_start(model):
-    """This will test the `Query_Monitor` trace and `Start()` it."""
-    query_trace = p.Query_Monitor(model)
-    query_trace.Start()
-    testing_storage.query_trace = query_trace
-    assert testing_storage.query_trace.Trace.IsStarted
+    """This will test the `QueryMonitor` trace and `start()` it."""
+    query_trace = p.QueryMonitor(model)
+    query_trace.start()
+    TestStorage.query_trace = query_trace
+    assert TestStorage.query_trace.Trace.IsStarted
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_query_monitor_stop(model):
-    """Tests `Stop()` of `Query_Monitor` trace."""
-    testing_storage.query_trace.Stop()
-    assert testing_storage.query_trace.Trace.IsStarted is False
+    """Tests `stop()` of `QueryMonitor` trace."""
+    TestStorage.query_trace.stop()
+    assert TestStorage.query_trace.Trace.IsStarted is False
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_query_monitor_drop(model):
-    """Tests `Drop()` of `Query_Monitor` trace."""
-    assert testing_storage.query_trace.Drop() is None
+    """Tests `drop()` of `QueryMonitor` trace."""
+    assert TestStorage.query_trace.drop() is None

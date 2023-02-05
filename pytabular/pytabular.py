@@ -150,7 +150,7 @@ class Tabular(PyObject):
         Returns:
                 bool: True if DMV shows Process, False if not.
         """
-        _jobs_df = self.Query("select * from $SYSTEM.DISCOVER_JOBS")
+        _jobs_df = self.query("select * from $SYSTEM.DISCOVER_JOBS")
         return len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
 
     def disconnect(self) -> None:
@@ -254,7 +254,7 @@ class Tabular(PyObject):
         """
         logger.info("Backup Beginning...")
         logger.debug(f"Cloning {table_str}")
-        table = self.Model.Tables.find(table_str).Clone()
+        table = self.Model.Tables.Find(table_str).Clone()
         logger.info("Beginning Renames")
 
         def rename(items):
@@ -359,9 +359,9 @@ class Tabular(PyObject):
         """
         logger.info(f"Beginning Revert for {table_str}")
         logger.debug(f"Finding original {table_str}")
-        main = self.Model.Tables.find(table_str)
+        main = self.Tables.find(table_str)[0]._object
         logger.debug(f"Finding backup {table_str}")
-        backup = self.Model.Tables.find(f"{table_str}_backup")
+        backup = self.Tables.find(f"{table_str}_backup")[0]._object
         logger.debug("Finding original relationships")
         main_relationships = [
             relationship
@@ -421,7 +421,7 @@ class Tabular(PyObject):
                 logger.debug(f"Removing Suffix for {item.Name}")
                 item.RequestRename(remove_suffix(item.Name, "_backup"))
                 logger.debug(f"Saving Changes... for {item.Name}")
-                self.Model.save_changes()
+                self.save_changes()
 
         logger.info("Name changes for Columns...")
         dename(

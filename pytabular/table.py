@@ -81,7 +81,7 @@ class PyTable(PyObject):
             datetime: Last refresh time in datetime format
         """
         partition_refreshes = [
-            partition.Last_Refresh() for partition in self.Partitions
+            partition.last_refresh() for partition in self.Partitions
         ]
         return max(partition_refreshes)
 
@@ -130,7 +130,7 @@ class PyTables(PyObjects):
     def find_zero_rows(self):
         """Returns PyTables class of tables with zero rows queried."""
         query_function: str = "COUNTROWS(_)"
-        df = self.Query_All(query_function)
+        df = self.query_all(query_function)
 
         table_names = df[df[f"[{query_function}]"].isna()]["[Table]"].to_list()
         logger.debug(f"Found {table_names}")
@@ -159,7 +159,7 @@ class PyTables(PyObjects):
                 partition.Name for table in self for partition in table.Partitions
             ],
             "RefreshedTime": [
-                partition.Last_Refresh()
+                partition.last_refresh()
                 for table in self
                 for partition in table.Partitions
             ],

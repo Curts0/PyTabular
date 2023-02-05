@@ -146,7 +146,7 @@ class RefreshCheck(ABC):
         if self.assertion is None:
             logger.debug("Skipping assertion none given")
         else:
-            test = self.assertion_run(self.pre, self.post)
+            test = self.assertion(self.pre, self.post)
             assert_str = f"Test {self.name} - {test} - Pre Results - {self.pre} | Post Results {self.post}"
             if test:
                 logger.info(assert_str)
@@ -351,13 +351,13 @@ class PyRefresh:
         refresh_data = []
         for property_change in property_changes:
             if (
-                isinstance(property_change.Object, Partition)
-                and property_change.Property_Name == "RefreshedTime"
+                isinstance(property_change.object, Partition)
+                and property_change.property_name == "RefreshedTime"
             ):
                 table, partition, refreshed_time = (
-                    property_change.Object.Table.Name,
-                    property_change.Object.Name,
-                    ticks_to_datetime(property_change.New_Value.Ticks),
+                    property_change.object.Table.Name,
+                    property_change.object.Name,
+                    ticks_to_datetime(property_change.new_value.Ticks),
                 )
                 logger.info(
                     f'{table} - {partition} Refreshed! - {refreshed_time.strftime("%m/%d/%Y, %H:%M:%S")}'

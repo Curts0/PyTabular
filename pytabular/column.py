@@ -38,7 +38,7 @@ class PyColumn(PyObject):
     def get_dependencies(self) -> pd.DataFrame:
         """Returns the dependant columns of a measure"""
         dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"
-        return self.Table.Model.Query(dmv_query)
+        return self.Table.Model.query(dmv_query)
 
     def get_sample_values(self, top_n: int = 3) -> pd.DataFrame:
         """Get sample values of column."""
@@ -58,7 +58,7 @@ class PyColumn(PyObject):
                                 )
                                 ORDER BY {column_to_sample}
                         """
-            return self.Table.Model.Query(dax_query)
+            return self.Table.Model.query(dax_query)
         except Exception:
             # This is really tech debt anyways and should be replaced...
             dax_query = f"""
@@ -71,7 +71,7 @@ class PyColumn(PyObject):
                     )
                 )
             """
-            return self.Table.Model.Query(dax_query)
+            return self.Table.Model.query(dax_query)
 
     def distinct_count(self, no_blank=False) -> int:
         """Get [DISTINCTCOUNT](https://learn.microsoft.com/en-us/dax/distinctcount-function-dax) of Column.
@@ -85,7 +85,7 @@ class PyColumn(PyObject):
         func = "DISTINCTCOUNT"
         if no_blank:
             func += "NOBLANK"
-        return self.Table.Model.Adomd.Query(
+        return self.Table.Model.Adomd.query(
             f"EVALUATE {{{func}('{self.Table.Name}'[{self.Name}])}}"
         )
 
@@ -95,7 +95,7 @@ class PyColumn(PyObject):
         Returns:
             pd.DataFrame: Single Column DataFrame of Values.
         """
-        return self.Table.Model.Adomd.Query(
+        return self.Table.Model.Adomd.query(
             f"EVALUATE VALUES('{self.Table.Name}'[{self.Name}])"
         )
 
@@ -133,4 +133,4 @@ class PyColumns(PyObjects):
                 dax_identifier = f"'{table_name}'[{column_name}]"
                 query_str += f"ROW(\"Table\",\"{table_name}\",\"Column\",\"{column_name}\",\"{query_function}\",{query_function.replace('_',dax_identifier)}),\n"
         query_str = f"{query_str[:-2]})"
-        return self[0].Table.Model.Query(query_str)
+        return self[0].Table.Model.query(query_str)

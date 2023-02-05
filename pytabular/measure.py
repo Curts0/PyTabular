@@ -38,7 +38,7 @@ class PyMeasure(PyObject):
 
         """
         dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"
-        return self.Table.Model.Query(dmv_query)
+        return self.Table.Model.query(dmv_query)
 
 
 class PyMeasures(PyObjects):
