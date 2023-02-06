@@ -374,7 +374,7 @@ class PyRefresh:
         """
         if self.model.Server.Connected is False:
             logger.info(f"{self.Server.Name} - Reconnecting...")
-            self.model.Server.reconnect()
+            self.model.recconect()
 
         if self.trace is not None:
             self.trace.start()
