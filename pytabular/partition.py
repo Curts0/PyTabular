@@ -42,7 +42,7 @@ class PyPartition(PyObject):
 
     def refresh(self, *args, **kwargs) -> pd.DataFrame:
         """Same method from Model Refresh, you can pass through any extra parameters. For example:
-        `Tabular().Tables['Table Name'].Partitions[0].refresh(Tracing = True)`
+        `Tabular().Tables['Table Name'].Partitions[0].refresh()`
         Returns:
             pd.DataFrame: Returns pandas dataframe with some refresh details
         """
