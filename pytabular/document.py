@@ -332,17 +332,17 @@ description: This page contains all measures for the {self.model.Name} model, in
             "\\n", ""
         )
 
-        partition_type = ''
-        partition_source = ''
+        partition_type = ""
+        partition_source = ""
 
-        if str(object.Partitions[0].SourceType) == 'Calculated':
-            partition_type = 'dax'
+        if str(object.Partitions[0].SourceType) == "Calculated":
+            partition_type = "dax"
             partition_source = object.Partitions[0].Source.Expression
-        elif str(object.Partitions[0].SourceType) == 'M':
-            partition_type = 'powerquery'
+        elif str(object.Partitions[0].SourceType) == "M":
+            partition_type = "powerquery"
             partition_source = object.Partitions[0].Source.Expression
         else:
-            partition_type = 'sql'
+            partition_type = "sql"
             partition_source = object.Partitions[0].Source.Query
 
         return f"""

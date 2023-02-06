@@ -177,7 +177,7 @@ def get_value_to_df(Query: AdomdDataReader, index: int):
         return Query.GetValue(index)
 
 
-def dataframe_to_dict(df: pd.DataFrame) -> list[dict]:
+def dataframe_to_dict(df: pd.DataFrame) -> List[dict]:
     """Convert to Dataframe to dictionary and alter columns names with;
     - Underscores (_) to spaces
     - All Strings are converted to Title Case.
