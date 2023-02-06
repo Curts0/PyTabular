@@ -264,7 +264,7 @@ class PyRefresh:
             self.trace.drop()
         for check in self._checks:
             check.post_check()
-            #self._checks.remove_refresh_check(check)
+            # self._checks.remove_refresh_check(check)
         self._checks.clear_refresh_checks()
         pass
 
