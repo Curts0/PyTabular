@@ -249,20 +249,23 @@ tables.Refresh()
 ```
 
 ## Documenting a Model
-The Tabular model co
+The Tabular model contains a lot of information that can be used to generation documentation if filled in. Currently the markdown files are generated with the Docusaurs heading in place, but this will be changed in future to support multiple documentation platforms. 
+
+**Tip**: With Tabular Editor 2 (Free) or 3 (Paid) you can easily add Descriptioms, Translations (Cultures) and other additonal information that can later be used for generating the documentation. 
+
 Args:
-- **model**: Tabular,
-- **friendly_name**: str = str(), 
+- **model**: Tabular
+- **friendly_name**: Default > No Value 
 
 To specify the location of the docs, just supply the save location with a new folder name argument. 
-- **save_location**: str = "docs",
+- **save_location**: Default > docs
 
 Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
-- **general_page_url**: str = "1-general-information.md",
-- **measure_page_url**: str = "2-measures.md",
-- **table_page_url**: str = "3-tables.md",
-- **column_page_url**: str = "4-columns.md",
-- **roles_page_url**: str = "5-roles.md",
+- **general_page_url**: Default > 1-general-information.md
+- **measure_page_url**: Default > 2-measures.md
+- **table_page_url**: Default > 3-tables.md
+- **column_page_url**: Default > 4-columns.md
+- **roles_page_url**: Default > 5-roles.md
 
 ### Documenting a Model
 The simpelst way to document a tabular model is to connect to the model, and initialize the documentation and execute `save_documentation()`. 
@@ -271,7 +274,7 @@ The simpelst way to document a tabular model is to connect to the model, and ini
 import pytabular
 
 # Connect to a Tabular Model Model
-model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
+model = pytabular.Tabular(CONNECTION_STR)
 
 # Initiate the Docs 
 docs = pytabular.ModelDocumenter(model)
@@ -280,7 +283,6 @@ docs = pytabular.ModelDocumenter(model)
 docs.save_documentation()
 ```
 
-
 ### Documenting a Model with Cultures
 Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to `True` and specify the culture you want to use (e.g. `'en-US'). 
 
@@ -288,7 +290,7 @@ Some model creators choose to add cultures to a tabular model for different kind
 import pytabular
 
 # Connect to a Tabular Model Model
-model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
+model = pytabular.Tabular(CONNECTION_STR)
 
 # Initiate the Docs 
 docs = pytabular.ModelDocumenter(model)
@@ -307,17 +309,14 @@ docs.set_transalation(
 docs.save_documentation()
 ```
 ### Documenting a Power BI > Local Model.
-The Local model doesn't have a name, only an Id. So we need to Supply a "Friendly Name", which will be used to store the markdown files.
+The Local model doesn't have a "name", only an Id. So we need to Supply a "Friendly Name", which will be used to store the markdown files.
 ```python
 import pytabular
 
 # Connect to a Tabular Model Model
-model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
+model = pytabular.Tabular(CONNECTION_STR)
 
-# Initiate the Docs 
-docs = pytabular.ModelDocumenter(model)
-
-# Set the translation for documentation to an available culture.
+# Initiate the Docs and set a friendly name to store the markdown files.
 docs = pytabular.ModelDocumenter(
     model = model,
     friendly_name = "Adventure Works"
