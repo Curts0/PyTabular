@@ -251,15 +251,54 @@ tables.Refresh()
 ## Documenting a Model
 
 Args:
-- Docs Location: 
-- Friendly Name: 
+```python 
+model: Tabular,
+friendly_name: str = str(),
+save_location: str = "docs",
+general_page_url: str = "1-general-information.md",
+measure_page_url: str = "2-measures.md",
+table_page_url: str = "3-tables.md",
+column_page_url: str = "4-columns.md",
+roles_page_url: str = "5-roles.md",
+```
 
-### Refreshing a Power BI Premium Model
+### Documenting a Power BI Premium Model
+```python
+import pytabular
+import logging
 
-### Refreshing a Analysis Server Model
+logger = logging.getLogger("PyTabular")
+model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
 
-### Refreshing a Power BI > Local Model.
+docs = pytabular.ModelDocumenter(model)
+docs.set_transalation(True, 'en-US')
+docs.save_documentation()
+```
+
+### Documenting a Analysis Server Model
+```python
+import pytabular
+
+# Connect to the Analysis Server Model
+model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
+
+# Initiate the Docs 
+docs = pytabular.ModelDocumenter(model)
+
+# Save docs to the default location
+docs.save_documentation()
+```
+### Documenting a Power BI > Local Model.
 - The Local model doesn't have a name, only an Id. So we need to Supply a "Friendly Name".
+```python
+import pytabular
+import logging
 
+logger = logging.getLogger("PyTabular")
+model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
+
+docs = pytabular.ModelDocumenter(model)
+docs.save_documentation()
+```
 ### Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
