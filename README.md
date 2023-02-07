@@ -249,37 +249,28 @@ tables.Refresh()
 ```
 
 ## Documenting a Model
-
+The Tabular model co
 Args:
-```python 
-model: Tabular,
-friendly_name: str = str(),
-save_location: str = "docs",
-general_page_url: str = "1-general-information.md",
-measure_page_url: str = "2-measures.md",
-table_page_url: str = "3-tables.md",
-column_page_url: str = "4-columns.md",
-roles_page_url: str = "5-roles.md",
-```
+- **model**: Tabular,
+- **friendly_name**: str = str(), 
 
-### Documenting a Power BI Premium Model
-```python
-import pytabular
-import logging
+To specify the location of the docs, just supply the save location with a new folder name argument. 
+- **save_location**: str = "docs",
 
-logger = logging.getLogger("PyTabular")
-model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
+Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
+- **general_page_url**: str = "1-general-information.md",
+- **measure_page_url**: str = "2-measures.md",
+- **table_page_url**: str = "3-tables.md",
+- **column_page_url**: str = "4-columns.md",
+- **roles_page_url**: str = "5-roles.md",
 
-docs = pytabular.ModelDocumenter(model)
-docs.set_transalation(True, 'en-US')
-docs.save_documentation()
-```
+### Documenting a Model
+The simpelst way to document a tabular model is to connect to the model, and initialize the documentation and execute `save_documentation()`. 
 
-### Documenting a Analysis Server Model
 ```python
 import pytabular
 
-# Connect to the Analysis Server Model
+# Connect to a Tabular Model Model
 model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
 
 # Initiate the Docs 
@@ -288,16 +279,51 @@ docs = pytabular.ModelDocumenter(model)
 # Save docs to the default location
 docs.save_documentation()
 ```
-### Documenting a Power BI > Local Model.
-- The Local model doesn't have a name, only an Id. So we need to Supply a "Friendly Name".
+
+
+### Documenting a Model with Cultures
+Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to `True` and specify the culture you want to use (e.g. `'en-US'). 
+
 ```python
 import pytabular
-import logging
 
-logger = logging.getLogger("PyTabular")
+# Connect to a Tabular Model Model
 model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
 
+# Initiate the Docs 
 docs = pytabular.ModelDocumenter(model)
+
+# Set the translation for documentation to an available culture.
+docs = pytabular.ModelDocumenter(model)
+
+# By setting the Tranlsations to `True` it will check if it exists and if it does, 
+# it will start using the translations for the docs
+docs.set_transalation(
+        enable_translations=True, 
+        culture = 'en-US'
+    )
+
+# Save docs to the default location
+docs.save_documentation()
+```
+### Documenting a Power BI > Local Model.
+The Local model doesn't have a name, only an Id. So we need to Supply a "Friendly Name", which will be used to store the markdown files.
+```python
+import pytabular
+
+# Connect to a Tabular Model Model
+model = pytabular.Tabular(f"{SERVER};Catalog={INITIAL_CATALOG}")
+
+# Initiate the Docs 
+docs = pytabular.ModelDocumenter(model)
+
+# Set the translation for documentation to an available culture.
+docs = pytabular.ModelDocumenter(
+    model = model,
+    friendly_name = "Adventure Works"
+)
+
+# Save docs to the default location
 docs.save_documentation()
 ```
 ### Contributing
