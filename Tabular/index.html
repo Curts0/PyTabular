@@ -49,27 +49,27 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#tabular">Tabular</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#reload_model_info">.Reload_Model_Info</a>
+    <li class="toctree-l3"><a class="reference internal" href="#reload_model_info">.reload_model_info</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#is_process">.Is_Process</a>
+    <li class="toctree-l3"><a class="reference internal" href="#is_process">.is_process</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#disconnect">.Disconnect</a>
+    <li class="toctree-l3"><a class="reference internal" href="#disconnect">.disconnect</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#reconnect">.Reconnect</a>
+    <li class="toctree-l3"><a class="reference internal" href="#reconnect">.reconnect</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#refresh">.Refresh</a>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#savechanges">.SaveChanges</a>
+    <li class="toctree-l3"><a class="reference internal" href="#save_changes">.save_changes</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#backup_table">.Backup_Table</a>
+    <li class="toctree-l3"><a class="reference internal" href="#backup_table">.backup_table</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#revert_table">.Revert_Table</a>
+    <li class="toctree-l3"><a class="reference internal" href="#revert_table">.revert_table</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#query">.Query</a>
+    <li class="toctree-l3"><a class="reference internal" href="#query">.query</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#analyze_bpa">.Analyze_BPA</a>
+    <li class="toctree-l3"><a class="reference internal" href="#analyze_bpa">.analyze_bpa</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#create_table">.Create_Table</a>
+    <li class="toctree-l3"><a class="reference internal" href="#create_table">.create_table</a>
     </li>
         </ul>
     </li>
@@ -139,14 +139,14 @@
 <h2 id="tabular">Tabular</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L42">source</a></p>
 <pre><code class="language-python">Tabular(
-   CONNECTION_STR: str
+   connection_str: str
 )
 </code></pre>
 <hr />
 <p>Tabular Class to perform operations: <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet">Microsoft.AnalysisServices.Tabular</a>. You can use this class as your main way to interact with your model.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>CONNECTION_STR</strong> (str) : Valid <a href="https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions">Connection String</a> for connecting to a Tabular Model.</li>
+<li><strong>connection_str</strong> (str) : Valid <a href="https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions">Connection String</a> for connecting to a Tabular Model.</li>
 </ul>
 <p><strong>Attributes</strong></p>
 <ul>
@@ -160,19 +160,19 @@
 <li><strong>Measures</strong> (List[Measure]) : Easy access list of measures from model. See <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table.measures?view=analysisservices-dotnet#microsoft-analysisservices-tabular-table-measures">Measure MS Docs</a>.</li>
 </ul>
 <p><strong>Methods:</strong></p>
-<h3 id="reload_model_info">.Reload_Model_Info</h3>
+<h3 id="reload_model_info">.reload_model_info</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L112">source</a></p>
-<pre><code class="language-python">.Reload_Model_Info()
+<pre><code class="language-python">.reload_model_info()
 </code></pre>
 <hr />
-<p>Runs on <strong>init</strong> iterates through details, can be called after any model changes. Called in SaveChanges()</p>
+<p>Runs on <strong>init</strong> iterates through details, can be called after any model changes. Called in save_changes()</p>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>bool</strong>  : True if successful</li>
 </ul>
-<h3 id="is_process">.Is_Process</h3>
+<h3 id="is_process">.is_process</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L147">source</a></p>
-<pre><code class="language-python">.Is_Process()
+<pre><code class="language-python">.is_process()
 </code></pre>
 <hr />
 <p>Run method to check if Processing is occurring. Will query DMV $SYSTEM.DISCOVER_JOBS to see if any processing is happening.</p>
@@ -180,21 +180,21 @@
 <ul>
 <li><strong>bool</strong>  : True if DMV shows Process, False if not.</li>
 </ul>
-<h3 id="disconnect">.Disconnect</h3>
+<h3 id="disconnect">.disconnect</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L156">source</a></p>
-<pre><code class="language-python">.Disconnect()
+<pre><code class="language-python">.disconnect()
 </code></pre>
 <hr />
 <p>Disconnects from Model</p>
-<h3 id="reconnect">.Reconnect</h3>
+<h3 id="reconnect">.reconnect</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L162">source</a></p>
-<pre><code class="language-python">.Reconnect()
+<pre><code class="language-python">.reconnect()
 </code></pre>
 <hr />
 <p>Reconnects to Model</p>
-<h3 id="refresh">.Refresh</h3>
+<h3 id="refresh">.refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L167">source</a></p>
-<pre><code class="language-python">.Refresh(
+<pre><code class="language-python">.refresh(
    *args, **kwargs
 )
 </code></pre>
@@ -211,16 +211,16 @@
 </ul>
 <p><strong>Returns</strong></p>
 <p>pd.DataFrame</p>
-<h3 id="savechanges">.SaveChanges</h3>
+<h3 id="save_changes">.save_changes</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L183">source</a></p>
-<pre><code class="language-python">.SaveChanges()
+<pre><code class="language-python">.save_changes()
 </code></pre>
 <hr />
 <p>Called after refreshes or any model changes.
 Currently will return a named tuple of all changes detected. However a ton of room for improvement here.</p>
-<h3 id="backup_table">.Backup_Table</h3>
+<h3 id="backup_table">.backup_table</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L243">source</a></p>
-<pre><code class="language-python">.Backup_Table(
+<pre><code class="language-python">.backup_table(
    table_str: str
 )
 </code></pre>
@@ -237,9 +237,9 @@ Refresh is performed from source during backup.</p>
 <ul>
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
-<h3 id="revert_table">.Revert_Table</h3>
+<h3 id="revert_table">.revert_table</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L345">source</a></p>
-<pre><code class="language-python">.Revert_Table(
+<pre><code class="language-python">.revert_table(
    table_str: str
 )
 </code></pre>
@@ -259,18 +259,18 @@ Example scenario -&gt;
 <ul>
 <li><strong>bool</strong>  : Returns True if Successful, else will return error.</li>
 </ul>
-<h3 id="query">.Query</h3>
+<h3 id="query">.query</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L447">source</a></p>
-<pre><code class="language-python">.Query(
-   Query_Str: str, Effective_User: str = None
+<pre><code class="language-python">.query(
+   query_str: str, effective_user: str = None
 )
 </code></pre>
 <hr />
 <p>Executes Query on Model and Returns Results in Pandas DataFrame</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Query_Str</strong> (str) : Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].</li>
-<li><strong>Effective_User</strong> (str) : User you wish to query as.
+<li><strong>query_Str</strong> (str) : Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].</li>
+<li><strong>effective_user</strong> (str) : User you wish to query as.
 Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.
 It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]</li>
 </ul>
@@ -278,10 +278,10 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 <ul>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
-<h3 id="analyze_bpa">.Analyze_BPA</h3>
+<h3 id="analyze_bpa">.analyze_bpa</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L475">source</a></p>
-<pre><code class="language-python">.Analyze_BPA(
-   Tabular_Editor_Exe: str, Best_Practice_Analyzer: str
+<pre><code class="language-python">.analyze_bpa(
+   tabular_editor_exe: str, best_practice_analyzer: str
 )
 </code></pre>
 <hr />
@@ -290,16 +290,16 @@ It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISC
 <a href="https://docs.tabulareditor.com/te2/Command-line-Options.html">Tabular Editor Command Line Options</a></p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Tabular_Editor_Exe</strong> (str) : TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.</li>
-<li><strong>Best_Practice_Analyzer</strong> (str) : BPA json file path. Feel free to use class BPA().Location or provide your own. Defualts to        https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json</li>
+<li><strong>tabular_editor_exe</strong> (str) : TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.</li>
+<li><strong>best_practice_analyzer</strong> (str) : BPA json file path. Feel free to use class BPA().Location or provide your own. Defualts to        https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
 <li>Assuming no failure, will return list of BPA violations. Else will return error from command line.</li>
 </ul>
-<h3 id="create_table">.Create_Table</h3>
+<h3 id="create_table">.create_table</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pytabular.py/#L510">source</a></p>
-<pre><code class="language-python">.Create_Table(
+<pre><code class="language-python">.create_table(
    df: pd.DataFrame, table_name: str
 )
 </code></pre>

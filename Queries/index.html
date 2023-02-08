@@ -69,7 +69,7 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#connection">Connection</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#query">.Query</a>
+    <li class="toctree-l3"><a class="reference internal" href="#query">.query</a>
     </li>
         </ul>
     </li>
@@ -119,7 +119,7 @@
 <h2 id="connection">Connection</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L16">source</a></p>
 <pre><code class="language-python">Connection(
-   Server, Effective_User = None
+   server, effective_user = None
 )
 </code></pre>
 <hr />
@@ -130,17 +130,17 @@ Right now designed for internal use. For example, Query method in the Tabular cl
 <li><strong>AdomdConnection</strong> (<em>type</em>) : <em>description</em></li>
 </ul>
 <p><strong>Methods:</strong></p>
-<h3 id="query">.Query</h3>
+<h3 id="query">.query</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L37">source</a></p>
-<pre><code class="language-python">.Query(
-   Query_Str: str
+<pre><code class="language-python">.query(
+   query_str: str
 )
 </code></pre>
 <hr />
-<p>Executes Query on Model and Returns Results in Pandas DataFrame</p>
+<p>Executes Query on Model and Returns results in Pandas DataFrame</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Query_Str</strong> (str) : Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
+<li><strong>query_str</strong> (str) : Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
 Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.
 It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]</li>
 </ul>

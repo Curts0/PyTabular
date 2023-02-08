@@ -47,6 +47,18 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#documenting-a-model">Documenting a Model</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#args">Args:</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-model_1">Documenting a Model</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-model-with-cultures">Documenting a Model with Cultures</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-power-bi-desktop-model">Documenting a Power BI Desktop Model</a>
+    </li>
+        </ul>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#if-blank-table-then-refresh-table">If blank table, then refresh table.</a>
@@ -146,8 +158,11 @@
 <h3 id="what-is-it">What is it?</h3>
 <p><a href="https://github.com/Curts0/PyTabular">PyTabular</a> (python-tabular in <a href="https://pypi.org/project/python-tabular/">pypi</a>) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. Currently, this build is tested and working on Windows Operating System only. Help is needed to expand this for other operating systems. The package should have the dll files included when you import it. See <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.</p>
 <h3 id="getting-started">Getting Started</h3>
-<p>See the <a href="https://pypi.org/project/python-tabular/">Pypi project</a> for available version.</p>
+<p>See the <a href="https://pypi.org/project/python-tabular/">Pypi project</a> for available versions. <strong>To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.</strong> Instal v. 0.3.4 or lower to get the older naming conventions.</p>
 <pre><code class="language-powershell">python3 -m pip install python-tabular
+
+#install specific version
+python3 -m pip install python-tabular==0.3.4
 </code></pre>
 <p>In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.</p>
 <pre><code class="language-python">import pytabular
@@ -160,19 +175,19 @@ pytabular.logger.disabled = True
 <p>You can query your models with the Query method from your tabular class. For Dax Queries, it will need the full Dax syntax. See <a href="https://dax.guide/st/evaluate/">EVALUATE example</a>. This will return a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>. If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See <a href="https://curts0.github.io/PyTabular/Tabular/#query">PyTabular Docs for Query</a>.</p>
 <pre><code class="language-python">#Run basic queries
 DAX_QUERY = &quot;EVALUATE TOPN(100, 'Table1')&quot;
-model.Query(DAX_QUERY) #returns pd.DataFrame()
+model.query(DAX_QUERY) #returns pd.DataFrame()
 
 #or...
 DMV_QUERY = &quot;select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES&quot;
-model.Query(DMV_QUERY) #returns pd.DataFrame()
+model.query(DMV_QUERY) #returns pd.DataFrame()
 
 #or...
 SINGLE_VALUE_QUERY_EX = &quot;EVALUATE {1}&quot;
-model.Query(SINGLE_VALUE_QUERY_EX) #returns 1
+model.query(SINGLE_VALUE_QUERY_EX) #returns 1
 
 #or...
 FILE_PATH = 'C:\\FILEPATHEXAMPLE\\file.dax' #or file.txt
-model.Query(FILE_PATH) #Will return same logic as above, single values if possible else will return pd.DataFrame()
+model.query(FILE_PATH) #Will return same logic as above, single values if possible else will return pd.DataFrame()
 </code></pre>
 <p>You can also explore your tables, partitions, and columns. Via the Attributes from your Tabular class.</p>
 <pre><code class="language-python">#Explore tables...
@@ -182,88 +197,157 @@ dir(model.Tables['Table Name'])
 dir(model.Tables['Table Name'].Partitions['Partition Name'])
 
 #Only a few features right now, but check out the built in methods.
-model.Tables['Table Name'].Refresh(Tracing = True)
+model.Tables['Table Name'].refresh()
 #or
-model.Tables['Table Name'].Partitions['Partition Name'].Refresh(Tracing = True)
+model.Tables['Table Name'].Partitions['Partition Name'].refresh()
 #or
-model.Tables['Table Name'].Partitions['Partition Name'].Last_Refresh()
+model.Tables['Table Name'].Partitions['Partition Name'].last_refresh()
 #or
-model.Tables['Table Name'].Row_Count()
+model.Tables['Table Name'].row_count()
 #or
-model.Tables['Table Name'].Columns['Column Name'].Distinct_Count()
+model.Tables['Table Name'].Columns['Column Name'].distinct_count()
 </code></pre>
-<p>Refresh method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">PyTabular Docs for Refreshing Tables and Partitions</a>. Most basic way to refresh is input the table name string. The method will search for table and output exeption if unable to find it. For partitions you will need a key, value combination. Example, {'Table1':'Partition1'}. You can also take the key value pair and iterate through a group of partitions. Example, {'Table1':['Partition1','Partition2']}. Rather than providing a string, you can also input the actual class. See below for those examples, and you can acess them from the built in attributes self.Tables, self.Partitions or explore through the .Net classes yourself in self.Model.Tables.</p>
+<p>Refresh method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">PyTabular Docs for Refreshing Tables and Partitions</a>. Most basic way to refresh is input the table name string. The method will search for table and output exeption if unable to find it. For partitions you will need a key, value combination. Example, <code>{'Table1':'Partition1'}</code>. You can also take the key value pair and iterate through a group of partitions. Example, <code>{'Table1':['Partition1','Partition2']}</code>. Rather than providing a string, you can also input the actual class. See below for those examples, and you can acess them from the built in attributes <code>self.Tables</code>, <code>self.Partitions</code> or explore through the .Net classes yourself in <code>self.Model.Tables</code>.</p>
 <pre><code class="language-python">#You have a few options when refreshing. 
-model.Refresh('Table Name')
+model.refresh('Table Name')
 
 #or...
-model.Refresh(['Table1','Table2','Table3'])
+model.refresh(['Table1','Table2','Table3'])
 
 #or...
-model.Refresh(&lt;Table Class&gt;)
+model.refresh(&lt;Table Class&gt;)
 
 #or...
-model.Refresh(&lt;Partition Class&gt;)
+model.refresh(&lt;Partition Class&gt;)
 
 #or...
-model.Refresh({'Table Name':'Partition Name'})
+model.refresh({'Table Name':'Partition Name'})
 
 #or any kind of weird combination like
-model.Refresh([{&lt;Table Class&gt;:&lt;Partition Class&gt;,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
+model.refresh([{&lt;Table Class&gt;:&lt;Partition Class&gt;,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
 
 #You can even run through the Tables &amp; Partition Attributes
-model.Tables['Table Name'].Refresh()
+model.Tables['Table Name'].refresh()
 
 #or
-model.Tables['Table Name'].Partitions['Partition Name'].Refresh()
+model.Tables['Table Name'].Partitions['Partition Name'].refresh()
 
-#Default Tracing happens automatically, but can be removed by -- 
-model.Refresh(['Table1','Table2'], Tracing = None)
+#Default Tracing happens automatically, but can be removed by... 
+model.refresh(['Table1','Table2'], trace = None)
 </code></pre>
 <p>It's not uncommon to need to run through some checks on specific Tables, Partitions, Columns, Etc...</p>
 <pre><code class="language-python">#Get Row Count from model
-model.Tables['Table Name'].Row_Count()
+model.Tables['Table Name'].row_count()
 
 #Get Last Refresh time from a partition
-model.Tables['Table Name'].Last_Refresh()
+model.Tables['Table Name'].last_refresh()
 
 #Get Distinct Count or Values from a Column
-model.Tables['Table Name'].Columns['Column Name'].Distinct_Count()
+model.Tables['Table Name'].Columns['Column Name'].distinct_count()
 #or
-model.Tables['Table Name'].Columns['Column Name'].Values()
+model.Tables['Table Name'].Columns['Column Name'].values()
+</code></pre>
+<h3 id="documenting-a-model">Documenting a Model</h3>
+<p>The Tabular model contains a lot of information that can be used to generation documentation if filled in. Currently the markdown files are generated with the Docusaurs heading in place, but this will be changed in future to support multiple documentation platforms. </p>
+<p><strong>Tip</strong>: With Tabular Editor 2 (Free) or 3 (Paid) you can easily add Descriptioms, Translations (Cultures) and other additonal information that can later be used for generating the documentation. </p>
+<h4 id="args">Args:</h4>
+<ul>
+<li><strong>model</strong>: Tabular</li>
+<li><strong>friendly_name</strong>: Default &gt; No Value </li>
+</ul>
+<p>To specify the location of the docs, just supply the save location with a new folder name argument. 
+- <strong>save_location</strong>: Default &gt; docs</p>
+<p>Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
+- <strong>general_page_url</strong>: Default &gt; 1-general-information.md
+- <strong>measure_page_url</strong>: Default &gt; 2-measures.md
+- <strong>table_page_url</strong>: Default &gt; 3-tables.md
+- <strong>column_page_url</strong>: Default &gt; 4-columns.md
+- <strong>roles_page_url</strong>: Default &gt; 5-roles.md</p>
+<h4 id="documenting-a-model_1">Documenting a Model</h4>
+<p>The simpelst way to document a tabular model is to connect to the model, and initialize the documentation and execute <code>save_documentation()</code>. </p>
+<pre><code class="language-python">import pytabular
+
+# Connect to a Tabular Model Model
+model = pytabular.Tabular(CONNECTION_STR)
+
+# Initiate the Docs 
+docs = pytabular.ModelDocumenter(model)
+
+# Save docs to the default location
+docs.save_documentation()
+</code></pre>
+<h4 id="documenting-a-model-with-cultures">Documenting a Model with Cultures</h4>
+<p>Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to <code>True</code> and specify the culture you want to use (e.g. `'en-US'). </p>
+<pre><code class="language-python">import pytabular
+
+# Connect to a Tabular Model Model
+model = pytabular.Tabular(CONNECTION_STR)
+
+# Initiate the Docs 
+docs = pytabular.ModelDocumenter(model)
+
+# Set the translation for documentation to an available culture.
+docs = pytabular.ModelDocumenter(model)
+
+# By setting the Tranlsations to `True` it will check if it exists and if it does, 
+# it will start using the translations for the docs
+docs.set_transalation(
+        enable_translations = True, 
+        culture = 'en-US'
+    )
+
+# Save docs to the default location
+docs.save_documentation()
+</code></pre>
+<h4 id="documenting-a-power-bi-desktop-model">Documenting a Power BI Desktop Model</h4>
+<p>The Local model doesn't have a "name", only an Id. So we need to Supply a "Friendly Name", which will be used to store the markdown files. The result of this example with be a folder <code>my-docs-folder</code> with a subfolder <code>Adventure Works</code> where all the files are stored.</p>
+<pre><code class="language-python">import pytabular
+
+# Connect to a Tabular Model Model
+model = pytabular.Tabular(CONNECTION_STR)
+
+# Initiate the Docs, set a friendly name to store the markdown files and overwrite the default location.
+docs = pytabular.ModelDocumenter(
+    model = model,
+    friendly_name = &quot;Adventure Works&quot;, 
+    save_location = &quot;my-docs-folder&quot;
+)
+
+# Save docs to the default location
+docs.save_documentation()
 </code></pre>
 <h3 id="use-cases">Use Cases</h3>
 <h4 id="if-blank-table-then-refresh-table">If blank table, then refresh table.</h4>
 <p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#return_zero_row_tables">Return_Zero_Row_Tables</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-tables = model.Tables.Find_Zero_Rows()
+tables = model.Tables.find_zero_rows()
 if len(tables) &gt; 0:
-    model.Refresh(tables)
+    model.refresh(tables)
 </code></pre>
 <h4 id="sneak-in-a-refresh">Sneak in a refresh.</h4>
 <p>This will use the method <a href="https://curts0.github.io/PyTabular/Tabular/#is_process">Is_Process</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class. It will check the DMV to see if any jobs are currently running classified as processing.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-if model.Is_Process():
+if model.is_process():
     #do what you want if there is a refresh happening
 else:
-    model.Refresh(TABLES_OR_PARTITIONS_TO_REFRESH)
+    model.refresh(TABLES_OR_PARTITIONS_TO_REFRESH)
 </code></pre>
 <h4 id="show-refresh-times-in-model">Show refresh times in model.</h4>
 <p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#table_last_refresh_times">Table_Last_Refresh_Times</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#create_table">Create_Table</a> from the Tabular class. It will search through the model for all tables and partitions and pull the 'RefreshedTime' property from it. It will return results into a pandas dataframe, which will then be converted into an M expression used for a new table.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-df = model.Tables.Last_Refresh()
-model.Create_Table(df, 'Refresh Times')
+df = model.Tables.last_refresh()
+model.create_table(df, 'Refresh Times')
 </code></pre>
 <h4 id="if-bpa-violation-then-revert-deployment">If BPA Violation, then revert deployment.</h4>
 <p>Uses a few things. First the <a href="https://curts0.github.io/PyTabular/Best%20Practice%20Analyzer/#bpa">BPA Class</a>, then the <a href="https://curts0.github.io/PyTabular/Tabular%20Editor%202/">TE2 Class</a>, and will finish with the <a href="https://curts0.github.io/PyTabular/Tabular/#analyze_bpa">Analyze_BPA</a> method. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities.</p>
 <pre><code class="language-python">import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
-TE2 = pytabular.Tabular_Editor() #Feel free to input your TE2 File path or this will download for you.
-BPA = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
-results = model.Analyze_BPA(TE2.EXE,BPA.Location)
+te2 = pytabular.TabularEditor() #Feel free to input your TE2 File path or this will download for you.
+bpa = pytabular.BPA() #Fee free to input your own BPA file or this will download for you from: https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+results = model.analyze_bpa(te2.exe,bpa.location)
 
 if len(results) &gt; 0:
     #Revert deployment here!
@@ -274,12 +358,12 @@ if len(results) &gt; 0:
 model = pytabular.Tabular(CONNECTION_STR)
 LIST_OF_FILE_PATHS = ['C:\\FilePath\\file1.dax','C:\\FilePath\\file1.txt','C:\\FilePath\\file2.dax','C:\\FilePath\\file2.txt']
 for file_path in LIST_OF_FILE_PATHS:
-    model.Query(file_path)
+    model.query(file_path)
 </code></pre>
 <h4 id="advanced-refreshing-with-pre-and-post-checks">Advanced Refreshing with Pre and Post Checks</h4>
 <p>Maybe you are introducing new logic to a fact table, and you need to ensure that a measure checking last month values never changes. To do that you can take advantage of the <code>Refresh_Check</code> and <code>Refresh_Check_Collection</code> classes (Sorry, I know the documentation stinks right now). But using those you can build out something that would first check the results of the measure, then refresh, then check the results of the measure after refresh, and lastly perform your desired check. In this case the <code>pre</code> value matches the <code>post</code> value. When refreshing and your pre does not equal post, it would fail and give an assertion error in your logging.</p>
 <pre><code class="language-python">from pytabular import Tabular
-from pytabular.refresh import Refresh_Check, Refresh_Check_Collection
+from pytabular.refresh import RefreshCheck, RefreshCheckCollection
 
 model = Tabular(CONNECTION_STR)
 
@@ -289,18 +373,18 @@ def sum_of_sales_assertion(pre, post):
     return pre == post
 
 # This is where we put it all together into the `Refresh_Check` class. Give it a name, give it a query to run, and give it the assertion you want to make.
-sum_of_last_month_sales = Refresh_Check(
+sum_of_last_month_sales = RefreshCheck(
     'Last Month Sales',
-    lambda: model.Query(&quot;EVALUATE {[Last Month Sales]}&quot;)
+    lambda: model.query(&quot;EVALUATE {[Last Month Sales]}&quot;)
     ,sum_of_sales_assertion
 )
 
 # Here we are adding it to a `Refresh_Check_Collection` because you can have more than on `Refresh_Check` to run.
-all_refresh_check = Refresh_Check_Collection([sum_of_last_month_sales])
+all_refresh_check = RefreshCheckCollection([sum_of_last_month_sales])
 
 model.Refresh(
     'Fact Table Name',
-    refresh_checks = Refresh_Check_Collection([sum_of_last_month_sales])
+    refresh_checks = RefreshCheckCollection([sum_of_last_month_sales])
 
 )
 </code></pre>
@@ -324,14 +408,14 @@ SUMMARIZE(
 user_email = 'user1@company.com'
 
 #Base line, to query as the user connecting to the model.
-model.Query(query_str)
+model.query(query_str)
 
 #Option 1, Connect via connection class...
 user1 = p.Connection(model.Server, Effective_User = user_email)
-user1.Query(query_str)
+user1.query(query_str)
 
 #Option 2, Just add Effective_User
-model.Query(query_str, Effective_User = user_email)
+model.query(query_str, Effective_User = user_email)
 
 #PyTabular will do it's best to handle multiple accounts...
 #So you won't have to reconnect on every query
@@ -344,10 +428,10 @@ model.Query(query_str, Effective_User = user_email)
 model = p.Tabular(CONNECTION_STR)
 
 #Get related tables
-tables = model.Tables[TABLE_NAME].Related()
+tables = model.Tables[TABLE_NAME].related()
 
 #Now just refresh like usual...
-tables.Refresh()
+tables.refresh()
 </code></pre>
 <h3 id="contributing">Contributing</h3>
 <p>See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a></p>
@@ -398,5 +482,5 @@ tables.Refresh()
 
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2023-02-02 22:43:51.815728+00:00
+Build Date UTC : 2023-02-08 13:36:06.663770+00:00
 -->

@@ -75,9 +75,9 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Tabular Editor</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#tabular_editor">Tabular_Editor</a>
+    <li class="toctree-l2"><a class="reference internal" href="#tabulareditor">TabularEditor</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#download_tabular_editor">Download_Tabular_Editor</a>
+    <li class="toctree-l3"><a class="reference internal" href="#download_tabular_editor">download_tabular_editor</a>
     </li>
         </ul>
     </li>
@@ -116,30 +116,30 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="_1"></h1>
-<h2 id="tabular_editor">Tabular_Editor</h2>
+<h2 id="tabulareditor">TabularEditor</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L48">source</a></p>
-<pre><code class="language-python">Tabular_Editor(
-   EXE_File_Path: str = 'Default'
+<pre><code class="language-python">TabularEditor(
+   exe_file_path: str = 'Default'
 )
 </code></pre>
 <hr />
 <p>Setting Tabular_Editor Class for future work.
-Mainly runs <code>Download_Tabular_Editor()</code></p>
+Mainly runs <code>download_tabular_editor()</code></p>
 <hr />
-<h3 id="download_tabular_editor">Download_Tabular_Editor</h3>
+<h3 id="download_tabular_editor">download_tabular_editor</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L15">source</a></p>
-<pre><code class="language-python">.Download_Tabular_Editor(
-   Download_Location: str = 'https: //github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip',
-   Folder: str = 'Tabular_Editor_2', Auto_Remove = True
+<pre><code class="language-python">.download_tabular_editor(
+   download_location: str = 'https: //github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip',
+   folder: str = 'Tabular_Editor_2', auto_remove = True
 )
 </code></pre>
 <hr />
 <p>Runs a request.get() to retrieve the zip file from web. Will unzip response and store in directory. Will also register the removal of the new directory and files when exiting program.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Download_Location</strong> (str, optional) : File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.</li>
-<li><strong>Folder</strong> (str, optional) : New Folder Location. Defaults to 'Tabular_Editor_2'.</li>
-<li><strong>Auto_Remove</strong> (bool, optional) : Boolean to determine auto removal of files once script exits. Defaults to True.</li>
+<li><strong>download_location</strong> (str, optional) : File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.</li>
+<li><strong>folder</strong> (str, optional) : New Folder Location. Defaults to 'Tabular_Editor_2'.</li>
+<li><strong>auto_remove</strong> (bool, optional) : Boolean to determine auto removal of files once script exits. Defaults to True.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>

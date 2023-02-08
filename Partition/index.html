@@ -57,9 +57,9 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pypartition">PyPartition</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.Last_Refresh</a>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#refresh">.Refresh</a>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
     </li>
         </ul>
     </li>
@@ -134,9 +134,9 @@ With a few other bells and whistles added to it.</p>
 <li><strong>Table</strong>  : Parent Table to the Column</li>
 </ul>
 <p><strong>Methods:</strong></p>
-<h3 id="last_refresh">.Last_Refresh</h3>
+<h3 id="last_refresh">.last_refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L35">source</a></p>
-<pre><code class="language-python">.Last_Refresh()
+<pre><code class="language-python">.last_refresh()
 </code></pre>
 <hr />
 <p>Queries <code>RefreshedTime</code> attribute in the partition and converts from C# Ticks to Python datetime</p>
@@ -144,15 +144,15 @@ With a few other bells and whistles added to it.</p>
 <ul>
 <li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
 </ul>
-<h3 id="refresh">.Refresh</h3>
+<h3 id="refresh">.refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L43">source</a></p>
-<pre><code class="language-python">.Refresh(
+<pre><code class="language-python">.refresh(
    *args, **kwargs
 )
 </code></pre>
 <hr />
 <p>Same method from Model Refresh, you can pass through any extra parameters. For example:
-<code>Tabular().Tables['Table Name'].Partitions[0].Refresh(Tracing = True)</code></p>
+<code>Tabular().Tables['Table Name'].Partitions[0].refresh()</code></p>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>

@@ -63,25 +63,25 @@
               <ul class="current">
                 <li class="toctree-l1 current"><a class="reference internal current" href="./">Trace</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#base_trace">Base_Trace</a>
+    <li class="toctree-l2"><a class="reference internal" href="#basetrace">BaseTrace</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#build">.Build</a>
+    <li class="toctree-l3"><a class="reference internal" href="#build">.build</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#add">.Add</a>
+    <li class="toctree-l3"><a class="reference internal" href="#add">.add</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#update">.Update</a>
+    <li class="toctree-l3"><a class="reference internal" href="#update">.update</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#start">.Start</a>
+    <li class="toctree-l3"><a class="reference internal" href="#start">.start</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#stop">.Stop</a>
+    <li class="toctree-l3"><a class="reference internal" href="#stop">.stop</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#drop">.Drop</a>
+    <li class="toctree-l3"><a class="reference internal" href="#drop">.drop</a>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#refresh_trace">Refresh_Trace</a>
+    <li class="toctree-l2"><a class="reference internal" href="#refreshtrace">RefreshTrace</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#query_monitor">Query_Monitor</a>
+    <li class="toctree-l2"><a class="reference internal" href="#querymonitor">QueryMonitor</a>
     </li>
     </ul>
                 </li>
@@ -130,11 +130,11 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="_1"></h1>
-<h2 id="base_trace">Base_Trace</h2>
+<h2 id="basetrace">BaseTrace</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L20">source</a></p>
-<pre><code class="language-python">Base_Trace(
-   Tabular_Class, Trace_Events: List[TraceEvent],
-   Trace_Event_Columns: List[TraceColumn], Handler: Callable
+<pre><code class="language-python">BaseTrace(
+   tabular_class, trace_events: List[TraceEvent],
+   trace_event_columns: List[TraceColumn], handler: Callable
 )
 </code></pre>
 <hr />
@@ -143,9 +143,9 @@ This is the base class to customize the type of Trace you are looking for.
 <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.server.traces?view=analysisservices-dotnet#microsoft-analysisservices-tabular-server-traces">Server Traces</a></p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Tabular_Class</strong> (Tabular) : Tabular Class.</li>
-<li><strong>Trace_Events</strong> (List[TraceEvent]) : List of Trace Events.</li>
-<li><strong>Trace_Event_Columns</strong> (List[TraceColumn]) : List of Trace Event Columns.</li>
+<li><strong>tabular_class</strong> (Tabular) : Tabular Class.</li>
+<li><strong>trace_events</strong> (List[TraceEvent]) : List of Trace Events.</li>
+<li><strong>trace_event_columns</strong> (List[TraceColumn]) : List of Trace Event Columns.</li>
 <li><strong>Handler</strong> (Callable) : Function to call when Trace returns response.
 <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventclass?view=analysisservices-dotnet">TraceEventClass</a>
 <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tracecolumn?view=analysisservices-dotnet">TraceEventColumn</a>
@@ -155,9 +155,9 @@ Second is
 <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.traceeventargs?view=analysisservices-dotnet">TraceEventArgs</a></li>
 </ul>
 <p><strong>Methods:</strong></p>
-<h3 id="build">.Build</h3>
+<h3 id="build">.build</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L66">source</a></p>
-<pre><code class="language-python">.Build()
+<pre><code class="language-python">.build()
 </code></pre>
 <hr />
 <p>Run on initialization.
@@ -167,9 +167,9 @@ and attempt to build the Trace.</p>
 <ul>
 <li><strong>bool</strong>  : True if successful</li>
 </ul>
-<h3 id="add">.Add</h3>
+<h3 id="add">.add</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L101">source</a></p>
-<pre><code class="language-python">.Add()
+<pre><code class="language-python">.add()
 </code></pre>
 <hr />
 <p>Runs on initialization. Adds built Trace to the Server.</p>
@@ -177,9 +177,9 @@ and attempt to build the Trace.</p>
 <ul>
 <li><strong>int</strong>  : Return int of placement in Server.Traces.get_Item(int)</li>
 </ul>
-<h3 id="update">.Update</h3>
+<h3 id="update">.update</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L110">source</a></p>
-<pre><code class="language-python">.Update()
+<pre><code class="language-python">.update()
 </code></pre>
 <hr />
 <p>Runs on initialization. Syncs with Server.</p>
@@ -188,9 +188,9 @@ and attempt to build the Trace.</p>
 <li><strong>None</strong>  : Returns None.
 Unless unsuccessful then it will return the error from Server.</li>
 </ul>
-<h3 id="start">.Start</h3>
+<h3 id="start">.start</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L123">source</a></p>
-<pre><code class="language-python">.Start()
+<pre><code class="language-python">.start()
 </code></pre>
 <hr />
 <p>Call when you want to start the Trace</p>
@@ -199,9 +199,9 @@ Unless unsuccessful then it will return the error from Server.</li>
 <li><strong>None</strong>  : Returns None.
 Unless unsuccessful then it will return the error from Server.</li>
 </ul>
-<h3 id="stop">.Stop</h3>
+<h3 id="stop">.stop</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L133">source</a></p>
-<pre><code class="language-python">.Stop()
+<pre><code class="language-python">.stop()
 </code></pre>
 <hr />
 <p>Call when you want to stop the Trace</p>
@@ -210,9 +210,9 @@ Unless unsuccessful then it will return the error from Server.</li>
 <li><strong>None</strong>  : Returns None.
 Unless unsuccessful then it will return the error from Server.</li>
 </ul>
-<h3 id="drop">.Drop</h3>
+<h3 id="drop">.drop</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L143">source</a></p>
-<pre><code class="language-python">.Drop()
+<pre><code class="language-python">.drop()
 </code></pre>
 <hr />
 <p>Call when you want to drop the Trace</p>
@@ -222,45 +222,45 @@ Unless unsuccessful then it will return the error from Server.</li>
 then it will return the error from Server.</li>
 </ul>
 <hr />
-<h2 id="refresh_trace">Refresh_Trace</h2>
+<h2 id="refreshtrace">RefreshTrace</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L255">source</a></p>
-<pre><code class="language-python">Refresh_Trace(
-   Tabular_Class,
-   Trace_Events: List[TraceEvent] = [TraceEventClass.ProgressReportBegin,
+<pre><code class="language-python">RefreshTrace(
+   tabular_class,
+   trace_events: List[TraceEvent] = [TraceEventClass.ProgressReportBegin,
    TraceEventClass.ProgressReportCurrent, TraceEventClass.ProgressReportEnd,
    TraceEventClass.ProgressReportError],
-   Trace_Event_Columns: List[TraceColumn] = [TraceColumn.EventSubclass,
+   trace_event_columns: List[TraceColumn] = [TraceColumn.EventSubclass,
    TraceColumn.CurrentTime, TraceColumn.ObjectName, TraceColumn.ObjectPath,
    TraceColumn.DatabaseName, TraceColumn.SessionID, TraceColumn.TextData,
    TraceColumn.EventClass, TraceColumn.ProgressTotal],
-   Handler: Callable = _refresh_handler
+   handler: Callable = _refresh_handler
 )
 </code></pre>
 <hr />
-<p>Subclass of Base_Trace. For built-in Refresh Tracing.
+<p>Subclass of BaseTrace. For built-in Refresh Tracing.
 Run by default when refreshing tables or partitions.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Base_Trace</strong> (Base_Trace) : Base_Trace Class</li>
+<li><strong>BaseTrace</strong> (BaseTrace) : BaseTrace Class</li>
 </ul>
 <hr />
-<h2 id="query_monitor">Query_Monitor</h2>
+<h2 id="querymonitor">QueryMonitor</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_tracing.py/#L308">source</a></p>
-<pre><code class="language-python">Query_Monitor(
-   Tabular_Class, Trace_Events: List[TraceEvent] = [TraceEventClass.QueryEnd],
-   Trace_Event_Columns: List[TraceColumn] = [TraceColumn.EventSubclass,
+<pre><code class="language-python">QueryMonitor(
+   tabular_class, trace_events: List[TraceEvent] = [TraceEventClass.QueryEnd],
+   trace_event_columns: List[TraceColumn] = [TraceColumn.EventSubclass,
    TraceColumn.StartTime, TraceColumn.EndTime, TraceColumn.Duration,
    TraceColumn.Severity, TraceColumn.Error, TraceColumn.NTUserName,
    TraceColumn.DatabaseName, TraceColumn.ApplicationName, TraceColumn.TextData],
-   Handler: Callable = _query_monitor_handler
+   handler: Callable = _query_monitor_handler
 )
 </code></pre>
 <hr />
-<p>Subclass of Base_Trace. For built-in Query Monitoring.
+<p>Subclass of BaseTrace. For built-in Query Monitoring.
 If you want to see full query text, set logger to debug.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Base_Trace</strong> (Base_Trace) : Base_Trace Class</li>
+<li><strong>BaseTrace</strong> (BaseTrace) : BaseTrace Class</li>
 </ul>
               
             </div>
