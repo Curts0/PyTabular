@@ -8,7 +8,7 @@ import pytest
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_backingup_table(model):
-    model.Backup_Table(testingtablename)
+    model.backup_table(testingtablename)
     assert (
         len(
             [
@@ -23,7 +23,7 @@ def test_backingup_table(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_revert_table2(model):
-    model.Revert_Table(testingtablename)
+    model.revert_table(testingtablename)
     assert (
         len(
             [

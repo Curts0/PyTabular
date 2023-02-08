@@ -17,8 +17,8 @@ pages:
     source: 'pytabular/refresh.py'
     classes:
       - PyRefresh
-      - Refresh_Check
-      - Refresh_Check_Collection
+      - RefreshCheck
+      - RefreshCheckCollection
   - page: "Table.md"
     source: 'pytabular/table.py'
     classes:
@@ -37,21 +37,21 @@ pages:
   - page: "Traces.md"
     source: 'pytabular/tabular_tracing.py'
     classes:
-      - Base_Trace
-      - Refresh_Trace
-      - Query_Monitor
+      - BaseTrace
+      - RefreshTrace
+      - QueryMonitor
   - page: "Best Practice Analyzer.md"
     source: 'pytabular/best_practice_analyzer.py'
     functions:
-      - Download_BPA_File
+      - download_bpa_file
     classes:
       - BPA
   - page: "Tabular Editor 2.md"
     source: 'pytabular/tabular_editor.py'
     functions:
-      - Download_Tabular_Editor
+      - download_tabular_editor
     classes:
-      - Tabular_Editor
+      - TabularEditor
   - page: "PBI Helper.md"
     source: 'pytabular/pbi_helper.py'
     functions:

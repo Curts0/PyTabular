@@ -159,7 +159,7 @@ def get_sub_list(lst: list, n: int) -> list:
     return [lst[i : i + n] for i in range(0, len(lst), n)]
 
 
-def get_value_to_df(Query: AdomdDataReader, index: int):
+def get_value_to_df(query: AdomdDataReader, index: int):
     """Gets the values from the AdomdDataReader to convert the .Net Object
     into a tangible python value to work with in pandas.
     Lots of room for improvement on this one.
@@ -169,12 +169,12 @@ def get_value_to_df(Query: AdomdDataReader, index: int):
         index (int): Index of the value to perform the logic on.
     """
     if (
-        Query.GetDataTypeName((index)) in ("Decimal")
-        and Query.GetValue(index) is not None
+        query.GetDataTypeName((index)) in ("Decimal")
+        and query.GetValue(index) is not None
     ):
-        return Query.GetValue(index).ToDouble(Query.GetValue(index))
+        return query.GetValue(index).ToDouble(query.GetValue(index))
     else:
-        return Query.GetValue(index)
+        return query.GetValue(index)
 
 
 def dataframe_to_dict(df: pd.DataFrame) -> List[dict]:
