@@ -52,7 +52,7 @@ class PyRelationships(PyObjects):
     def __init__(self, objects) -> None:
         super().__init__(objects)
 
-    def Related(self, object: Union[PyTable, str]) -> PyTables:
+    def related(self, object: Union[PyTable, str]) -> PyTables:
         """Finds related tables of a given table.
 
         Args:

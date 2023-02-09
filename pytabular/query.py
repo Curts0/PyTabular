@@ -21,24 +21,24 @@ class Connection(AdomdConnection):
         AdomdConnection (_type_): _description_
     """
 
-    def __init__(self, Server, Effective_User=None) -> None:
+    def __init__(self, server, effective_user=None) -> None:
         super().__init__()
-        if Server.ConnectionInfo.Password is None:
-            connection_string = Server.ConnectionString
+        if server.ConnectionInfo.Password is None:
+            connection_string = server.ConnectionString
         else:
             connection_string = (
-                f"{Server.ConnectionString}Password='{Server.ConnectionInfo.Password}'"
+                f"{server.ConnectionString}Password='{server.ConnectionInfo.Password}'"
             )
         logger.debug(f"{connection_string}")
-        if Effective_User is not None:
-            connection_string += f";EffectiveUserName={Effective_User}"
+        if effective_user is not None:
+            connection_string += f";EffectiveUserName={effective_user}"
         self.ConnectionString = connection_string
 
-    def Query(self, Query_Str: str) -> Union[pd.DataFrame, str, int]:
-        """Executes Query on Model and Returns Results in Pandas DataFrame
+    def query(self, query_str: str) -> Union[pd.DataFrame, str, int]:
+        """Executes Query on Model and Returns results in Pandas DataFrame
 
         Args:
-                Query_Str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
+                query_str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
                 Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.
                 It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]
 
@@ -46,16 +46,16 @@ class Connection(AdomdConnection):
                 pd.DataFrame: Returns dataframe with results
         """
         try:
-            is_file = os.path.isfile(Query_Str)
+            is_file = os.path.isfile(query_str)
         except Exception:
             is_file = False
 
         if is_file:
             logger.debug(
-                f"File path detected, reading file... -> {Query_Str}",
+                f"File path detected, reading file... -> {query_str}",
             )
-            with open(Query_Str, "r") as file:
-                Query_Str = str(file.read())
+            with open(query_str, "r") as file:
+                query_str = str(file.read())
 
         if str(self.get_State()) != "Open":
             # Works for now, need to update to handle different types of conneciton properties
@@ -65,23 +65,23 @@ class Connection(AdomdConnection):
             logger.info(f"Connected! Session ID - {self.SessionID}")
 
         logger.debug("Querying Model...")
-        logger.debug(Query_Str)
-        Query = AdomdCommand(Query_Str, self).ExecuteReader()
-        Column_Headers = [
-            (index, Query.GetName(index)) for index in range(0, Query.FieldCount)
+        logger.debug(query_str)
+        query = AdomdCommand(query_str, self).ExecuteReader()
+        column_headers = [
+            (index, query.GetName(index)) for index in range(0, query.FieldCount)
         ]
-        Results = list()
-        while Query.Read():
-            Results.append(
+        results = list()
+        while query.Read():
+            results.append(
                 [
-                    get_value_to_df(Query, index)
-                    for index in range(0, len(Column_Headers))
+                    get_value_to_df(query, index)
+                    for index in range(0, len(column_headers))
                 ]
             )
 
-        Query.Close()
+        query.Close()
         logger.debug("Data retrieved... reading...")
-        df = pd.DataFrame(Results, columns=[value for _, value in Column_Headers])
+        df = pd.DataFrame(results, columns=[value for _, value in column_headers])
         if len(df) == 1 and len(df.columns) == 1:
             return df.iloc[0][df.columns[0]]
         return df

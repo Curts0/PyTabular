@@ -6,14 +6,14 @@ from os import getcwd
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_bpa(model):
-    te2 = p.Tabular_Editor().EXE
-    bpa = p.BPA().Location
-    assert isinstance(model.Analyze_BPA(te2, bpa), list)
+    te2 = p.TabularEditor().exe
+    bpa = p.BPA().location
+    assert isinstance(model.analyze_bpa(te2, bpa), list)
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_te2_custom_file_path(model):
-    assert isinstance(p.Tabular_Editor(getcwd()), p.Tabular_Editor)
+    assert isinstance(p.TabularEditor(getcwd()), p.TabularEditor)
 
 
 @pytest.mark.parametrize("model", testing_parameters)

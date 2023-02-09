@@ -58,8 +58,8 @@ from .logic_utils import (
     pd_dataframe_to_m_expression,
     pandas_datatype_to_tabular_datatype,
 )
-from .tabular_tracing import Base_Trace, Refresh_Trace, Query_Monitor
-from .tabular_editor import Tabular_Editor
+from .tabular_tracing import BaseTrace, RefreshTrace, QueryMonitor
+from .tabular_editor import TabularEditor
 from .best_practice_analyzer import BPA
 from .query import Connection
 from .pbi_helper import find_local_pbi_instances

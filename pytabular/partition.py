@@ -29,10 +29,10 @@ class PyPartition(PyObject):
             "SourceType", str(self._object.SourceType), end_section=True
         )
         self._display.add_row(
-            "RefreshedTime", self.Last_Refresh().strftime("%m/%d/%Y, %H:%M:%S")
+            "RefreshedTime", self.last_refresh().strftime("%m/%d/%Y, %H:%M:%S")
         )
 
-    def Last_Refresh(self) -> datetime:
+    def last_refresh(self) -> datetime:
         """Queries `RefreshedTime` attribute in the partition and converts from C# Ticks to Python datetime
 
         Returns:
@@ -40,13 +40,13 @@ class PyPartition(PyObject):
         """
         return ticks_to_datetime(self.RefreshedTime.Ticks)
 
-    def Refresh(self, *args, **kwargs) -> pd.DataFrame:
+    def refresh(self, *args, **kwargs) -> pd.DataFrame:
         """Same method from Model Refresh, you can pass through any extra parameters. For example:
-        `Tabular().Tables['Table Name'].Partitions[0].Refresh(Tracing = True)`
+        `Tabular().Tables['Table Name'].Partitions[0].refresh()`
         Returns:
             pd.DataFrame: Returns pandas dataframe with some refresh details
         """
-        return self.Table.Model.Refresh(self, *args, **kwargs)
+        return self.Table.Model.refresh(self, *args, **kwargs)
 
 
 class PyPartitions(PyObjects):

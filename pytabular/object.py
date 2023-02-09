@@ -99,7 +99,7 @@ class PyObjects:
         self.__init__(self._objects)
         return self
 
-    def Find(self, object_str: str):
+    def find(self, object_str: str):
         """Finds any or all `PyObject` inside of `PyObjects` that match the `object_str`.
         It is case insensitive.
 

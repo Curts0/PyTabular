@@ -5,55 +5,55 @@ Or you can input your own location.
 import logging
 import os
 import requests as r
-import zipfile as Z
+import zipfile as z
 import atexit
 from logic_utils import remove_folder_and_contents
 
 logger = logging.getLogger("PyTabular")
 
 
-def Download_Tabular_Editor(
-    Download_Location: str = "https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip",
-    Folder: str = "Tabular_Editor_2",
-    Auto_Remove=True,
+def download_tabular_editor(
+    download_location: str = "https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip",
+    folder: str = "Tabular_Editor_2",
+    auto_remove=True,
 ) -> str:
     """Runs a request.get() to retrieve the zip file from web. Will unzip response and store in directory. Will also register the removal of the new directory and files when exiting program.
 
     Args:
-            Download_Location (str, optional): File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.
-            Folder (str, optional): New Folder Location. Defaults to 'Tabular_Editor_2'.
-            Auto_Remove (bool, optional): Boolean to determine auto removal of files once script exits. Defaults to True.
+            download_location (str, optional): File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.
+            folder (str, optional): New Folder Location. Defaults to 'Tabular_Editor_2'.
+            auto_remove (bool, optional): Boolean to determine auto removal of files once script exits. Defaults to True.
 
     Returns:
             str: File path of TabularEditor.exe
     """
     logger.info("Downloading Tabular Editor 2...")
-    logger.info(f"From... {Download_Location}")
-    folder_location = os.path.join(os.getcwd(), Folder)
-    response = r.get(Download_Location)
-    file_location = f"{os.getcwd()}\\{Download_Location.split('/')[-1]}"
+    logger.info(f"From... {download_location}")
+    folder_location = os.path.join(os.getcwd(), folder)
+    response = r.get(download_location)
+    file_location = f"{os.getcwd()}\\{download_location.split('/')[-1]}"
     with open(file_location, "wb") as te2_zip:
         te2_zip.write(response.content)
-    with Z.ZipFile(file_location) as zipper:
+    with z.ZipFile(file_location) as zipper:
         zipper.extractall(path=folder_location)
     logger.debug("Removing Zip File...")
     os.remove(file_location)
     logger.info(f"Tabular Editor Downloaded and Extracted to {folder_location}")
-    if Auto_Remove:
+    if auto_remove:
         logger.debug(f"Registering removal on termination... For {folder_location}")
         atexit.register(remove_folder_and_contents, folder_location)
     return f"{folder_location}\\TabularEditor.exe"
 
 
-class Tabular_Editor:
+class TabularEditor:
     """Setting Tabular_Editor Class for future work.
-    Mainly runs `Download_Tabular_Editor()`
+    Mainly runs `download_tabular_editor()`
     """
 
-    def __init__(self, EXE_File_Path: str = "Default") -> None:
-        logger.debug(f"Initializing Tabular Editor Class:: {EXE_File_Path}")
-        if EXE_File_Path == "Default":
-            self.EXE: str = Download_Tabular_Editor()
+    def __init__(self, exe_file_path: str = "Default") -> None:
+        logger.debug(f"Initializing Tabular Editor Class:: {exe_file_path}")
+        if exe_file_path == "Default":
+            self.exe: str = download_tabular_editor()
         else:
-            self.EXE: str = EXE_File_Path
+            self.exe: str = exe_file_path
         pass
