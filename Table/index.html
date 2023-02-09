@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Table/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Table - PyTabular</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Table";
+        var mkdocs_page_input_path = "Table.md";
+        var mkdocs_page_url = "/PyTabular/Table/";
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> PyTabular
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Tabular</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Table</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#pytable">PyTable</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#row_count">.row_count</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#related">.related</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pytables">PyTables</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh_1">.refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query_all">.query_all</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#find_zero_rows">.find_zero_rows</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh_1">.last_refresh</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partition</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Column/">Column</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Queries</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Best%20Practice%20Analyzer/">Best Practice Analyzer</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular%20Editor%202/">Tabular Editor</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PBI%20Helper/">PBI Helper</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Logic%20Utils/">Logic Utils</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PyTabular</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Table</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="_1"></h1>
+<h2 id="pytable">PyTable</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L18">source</a></p>
+<pre><code class="language-python">PyTable(
+   object, model
+)
+</code></pre>
+<hr />
+<p>Wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet">Table Class</a>.
+With a few other bells and whistles added to it.
+Notice the <code>PyObject</code> magic method <code>__getattr__()</code> will search in <code>self._object</code>
+if it is unable to find it in the default attributes.
+This let's you also easily check the default .Net properties.</p>
+<p><strong>Methods:</strong></p>
+<h3 id="row_count">.row_count</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L60">source</a></p>
+<pre><code class="language-python">.row_count()
+</code></pre>
+<hr />
+<p>Method to return count of rows. Simple Dax Query:
+<code>EVALUATE {COUNTROWS('Table Name')}</code></p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>int</strong>  : Number of rows using <a href="https://learn.microsoft.com/en-us/dax/countrows-function-dax">COUNTROWS</a>.</li>
+</ul>
+<h3 id="refresh">.refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L69">source</a></p>
+<pre><code class="language-python">.refresh(
+   *args, **kwargs
+)
+</code></pre>
+<hr />
+<p>Same method from Model Refresh, you can pass through any extra parameters. For example:
+<code>Tabular().Tables['Table Name'].Refresh(Tracing = True)</code></p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
+</ul>
+<h3 id="last_refresh">.last_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L77">source</a></p>
+<pre><code class="language-python">.last_refresh()
+</code></pre>
+<hr />
+<p>Will query each partition for the last refresh time then select the max</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>datetime</strong>  : Last refresh time in datetime format</li>
+</ul>
+<h3 id="related">.related</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L88">source</a></p>
+<pre><code class="language-python">.related()
+</code></pre>
+<hr />
+<p>Returns tables with a relationship with the table in question.</p>
+<hr />
+<h2 id="pytables">PyTables</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L93">source</a></p>
+<pre><code class="language-python">PyTables(
+   objects
+)
+</code></pre>
+<hr />
+<p>Groups together multiple tables. See <code>PyObjects</code> class for what more it can do.
+You can interact with <code>PyTables</code> straight from model. For ex: <code>model.Tables</code>.
+You can even filter down with <code>.Find()</code>. For example find all tables with <code>fact</code> in name.
+<code>model.Tables.Find('fact')</code>.</p>
+<p><strong>Methods:</strong></p>
+<h3 id="refresh_1">.refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L104">source</a></p>
+<pre><code class="language-python">.refresh(
+   *args, **kwargs
+)
+</code></pre>
+<hr />
+<p>Refreshes all <code>PyTable</code>(s) in class.</p>
+<h3 id="query_all">.query_all</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L109">source</a></p>
+<pre><code class="language-python">.query_all(
+   query_function: str = 'COUNTROWS(_)'
+)
+</code></pre>
+<hr />
+<p>This will dynamically create a query to pull all tables from the model and run the query function.
+It will replace the _ with the table to run.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>query_function</strong> (str, optional) : Dax query is dynamically building a query with the UNION &amp; ROW DAX Functions. Defaults to 'COUNTROWS(_)'.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Returns dataframe with results</li>
+</ul>
+<h3 id="find_zero_rows">.find_zero_rows</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L130">source</a></p>
+<pre><code class="language-python">.find_zero_rows()
+</code></pre>
+<hr />
+<p>Returns PyTables class of tables with zero rows queried.</p>
+<h3 id="last_refresh_1">.last_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L140">source</a></p>
+<pre><code class="language-python">.last_refresh(
+   group_partition: bool = True
+)
+</code></pre>
+<hr />
+<p>Returns pd.DataFrame of tables with their latest refresh time.
+Optional 'group_partition' variable, default is True.
+If False an extra column will be include to have the last refresh time to the grain of the partition
+Example to add to model model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>model</strong> (pytabular.Tabular) : Tabular Model</li>
+<li><strong>group_partition</strong> (bool, optional) : Whether or not you want the grain of the dataframe to be by table or by partition. Defaults to True.</li>
+</ul>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : pd dataframe with the RefreshedTime property: https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition.refreshedtime?view=analysisservices-dotnet#microsoft-analysisservices-tabular-partition-refreshedtime
+If group_partition == True and the table has multiple partitions, then df.groupby(by["tables"]).max()</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Tabular/" class="btn btn-neutral float-left" title="Tabular"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Partition/" class="btn btn-neutral float-right" title="Partition">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Tabular/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Partition/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
