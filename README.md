@@ -153,7 +153,7 @@ docs.save_documentation()
 ```
 
 #### Documenting a Model with Cultures
-Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to `True` and specify the culture you want to use (e.g. `'en-US'). 
+Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to `True` and specify the culture you want to use (e.g. `'en-US'`). 
 
 ```python
 import pytabular
