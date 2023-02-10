@@ -1,4 +1,3 @@
-
 # PyTabular
 [![PyPI version](https://badge.fury.io/py/python-tabular.svg)](https://badge.fury.io/py/python-tabular)
 [![Downloads](https://pepy.tech/badge/python-tabular)](https://pepy.tech/project/python-tabular)
@@ -113,93 +112,6 @@ model.Tables['Table Name'].last_refresh()
 model.Tables['Table Name'].Columns['Column Name'].distinct_count()
 #or
 model.Tables['Table Name'].Columns['Column Name'].values()
-```
-### Documenting a Model
-The Tabular model contains a lot of information that can be used to generation documentation if filled in. Currently the markdown files are generated with the Docusaurs heading in place, but this will be changed in future to support multiple documentation platforms. 
-
-**Tip**: With Tabular Editor 2 (Free) or 3 (Paid) you can easily add Descriptioms, Translations (Cultures) and other additonal information that can later be used for generating the documentation. 
-
-#### Args:
-- **model**: Tabular
-- **friendly_name**: Default > No Value 
-
-To specify the location of the docs, just supply the save location with a new folder name argument. 
-- **save_location**: Default > docs
-
-Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
-- **general_page_url**: Default > 1-general-information.md
-- **measure_page_url**: Default > 2-measures.md
-- **table_page_url**: Default > 3-tables.md
-- **column_page_url**: Default > 4-columns.md
-- **roles_page_url**: Default > 5-roles.md
-
-#### Documenting a Model
-The simpelst way to document a tabular model is to connect to the model, and initialize the documentation and execute `save_documentation()`. 
-
-```python
-import pytabular
-
-# Connect to a Tabular Model Model
-model = pytabular.Tabular(CONNECTION_STR)
-
-# Initiate the Docs 
-docs = pytabular.ModelDocumenter(model)
-
-# Generate the pages. 
-docs.generate_documentation_pages()
-
-# Save docs to the default location
-docs.save_documentation()
-```
-
-#### Documenting a Model with Cultures
-Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to `True` and specify the culture you want to use (e.g. `'en-US'`). 
-
-```python
-import pytabular
-
-# Connect to a Tabular Model Model
-model = pytabular.Tabular(CONNECTION_STR)
-
-# Initiate the Docs 
-docs = pytabular.ModelDocumenter(model)
-
-# Set the translation for documentation to an available culture.
-docs = pytabular.ModelDocumenter(model)
-
-# By setting the Tranlsations to `True` it will check if it exists and if it does, 
-# it will start using the translations for the docs
-docs.set_transalation(
-        enable_translations = True, 
-        culture = 'en-US'
-    )
-    
-# Generate the pages. 
-docs.generate_documentation_pages()
-
-# Save docs to the default location
-docs.save_documentation()
-```
-#### Documenting a Power BI Desktop Model
-The Local model doesn't have a "name", only an Id. So we need to Supply a "Friendly Name", which will be used to store the markdown files. The result of this example with be a folder `my-docs-folder` with a subfolder `Adventure Works` where all the files are stored.
-```python
-import pytabular
-
-# Connect to a Tabular Model Model
-model = pytabular.Tabular(CONNECTION_STR)
-
-# Initiate the Docs, set a friendly name to store the markdown files and overwrite the default location.
-docs = pytabular.ModelDocumenter(
-    model = model,
-    friendly_name = "Adventure Works", 
-    save_location = "my-docs-folder"
-)
-
-# Generate the pages. 
-docs.generate_documentation_pages()
-
-# Save docs to the default location
-docs.save_documentation()
 ```
 
 ### Use Cases
@@ -376,7 +288,7 @@ docs.save_documentation()
 ```
 
 ### Documenting a Model with Cultures
-Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to `True` and specify the culture you want to use (e.g. `'en-US'). 
+Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to `True` and specify the culture you want to use (e.g. `'en-US'`). 
 
 ```python
 import pytabular
@@ -421,5 +333,6 @@ docs.generate_documentation_pages()
 # Save docs to the default location
 docs.save_documentation()
 ```
+
 ### Contributing
 See [CONTRIBUTING.md](CONTRIBUTING.md)
