@@ -145,6 +145,9 @@ model = pytabular.Tabular(CONNECTION_STR)
 # Initiate the Docs 
 docs = pytabular.ModelDocumenter(model)
 
+# Generate the pages. 
+docs.generate_documentation_pages()
+
 # Save docs to the default location
 docs.save_documentation()
 ```
@@ -170,6 +173,9 @@ docs.set_transalation(
         enable_translations = True, 
         culture = 'en-US'
     )
+    
+# Generate the pages. 
+docs.generate_documentation_pages()
 
 # Save docs to the default location
 docs.save_documentation()
@@ -188,6 +194,9 @@ docs = pytabular.ModelDocumenter(
     friendly_name = "Adventure Works", 
     save_location = "my-docs-folder"
 )
+
+# Generate the pages. 
+docs.generate_documentation_pages()
 
 # Save docs to the default location
 docs.save_documentation()
