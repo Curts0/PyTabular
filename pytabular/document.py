@@ -54,6 +54,7 @@ class ModelDocumenter:
         self.table_page: str = str()
         self.column_page: str = str()
         self.roles_page: str = str()
+        self.category_page: str = str()    
 
         self.category_file_name: str = "_category_.yml"
         self.general_page_url: str = general_page_url
