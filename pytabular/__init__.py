@@ -35,7 +35,12 @@ logger.info(f"Python Version::{sys.version}")
 logger.info(f"Python Location::{sys.exec_prefix}")
 
 
-def find_version():
+def find_version() -> str:
+    """Finds PyTabular version.
+
+    Returns:
+        str: Version as string.
+    """
     version_str = "\nversion = "
     with open("pyproject.toml", "r") as f:
         pyproject_text = f.read()
