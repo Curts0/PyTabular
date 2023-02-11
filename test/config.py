@@ -1,3 +1,4 @@
+"""Custom configurations for pytest."""
 import pytabular as p
 import os
 import pandas as pd
@@ -7,6 +8,7 @@ from time import sleep
 
 
 def get_test_path():
+    """Gets working test path."""
     cwd = os.getcwd()
     if os.path.basename(cwd) == "test":
         return cwd
@@ -20,6 +22,7 @@ adventureworks_path = f'"{get_test_path()}\\adventureworks\\AdventureWorks Sales
 
 
 def find_local_pbi():
+    """Finds local pbix file if exists. Otherwise, will open AdventureWorks."""
     attempt = p.find_local_pbi_instances()
     if len(attempt) > 0:
         return attempt[0]

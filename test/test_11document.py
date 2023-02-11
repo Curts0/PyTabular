@@ -1,5 +1,4 @@
-"""Tests to cover the document.py file
-"""
+"""Tests to cover the document.py file."""
 from test.config import testing_parameters
 import pytest
 import pytabular as p
@@ -10,6 +9,7 @@ from test.conftest import TestStorage
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_basic_document_funcionality(model):
+    """Tests basic documentation functionality."""
     try:
         docs = p.ModelDocumenter(model=model)
         docs.generate_documentation_pages()
@@ -20,6 +20,7 @@ def test_basic_document_funcionality(model):
 
 
 def test_basic_documentation_removed():
+    """Tests that created documentation gets removed."""
     docs_class = TestStorage.documentation_class
     remove = f"{docs_class.save_location}/{docs_class.friendly_name}"
     logic_utils.remove_folder_and_contents(remove)

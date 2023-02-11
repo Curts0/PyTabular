@@ -1,5 +1,5 @@
-"""
-This has a `Tabular_Editor` class which will download TE2 from a default location.
+"""This has a `Tabular_Editor` class which will download TE2 from a default location.
+
 Or you can input your own location.
 """
 import logging
@@ -13,16 +13,24 @@ logger = logging.getLogger("PyTabular")
 
 
 def download_tabular_editor(
-    download_location: str = "https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip",
+    download_location: str = (
+        "https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip"  # noqa: E501
+    ),
     folder: str = "Tabular_Editor_2",
     auto_remove=True,
 ) -> str:
-    """Runs a request.get() to retrieve the zip file from web. Will unzip response and store in directory. Will also register the removal of the new directory and files when exiting program.
+    """Runs a request.get() to retrieve the zip file from web.
+
+    Will unzip response and store in directory.
+    Will also register the removal of the new directory
+    and files when exiting program.
 
     Args:
-            download_location (str, optional): File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.
-            folder (str, optional): New Folder Location. Defaults to 'Tabular_Editor_2'.
-            auto_remove (bool, optional): Boolean to determine auto removal of files once script exits. Defaults to True.
+            download_location (str, optional): File path for zip of Tabular Editor 2.
+                See code args for default download url.
+            folder (str, optional): New Folder Location. Defaults to "Tabular_Editor_2".
+            auto_remove (bool, optional): Boolean to determine auto
+                removal of files once script exits. Defaults to True.
 
     Returns:
             str: File path of TabularEditor.exe
@@ -47,10 +55,21 @@ def download_tabular_editor(
 
 class TabularEditor:
     """Setting Tabular_Editor Class for future work.
+
     Mainly runs `download_tabular_editor()`
     """
 
     def __init__(self, exe_file_path: str = "Default") -> None:
+        """Init for `TabularEditor()` class.
+
+        This is mostly a placeholder right now.
+        But useful if you want an easy way to download TE2.
+
+        Args:
+            exe_file_path (str, optional): File path where TE2 lives. Defaults to "Default".
+                If "Default", it will run `download_tabular_editor()`
+                and download from github.
+        """
         logger.debug(f"Initializing Tabular Editor Class:: {exe_file_path}")
         if exe_file_path == "Default":
             self.exe: str = download_tabular_editor()

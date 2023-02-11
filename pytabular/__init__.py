@@ -1,5 +1,5 @@
-"""
-Welcome to PyTabular.
+"""Welcome to PyTabular.
+
 __init__.py will start to setup the basics.
 It will setup logging and make sure Pythonnet is good to go.
 Then it will begin to import specifics of the module.
@@ -33,9 +33,24 @@ logger.info("See https://docs.python.org/3/library/logging.html#logging-levels")
 
 logger.info(f"Python Version::{sys.version}")
 logger.info(f"Python Location::{sys.exec_prefix}")
-logger.info(f"Package Location::{__file__}")
-logger.info(f"Working Directory::{os.getcwd()}")
-logger.info(f"Platform::{sys.platform}-{platform.release()}")
+
+
+def find_version():
+    version_str = "\nversion = "
+    with open("pyproject.toml", "r") as f:
+        pyproject_text = f.read()
+    start = pyproject_text.find(version_str) + len(version_str)
+    end = pyproject_text.find("\n", start)
+    return pyproject_text[start:end].replace('"', "")
+
+
+try:
+    logger.info(f"PyTabular Version:: {find_version()}")
+except Exception:
+    logger.warning("Unable to find PyTabular Version")
+logger.info(f"Package Location:: {__file__}")
+logger.info(f"Working Directory:: {os.getcwd()}")
+logger.info(f"Platform:: {sys.platform}-{platform.release()}")
 
 dll = os.path.join(os.path.dirname(__file__), "dll")
 sys.path.append(dll)

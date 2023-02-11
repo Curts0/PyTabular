@@ -1,5 +1,4 @@
-"""`culture.py` is used to house the `PyCulture`, `PyCultures`, and `PyObjectTranslations` classes.
-"""
+"""`culture.py` is used to house the `PyCulture`, and `PyCultures` classes."""
 import logging
 from object import PyObject, PyObjects
 from typing import List
@@ -8,23 +7,17 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyCulture(PyObject):
-    """Wrapper for [Cultures](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.culture?view=analysisservices-dotnet).
-
-    Args:
-        Table: Parent Table to the Object Translations
-    """
+    """Main class to interact with cultures in model."""
 
     def __init__(self, object, model) -> None:
+        """Mostly extends from `PyObject`. But will add rows to `rich`."""
         super().__init__(object)
         self.Model = model
         self._display.add_row("Culture Name", self._object.Name)
         self.ObjectTranslations = self.set_translation()
 
     def set_translation(self) -> List[dict]:
-        """
-        Based on the culture, it creates a list of dicts
-        with all the available translations in the file.
-        """
+        """Based on the culture, it creates a list of dicts with available translations."""
         return [
             {
                 "object_translation": translation.Value,
@@ -38,8 +31,8 @@ class PyCulture(PyObject):
     def get_translation(
         self, object_name: str, object_parent_name: str, object_type: str = "Caption"
     ) -> dict:
-        """
-        Get Translation makes it possible to seach a specific translation of an object.
+        """Get Translation makes it possible to seach a specific translation of an object.
+
         By default it will search for the "Caption" object type, due to fact that a
         Display folder and Description can also have translations.
         """
@@ -61,4 +54,5 @@ class PyCultures(PyObjects):
     """Houses grouping of `PyCulture`."""
 
     def __init__(self, objects) -> None:
+        """Extends `PyObjects` class."""
         super().__init__(objects)

@@ -1,5 +1,4 @@
-"""`logic_utils` used to store multiple functions that are used in many different files.
-"""
+"""`logic_utils` used to store multiple functions that are used in many different files."""
 import logging
 import datetime
 import os
@@ -12,25 +11,34 @@ logger = logging.getLogger("PyTabular")
 
 
 def ticks_to_datetime(ticks: int) -> datetime.datetime:
-    """Converts a C# System DateTime Tick into a Python DateTime
+    """Converts a C# system datetime tick into a python datatime.
 
     Args:
-            ticks (int): [C# DateTime Tick](https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0)
+            ticks (int): C# DateTime Tick.
 
     Returns:
-            datetime.datetime: [datetime.datetime](https://docs.python.org/3/library/datetime.html)
+            datetime.datetime: datetime of tick.
     """
     return datetime.datetime(1, 1, 1) + datetime.timedelta(microseconds=ticks // 10)
 
 
 def pandas_datatype_to_tabular_datatype(df: pd.DataFrame) -> Dict:
-    """WiP takes dataframe columns and gets respective tabular column datatype.  ([NumPy Datatypes](https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html) and [Tabular Datatypes](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.datatype?view=analysisservices-dotnet))
+    """Takes dataframe columns and gets respective tabular column datatype.
 
     Args:
             df (pd.DataFrame): Pandas DataFrame
 
     Returns:
-            Dict: EX {'col1': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>, 'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>, 'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800>}
+            Dict: dictionary with results.
+
+    Example:
+        ```
+        {
+            'col1': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>,
+            'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>,
+            'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800>
+        }
+        ```
     """
     logger.info("Getting DF Column Dtypes to Tabular Dtypes...")
     tabular_datatype_mapping_key = {
@@ -53,37 +61,36 @@ def pandas_datatype_to_tabular_datatype(df: pd.DataFrame) -> Dict:
 
 
 def pd_dataframe_to_m_expression(df: pd.DataFrame) -> str:
-    """This will take a pandas dataframe and convert to an m expression
-    For example this DF:
-       col1  col2
-    0   1     3
-    1   2     4
-
-    |
-    |
-    V
-
-    Will convert to this expression string:
-    let
-    Source=#table({"col1","col2"},
-    {
-    {"1","3"},{"2","4"}
-    })
-    in
-    Source
+    """This will take a pandas dataframe and convert to an m expression.
 
     Args:
             df (pd.DataFrame): Pandas DataFrame
 
     Returns:
             str: Currently only returning string values in your tabular model.
+
+    Example:
+        ```
+        col1  col2
+        0   1     3
+        1   2     4
+        ```
+        converts to
+        ```
+        Source=#table({"col1","col2"},
+        {
+        {"1","3"},{"2","4"}
+        })
+        in
+        Source
+        ```
     """
 
     def m_list_expression_generator(list_of_strings: List[str]) -> str:
-        """
-        Takes a python list of strings and converts to power query m expression list format...
-        Ex: ["item1","item2","item3"] --> {"item1","item2","item3"}
-        Codepoint reference --> \u007b == { and \u007d == }
+        """Takes a python list of strings and converts to power query m expression list format.
+
+        Ex: `["item1","item2","item3"]` --> `{"item1","item2","item3"}`
+        Codepoint reference --> `\u007b` == `{` and `\u007d` == `}`
         """
         string_components = ",".join(
             [f'"{string_value}"' for string_value in list_of_strings]
@@ -128,15 +135,16 @@ def remove_file(file_path):
 
 
 def remove_suffix(input_string, suffix):
-    """Adding for >3.9 compatiblity. [Stackoverflow Answer](https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix)
+    """Adding for <3.9 compatiblity.
 
     Args:
-            input_string (str): input string to remove suffix from
-            suffix (str): suffix to be removed
+            input_string (str): input string to remove suffix from.
+            suffix (str): suffix to be removed.
 
     Returns:
-            str: input_str with suffix removed
+            str: input_str with suffix removed.
     """
+    # [Stackoverflow Answer](https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix)  # noqa: E501
     output = (
         input_string[: -len(suffix)]
         if suffix and input_string.endswith(suffix)
@@ -146,8 +154,7 @@ def remove_suffix(input_string, suffix):
 
 
 def get_sub_list(lst: list, n: int) -> list:
-    """Nest list by n amount...
-    `get_sub_list([1,2,3,4,5,6],2) == [[1,2],[3,4],[5,6]]`
+    """Nest list by n amount.
 
     Args:
         lst (list): List to nest.
@@ -155,17 +162,19 @@ def get_sub_list(lst: list, n: int) -> list:
 
     Returns:
         list: Nested list.
+    Example:
+        `get_sub_list([1,2,3,4,5,6],2) == [[1,2],[3,4],[5,6]]`
     """
     return [lst[i : i + n] for i in range(0, len(lst), n)]
 
 
 def get_value_to_df(query: AdomdDataReader, index: int):
-    """Gets the values from the AdomdDataReader to convert the .Net Object
-    into a tangible python value to work with in pandas.
+    """Gets the values from the AdomdDataReader to convert to python df.
+
     Lots of room for improvement on this one.
 
     Args:
-        Query (AdomdDataReader): [AdomdDataReader](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomddatareader?view=analysisservices-dotnet)
+        query (AdomdDataReader): The AdomdDataReader .Net object.
         index (int): Index of the value to perform the logic on.
     """
     if (
@@ -178,9 +187,10 @@ def get_value_to_df(query: AdomdDataReader, index: int):
 
 
 def dataframe_to_dict(df: pd.DataFrame) -> List[dict]:
-    """Convert to Dataframe to dictionary and alter columns names with;
-    - Underscores (_) to spaces
-    - All Strings are converted to Title Case.
+    """Convert to Dataframe to dictionary and alter columns names with it.
+
+    Will convert the underscores (_) to spaces,
+    and all strings are converted to Title Case.
 
     Args:
         df (pd.DataFrame): Original table that needs to be converted
@@ -197,8 +207,8 @@ def dataframe_to_dict(df: pd.DataFrame) -> List[dict]:
 
 
 def dict_to_markdown_table(list_of_dicts: list, columns_to_include: list = None) -> str:
-    """
-    Description: Generate a Markdown table based on a list of dictionaries.
+    """Generate a Markdown table based on a list of dictionaries.
+
     Args:
         list_of_dicts (list): List of Dictionaries that need to be converted
             to a markdown table.
@@ -209,16 +219,18 @@ def dict_to_markdown_table(list_of_dicts: list, columns_to_include: list = None)
         String that will represent a table in Markdown.
 
     Example:
-        columns = ['Referenced Object Type', 'Referenced Table', 'Referenced Object']
-        dict_to_markdown_table(dependancies, columns)
-
-    Result:
-        | Referenced Object Type | Referenced Table | Referenced Object               |
-        | ---------------------- | ---------------- | ------------------------------- |
-        | TABLE                  | Cases            | Cases                           |
-        | COLUMN                 | Cases            | IsClosed                        |
-        | CALC_COLUMN            | Cases            | Resolution Time (Working Hours) |
-
+        ```python
+            columns = ['Referenced Object Type', 'Referenced Table', 'Referenced Object']
+            dict_to_markdown_table(dependancies, columns)
+        ```
+        Returns:
+        ```
+            | Referenced Object Type | Referenced Table | Referenced Object               |
+            | ---------------------- | ---------------- | ------------------------------- |
+            | TABLE                  | Cases            | Cases                           |
+            | COLUMN                 | Cases            | IsClosed                        |
+            | CALC_COLUMN            | Cases            | Resolution Time (Working Hours) |
+        ```
     """
     keys = set().union(*[set(d.keys()) for d in list_of_dicts])
 
