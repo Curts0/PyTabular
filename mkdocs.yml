@@ -6,6 +6,7 @@ nav:
     - Table: Table.md
     - Partition: Partition.md
     - Column: Column.md
+    - Measure: Measure.md
     - Trace: Traces.md
     - Queries: Queries.md
     - Best Practice Analyzer: Best Practice Analyzer.md
