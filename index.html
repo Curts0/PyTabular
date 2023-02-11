@@ -47,18 +47,6 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#documenting-a-model">Documenting a Model</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#args">Args:</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-model_1">Documenting a Model</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-model-with-cultures">Documenting a Model with Cultures</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-power-bi-desktop-model">Documenting a Power BI Desktop Model</a>
-    </li>
-        </ul>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#use-cases">Use Cases</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#if-blank-table-then-refresh-table">If blank table, then refresh table.</a>
@@ -79,7 +67,17 @@
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#contributing">Contributing</a>
+    <li class="toctree-l2"><a class="reference internal" href="#documenting-a-model">Documenting a Model</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-model_1">Documenting a Model</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-model-with-cultures">Documenting a Model with Cultures</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#documenting-a-power-bi-local-model">Documenting a Power BI &gt; Local Model.</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#contributing">Contributing</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
@@ -247,75 +245,6 @@ model.Tables['Table Name'].Columns['Column Name'].distinct_count()
 #or
 model.Tables['Table Name'].Columns['Column Name'].values()
 </code></pre>
-<h3 id="documenting-a-model">Documenting a Model</h3>
-<p>The Tabular model contains a lot of information that can be used to generation documentation if filled in. Currently the markdown files are generated with the Docusaurs heading in place, but this will be changed in future to support multiple documentation platforms. </p>
-<p><strong>Tip</strong>: With Tabular Editor 2 (Free) or 3 (Paid) you can easily add Descriptioms, Translations (Cultures) and other additonal information that can later be used for generating the documentation. </p>
-<h4 id="args">Args:</h4>
-<ul>
-<li><strong>model</strong>: Tabular</li>
-<li><strong>friendly_name</strong>: Default &gt; No Value </li>
-</ul>
-<p>To specify the location of the docs, just supply the save location with a new folder name argument. 
-- <strong>save_location</strong>: Default &gt; docs</p>
-<p>Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
-- <strong>general_page_url</strong>: Default &gt; 1-general-information.md
-- <strong>measure_page_url</strong>: Default &gt; 2-measures.md
-- <strong>table_page_url</strong>: Default &gt; 3-tables.md
-- <strong>column_page_url</strong>: Default &gt; 4-columns.md
-- <strong>roles_page_url</strong>: Default &gt; 5-roles.md</p>
-<h4 id="documenting-a-model_1">Documenting a Model</h4>
-<p>The simpelst way to document a tabular model is to connect to the model, and initialize the documentation and execute <code>save_documentation()</code>. </p>
-<pre><code class="language-python">import pytabular
-
-# Connect to a Tabular Model Model
-model = pytabular.Tabular(CONNECTION_STR)
-
-# Initiate the Docs 
-docs = pytabular.ModelDocumenter(model)
-
-# Save docs to the default location
-docs.save_documentation()
-</code></pre>
-<h4 id="documenting-a-model-with-cultures">Documenting a Model with Cultures</h4>
-<p>Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to <code>True</code> and specify the culture you want to use (e.g. `'en-US'). </p>
-<pre><code class="language-python">import pytabular
-
-# Connect to a Tabular Model Model
-model = pytabular.Tabular(CONNECTION_STR)
-
-# Initiate the Docs 
-docs = pytabular.ModelDocumenter(model)
-
-# Set the translation for documentation to an available culture.
-docs = pytabular.ModelDocumenter(model)
-
-# By setting the Tranlsations to `True` it will check if it exists and if it does, 
-# it will start using the translations for the docs
-docs.set_transalation(
-        enable_translations = True, 
-        culture = 'en-US'
-    )
-
-# Save docs to the default location
-docs.save_documentation()
-</code></pre>
-<h4 id="documenting-a-power-bi-desktop-model">Documenting a Power BI Desktop Model</h4>
-<p>The Local model doesn't have a "name", only an Id. So we need to Supply a "Friendly Name", which will be used to store the markdown files. The result of this example with be a folder <code>my-docs-folder</code> with a subfolder <code>Adventure Works</code> where all the files are stored.</p>
-<pre><code class="language-python">import pytabular
-
-# Connect to a Tabular Model Model
-model = pytabular.Tabular(CONNECTION_STR)
-
-# Initiate the Docs, set a friendly name to store the markdown files and overwrite the default location.
-docs = pytabular.ModelDocumenter(
-    model = model,
-    friendly_name = &quot;Adventure Works&quot;, 
-    save_location = &quot;my-docs-folder&quot;
-)
-
-# Save docs to the default location
-docs.save_documentation()
-</code></pre>
 <h3 id="use-cases">Use Cases</h3>
 <h4 id="if-blank-table-then-refresh-table">If blank table, then refresh table.</h4>
 <p>This will use the function <a href="https://curts0.github.io/PyTabular/Examples/#return_zero_row_tables">Return_Zero_Row_Tables</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">Refresh</a> from the Tabular class.</p>
@@ -433,6 +362,79 @@ tables = model.Tables[TABLE_NAME].related()
 #Now just refresh like usual...
 tables.refresh()
 </code></pre>
+<h2 id="documenting-a-model">Documenting a Model</h2>
+<p>The Tabular model contains a lot of information that can be used to generation documentation if filled in. Currently the markdown files are generated with the Docusaurs heading in place, but this will be changed in future to support multiple documentation platforms. </p>
+<p><strong>Tip</strong>: With Tabular Editor 2 (Free) or 3 (Paid) you can easily add Descriptioms, Translations (Cultures) and other additonal information that can later be used for generating the documentation. </p>
+<p>Args:
+- <strong>model</strong>: Tabular
+- <strong>friendly_name</strong>: Default &gt; No Value </p>
+<p>To specify the location of the docs, just supply the save location with a new folder name argument. 
+- <strong>save_location</strong>: Default &gt; docs</p>
+<p>Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
+- <strong>general_page_url</strong>: Default &gt; 1-general-information.md
+- <strong>measure_page_url</strong>: Default &gt; 2-measures.md
+- <strong>table_page_url</strong>: Default &gt; 3-tables.md
+- <strong>column_page_url</strong>: Default &gt; 4-columns.md
+- <strong>roles_page_url</strong>: Default &gt; 5-roles.md</p>
+<h3 id="documenting-a-model_1">Documenting a Model</h3>
+<p>The simpelst way to document a tabular model is to connect to the model, and initialize the documentation and execute <code>save_documentation()</code>. </p>
+<pre><code class="language-python">import pytabular
+
+# Connect to a Tabular Model Model
+model = pytabular.Tabular(CONNECTION_STR)
+
+# Initiate the Docs 
+docs = pytabular.ModelDocumenter(model)
+
+# Generate the pages. 
+docs.generate_documentation_pages()
+
+# Save docs to the default location
+docs.save_documentation()
+</code></pre>
+<h3 id="documenting-a-model-with-cultures">Documenting a Model with Cultures</h3>
+<p>Some model creators choose to add cultures to a tabular model for different kinds of reasons. We can leverage those cultures to use the translation names instead of the original object names. In order to this you can set translations to <code>True</code> and specify the culture you want to use (e.g. <code>'en-US'</code>). </p>
+<pre><code class="language-python">import pytabular
+
+# Connect to a Tabular Model Model
+model = pytabular.Tabular(CONNECTION_STR)
+
+# Initiate the Docs 
+docs = pytabular.ModelDocumenter(model)
+
+# Set the translation for documentation to an available culture.
+# By setting the Tranlsations to `True` it will check if it exists and if it does, 
+# it will start using the translations for the docs
+docs.set_translations(
+        enable_translations = True, 
+        culture = 'en-US'
+    )
+
+# Generate the pages. 
+docs.generate_documentation_pages()
+
+# Save docs to the default location
+docs.save_documentation()
+</code></pre>
+<h3 id="documenting-a-power-bi-local-model">Documenting a Power BI &gt; Local Model.</h3>
+<p>The Local model doesn't have a "name", only an Id. So we need to Supply a "Friendly Name", which will be used to store the markdown files.</p>
+<pre><code class="language-python">import pytabular
+
+# Connect to a Tabular Model Model
+model = pytabular.Tabular(CONNECTION_STR)
+
+# Initiate the Docs and set a friendly name to store the markdown files.
+docs = pytabular.ModelDocumenter(
+    model = model,
+    friendly_name = &quot;Adventure Works&quot;
+)
+
+# Generate the pages. 
+docs.generate_documentation_pages()
+
+# Save docs to the default location
+docs.save_documentation()
+</code></pre>
 <h3 id="contributing">Contributing</h3>
 <p>See <a href="CONTRIBUTING.md">CONTRIBUTING.md</a></p>
               
@@ -482,5 +484,5 @@ tables.refresh()
 
 <!--
 MkDocs version : 1.4.2
-Build Date UTC : 2023-02-09 22:58:52.274016+00:00
+Build Date UTC : 2023-02-11 15:31:25.702617+00:00
 -->
