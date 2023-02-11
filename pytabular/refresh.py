@@ -1,6 +1,4 @@
-"""
-`refresh.py` is the main file to handle all the components of refreshing your model.
-"""
+"""`refresh.py` is the main file to handle all the components of refreshing your model."""
 from tabular_tracing import RefreshTrace, BaseTrace
 import logging
 from Microsoft.AnalysisServices.Tabular import (
@@ -19,18 +17,30 @@ logger = logging.getLogger("PyTabular")
 
 
 class RefreshCheck(ABC):
-    """`RefreshCheck` is an assertion you run after your refreshes.
-    It will run the given `function` before and after refreshes,
-    then run the assertion of before and after. The default given in a refresh is to check row count.
-    It will check row count before, and row count after. Then fail if row count after is zero.
+    """`RefreshCheck` is an test you run after your refreshes.
 
-    Args:
-        name (str): Name of RefreshCheck
-        function (function): Function to run before and after refresh.
-        assertion (function): Functino that takes a `pre` and `post` argument to output True or False.
+    It will run the given `function` before and after refreshes,
+    then run the assertion of before and after.
+    The default given in a refresh is to check row count.
+    It will check row count before, and row count after.
+    Then fail if row count after is zero.
     """
 
     def __init__(self, name: str, function, assertion=None) -> None:
+        """Sets the necessary components to perform a refresh check.
+
+        Args:
+            name (str): Name of refresh check.
+            function (Callable): Function to run on pre and post checks.
+                For example, a dax query. readme has examples of this.
+            assertion (Callable, optional): A function that can be run.
+            Supply the assertion function with 2 arguments. The first one
+            for your 'pre' results from the `function` argument. The second
+            for your `post` results from the`function` argument.
+            Return `True` or `False` depending on the comparison of the two arguments
+            to determine a pass or fail status of your refresh.
+            Defaults to None.
+        """
         super().__init__()
         self._name = name
         self._function = function
@@ -39,14 +49,12 @@ class RefreshCheck(ABC):
         self._post = None
 
     def __repr__(self) -> str:
-        """
-        `__repre__` that returns details on `RefreshCheck`.
-        """
+        """`__repre__` that returns details on `RefreshCheck`."""
         return f"{self.name} - {self.pre} - {self.post} - {str(self.function)}"
 
     @property
     def name(self):
-        "Get your custom name of refresh check."
+        """Get your custom name of refresh check."""
         return self._name
 
     @name.setter
@@ -59,7 +67,7 @@ class RefreshCheck(ABC):
 
     @property
     def function(self):
-        "Get the function that is used to run a pre and post check."
+        """Get the function that is used to run a pre and post check."""
         return self._function
 
     @function.setter
@@ -72,7 +80,7 @@ class RefreshCheck(ABC):
 
     @property
     def pre(self):
-        "Get the pre value that is the result from the pre refresh check."
+        """Get the pre value that is the result from the pre refresh check."""
         return self._pre
 
     @pre.setter
@@ -85,7 +93,7 @@ class RefreshCheck(ABC):
 
     @property
     def post(self):
-        "Get the post value that is the result from the post refresh check."
+        """Get the post value that is the result from the post refresh check."""
         return self._post
 
     @post.setter
@@ -98,7 +106,7 @@ class RefreshCheck(ABC):
 
     @property
     def assertion(self):
-        "Get the assertion that is the result from the post refresh check."
+        """Get the assertion that is the result from the post refresh check."""
         return self._assertion
 
     @assertion.setter
@@ -111,6 +119,7 @@ class RefreshCheck(ABC):
 
     def _check(self, stage: str):
         """Runs the given function and stores results.
+
         Stored in either `self.pre` or `self.post` depending on `stage`.
 
         Args:
@@ -129,25 +138,26 @@ class RefreshCheck(ABC):
         return results
 
     def pre_check(self):
-        """Runs `self._check("Pre")`"""
+        """Runs `self._check("Pre")`."""
         self._check("Pre")
         pass
 
     def post_check(self):
-        """Runs `self._check("Post")` then `self.assertion_run()`"""
+        """Runs `self._check("Post")` then `self.assertion_run()`."""
         self._check("Post")
         self.assertion_run()
         pass
 
     def assertion_run(self):
         """Runs the given self.assertion function with `self.pre` and `self.post`.
+
         So, `self.assertion_run(self.pre, self.post)`.
         """
         if self.assertion is None:
             logger.debug("Skipping assertion none given")
         else:
             test = self.assertion(self.pre, self.post)
-            assert_str = f"Test {self.name} - {test} - Pre Results - {self.pre} | Post Results {self.post}"
+            assert_str = f"Test {self.name} - {test} - Pre Results - {self.pre} | Post Results {self.post}"  # noqa: E501
             if test:
                 logger.info(assert_str)
             else:
@@ -158,9 +168,17 @@ class RefreshCheck(ABC):
 
 
 class RefreshCheckCollection:
-    """Groups together your `RefreshChecks` to handle multiple types of checks in a single refresh."""
+    """Groups together your `RefreshChecks`.
+
+    Used to handle multiple types of checks in a single refresh.
+    """
 
     def __init__(self, refresh_checks: RefreshCheck = []) -> None:
+        """Init to supply RefreshChecks.
+
+        Args:
+            refresh_checks (RefreshCheck, optional): Defaults to [].
+        """
         self._refreshchecks = refresh_checks
         pass
 
@@ -170,18 +188,22 @@ class RefreshCheckCollection:
             yield refresh_check
 
     def add_refresh_check(self, refresh_check: RefreshCheck):
-        """Add a RefreshCheck
+        """Add a RefreshCheck.
+
+        Supply the `RefreshCheck` to add.
 
         Args:
-            RefreshCheck (RefreshCheck): `RefreshCheck` class.
+            refresh_check (RefreshCheck): `RefreshCheck` class.
         """
         self._refreshchecks.append(refresh_check)
 
     def remove_refresh_check(self, refresh_check: RefreshCheck):
-        """Remove a RefreshCheck
+        """Remove a RefreshCheck.
+
+        Supply the `RefreshCheck` to remove.
 
         Args:
-            RefreshCheck (RefreshCheck): `RefreshCheck` class.
+            refresh_check (RefreshCheck): `RefreshCheck` class.
         """
         self._refreshchecks.remove(refresh_check)
 
@@ -191,16 +213,7 @@ class RefreshCheckCollection:
 
 
 class PyRefresh:
-    """PyRefresh Class to handle refreshes of model.
-
-    Args:
-        model (Tabular): Main Tabular Class
-        object (Union[str, PyTable, PyPartition, Dict[str, Any]]): Designed to handle a few different ways of selecting a refresh. Can be a string of 'Table Name' or dict of {'Table Name': 'Partition Name'} or even some combination with the actual PyTable and PyPartition classes.
-        trace (BaseTrace, optional): Set to `None` if no Tracing is desired, otherwise you can use default trace or create your own. Defaults to RefreshTrace.
-        RefreshChecks (RefreshCheckCollection, optional): Add your `RefreshCheck`'s into a `RefreshCheckCollection`. Defaults to RefreshCheckCollection().
-        default_row_count_check (bool, optional): Quick built in check will fail the refresh if post check row count is zero. Defaults to True.
-        refresh_type (RefreshType, optional): Input RefreshType desired. Defaults to RefreshType.Full.
-    """
+    """PyRefresh Class to handle refreshes of model."""
 
     def __init__(
         self,
@@ -211,6 +224,22 @@ class PyRefresh:
         default_row_count_check: bool = True,
         refresh_type: RefreshType = RefreshType.Full,
     ) -> None:
+        """Init when a refresh is requested.
+
+        Runs through requested tables and partitions
+        to make sure they are in model.
+        Then will run pre checks on the requested objects.
+
+        Args:
+            model (Tabular): Tabular model.
+            object (Union[str, PyTable, PyPartition, Dict[str, Any]]): The objects
+                that you are wanting to refresh. Can be a `PyTable`, `PyPartition`,
+                `TABLE_NAME` string, or a dict with `{TABLE_REFERENCE:PARTITION_REFERENCE}`
+            trace (BaseTrace, optional): Defaults to RefreshTrace.
+            refresh_checks (RefreshCheckCollection, optional): Defaults to RefreshCheckCollection().
+            default_row_count_check (bool, optional): Defaults to True.
+            refresh_type (RefreshType, optional): Defaults to RefreshType.Full.
+        """
         self.model = model
         self.object = object
         self.trace = trace
@@ -224,8 +253,9 @@ class PyRefresh:
         pass
 
     def _pre_checks(self):
-        """Checks if any `BaseTrace` classes are needed from `Tabular_Tracing.py`.
-        Then checks if any `RefreshChecks` are needed, along with the default `Row_Count` check.
+        """Checks if any `BaseTrace` classes are needed from `tabular_tracing.py`.
+
+        Then checks if any `RefreshChecks` are needed, along with the default `row_count` check.
         """
         logger.debug("Running Pre-checks")
         if self.trace is not None:
@@ -257,6 +287,7 @@ class PyRefresh:
 
     def _post_checks(self):
         """If traces are running it Stops and Drops it.
+
         Runs through any `post_checks()` in `RefreshChecks`.
         """
         if self.trace is not None:
@@ -310,8 +341,8 @@ class PyRefresh:
             table_object = self._find_table(table) if isinstance(table, str) else table
 
             def handle_partitions(object):
-                """
-                Figures out if partition argument given is a str or an actual `PyPartition`.
+                """Figures out if partition argument given is a str or an actual `PyPartition`.
+
                 Then will run `self._refresh_partition()` appropriately.
                 """
                 if isinstance(object, str):
@@ -324,7 +355,10 @@ class PyRefresh:
             handle_partitions(partition_dict[table])
 
     def _request_refresh(self, object):
-        """Base method to parse through argument and figure out what needs to be refreshed. Someone please make this better..."""
+        """Base method to parse through argument and figure out what needs to be refreshed.
+
+        Someone please make this better...
+        """
         logger.debug(f"Requesting Refresh for {object}")
         if isinstance(object, str):
             self._refresh_table(self._find_table(object))
@@ -343,7 +377,7 @@ class PyRefresh:
         """Builds a DataFrame that displays details on the refresh.
 
         Args:
-            Property_Changes: Which is returned from `model.SaveChanges()`
+            Property_Changes: Which is returned from `model.save_changes()`
 
         Returns:
             pd.DataFrame: DataFrame of refresh details.
@@ -361,7 +395,7 @@ class PyRefresh:
                     ticks_to_datetime(property_change.new_value.Ticks),
                 )
                 logger.info(
-                    f'{table} - {partition} Refreshed! - {refreshed_time.strftime("%m/%d/%Y, %H:%M:%S")}'
+                    f'{table} - {partition} Refreshed! - {refreshed_time.strftime("%m/%d/%Y, %H:%M:%S")}'  # noqa: E501
                 )
                 refresh_data += [[table, partition, refreshed_time]]
         return pd.DataFrame(
@@ -369,8 +403,13 @@ class PyRefresh:
         )
 
     def run(self) -> pd.DataFrame:
-        """Brings it all together. When ready, executes all the pre checks.
-        Then refreshes. Then runs all the post checks.
+        """When ready, execute to start the refresh process.
+
+        First checks if connected and reconnects if needed.
+        Then starts the trace if needed.
+        Next will execute `save_changes()`
+        and run the post checks after that.
+        Last will return a `pd.DataFrame` of refresh results.
         """
         if self.model.Server.Connected is False:
             logger.info(f"{self.Server.Name} - Reconnecting...")

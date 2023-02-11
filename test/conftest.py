@@ -1,3 +1,9 @@
+"""pytest conftest.py.
+
+Has a `TestingStorage()` class to pass parameters from one test to another.
+This file also has functions that give instructions on start and finish of pytest.
+See `config.py` for more testing configurations.
+"""
 from test.config import (
     local_pbix,
     testingtablename,
@@ -7,15 +13,19 @@ import pytabular as p
 
 
 class TestStorage:
+    """Class to pass parameters from on pytest to another."""
+
     query_trace = None
     documentation_class = None
 
 
 def pytest_report_header(config):
+    """Pytest header name."""
     return "PyTabular Local Testing"
 
 
 def remove_testing_table(model):
+    """Function to remove the testing table."""
     table_check = [
         table
         for table in model.Model.Tables.GetEnumerator()
@@ -28,6 +38,10 @@ def remove_testing_table(model):
 
 
 def pytest_sessionstart(session):
+    """Run at pytest start.
+
+    Removes testing table if exists, and creates a new one.
+    """
     p.logger.info("Executing pytest setup...")
     remove_testing_table(local_pbix)
     local_pbix.create_table(testingtabledf, testingtablename)
@@ -35,6 +49,7 @@ def pytest_sessionstart(session):
 
 
 def pytest_sessionfinish(session, exitstatus):
+    """On pytest finish it will remove testing table."""
     p.logger.info("Executing pytest cleanup...")
     remove_testing_table(local_pbix)
     # p.logger.info("Finding and closing PBIX file...")

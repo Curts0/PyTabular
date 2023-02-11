@@ -1,5 +1,5 @@
-"""
-`query.py` houses a custom `Connection` class that uses the .Net AdomdConnection.
+"""`query.py` houses a custom `Connection` class that uses the .Net AdomdConnection.
+
 `Connection` is created automatically when connecting to your model.
 """
 import logging
@@ -14,14 +14,22 @@ logger = logging.getLogger("PyTabular")
 
 
 class Connection(AdomdConnection):
-    """Subclass for [Adomdclient](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient?view=analysisservices-dotnet). With some extra items on top.
-    Right now designed for internal use. For example, Query method in the Tabular class is just a wrapper for this class' Query method... So use that instead.
+    """Connection class creates an AdomdConnection.
 
-    Args:
-        AdomdConnection (_type_): _description_
+    Mainly used for the `query()` method. The `query()`
+    method in the Tabular class is just a wrapper for this class.
+    But you can pass through your `effective_user` more efficiently,
+    so use that instead.
     """
 
     def __init__(self, server, effective_user=None) -> None:
+        """Init creates the connection.
+
+        Args:
+            server (Server): The server that you are connecting to.
+            effective_user (str, optional): Pass through an effective user
+                to query as somebody else. Defaults to None.
+        """
         super().__init__()
         if server.ConnectionInfo.Password is None:
             connection_string = server.ConnectionString
@@ -35,15 +43,24 @@ class Connection(AdomdConnection):
         self.ConnectionString = connection_string
 
     def query(self, query_str: str) -> Union[pd.DataFrame, str, int]:
-        """Executes Query on Model and Returns results in Pandas DataFrame
+        """Executes query on Model and returns results in Pandas DataFrame.
+
+        Iterates through results of `AdomdCommmand().ExecuteReader()`
+        in the .Net library. If result is a single value, it will
+        return that single value instead of DataFrame.
 
         Args:
-                query_str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
-                Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.
-                It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]
+            query_str (str): Dax Query. Note, needs full syntax
+                (ex: `EVALUATE`). See (DAX)[https://docs.microsoft.com/en-us/dax/dax-queries].
+                Will check if query string is a file.
+                If it is, then it will perform a query
+                on whatever is read from the file.
+                It is also possible to query DMV.
+                For example.
+                `query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES")`.
 
         Returns:
-                pd.DataFrame: Returns dataframe with results
+            pd.DataFrame: Returns dataframe with results.
         """
         try:
             is_file = os.path.isfile(query_str)

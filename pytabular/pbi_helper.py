@@ -1,4 +1,5 @@
-"""`pbi_helper.py` was reverse engineered from [DaxStudio PowerBiHelper.cs](https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs).
+"""`pbi_helper.py` was reverse engineered from DaxStudio `PowerBiHelper.cs`.
+
 So all credit and genius should go to DaxStudio.
 I just wanted it in python...
 The main function is `find_local_pbi_instances()`.
@@ -9,10 +10,13 @@ import subprocess
 
 
 def get_msmdsrv() -> list:
-    """Runs powershel command to retrieve the ProcessId from Get-CimInstance where Name == 'msmdsrv.exe'.
+    """Runs powershel command to retrieve the ProcessId.
+
+    Uses `Get-CimInstance` where `Name == 'msmdsrv.exe'`.
 
     Returns:
-        list: returns ProcessId(s) in list format to account for multiple PBIX files open at the same time.
+        list: returns ProcessId(s) in list.
+            Formatted to account for multiple PBIX files open at the same time.
     """
     p.logger.debug("Retrieving msmdsrv.exe(s)")
 
@@ -20,7 +24,9 @@ def get_msmdsrv() -> list:
         msmdsrv = subprocess.check_output(
             [
                 "powershell",
-                """Get-CimInstance -ClassName Win32_Process -Property * -Filter "Name = 'msmdsrv.exe'" | Select-Object -Property ProcessId -ExpandProperty ProcessId""",
+                """Get-CimInstance -ClassName Win32_Process \
+                    -Property * -Filter "Name = 'msmdsrv.exe'" | \
+                    Select-Object -Property ProcessId -ExpandProperty ProcessId""",
             ]
         )
 
@@ -52,7 +58,9 @@ def get_port_number(msmdsrv: str) -> str:
     port = subprocess.check_output(
         [
             "powershell",
-            f"""Get-NetTCPConnection -State Listen -OwningProcess {msmdsrv} | Select-Object -Property LocalPort -First 1 -ExpandProperty LocalPort""",
+            f"Get-NetTCPConnection -State Listen \
+                -OwningProcess {msmdsrv} | Select-Object \
+                -Property LocalPort -First 1 -ExpandProperty LocalPort",
         ]
     )
     port_number = port.decode().strip()
@@ -72,7 +80,9 @@ def get_parent_id(msmdsrv: str) -> str:
     parent = subprocess.check_output(
         [
             "powershell",
-            f"""Get-CimInstance -ClassName Win32_Process -Property * -Filter "ProcessId = {msmdsrv}" | Select-Object -Property ParentProcessId -ExpandProperty ParentProcessId""",
+            f'Get-CimInstance -ClassName Win32_Process -Property * \
+                -Filter "ProcessId = {msmdsrv}" | \
+                Select-Object -Property ParentProcessId -ExpandProperty ParentProcessId',
         ]
     )
     parent_id = parent.decode().strip()
@@ -108,13 +118,15 @@ def get_parent_title(parent_id: str) -> str:
 
 
 def create_connection_str(port_number: str) -> str:
-    """This takes the port number and adds to connection string. This is pretty bland right now, may improve later.
+    """This takes the port number and adds to connection string.
+
+    This is pretty bland right now, may improve later.
 
     Args:
-        port_number (str): Port Number retrieved from `get_port_number(msmdsrv)`.
+        port_number (str): port number retrieved from `get_port_number(msmdsrv)`.
 
     Returns:
-        str: _description_
+        str: port number as string.
     """
     connection_str = f"Data Source=localhost:{port_number}"
     p.logger.debug(f"Local Connection Str - {connection_str}")
@@ -122,15 +134,17 @@ def create_connection_str(port_number: str) -> str:
 
 
 def find_local_pbi_instances() -> list:
-    """The real genius is from this [Dax Studio PowerBIHelper](https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs).
+    """The real genius is from Dax Studio.
+
     I just wanted it in python not C#, so reverse engineered what DaxStudio did.
     It will run some powershell scripts to pull the appropriate info.
     Then will spit out a list with tuples inside.
     You can use the connection string to connect to your model with pytabular.
+    [Dax Studio](https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs).
 
     Returns:
-        list: Example -  `[('PBI File Name1','localhost:{port}'),('PBI File Name2','localhost:{port}')]`
-    """
+        list: EX `[('PBI File Name1','localhost:{port}'),('PBI File Name2','localhost:{port}')]`
+    """  # noqa: E501
     instances = get_msmdsrv()
     pbi_instances = []
     for instance in instances:

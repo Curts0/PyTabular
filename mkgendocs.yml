@@ -12,34 +12,92 @@ pages:
   - page: "Queries.md"
     source: 'pytabular/query.py'
     classes:
-      - Connection
+      - Connection:
+        - __init__
+        - query
   - page: "Refreshes.md"
     source: 'pytabular/refresh.py'
     classes:
-      - PyRefresh
-      - RefreshCheck
+      - PyRefresh:
+        - __init__
+        - _pre_checks
+        - _post_checks
+        - _get_trace
+        - _find_table
+        - _find_partition
+        - _refresh_table
+        - _refresh_partition
+        - _refresh_dict
+        - _request_refresh
+        - run
+      - RefreshCheck:
+        - __init__
+        - pre_check
+        - post_check
+        - assertion_run
       - RefreshCheckCollection
   - page: "Table.md"
     source: 'pytabular/table.py'
     classes:
-      - PyTable
-      - PyTables
+      - PyTable:
+        - __init__
+        - row_count
+        - refresh
+        - last_refresh
+        - related
+      - PyTables:
+        - __init__
+        - refresh
+        - query_all
+        - find_zero_rows
+        - last_refresh
   - page: "Partition.md"
     source: 'pytabular/partition.py'
     classes:
-      - PyPartition
-      - PyPartitions
+      - PyPartition:
+        - __init__
+        - last_refresh
+        - refresh
+      - PyPartitions:
+        - __init__
   - page: "Column.md"
     source: 'pytabular/column.py'
     classes:
-      - PyColumn
-      - PyColumns
+      - PyColumn:
+        - __init__
+        - get_dependencies
+        - get_sample_values
+        - distinct_count
+        - values
+      - PyColumns:
+        - __init__
+        - query_all
+  - page: "Measure.md"
+    source: 'pytabular/measure.py'
+    classes:
+      - PyMeasure:
+        - __init__
+        - get_dependencies
+      - PyMeasures:
+        - __init__
   - page: "Traces.md"
     source: 'pytabular/tabular_tracing.py'
     classes:
-      - BaseTrace
-      - RefreshTrace
-      - QueryMonitor
+      - BaseTrace:
+        - __init__
+        - build
+        - add
+        - update
+        - start
+        - stop
+        - drop
+      - RefreshTrace:
+        - __init__
+      - QueryMonitor:
+        - __init__
+    functions:
+      - _refresh_handler
+      - _query_monitor_handler
   - page: "Best Practice Analyzer.md"
     source: 'pytabular/best_practice_analyzer.py'
     functions:
