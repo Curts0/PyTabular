@@ -29,4 +29,5 @@ jobs:
       - run: pip install --upgrade pip
       - run: pip install flake8
       - run: pip install pep8-naming
+      - run: pip install flake8-docstrings
       - run: python3 -m flake8 --count
