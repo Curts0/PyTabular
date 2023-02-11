@@ -61,6 +61,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
                 </li>
               </ul>
@@ -117,14 +121,14 @@
               
                 <h1 id="_1"></h1>
 <h2 id="tabulareditor">TabularEditor</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L48">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L56">source</a></p>
 <pre><code class="language-python">TabularEditor(
    exe_file_path: str = 'Default'
 )
 </code></pre>
 <hr />
-<p>Setting Tabular_Editor Class for future work.
-Mainly runs <code>download_tabular_editor()</code></p>
+<p>Setting Tabular_Editor Class for future work.</p>
+<p>Mainly runs <code>download_tabular_editor()</code></p>
 <hr />
 <h3 id="download_tabular_editor">download_tabular_editor</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/tabular_editor.py/#L15">source</a></p>
@@ -134,12 +138,17 @@ Mainly runs <code>download_tabular_editor()</code></p>
 )
 </code></pre>
 <hr />
-<p>Runs a request.get() to retrieve the zip file from web. Will unzip response and store in directory. Will also register the removal of the new directory and files when exiting program.</p>
+<p>Runs a request.get() to retrieve the zip file from web.</p>
+<p>Will unzip response and store in directory.
+Will also register the removal of the new directory
+and files when exiting program.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>download_location</strong> (str, optional) : File path for zip of Tabular Editor 2. Defaults to [Tabular Editor 2 Github Zip Location]'https://github.com/TabularEditor/TabularEditor/releases/download/2.16.7/TabularEditor.Portable.zip'.</li>
-<li><strong>folder</strong> (str, optional) : New Folder Location. Defaults to 'Tabular_Editor_2'.</li>
-<li><strong>auto_remove</strong> (bool, optional) : Boolean to determine auto removal of files once script exits. Defaults to True.</li>
+<li><strong>download_location</strong> (str, optional) : File path for zip of Tabular Editor 2.
+    See code args for default download url.</li>
+<li><strong>folder</strong> (str, optional) : New Folder Location. Defaults to "Tabular_Editor_2".</li>
+<li><strong>auto_remove</strong> (bool, optional) : Boolean to determine auto
+    removal of files once script exits. Defaults to True.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>

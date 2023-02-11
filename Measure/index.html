@@ -3,18 +3,18 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/PBI%20Helper/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Measure/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>PBI Helper - PyTabular</title>
+    <title>Measure - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "PBI Helper";
-        var mkdocs_page_input_path = "PBI Helper.md";
-        var mkdocs_page_url = "/PyTabular/PBI%20Helper/";
+        var mkdocs_page_name = "Measure";
+        var mkdocs_page_input_path = "Measure.md";
+        var mkdocs_page_url = "/PyTabular/Measure/";
       </script>
     
     <script src="../js/jquery-3.6.0.min.js" defer></script>
@@ -60,8 +60,24 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Column/">Column</a>
                 </li>
               </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Measure</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#pymeasure">PyMeasure</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#get_dependencies">.get_dependencies</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pymeasures">PyMeasures</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
                 </li>
               </ul>
               <ul>
@@ -80,12 +96,8 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Tabular%20Editor%202/">Tabular Editor</a>
                 </li>
               </ul>
-              <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">PBI Helper</a>
-    <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#find_local_pbi_instances">find_local_pbi_instances</a>
-    </li>
-    </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../PBI%20Helper/">PBI Helper</a>
                 </li>
               </ul>
               <ul>
@@ -106,7 +118,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>PBI Helper</li>
+      <li>Measure</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -116,27 +128,77 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="_1"></h1>
-<h3 id="find_local_pbi_instances">find_local_pbi_instances</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/pbi_helper.py/#L136">source</a></p>
-<pre><code class="language-python">.find_local_pbi_instances()
+<h2 id="pymeasure">PyMeasure</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L13">source</a></p>
+<pre><code class="language-python">PyMeasure(
+   object, table
+)
 </code></pre>
 <hr />
-<p>The real genius is from Dax Studio.</p>
-<p>I just wanted it in python not C#, so reverse engineered what DaxStudio did.
-It will run some powershell scripts to pull the appropriate info.
-Then will spit out a list with tuples inside.
-You can use the connection string to connect to your model with pytabular.
-<a href="https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs">Dax Studio</a>.</p>
+<p>Main class for interacting with measures.</p>
+<p>See methods for available functionality.</p>
+<p><strong>Methods:</strong></p>
+<h3 id="get_dependencies">.get_dependencies</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L37">source</a></p>
+<pre><code class="language-python">.get_dependencies()
+</code></pre>
+<hr />
+<p>Returns the dependant objects of a measure.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>self</strong>  : The Measure Object</li>
+</ul>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>list</strong>  : EX <code>[('PBI File Name1','localhost:{port}'),('PBI File Name2','localhost:{port}')]</code></li>
+<li><strong>DataFrame</strong>  : The Return Value is a Pandas dataframe
+                which displays all the dependancies
+                of the object.</li>
 </ul>
+<h3 id="init">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L19">source</a></p>
+<pre><code class="language-python">.__init__(
+   object, table
+)
+</code></pre>
+<hr />
+<p>Connects measure to parent <code>PyTable</code>.</p>
+<p>It will also add some custom rows for the <code>rich</code>
+table display.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>object</strong>  : The .Net measure object.</li>
+<li><strong>table</strong> (PyTable) : The parent <code>PyTable</code>.</li>
+</ul>
+<hr />
+<h2 id="pymeasures">PyMeasures</h2>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L54">source</a></p>
+<pre><code class="language-python">PyMeasures(
+   objects
+)
+</code></pre>
+<hr />
+<p>Groups together multiple measures.</p>
+<p>See <code>PyObjects</code> class for what more it can do.
+You can interact with <code>PyMeasures</code> straight from model. For ex: <code>model.Measures</code>.
+Or through individual tables <code>model.Tables[TABLE_NAME].Measures</code>.
+You can even filter down with <code>.find()</code>.
+For example find all measures with <code>ratio</code> in name.
+<code>model.Measures.find('ratio')</code>.</p>
+<p><strong>Methods:</strong></p>
+<h3 id="init_1">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L65">source</a></p>
+<pre><code class="language-python">.__init__(
+   objects
+)
+</code></pre>
+<hr />
+<p>Extends init from <code>PyObjects</code>.</p>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../Tabular%20Editor%202/" class="btn btn-neutral float-left" title="Tabular Editor"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../Logic%20Utils/" class="btn btn-neutral float-right" title="Logic Utils">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Column/" class="btn btn-neutral float-left" title="Column"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Traces/" class="btn btn-neutral float-right" title="Trace">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -159,10 +221,10 @@ You can use the connection string to connect to your model with pytabular.
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
-      <span><a href="../Tabular%20Editor%202/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Column/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../Logic%20Utils/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../Traces/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

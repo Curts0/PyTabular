@@ -59,17 +59,27 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
     </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
     </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pypartitions">PyPartitions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
+    </li>
+        </ul>
     </li>
     </ul>
                 </li>
               </ul>
               <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../Column/">Column</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
                 </li>
               </ul>
               <ul>
@@ -127,31 +137,43 @@
 )
 </code></pre>
 <hr />
-<p>Wrapper for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.partition?view=analysisservices-dotnet">Partition</a>.
-With a few other bells and whistles added to it.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>Table</strong>  : Parent Table to the Column</li>
-</ul>
+<p>Main class for interacting with partitions.</p>
+<p>See methods for available uses.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="last_refresh">.last_refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L35">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L41">source</a></p>
 <pre><code class="language-python">.last_refresh()
 </code></pre>
 <hr />
-<p>Queries <code>RefreshedTime</code> attribute in the partition and converts from C# Ticks to Python datetime</p>
+<p>Queries <code>RefreshedTime</code> attribute in the partition.</p>
+<p>Converts from C# Ticks to Python datetime.</p>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
 </ul>
+<h3 id="init">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L21">source</a></p>
+<pre><code class="language-python">.__init__(
+   object, table
+)
+</code></pre>
+<hr />
+<p>Extends from <code>PyObject</code> class.</p>
+<p>Adds a few custom rows to <code>rich</code> table for the partition.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>object</strong> (Partition) : .Net Partition object.</li>
+<li><strong>table</strong> (PyTable) : Parent table of the partition in question.</li>
+</ul>
 <h3 id="refresh">.refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L43">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L51">source</a></p>
 <pre><code class="language-python">.refresh(
    *args, **kwargs
 )
 </code></pre>
 <hr />
-<p>Same method from Model Refresh, you can pass through any extra parameters. For example:
+<p>Same method from Model Refresh.</p>
+<p>You can pass through any extra parameters. For example:
 <code>Tabular().Tables['Table Name'].Partitions[0].refresh()</code></p>
 <p><strong>Returns</strong></p>
 <ul>
@@ -159,17 +181,28 @@ With a few other bells and whistles added to it.</p>
 </ul>
 <hr />
 <h2 id="pypartitions">PyPartitions</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L52">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L63">source</a></p>
 <pre><code class="language-python">PyPartitions(
    objects
 )
 </code></pre>
 <hr />
-<p>Groups together multiple partitions. See <code>PyObjects</code> class for what more it can do.
-You can interact with <code>PyPartitions</code> straight from model. For ex: <code>model.Partitions</code>.
+<p>Groups together multiple partitions.</p>
+<p>See <code>PyObjects</code> class for what more it can do.
+You can interact with <code>PyPartitions</code> straight from model.
+For ex: <code>model.Partitions</code>.
 Or through individual tables <code>model.Tables[TABLE_NAME].Partitions</code>.
-You can even filter down with <code>.Find()</code>. For example find all partition with <code>prev-year</code> in name.
-<code>model.Partitions.Find('prev-year')</code>.</p>
+You can even filter down with <code>.find()</code>. For example find partitions with <code>prev-year</code> in name.
+<code>model.Partitions.find('prev-year')</code>.</p>
+<p><strong>Methods:</strong></p>
+<h3 id="init_1">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L74">source</a></p>
+<pre><code class="language-python">.__init__(
+   objects
+)
+</code></pre>
+<hr />
+<p>Extends through to <code>PyObjects</code>.</p>
               
             </div>
           </div><footer>

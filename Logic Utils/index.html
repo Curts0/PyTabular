@@ -61,6 +61,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
                 </li>
               </ul>
@@ -131,62 +135,56 @@
               
                 <h1 id="_1"></h1>
 <h3 id="ticks_to_datetime">ticks_to_datetime</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L14">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L13">source</a></p>
 <pre><code class="language-python">.ticks_to_datetime(
    ticks: int
 )
 </code></pre>
 <hr />
-<p>Converts a C# System DateTime Tick into a Python DateTime</p>
+<p>Converts a C# system datetime tick into a python datatime.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>ticks</strong> (int) : <a href="https://docs.microsoft.com/en-us/dotnet/api/system.datetime.ticks?view=net-6.0">C# DateTime Tick</a></li>
+<li><strong>ticks</strong> (int) : C# DateTime Tick.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>datetime</strong>  : <a href="https://docs.python.org/3/library/datetime.html">datetime.datetime</a></li>
+<li><strong>datetime</strong>  : datetime of tick.</li>
 </ul>
 <hr />
 <h3 id="pandas_datatype_to_tabular_datatype">pandas_datatype_to_tabular_datatype</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L26">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L25">source</a></p>
 <pre><code class="language-python">.pandas_datatype_to_tabular_datatype(
    df: pd.DataFrame
 )
 </code></pre>
 <hr />
-<p>WiP takes dataframe columns and gets respective tabular column datatype.  (<a href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.kind.html">NumPy Datatypes</a> and <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.datatype?view=analysisservices-dotnet">Tabular Datatypes</a>)</p>
+<p>Takes dataframe columns and gets respective tabular column datatype.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>df</strong> (pd.DataFrame) : Pandas DataFrame</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>Dict</strong>  : EX {'col1': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>, 'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>, 'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800>}</li>
+<li><strong>Dict</strong>  : dictionary with results.</li>
 </ul>
+<p><strong>Example</strong></p>
+<ul>
+<li><Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9700>,
+    'col2': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC8840>,
+    'col3': <Microsoft.AnalysisServices.Tabular.DataType object at 0x0000023BFFBC9800></li>
+</ul>
+<pre><code>{
+}
+</code></pre>
 <hr />
 <h3 id="pd_dataframe_to_m_expression">pd_dataframe_to_m_expression</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L55">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L63">source</a></p>
 <pre><code class="language-python">.pd_dataframe_to_m_expression(
    df: pd.DataFrame
 )
 </code></pre>
 <hr />
-<p>This will take a pandas dataframe and convert to an m expression
-For example this DF:
-   col1  col2
-0   1     3
-1   2     4</p>
-<p>|
-|
-V</p>
-<p>Will convert to this expression string:
-let
-Source=#table({"col1","col2"},
-{
-{"1","3"},{"2","4"}
-})
-in
-Source</p>
+<p>This will take a pandas dataframe and convert to an m expression.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>df</strong> (pd.DataFrame) : Pandas DataFrame</li>
@@ -195,9 +193,22 @@ Source</p>
 <ul>
 <li><strong>str</strong>  : Currently only returning string values in your tabular model.</li>
 </ul>
+<p><strong>Example</strong></p>
+<pre><code>col1  col2
+0   1     3
+1   2     4
+</code></pre>
+<p>converts to</p>
+<pre><code>Source=#table({&quot;col1&quot;,&quot;col2&quot;},
+{
+{&quot;1&quot;,&quot;3&quot;},{&quot;2&quot;,&quot;4&quot;}
+})
+in
+Source
+</code></pre>
 <hr />
 <h3 id="remove_folder_and_contents">remove_folder_and_contents</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L106">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L113">source</a></p>
 <pre><code class="language-python">.remove_folder_and_contents(
    folder_location
 )
@@ -210,25 +221,25 @@ Source</p>
 </ul>
 <hr />
 <h3 id="remove_suffix">remove_suffix</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L130">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L137">source</a></p>
 <pre><code class="language-python">.remove_suffix(
    input_string, suffix
 )
 </code></pre>
 <hr />
-<p>Adding for &gt;3.9 compatiblity. <a href="https://stackoverflow.com/questions/66683630/removesuffix-returns-error-str-object-has-no-attribute-removesuffix">Stackoverflow Answer</a></p>
+<p>Adding for &lt;3.9 compatiblity.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>input_string</strong> (str) : input string to remove suffix from</li>
-<li><strong>suffix</strong> (str) : suffix to be removed</li>
+<li><strong>input_string</strong> (str) : input string to remove suffix from.</li>
+<li><strong>suffix</strong> (str) : suffix to be removed.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>str</strong>  : input_str with suffix removed</li>
+<li><strong>str</strong>  : input_str with suffix removed.</li>
 </ul>
 <hr />
 <h3 id="remove_file">remove_file</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L119">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L126">source</a></p>
 <pre><code class="language-python">.remove_file(
    file_path
 )
@@ -241,14 +252,13 @@ Source</p>
 </ul>
 <hr />
 <h3 id="get_sub_list">get_sub_list</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L148">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L156">source</a></p>
 <pre><code class="language-python">.get_sub_list(
    lst: list, n: int
 )
 </code></pre>
 <hr />
-<p>Nest list by n amount...
-<code>get_sub_list([1,2,3,4,5,6],2) == [[1,2],[3,4],[5,6]]</code></p>
+<p>Nest list by n amount.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>lst</strong> (list) : List to nest.</li>
@@ -258,33 +268,34 @@ Source</p>
 <ul>
 <li><strong>list</strong>  : Nested list.</li>
 </ul>
+<p><strong>Example</strong></p>
+<p><code>get_sub_list([1,2,3,4,5,6],2) == [[1,2],[3,4],[5,6]]</code></p>
 <hr />
 <h3 id="get_value_to_df">get_value_to_df</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L162">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L171">source</a></p>
 <pre><code class="language-python">.get_value_to_df(
    query: AdomdDataReader, index: int
 )
 </code></pre>
 <hr />
-<p>Gets the values from the AdomdDataReader to convert the .Net Object
-into a tangible python value to work with in pandas.
-Lots of room for improvement on this one.</p>
+<p>Gets the values from the AdomdDataReader to convert to python df.</p>
+<p>Lots of room for improvement on this one.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>Query</strong> (AdomdDataReader) : <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomddatareader?view=analysisservices-dotnet">AdomdDataReader</a></li>
+<li><strong>query</strong> (AdomdDataReader) : The AdomdDataReader .Net object.</li>
 <li><strong>index</strong> (int) : Index of the value to perform the logic on.</li>
 </ul>
 <hr />
 <h3 id="dataframe_to_dict">dataframe_to_dict</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L180">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L189">source</a></p>
 <pre><code class="language-python">.dataframe_to_dict(
    df: pd.DataFrame
 )
 </code></pre>
 <hr />
-<p>Convert to Dataframe to dictionary and alter columns names with;
-- Underscores (_) to spaces
-- All Strings are converted to Title Case.</p>
+<p>Convert to Dataframe to dictionary and alter columns names with it.</p>
+<p>Will convert the underscores (_) to spaces,
+and all strings are converted to Title Case.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>df</strong> (pd.DataFrame) : Original table that needs to be converted
@@ -294,13 +305,13 @@ Lots of room for improvement on this one.</p>
 <p>list of dictionaries.</p>
 <hr />
 <h3 id="dict_to_markdown_table">dict_to_markdown_table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L199">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/logic_utils.py/#L209">source</a></p>
 <pre><code class="language-python">.dict_to_markdown_table(
    list_of_dicts: list, columns_to_include: list = None
 )
 </code></pre>
 <hr />
-<p>Description: Generate a Markdown table based on a list of dictionaries.</p>
+<p>Generate a Markdown table based on a list of dictionaries.</p>
 <p><strong>Args</strong></p>
 <ul>
 <li><strong>list_of_dicts</strong> (list) : List of Dictionaries that need to be converted
@@ -311,15 +322,16 @@ Lots of room for improvement on this one.</p>
 <p><strong>Returns</strong></p>
 <p>String that will represent a table in Markdown.</p>
 <p><strong>Example</strong></p>
-<p>columns = ['Referenced Object Type', 'Referenced Table', 'Referenced Object']
-dict_to_markdown_table(dependancies, columns)</p>
-<hr />
-<p>Result:
-    | Referenced Object Type | Referenced Table | Referenced Object               |
+<pre><code class="language-python">    columns = ['Referenced Object Type', 'Referenced Table', 'Referenced Object']
+    dict_to_markdown_table(dependancies, columns)
+</code></pre>
+<p><strong>Returns</strong></p>
+<pre><code>    | Referenced Object Type | Referenced Table | Referenced Object               |
     | ---------------------- | ---------------- | ------------------------------- |
     | TABLE                  | Cases            | Cases                           |
     | COLUMN                 | Cases            | IsClosed                        |
-    | CALC_COLUMN            | Cases            | Resolution Time (Working Hours) |</p>
+    | CALC_COLUMN            | Cases            | Resolution Time (Working Hours) |
+</code></pre>
               
             </div>
           </div><footer>

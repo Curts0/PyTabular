@@ -61,6 +61,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
                 </li>
               </ul>
@@ -70,6 +74,8 @@
     <li class="toctree-l2"><a class="reference internal" href="#connection">Connection</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#query">.query</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
         </ul>
     </li>
@@ -123,30 +129,51 @@
 )
 </code></pre>
 <hr />
-<p>Subclass for <a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient?view=analysisservices-dotnet">Adomdclient</a>. With some extra items on top.
-Right now designed for internal use. For example, Query method in the Tabular class is just a wrapper for this class' Query method... So use that instead.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>AdomdConnection</strong> (<em>type</em>) : <em>description</em></li>
-</ul>
+<p>Connection class creates an AdomdConnection.</p>
+<p>Mainly used for the <code>query()</code> method. The <code>query()</code>
+method in the Tabular class is just a wrapper for this class.
+But you can pass through your <code>effective_user</code> more efficiently,
+so use that instead.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="query">.query</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L37">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L45">source</a></p>
 <pre><code class="language-python">.query(
    query_str: str
 )
 </code></pre>
 <hr />
-<p>Executes Query on Model and Returns results in Pandas DataFrame</p>
+<p>Executes query on Model and returns results in Pandas DataFrame.</p>
+<p>Iterates through results of <code>AdomdCommmand().ExecuteReader()</code>
+in the .Net library. If result is a single value, it will
+return that single value instead of DataFrame.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>query_str</strong> (str) : Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
-Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.
-It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]</li>
+<li><strong>query_str</strong> (str) : Dax Query. Note, needs full syntax
+    (ex: <code>EVALUATE</code>). See (DAX)[https://docs.microsoft.com/en-us/dax/dax-queries].
+    Will check if query string is a file.
+    If it is, then it will perform a query
+    on whatever is read from the file.
+    It is also possible to query DMV.
+    For example.
+    <code>query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES")</code>.</li>
 </ul>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>DataFrame</strong>  : Returns dataframe with results</li>
+<li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
+</ul>
+<h3 id="init">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L25">source</a></p>
+<pre><code class="language-python">.__init__(
+   server, effective_user = None
+)
+</code></pre>
+<hr />
+<p>Init creates the connection.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>server</strong> (Server) : The server that you are connecting to.</li>
+<li><strong>effective_user</strong> (str, optional) : Pass through an effective user
+    to query as somebody else. Defaults to None.</li>
 </ul>
               
             </div>

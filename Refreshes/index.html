@@ -61,6 +61,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
                 </li>
               </ul>
@@ -109,7 +113,7 @@
               
                 <h1 id="_1"></h1>
 <h2 id="pyrefresh">PyRefresh</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L193">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L215">source</a></p>
 <pre><code class="language-python">PyRefresh(
    model, object: Union[str, PyTable, PyPartition, Dict[str, Any]],
    trace: BaseTrace = RefreshTrace,
@@ -119,127 +123,206 @@
 </code></pre>
 <hr />
 <p>PyRefresh Class to handle refreshes of model.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>model</strong> (Tabular) : Main Tabular Class</li>
-<li><strong>object</strong> (Union[str, PyTable, PyPartition, Dict[str, Any]]) : Designed to handle a few different ways of selecting a refresh. Can be a string of 'Table Name' or dict of {'Table Name': 'Partition Name'} or even some combination with the actual PyTable and PyPartition classes.</li>
-<li><strong>trace</strong> (BaseTrace, optional) : Set to <code>None</code> if no Tracing is desired, otherwise you can use default trace or create your own. Defaults to RefreshTrace.</li>
-<li><strong>RefreshChecks</strong> (RefreshCheckCollection, optional) : Add your <code>RefreshCheck</code>'s into a <code>RefreshCheckCollection</code>. Defaults to RefreshCheckCollection().</li>
-<li><strong>default_row_count_check</strong> (bool, optional) : Quick built in check will fail the refresh if post check row count is zero. Defaults to True.</li>
-<li><strong>refresh_type</strong> (RefreshType, optional) : Input RefreshType desired. Defaults to RefreshType.Full.</li>
-</ul>
 <p><strong>Methods:</strong></p>
+<h3 id="_refresh_partition">._refresh_partition</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L332">source</a></p>
+<pre><code class="language-python">._refresh_partition(
+   partition: PyPartition
+)
+</code></pre>
+<hr />
+<p>Runs .Net <code>RequestRefresh()</code> on partition.</p>
+<h3 id="_find_partition">._find_partition</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L315">source</a></p>
+<pre><code class="language-python">._find_partition(
+   table: Table, partition_str: str
+)
+</code></pre>
+<hr />
+<p>Finds partition in <code>PyPartitions</code> class.</p>
+<h3 id="_pre_checks">._pre_checks</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L255">source</a></p>
+<pre><code class="language-python">._pre_checks()
+</code></pre>
+<hr />
+<p>Checks if any <code>BaseTrace</code> classes are needed from <code>tabular_tracing.py</code>.</p>
+<p>Then checks if any <code>RefreshChecks</code> are needed, along with the default <code>row_count</code> check.</p>
+<h3 id="_refresh_table">._refresh_table</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L324">source</a></p>
+<pre><code class="language-python">._refresh_table(
+   table: PyTable
+)
+</code></pre>
+<hr />
+<p>Runs .Net <code>RequestRefresh()</code> on table.</p>
+<h3 id="_find_table">._find_table</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L306">source</a></p>
+<pre><code class="language-python">._find_table(
+   table_str: str
+)
+</code></pre>
+<hr />
+<p>Finds table in <code>PyTables</code> class.</p>
+<h3 id="_refresh_dict">._refresh_dict</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L338">source</a></p>
+<pre><code class="language-python">._refresh_dict(
+   partition_dict: Dict
+)
+</code></pre>
+<hr />
+<p>Handles refreshes if argument given was a dictionary.</p>
 <h3 id="run">.run</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L371">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L405">source</a></p>
 <pre><code class="language-python">.run()
 </code></pre>
 <hr />
-<p>Brings it all together. When ready, executes all the pre checks.
-Then refreshes. Then runs all the post checks.</p>
+<p>When ready, execute to start the refresh process.</p>
+<p>First checks if connected and reconnects if needed.
+Then starts the trace if needed.
+Next will execute <code>save_changes()</code>
+and run the post checks after that.
+Last will return a <code>pd.DataFrame</code> of refresh results.</p>
+<h3 id="_request_refresh">._request_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L357">source</a></p>
+<pre><code class="language-python">._request_refresh(
+   object
+)
+</code></pre>
+<hr />
+<p>Base method to parse through argument and figure out what needs to be refreshed.</p>
+<p>Someone please make this better...</p>
+<h3 id="init">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L218">source</a></p>
+<pre><code class="language-python">.__init__(
+   model, object: Union[str, PyTable, PyPartition, Dict[str, Any]],
+   trace: BaseTrace = RefreshTrace,
+   refresh_checks: RefreshCheckCollection = RefreshCheckCollection(),
+   default_row_count_check: bool = True, refresh_type: RefreshType = RefreshType.Full
+)
+</code></pre>
+<hr />
+<p>Init when a refresh is requested.</p>
+<p>Runs through requested tables and partitions
+to make sure they are in model.
+Then will run pre checks on the requested objects.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>model</strong> (Tabular) : Tabular model.</li>
+<li><strong>object</strong> (Union[str, PyTable, PyPartition, Dict[str, Any]]) : The objects
+    that you are wanting to refresh. Can be a <code>PyTable</code>, <code>PyPartition</code>,
+    <code>TABLE_NAME</code> string, or a dict with <code>{TABLE_REFERENCE:PARTITION_REFERENCE}</code></li>
+<li><strong>trace</strong> (BaseTrace, optional) : Defaults to RefreshTrace.</li>
+<li><strong>refresh_checks</strong> (RefreshCheckCollection, optional) : Defaults to RefreshCheckCollection().</li>
+<li><strong>default_row_count_check</strong> (bool, optional) : Defaults to True.</li>
+<li><strong>refresh_type</strong> (RefreshType, optional) : Defaults to RefreshType.Full.</li>
+</ul>
+<h3 id="_get_trace">._get_trace</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L302">source</a></p>
+<pre><code class="language-python">._get_trace()
+</code></pre>
+<hr />
+<p>Creates Trace and creates it in model.</p>
+<h3 id="_post_checks">._post_checks</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L288">source</a></p>
+<pre><code class="language-python">._post_checks()
+</code></pre>
+<hr />
+<p>If traces are running it Stops and Drops it.</p>
+<p>Runs through any <code>post_checks()</code> in <code>RefreshChecks</code>.</p>
 <hr />
 <h2 id="refreshcheck">RefreshCheck</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L21">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L19">source</a></p>
 <pre><code class="language-python">RefreshCheck(
    name: str, function, assertion = None
 )
 </code></pre>
 <hr />
-<p><code>RefreshCheck</code> is an assertion you run after your refreshes.
-It will run the given <code>function</code> before and after refreshes,
-then run the assertion of before and after. The default given in a refresh is to check row count.
-It will check row count before, and row count after. Then fail if row count after is zero.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>name</strong> (str) : Name of RefreshCheck</li>
-<li><strong>function</strong> (function) : Function to run before and after refresh.</li>
-<li><strong>assertion</strong> (function) : Functino that takes a <code>pre</code> and <code>post</code> argument to output True or False.</li>
-</ul>
+<p><code>RefreshCheck</code> is an test you run after your refreshes.</p>
+<p>It will run the given <code>function</code> before and after refreshes,
+then run the assertion of before and after.
+The default given in a refresh is to check row count.
+It will check row count before, and row count after.
+Then fail if row count after is zero.</p>
 <p><strong>Methods:</strong></p>
-<h3 id="name">.name</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L48">source</a></p>
-<pre><code class="language-python">.name()
-</code></pre>
-<hr />
-<p>Get your custom name of refresh check.</p>
-<h3 id="function">.function</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L61">source</a></p>
-<pre><code class="language-python">.function()
-</code></pre>
-<hr />
-<p>Get the function that is used to run a pre and post check.</p>
-<h3 id="pre">.pre</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L74">source</a></p>
-<pre><code class="language-python">.pre()
-</code></pre>
-<hr />
-<p>Get the pre value that is the result from the pre refresh check.</p>
-<h3 id="post">.post</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L87">source</a></p>
-<pre><code class="language-python">.post()
-</code></pre>
-<hr />
-<p>Get the post value that is the result from the post refresh check.</p>
-<h3 id="assertion">.assertion</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L100">source</a></p>
-<pre><code class="language-python">.assertion()
-</code></pre>
-<hr />
-<p>Get the assertion that is the result from the post refresh check.</p>
-<h3 id="pre_check">.pre_check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L131">source</a></p>
-<pre><code class="language-python">.pre_check()
-</code></pre>
-<hr />
-<p>Runs <code>self._check("Pre")</code></p>
-<h3 id="post_check">.post_check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L136">source</a></p>
-<pre><code class="language-python">.post_check()
-</code></pre>
-<hr />
-<p>Runs <code>self._check("Post")</code> then <code>self.assertion_run()</code></p>
 <h3 id="assertion_run">.assertion_run</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L142">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L151">source</a></p>
 <pre><code class="language-python">.assertion_run()
 </code></pre>
 <hr />
-<p>Runs the given self.assertion function with <code>self.pre</code> and <code>self.post</code>.
-So, <code>self.assertion_run(self.pre, self.post)</code>.</p>
+<p>Runs the given self.assertion function with <code>self.pre</code> and <code>self.post</code>.</p>
+<p>So, <code>self.assertion_run(self.pre, self.post)</code>.</p>
+<h3 id="init_1">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L29">source</a></p>
+<pre><code class="language-python">.__init__(
+   name: str, function, assertion = None
+)
+</code></pre>
+<hr />
+<p>Sets the necessary components to perform a refresh check.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>name</strong> (str) : Name of refresh check.</li>
+<li><strong>function</strong> (Callable) : Function to run on pre and post checks.
+    For example, a dax query. readme has examples of this.</li>
+<li><strong>assertion</strong> (Callable, optional) : A function that can be run.
+Supply the assertion function with 2 arguments. The first one
+for your 'pre' results from the <code>function</code> argument. The second
+for your <code>post</code> results from the<code>function</code> argument.
+Return <code>True</code> or <code>False</code> depending on the comparison of the two arguments
+to determine a pass or fail status of your refresh.
+Defaults to None.</li>
+</ul>
+<h3 id="post_check">.post_check</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L145">source</a></p>
+<pre><code class="language-python">.post_check()
+</code></pre>
+<hr />
+<p>Runs <code>self._check("Post")</code> then <code>self.assertion_run()</code>.</p>
+<h3 id="pre_check">.pre_check</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L140">source</a></p>
+<pre><code class="language-python">.pre_check()
+</code></pre>
+<hr />
+<p>Runs <code>self._check("Pre")</code>.</p>
 <hr />
 <h2 id="refreshcheckcollection">RefreshCheckCollection</h2>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L160">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L170">source</a></p>
 <pre><code class="language-python">RefreshCheckCollection(
    refresh_checks: RefreshCheck = []
 )
 </code></pre>
 <hr />
-<p>Groups together your <code>RefreshChecks</code> to handle multiple types of checks in a single refresh.</p>
+<p>Groups together your <code>RefreshChecks</code>.</p>
+<p>Used to handle multiple types of checks in a single refresh.</p>
 <p><strong>Methods:</strong></p>
 <h3 id="add_refresh_check">.add_refresh_check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L172">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L190">source</a></p>
 <pre><code class="language-python">.add_refresh_check(
    refresh_check: RefreshCheck
 )
 </code></pre>
 <hr />
-<p>Add a RefreshCheck</p>
+<p>Add a RefreshCheck.</p>
+<p>Supply the <code>RefreshCheck</code> to add.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>RefreshCheck</strong> (RefreshCheck) : <code>RefreshCheck</code> class.</li>
+<li><strong>refresh_check</strong> (RefreshCheck) : <code>RefreshCheck</code> class.</li>
 </ul>
 <h3 id="remove_refresh_check">.remove_refresh_check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L180">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L200">source</a></p>
 <pre><code class="language-python">.remove_refresh_check(
    refresh_check: RefreshCheck
 )
 </code></pre>
 <hr />
-<p>Remove a RefreshCheck</p>
+<p>Remove a RefreshCheck.</p>
+<p>Supply the <code>RefreshCheck</code> to remove.</p>
 <p><strong>Args</strong></p>
 <ul>
-<li><strong>RefreshCheck</strong> (RefreshCheck) : <code>RefreshCheck</code> class.</li>
+<li><strong>refresh_check</strong> (RefreshCheck) : <code>RefreshCheck</code> class.</li>
 </ul>
 <h3 id="clear_refresh_checks">.clear_refresh_checks</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L188">source</a></p>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L210">source</a></p>
 <pre><code class="language-python">.clear_refresh_checks()
 </code></pre>
 <hr />
