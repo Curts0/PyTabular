@@ -66,6 +66,7 @@ def test_pypartitions_refresh(model):
     """Tests refreshing partitions of testingtable."""
     assert len(model.Tables[testingtablename].Partitions.refresh()) > 0
 
+
 @pytest.mark.parametrize("model", testing_parameters)
 def test_pyobjects_adding(model):
     """Tests adding a PyObject."""
