@@ -253,14 +253,26 @@ class ModelDocumenter:
             "\\n", ""
         )
 
-        object_properties = ''
+
+        # TODO: Resolve to make sure it's for measures.
+        object_properties = [
+            { "Column Name": object.Name }, 
+            { "Object Type": object.ObjectType },
+            { "Type": object.Type },
+            { "Is Available In Excel": object.IsAvailableInMDX },
+            { "Is Hidden": object.IsHidden }, 
+            { "Data Category": object.DataCategory },
+            { "Data Type": object.DataType },
+            { "Display Folder": object.DisplayFolder }
+        ]
+
 
         obj_text = [
             f"### {object_caption}",
             "**Description**:",
             f"> {object_description}",
             ""
-            f"{object_properties}",
+            f"{self.select_object_properties(object_properties)}"
             "",
             f'```dax title="Technical: {object.Name}"',
             f"  {object.Expression}",
@@ -319,31 +331,15 @@ class ModelDocumenter:
             "\\n", ""
         )
 
-        object_details = ''
-        """
-            <dl>
-            <dt>Measures (#)</dt>
-            <dd>{len(object.Measures)}</dd>
-
-            <dt>Columns (#)</dt>
-            <dd>{len(object.Columns)}</dd>
-
-            <dt>Partitions (#)</dt>
-            <dd>{len(object.Partitions)}</dd>
-
-            <dt>Data Category</dt>
-            <dd>{object.DataCategory or "Regular Table"}</dd>
-
-            <dt>Is Hidden</dt>
-            <dd>{object.IsHidden}</dd>
-
-            <dt>Table Type</dt>
-            <dd>{object.Partitions[0].ObjectType}</dd>
-
-            <dt>Source Type</dt>
-            <dd>{object.Partitions[0].SourceType}</dd>
-            </dl>
-        """
+        object_properties = [
+            { "Measures (#)": len(object.Measures) }, 
+            { "Columns (#)": len(object.Columns) },
+            { "Partiton (#)": len(object.Partitions) },
+            { "Data Category": object.DataCategory or "Regular Table" },
+            { "Is Hidden": object.IsHidden },
+            { "Table Type": object.Partitions[0].ObjectType }, 
+            { "Source Type": object.Partitions[0].SourceType }
+        ]
 
         partition_type = ""
         partition_source = ""
@@ -363,7 +359,7 @@ class ModelDocumenter:
             "**Description**: ",
             "> {object_description}",
             "",
-            f"{object_details}",
+            f"{self.select_object_properties(object_properties)}"
             "", 
             f"```{partition_type} title="Table Source: {object.Name}",
             f"   {partition_source}",
@@ -424,40 +420,23 @@ class ModelDocumenter:
 
         object_heading = f"""{object_caption} {self.create_object_reference( object=object.Name, object_parent=object.Parent.Name)}"""
 
-        object_details = ''
-        """
-        <dl>
-            <dt>Column Name</dt>
-            <dd>{object.Name}</dd>
+        object_properties = [
+            { "Column Name": object.Name }, 
+            { "Object Type": object.ObjectType },
+            { "Type": object.Type },
+            { "Is Available In Excel": object.IsAvailableInMDX },
+            { "Is Hidden": object.IsHidden }, 
+            { "Data Category": object.DataCategory },
+            { "Data Type": object.DataType },
+            { "Display Folder": object.DisplayFolder }
+        ]
 
-            <dt>Object Type</dt>
-            <dd>{object.ObjectType}</dd>
-
-            <dt>Type</dt>
-            <dd>{object.Type}</dd>
-
-            <dt>Is Available In Excel</dt>
-            <dd>{object.IsAvailableInMDX}</dd>
-
-            <dt>Is Hidden</dt>
-            <dd>{object.IsHidden}</dd>
-
-            <dt>Data Category</dt>
-            <dd>{object.DataCategory}</dd>
-
-            <dt>Data Type</dt>
-            <dd>{object.DataType}</dd>
-
-            <dt>DisplayFolder</dt>
-            <dd>{object.DisplayFolder}</dd>
-
-        </dl>"""
         obj_text = [
             f"### {object_heading}", 
             "**Description**:"
             f"> {object_description}"
             "",
-            f"{object_details}"
+            f"{self.select_object_properties(object_properties)}"
         ]
 
         if str(object.Type) == "Calculated":
@@ -490,8 +469,9 @@ class ModelDocumenter:
         ]    
 
         return "\n".join(obj_text)
+ 
     @staticmethod 
-    def select_object_properties(self, properties : list[dict]) -> str:
+    def select_object_properties(properties : list[dict]) -> str:
         """
         Generate the section for object properties,
         you can select your own properties to display
