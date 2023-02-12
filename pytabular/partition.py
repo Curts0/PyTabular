@@ -74,3 +74,8 @@ class PyPartitions(PyObjects):
     def __init__(self, objects) -> None:
         """Extends through to `PyObjects`."""
         super().__init__(objects)
+
+    def refresh(self, *args, **kwargs):
+        """Refreshes all `PyPartition`(s) in class."""
+        model = self[0].Table.Model
+        return model.refresh(self, *args, **kwargs)
