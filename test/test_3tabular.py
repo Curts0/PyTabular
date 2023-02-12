@@ -56,9 +56,15 @@ def test_pytables_refresh(model):
 
 
 @pytest.mark.parametrize("model", testing_parameters)
-def test_pypartitions_refresh(model):
+def test_pypartition_refresh(model):
     """Tests refreshing partition of testingtable."""
     assert len(model.Tables[testingtablename].Partitions[0].refresh()) > 0
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_pypartitions_refresh(model):
+    """Tests refreshing partitions of testingtable."""
+    assert len(model.Tables[testingtablename].Partitions.refresh()) > 0
 
 
 @pytest.mark.parametrize("model", testing_parameters)

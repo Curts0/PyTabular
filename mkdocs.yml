@@ -2,15 +2,17 @@ site_name: PyTabular
 site_url: https://curts0.github.io/PyTabular/
 nav:
     - Home: index.md
-    - Tabular: Tabular.md
-    - Table: Table.md
-    - Partition: Partition.md
-    - Column: Column.md
-    - Measure: Measure.md
-    - Trace: Traces.md
-    - Queries: Queries.md
+    - Main Tabular Class: Tabular.md
+    - Refreshing: Refreshes.md
+    - Querying: Queries.md
+    - Tables: Table.md
+    - Partitions: Partition.md
+    - Columns: Column.md
+    - Measures: Measure.md
+    - Traces: Traces.md
     - Best Practice Analyzer: Best Practice Analyzer.md
     - Tabular Editor: Tabular Editor 2.md
     - PBI Helper: PBI Helper.md
     - Logic Utils: Logic Utils.md
+    - Contributing: contributing.md
 theme: readthedocs

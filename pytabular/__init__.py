@@ -33,26 +33,6 @@ logger.info("See https://docs.python.org/3/library/logging.html#logging-levels")
 
 logger.info(f"Python Version::{sys.version}")
 logger.info(f"Python Location::{sys.exec_prefix}")
-
-
-def find_version() -> str:
-    """Finds PyTabular version.
-
-    Returns:
-        str: Version as string.
-    """
-    version_str = "\nversion = "
-    with open("pyproject.toml", "r") as f:
-        pyproject_text = f.read()
-    start = pyproject_text.find(version_str) + len(version_str)
-    end = pyproject_text.find("\n", start)
-    return pyproject_text[start:end].replace('"', "")
-
-
-try:
-    logger.info(f"PyTabular Version:: {find_version()}")
-except Exception:
-    logger.warning("Unable to find PyTabular Version")
 logger.info(f"Package Location:: {__file__}")
 logger.info(f"Working Directory:: {os.getcwd()}")
 logger.info(f"Platform:: {sys.platform}-{platform.release()}")

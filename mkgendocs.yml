@@ -60,6 +60,7 @@ pages:
         - refresh
       - PyPartitions:
         - __init__
+        - refresh
   - page: "Column.md"
     source: 'pytabular/column.py'
     classes:

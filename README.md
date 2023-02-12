@@ -335,4 +335,4 @@ docs.save_documentation()
 ```
 
 ### Contributing
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+See [contributing.md](contributing.md)
