@@ -63,27 +63,27 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#related">.related</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#row_count">.row_count</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pytables">PyTables</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#find_zero_rows">.find_zero_rows</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#query_all">.query_all</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#find_zero_rows">.find_zero_rows</a>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh_1">.last_refresh</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#refresh_1">.refresh</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
-    </li>
-    <li class="toctree-l3"><a class="reference internal" href="#last_refresh_1">.last_refresh</a>
     </li>
         </ul>
     </li>
@@ -168,6 +168,28 @@ This let's you also easily check the default .Net properties.</p>
 </code></pre>
 <hr />
 <p>Returns tables with a relationship with the table in question.</p>
+<h3 id="row_count">.row_count</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L69">source</a></p>
+<pre><code class="language-python">.row_count()
+</code></pre>
+<hr />
+<p>Method to return count of rows.</p>
+<p>Simple Dax Query: <code>EVALUATE {COUNTROWS('Table Name')}</code>.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>int</strong>  : Number of rows using <code>COUNTROWS</code>.</li>
+</ul>
+<h3 id="last_refresh">.last_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L89">source</a></p>
+<pre><code class="language-python">.last_refresh()
+</code></pre>
+<hr />
+<p>Will query each partition for the last refresh time.</p>
+<p>Then will select the max value to return.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>datetime</strong>  : Last refresh time in datetime format</li>
+</ul>
 <h3 id="refresh">.refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L79">source</a></p>
 <pre><code class="language-python">.refresh(
@@ -181,17 +203,6 @@ This let's you also easily check the default .Net properties.</p>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details.</li>
-</ul>
-<h3 id="row_count">.row_count</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L69">source</a></p>
-<pre><code class="language-python">.row_count()
-</code></pre>
-<hr />
-<p>Method to return count of rows.</p>
-<p>Simple Dax Query: <code>EVALUATE {COUNTROWS('Table Name')}</code>.</p>
-<p><strong>Returns</strong></p>
-<ul>
-<li><strong>int</strong>  : Number of rows using <code>COUNTROWS</code>.</li>
 </ul>
 <h3 id="init">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L26">source</a></p>
@@ -208,17 +219,6 @@ table.</p>
 <li><strong>object</strong> (Table) : The actual .Net table.</li>
 <li><strong>model</strong> (Tabular) : The model that the table is in.</li>
 </ul>
-<h3 id="last_refresh">.last_refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L89">source</a></p>
-<pre><code class="language-python">.last_refresh()
-</code></pre>
-<hr />
-<p>Will query each partition for the last refresh time.</p>
-<p>Then will select the max value to return.</p>
-<p><strong>Returns</strong></p>
-<ul>
-<li><strong>datetime</strong>  : Last refresh time in datetime format</li>
-</ul>
 <hr />
 <h2 id="pytables">PyTables</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L107">source</a></p>
@@ -234,6 +234,12 @@ You can even filter down with <code>.Find()</code>.
 For example find all tables with <code>fact</code> in name.
 <code>model.Tables.Find('fact')</code>.</p>
 <p><strong>Methods:</strong></p>
+<h3 id="find_zero_rows">.find_zero_rows</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L152">source</a></p>
+<pre><code class="language-python">.find_zero_rows()
+</code></pre>
+<hr />
+<p>Returns PyTables class of tables with zero rows queried.</p>
 <h3 id="query_all">.query_all</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L126">source</a></p>
 <pre><code class="language-python">.query_all(
@@ -254,28 +260,6 @@ dynamically building a query with the
 <ul>
 <li><strong>DataFrame</strong>  : Returns dataframe with results</li>
 </ul>
-<h3 id="find_zero_rows">.find_zero_rows</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L152">source</a></p>
-<pre><code class="language-python">.find_zero_rows()
-</code></pre>
-<hr />
-<p>Returns PyTables class of tables with zero rows queried.</p>
-<h3 id="refresh_1">.refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L121">source</a></p>
-<pre><code class="language-python">.refresh(
-   *args, **kwargs
-)
-</code></pre>
-<hr />
-<p>Refreshes all <code>PyTable</code>(s) in class.</p>
-<h3 id="init_1">.<strong>init</strong></h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L117">source</a></p>
-<pre><code class="language-python">.__init__(
-   objects
-)
-</code></pre>
-<hr />
-<p>Init just extends from the main <code>PyObjects</code> class.</p>
 <h3 id="last_refresh_1">.last_refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L162">source</a></p>
 <pre><code class="language-python">.last_refresh(
@@ -302,6 +286,22 @@ Example to add to model
     If group_partition == True and the table has
     multiple partitions, then df.groupby(by["tables"]).max()</li>
 </ul>
+<h3 id="refresh_1">.refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L121">source</a></p>
+<pre><code class="language-python">.refresh(
+   *args, **kwargs
+)
+</code></pre>
+<hr />
+<p>Refreshes all <code>PyTable</code>(s) in class.</p>
+<h3 id="init_1">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/table.py/#L117">source</a></p>
+<pre><code class="language-python">.__init__(
+   objects
+)
+</code></pre>
+<hr />
+<p>Init just extends from the main <code>PyObjects</code> class.</p>
               
             </div>
           </div><footer>
