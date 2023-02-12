@@ -1,5 +1,5 @@
-"""
-`pytabular.py` is where it all started. So there is a lot of old methods that will eventually be deprecated.
+"""`pytabular.py` is where it all started.
+
 Main class is `Tabular()`. Use that for connecting with your models.
 """
 import logging
@@ -40,23 +40,27 @@ logger = logging.getLogger("PyTabular")
 
 
 class Tabular(PyObject):
-    """Tabular Class to perform operations: [Microsoft.AnalysisServices.Tabular](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular?view=analysisservices-dotnet). You can use this class as your main way to interact with your model.
+    """Tabular Class to perform operations.
+
+    This is the main class to work with in PyTabular.
+    You can connect to the other classes via the supplied attributes.
 
     Args:
-            connection_str (str): Valid [Connection String](https://docs.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services?view=asallproducts-allversions) for connecting to a Tabular Model.
+            connection_str (str): Need a valid connection string:
+                [link](https://learn.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services)
+
     Attributes:
-            Server (Server): See [Server MS Docs](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.server?view=analysisservices-dotnet).
-            Catalog (str): Name of Database. See [Catalog MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.connectioninfo.catalog?view=analysisservices-dotnet#microsoft-analysisservices-connectioninfo-catalog).
-            Model (Model): See [Model MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.model?view=analysisservices-dotnet).
-            AdomdConnection (AdomdConnection): For querying. See [AdomdConnection MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.adomdclient.adomdconnection?view=analysisservices-dotnet). Connection made from parts of the originally provided connection string.
-            Tables (PyTables[PyTable]): Wrappers for [Table MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table?view=analysisservices-dotnet). So you have the full capabilities of what the MS Docs offer and a few others. Like `Tabular().Tables['Table Name'].Row_Count()`. Or you can find a table via `Tabular().Tables[0]` or `Tabular().Tables['Table Name']`
-            Columns (List[Column]): Easy access list of columns from model. See [Column MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.column?view=analysisservices-dotnet).
-            Partitions (List[Partition]): Easy access list of partitions from model. See [Partition MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.partition?view=analysisservices-dotnet).
-            Measures (List[Measure]): Easy access list of measures from model. See [Measure MS Docs](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.table.measures?view=analysisservices-dotnet#microsoft-analysisservices-tabular-table-measures).
+            AdomdConnection (Connection): For querying.
+                This is the `Connection` class.
+            Tables (PyTables[PyTable]): See `PyTables` for more information.
+                Iterate through your tables in your model.
+            Columns (PyColumns[PyColumn]): See `PyColumns` for more information.
+            Partitions (PyPartitions[PyPartition]): See `PyPartitions` for more information.
+            Measures (PyMeasures[PyMeasure]): See `PyMeasures` for more information.
     """
 
     def __init__(self, connection_str: str):
-
+        """Connect to model. Just supply a solid connection string."""
         # Connecting to model...
         logger.debug("Initializing Tabular Class")
         self.Server = Server()
@@ -110,7 +114,10 @@ class Tabular(PyObject):
         atexit.register(self.disconnect)
 
     def reload_model_info(self) -> bool:
-        """Runs on __init__ iterates through details, can be called after any model changes. Called in save_changes()
+        """Reload your model info into the `Tabular` class.
+
+        Should be called after any model changes.
+        Called in `save_changes()` and `__init__()`.
 
         Returns:
                 bool: True if successful
@@ -145,7 +152,10 @@ class Tabular(PyObject):
         return True
 
     def is_process(self) -> bool:
-        """Run method to check if Processing is occurring. Will query DMV $SYSTEM.DISCOVER_JOBS to see if any processing is happening.
+        """Run method to check if Processing is occurring.
+
+        Will query DMV `$SYSTEM.DISCOVER_JOBS`
+        to see if any processing is happening.
 
         Returns:
                 bool: True if DMV shows Process, False if not.
@@ -154,43 +164,34 @@ class Tabular(PyObject):
         return len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
 
     def disconnect(self) -> None:
-        """Disconnects from Model"""
+        """Disconnects from Model."""
         logger.info(f"Disconnecting from - {self.Server.Name}")
         atexit.unregister(self.disconnect)
         return self.Server.Disconnect()
 
     def reconnect(self) -> None:
-        """Reconnects to Model"""
+        """Reconnects to Model."""
         logger.info(f"Reconnecting to {self.Server.Name}")
         return self.Server.Reconnect()
 
     def refresh(self, *args, **kwargs) -> pd.DataFrame:
-        """PyRefresh Class to handle refreshes of model.
+        """`PyRefresh` class to handle refreshes of model.
 
-        Args:
-            model (Tabular): Main Tabular Class
-            object (Union[str, PyTable, PyPartition, Dict[str, Any]]): Designed to handle a few different ways of selecting a refresh. Can be a string of 'Table Name' or dict of {'Table Name': 'Partition Name'} or even some combination with the actual PyTable and PyPartition classes.
-            trace (Base_Trace, optional): Set to `None` if no Tracing is desired, otherwise you can use default trace or create your own. Defaults to Refresh_Trace.
-            refresh_checks (Refresh_Check_Collection, optional): Add your `Refresh_Check`'s into a `Refresh_Check_Collection`. Defaults to Refresh_Check_Collection().
-            default_row_count_check (bool, optional): Quick built in check will fail the refresh if post check row count is zero. Defaults to True.
-            refresh_type (RefreshType, optional): Input RefreshType desired. Defaults to RefreshType.Full.
-
-        Returns:
-            pd.DataFrame
+        See the `PyRefresh()` class for more details on what you can do with this.
         """
         return self.PyRefresh(self, *args, **kwargs).run()
 
     def save_changes(self):
         """Called after refreshes or any model changes.
-        Currently will return a named tuple of all changes detected. However a ton of room for improvement here.
+
+        Currently will return a named tuple of all changes detected.
+        A ton of room for improvement on what gets returned here.
         """
         if self.Server.Connected is False:
             self.reconnect()
 
         def property_changes(property_changes_var):
-            """
-            Returns any property changes.
-            """
+            """Returns any property changes."""
             property_change = namedtuple(
                 "property_change",
                 "new_value object original_value property_name property_type",
@@ -220,7 +221,8 @@ class Tabular(PyObject):
             xmla_results = model_save_results.XmlaResults
             changes = namedtuple(
                 "changes",
-                "property_changes added_objects added_subtree_roots removed_objects removed_subtree_Roots xmla_results",
+                "property_changes added_objects added_subtree_roots \
+                    removed_objects removed_subtree_Roots xmla_results",
             )
             [
                 property_changes(property_changes_var),
@@ -241,16 +243,9 @@ class Tabular(PyObject):
             )
 
     def backup_table(self, table_str: str) -> bool:
-        """Will be removed. This is experimental with no written pytest for it.
-        Backs up table in memory, brings with it measures, columns, hierarchies, relationships, roles, etc.
-        It will add suffix '_backup' to all objects.
-        Refresh is performed from source during backup.
+        """Will be removed.
 
-        Args:
-                table_str (str, optional): Name of Table.
-
-        Returns:
-                bool: Returns True if Successful, else will return error.
+        Used in conjunction with `revert_table()`.
         """
         logger.info("Backup Beginning...")
         logger.debug(f"Cloning {table_str}")
@@ -343,19 +338,9 @@ class Tabular(PyObject):
         return True
 
     def revert_table(self, table_str: str) -> bool:
-        """Will be removed. This is experimental with no written pytest for it. This is used in conjunction with Backup_Table().
-        It will take the 'TableName_backup' and replace with the original.
-        Example scenario ->
-        1. model.Backup_Table('TableName')
-        2. perform any proposed changes in original 'TableName'
-        3. validate changes in 'TableName'
-        4. if unsuccessful run model.Revert_Table('TableName')
+        """Will be removed.
 
-        Args:
-                table_str (str): Name of table.
-
-        Returns:
-                bool: Returns True if Successful, else will return error.
+        This is used in conjunction with `backup_table()`.
         """
         logger.info(f"Beginning Revert for {table_str}")
         logger.debug(f"Finding original {table_str}")
@@ -378,9 +363,7 @@ class Tabular(PyObject):
         ]
 
         def remove_role_permissions():
-            """
-            Removes role permissions from table.
-            """
+            """Removes role permissions from table."""
             logger.debug(
                 f"Finding table and column permission in roles to remove from {table_str}"
             )
@@ -414,9 +397,7 @@ class Tabular(PyObject):
         remove_role_permissions()
 
         def dename(items):
-            """
-            Denames all items.
-            """
+            """Denames all items."""
             for item in items:
                 logger.debug(f"Removing Suffix for {item.Name}")
                 item.RequestRename(remove_suffix(item.Name, "_backup"))
@@ -447,16 +428,19 @@ class Tabular(PyObject):
     def query(
         self, query_str: str, effective_user: str = None
     ) -> Union[pd.DataFrame, str, int]:
-        """Executes Query on Model and Returns Results in Pandas DataFrame
+        """Executes query on model.
+
+        See `Connection().query()` for details on execution.
 
         Args:
-                query_Str (str): Dax Query. Note, needs full syntax (ex: EVALUATE). See (DAX Queries)[https://docs.microsoft.com/en-us/dax/dax-queries].
-                Will check if query string is a file. If it is, then it will perform a query on whatever is read from the file.
-                It is also possible to query DMV. For example. Query("select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"). See (DMVs)[https://docs.microsoft.com/en-us/analysis-services/instances/use-dynamic-management-views-dmvs-to-monitor-analysis-services?view=asallproducts-allversions]
-                effective_user (str): User you wish to query as.
+            query_str (str): Query string to execute.
+            effective_user (str, optional): Pass through an effective user
+            if desired. It will create and store a new `Connection()` class if need,
+            which will help with speed if looping through multiple users in a row.
+            Defaults to None.
 
         Returns:
-                pd.DataFrame: Returns dataframe with results
+            Union[pd.DataFrame, str, int]: _description_
         """
         if effective_user is None:
             return self.Adomd.query(query_str)
@@ -476,20 +460,27 @@ class Tabular(PyObject):
         self, tabular_editor_exe: str, best_practice_analyzer: str
     ) -> List[str]:
         """Takes your Tabular Model and performs TE2s BPA. Runs through Command line.
-        [Tabular Editor BPA](https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html)
-        [Tabular Editor Command Line Options](https://docs.tabulareditor.com/te2/Command-line-Options.html)
+
+        Nothing fancy hear. Really just a simple wrapper so you could
+        call BPA in the same python script.
 
         Args:
-                tabular_editor_exe (str): TE2 Exe File path. Feel free to use class TE2().EXE_Path or provide your own.
-                best_practice_analyzer (str): BPA json file path. Feel free to use class BPA().Location or provide your own. Defualts to 	https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json
+                tabular_editor_exe (str): TE2 Exe File path.
+                    Feel free to use class TE2().EXE_Path or provide your own.
+                best_practice_analyzer (str): BPA json file path.
+                    Feel free to use class BPA().Location or provide your own.
 
         Returns:
-                List[str]: Assuming no failure, will return list of BPA violations. Else will return error from command line.
+                List[str]: Assuming no failure,
+                    will return list of BPA violations.
+                    Else will return error from command line.
         """
         logger.debug("Beginning request to talk with TE2 & Find BPA...")
         bim_file_location = f"{os.getcwd()}\\Model.bim"
         atexit.register(remove_file, bim_file_location)
-        cmd = f'{tabular_editor_exe} "Provider=MSOLAP;{self.Adomd.ConnectionString}" {self.Database.Name} -B "{bim_file_location}" -A {best_practice_analyzer} -V/?'
+        cmd = f'{tabular_editor_exe} "Provider=MSOLAP;\
+            {self.Adomd.ConnectionString}" {self.Database.Name} -B "{bim_file_location}" \
+            -A {best_practice_analyzer} -V/?'
         logger.debug("Command Generated")
         logger.debug("Submitting Command...")
         sp = subprocess.Popen(
@@ -508,13 +499,17 @@ class Tabular(PyObject):
             ]
 
     def create_table(self, df: pd.DataFrame, table_name: str) -> bool:
-        """Creates tables from pd.DataFrame as an M-Partition.
-        So will convert the dataframe to M-Partition logic via the M query table constructor.
-        Runs refresh and will update model.
+        """Creates table from pd.DataFrame to a table in your model.
+
+        It will convert the dataframe to M-Partition logic via the M query table constructor.
+        Then will run a refresh and update model.
+        Has some obvious limitations right now, because
+        the datframe values are hard coded into M-Partition,
+        which means you could hit limits with the size of your table.
 
         Args:
-                df (pd.DataFrame): DataFrame to add to model
-                table_name (str): _description_
+                df (pd.DataFrame): DataFrame to add to model.
+                table_name (str): Name of the table.
 
         Returns:
                 bool: True if successful
@@ -539,11 +534,13 @@ class Tabular(PyObject):
         logger.debug("Setting MPartition Expression...")
         partition.Source.set_Expression(pd_dataframe_to_m_expression(df))
         logger.debug(
-            f"Adding partition: {partition.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}"
+            f"Adding partition: {partition.Name} to {self.Server.Name}\
+                ::{self.Database.Name}::{self.Model.Name}"
         )
         new_table.Partitions.Add(partition)
         logger.debug(
-            f"Adding table: {new_table.Name} to {self.Server.Name}::{self.Database.Name}::{self.Model.Name}"
+            f"Adding table: {new_table.Name} to {self.Server.Name}\
+                ::{self.Database.Name}::{self.Model.Name}"
         )
         self.Model.Tables.Add(new_table)
         self.save_changes()

@@ -1,5 +1,4 @@
-"""pytest for the table.py file. Covers the PyTable and PyTables classes.
-"""
+"""pytest for the table.py file. Covers the PyTable and PyTables classes."""
 from test.config import testing_parameters
 import pytest
 from pytabular import logic_utils
@@ -34,6 +33,10 @@ suffix_list = [
     ],
 )
 def test_remove_suffix(file_name, suffix):
+    """Tests `remove_suffix()` function.
+
+    Note this exists so lower python versions can stay compatible.
+    """
     result = logic_utils.remove_suffix(file_name, suffix)
     assert suffix not in result
 
@@ -46,11 +49,13 @@ dfs = [
 
 @pytest.mark.parametrize("df", dfs)
 def test_dataframe_to_dict(df):
+    """Tests `dataframe_to_dict()` function."""
     assert isinstance(logic_utils.dataframe_to_dict(df), list)
 
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_dict_to_markdown_table(model):
+    """Tests `dict_to_markdown_table()` function."""
     dependencies = [measure.get_dependencies() for measure in model.Measures]
     columns = ["Referenced Object Type", "Referenced Table", "Referenced Object"]
     result = logic_utils.dict_to_markdown_table(dependencies, columns)
@@ -58,6 +63,7 @@ def test_dict_to_markdown_table(model):
 
 
 def test_remove_dir():
+    """Tests removing a directory."""
     dir = "testing_to_be_deleted"
     os.makedirs(dir)
     remove = f"{os.getcwd()}\\{dir}"
@@ -66,6 +72,7 @@ def test_remove_dir():
 
 
 def test_remove_file():
+    """Tests removing a file."""
     file_to_delete = "testing_to_be_deleted.txt"
     with open(file_to_delete, "w") as f:
         f.write("Delete this file...")

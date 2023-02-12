@@ -11,7 +11,7 @@
 [PyTabular](https://github.com/Curts0/PyTabular) (python-tabular in [pypi](https://pypi.org/project/python-tabular/)) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). Currently, this build is tested and working on Windows Operating System only. Help is needed to expand this for other operating systems. The package should have the dll files included when you import it. See [Documentation Here](https://curts0.github.io/PyTabular/). PyTabular is still considered alpha while I'm working on building out the proper tests and testing environments, so I can ensure some kind of stability in features. Please send bugs my way! Preferably in the issues section in Github. I want to harden this project so many can use it easily. I currently have local pytest for python 3.6 to 3.10 and run those tests through a local AAS and Gen2 model.
 
 ### Getting Started
-See the [Pypi project](https://pypi.org/project/python-tabular/) for available versions. **To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.** Instal v. 0.3.4 or lower to get the older naming conventions.
+See the [Pypi project](https://pypi.org/project/python-tabular/) for available versions. **To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.** Install v. 0.3.4 or lower to get the older naming conventions.
 ```powershell
 python3 -m pip install python-tabular
 

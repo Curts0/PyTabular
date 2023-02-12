@@ -1,6 +1,6 @@
-"""
-`document.py` is where a specific part of pytabular start. This module can
-generate pages in markdown for use in Docusaurus.
+"""`document.py` is where a specific part of pytabular start.
+
+This module can generate pages in markdown for use in Docusaurus.
 """
 import logging
 
@@ -17,11 +17,10 @@ logger = logging.getLogger("PyTabular")
 
 
 class ModelDocumenter:
-    """
-    The ModelDocumenter class can generate documentation based on the
-    tabular object model and it will generate it suitable for docusaurus.
+    """The ModelDocumenter class can generate documentation.
 
-    TODO: Add a General Pages template with Roles and RLS Expressions
+    This is based on the tabular object model and it will generate it suitable for docusaurus.
+    TODO: Add a General Pages template with Roles and RLS Expressions.
     TODO: Create a Sub Page per table for all columns, instead of one big page?
     TODO: Add Depencies per Measure with correct links.
     """
@@ -37,6 +36,28 @@ class ModelDocumenter:
         column_page_url: str = "4-columns.md",
         roles_page_url: str = "5-roles.md",
     ):
+        """Init will set attributes based on arguments given.
+
+        See `generate_documentation_pages()` and `save_documentation()`
+        for info on how to execute and retrieve documentation.
+
+        Args:
+            model (Tabular): Main `Tabular()` class to pull metadata from for documentation.
+            friendly_name (str, optional): Replaces the model name to a friendly string,
+                so it can be used in an URL. Defaults to `str()`.
+            save_location (str, optional): The save location where the files will be stored.
+                Defaults to "docs".
+            general_page_url (str, optional): Name of the `md` file for general information.
+                Defaults to "1-general-information.md".
+            measure_page_url (str, optional): Name of the `md` file for measures.
+                Defaults to "2-measures.md".
+            table_page_url (str, optional): Name of the `md` file for tables.
+                Defaults to "3-tables.md".
+            column_page_url (str, optional): Name of the `md` file for columns.
+                Defaults to "4-columns.md".
+            roles_page_url (str, optional): Name of the `md` file for roles.
+                Defaults to "5-roles.md".
+        """
         self.model = model
         self.model_name = friendly_name or model.Catalog or model.Database.Name
         self.friendly_name: str = str()
@@ -70,9 +91,9 @@ class ModelDocumenter:
         self.save_path = self.set_save_path()
 
     def create_object_reference(self, object: str, object_parent: str) -> str:
-        """
-        Create a Custom ID for link sections in the docs.
-        :This is based on the technical names in the model,
+        """Create a Custom ID for link sections in the docs.
+
+        This is based on the technical names in the model,
         so not the once in the translations. This makes it
         possible to link based on dependencies.
         """
@@ -80,20 +101,14 @@ class ModelDocumenter:
         return f"{{#{url_reference}}}"
 
     def generate_documentation_pages(self) -> None:
-        """
-        Generate Documentation for each specific part of the model.
-        """
+        """Generate Documentation for each specific part of the model."""
         self.measure_page = self.generate_markdown_measure_page()
         self.table_page = self.generate_markdown_table_page()
         self.column_page = self.generate_markdown_column_page()
         self.category_page = self.generate_category_file()
 
     def get_object_caption(self, object_name: str, object_parent: str):
-        """
-        Retrieves the caption of an object, based on the translations
-        in the culture.
-        """
-
+        """Retrieves the caption of an object, based on the translations in the culture."""
         if self.culture_include:
             return self.culture_object.get_translation(
                 object_name=object_name, object_parent_name=object_parent
@@ -104,10 +119,7 @@ class ModelDocumenter:
     def set_translations(
         self, enable_translations: bool = False, culture: str = "en-US"
     ) -> None:
-        """
-        Set translations to active or inactive, depending on the needs of the users.
-        """
-
+        """Set translations to active or inactive, depending on the needs of the users."""
         logger.info(f"Using Translations set to > {enable_translations}")
 
         if enable_translations:
@@ -127,24 +139,20 @@ class ModelDocumenter:
             self.culture_include = enable_translations
 
     def set_model_friendly_name(self):
-        """
-        Replaces the model name to a friendly string,
-        so it can be used in an URL.
-        """
+        """Replaces the model name to a friendly string, so it can be used in an URL."""
         return (self.model_name).replace(" ", "-").replace("_", "-").lower()
 
     def set_save_path(self) -> Path:
-        """
-        Set the location of the documentation
-        """
+        """Set the location of the documentation."""
         return Path(f"{self.save_location}/{self.friendly_name}")
 
     def save_page(self, content: str, page_name: str, keep_file: bool = False) -> None:
-        """Save the content of the documentation to a file, based on
-            the class setup.
-                - Save Location
-                - Model Friendly Name
-                - Page to be written
+        """Save the content of the documentation to a file.
+
+        Based on the class setup.
+        - Save Location
+        - Model Friendly Name
+        - Page to be written
 
         Args:
             content (str): File content to write to file.
@@ -154,7 +162,6 @@ class ModelDocumenter:
 
         Returns:
             None
-
         """
         target_file = self.save_path / page_name
 
@@ -168,18 +175,19 @@ class ModelDocumenter:
                 f.close()
 
     def save_documentation(self) -> None:
-        """Generate documentation of the model, based on the meta-data
-            in the model definitions. This first checks if the folder
-            exists, and then starts to export the files that are needed
-            for the documentatation.
-                - General Information Page -> Free format page to create.
-                - Measure Page -> Describes the measures in the model. (Incl. OLS?)
-                - Tables Page -> Describes the tables in the model. (Incl. OLS?)
-                - Columns Page -> Describes all columns in the model. (Incl. OLS?)
-                - Roles Page -> Describes the roles in the model, (incl. RLS?)
+        """Generate documentation of the model, based on the meta-data in the model definitions.
+
+        This first checks if the folder exists,
+        and then starts to export the files that are needed
+        for the documentatation.
+        - General Information Page -> Free format page to create.
+        - Measure Page -> Describes the measures in the model. (Incl. OLS?)
+        - Tables Page -> Describes the tables in the model. (Incl. OLS?)
+        - Columns Page -> Describes all columns in the model. (Incl. OLS?)
+        - Roles Page -> Describes the roles in the model, (incl. RLS?)
 
         Args:
-            self (Docs): Model object for documentation.
+            self (ModelDocumenter): Model object for documentation.
 
         Returns:
             None
@@ -232,9 +240,9 @@ class ModelDocumenter:
             )
 
     def create_markdown_for_measure(self, object: PyMeasure) -> str:
-        """
-        Create Markdown for a specific measure, that can later on be used
-        for generating the whole measure page.
+        """Create Markdown for a specific measure.
+
+        That can later on be used for generating the whole measure page.
         """
         object_caption = (
             self.get_object_caption(
@@ -278,16 +286,15 @@ class ModelDocumenter:
 """
 
     def generate_markdown_measure_page(self) -> str:
-        """
-        Based on the measure objects it generates a page based on
-        the docusaurus notation for markdown pages.
-        """
+        """Based on the measure objects it generates a measure page."""
         prev_display_folder = ""
         markdown_template = [
             f"""---
 sidebar_position: 3
 title: Measures
-description: This page contains all measures for the {self.model.Name} model, including the description, format string, and other technical details.
+description: This page contains all measures for the {self.model.Name} model, \
+including the description, \
+format string, and other technical details.
 ---
 
 # Measures for {self.model.Name}
@@ -312,15 +319,13 @@ description: This page contains all measures for the {self.model.Name} model, in
         return "".join(markdown_template)
 
     def create_markdown_for_table(self, object: PyTable) -> str:
-        """
-        This functions returns the markdwon that can be used
-        for the documentation page for Tables.
+        """This functions returns the markdown for a table.
 
         Args:
-            object: PyTable -> Based on the PyTabular Package.
+            object (PyTable): Based on the PyTabular Package.
 
         Returns:
-            Markdown text: str -> Will be append to the page text.
+            str: Will be appended to the page text.
         """
         object_caption = (
             self.get_object_caption(
@@ -385,13 +390,13 @@ description: This page contains all measures for the {self.model.Name} model, in
 """
 
     def generate_markdown_table_page(self) -> str:
-        """
-        This function generates the markdown tables documentation for the tables in the Model.
-        """
+        """This function generates the markdown tables documentation for the tables in the Model."""
         markdown_template = f"""---
 sidebar_position: 2
 title: Tables
-description: This page contains all columns with tables for {self.model.Name}, including the description, and technical details.
+description: This page contains all columns with tables for {self.model.Name}, \
+including the description, \
+and technical details.
 ---
 
 # Tables {self.model.Name}
@@ -404,13 +409,12 @@ description: This page contains all columns with tables for {self.model.Name}, i
         return markdown_template
 
     def generate_markdown_column_page(self) -> str:
-        """
-        This function generates the markdown for documentation about columns in the Model.
-        """
+        """This function generates the markdown for documentation about columns in the Model."""
         markdown_template = f"""---
 sidebar_position: 4
 title: Columns
-description: This page contains all columns with Columns for {self.model.Name}, including the description, format string, and other technical details.
+description: This page contains all columns with Columns for {self.model.Name}, \
+including the description, format string, and other technical details.
 ---
 
     """
@@ -429,8 +433,8 @@ description: This page contains all columns with Columns for {self.model.Name}, 
         return markdown_template
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
-        """
-        Generates the Markdown for a specifc column.
+        """Generates the Markdown for a specifc column.
+
         If a colums is calculated, then it also shows
         the expression for that column in DAX.
         """
@@ -446,7 +450,10 @@ description: This page contains all columns with Columns for {self.model.Name}, 
         )
 
         basic_info = f"""
-### {object_caption} {self.create_object_reference(object=object.Name, object_parent=object.Parent.Name)}
+### {object_caption} {self.create_object_reference(
+        object=object.Name,
+        object_parent=object.Parent.Name
+        )}
 **Description**:
 > {object_description}
 
@@ -494,9 +501,9 @@ description: This page contains all columns with Columns for {self.model.Name}, 
         )
 
     def generate_category_file(self):
-        """
-        Docusaurs can generate an index. The category yaml will
-        make that happen.
+        """Docusaurs can generate an index.
+
+        The category yaml will make that happen.
         """
         return f"""position: 2 # float position is supported
 label: '{self.model_name}'

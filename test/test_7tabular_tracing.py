@@ -1,5 +1,4 @@
-"""pytest for the table.py file. Covers the PyTable and PyTables classes.
-"""
+"""pytest for the table.py file. Covers the PyTable and PyTables classes."""
 from test.config import testing_parameters, testingtablename
 import pytest
 import pytabular as p
@@ -15,8 +14,9 @@ def test_disconnect_for_trace(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_reconnect_update(model):
-    """This will test the `reconnect()` gets called in `update()`
-    of the `Base_Trace` class.
+    """This will test the `reconnect()`.
+
+    Gets called in `update()` of the `Base_Trace` class.
     """
     model.disconnect()
     model.Tables[testingtablename].refresh()

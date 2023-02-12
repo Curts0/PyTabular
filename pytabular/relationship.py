@@ -1,6 +1,7 @@
-"""
-`relationship.py` houses the main `PyRelationship` and `PyRelationships` class.
-Once connected to your model, interacting with relationship(s) will be done through these classes.
+"""`relationship.py` houses the main `PyRelationship` and `PyRelationships` class.
+
+Once connected to your model, interacting with relationship(s)
+will be done through these classes.
 """
 import logging
 from object import PyObject, PyObjects
@@ -17,9 +18,19 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyRelationship(PyObject):
-    """Wrapper for [Relationship Class](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.relationship?view=analysisservices-dotnet)."""
+    """The main class for interacting with relationships in your model."""
 
     def __init__(self, object, model) -> None:
+        """Init extends to `PyObject`.
+
+        It also extends a few unique rows to `rich` table.
+        A few easy access attributes have been added.
+        For example, see `self.From_Table` or `self.To_Column`
+
+        Args:
+            object (_type_): _description_
+            model (_type_): _description_
+        """
         super().__init__(object)
         self.Model = model
         self.CrossFilteringBehavior = CrossFilteringBehavior(
@@ -44,12 +55,15 @@ class PyRelationship(PyObject):
 
 
 class PyRelationships(PyObjects):
-    """
-    Groups together multiple relationships. See `PyObjects` class for what more it can do.
-    You can interact with `PyRelationships` straight from model. For ex: `model.Relationships`.
+    """Groups together multiple relationships.
+
+    See `PyObjects` class for what more it can do.
+    You can interact with `PyRelationships` straight from model.
+    For ex: `model.Relationships`.
     """
 
     def __init__(self, objects) -> None:
+        """Init just extends from PyObjects."""
         super().__init__(objects)
 
     def related(self, object: Union[PyTable, str]) -> PyTables:

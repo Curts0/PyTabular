@@ -1,5 +1,4 @@
-"""pytest for the column.py file. Covers the PyColumn and PyColumns classes.
-"""
+"""pytest for the column.py file. Covers the PyColumn and PyColumns classes."""
 from test.config import testing_parameters, testingtablename
 import pytest
 import pandas as pd
@@ -42,5 +41,6 @@ def test_query_every_column(model):
 
 @pytest.mark.parametrize("model", testing_parameters)
 def test_dependencies(model):
+    """Tests execution of `PyColumn().get_dependencies()`."""
     df = model.Tables[0].Columns[1].get_dependencies()
     assert isinstance(df, pd.DataFrame)

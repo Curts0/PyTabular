@@ -1,6 +1,7 @@
-"""
-`measure.py` houses the main `PyMeasure` and `PyMeasures` class.
-Once connected to your model, interacting with measure(s) will be done through these classes.
+"""`measure.py` houses the main `PyMeasure` and `PyMeasures` class.
+
+Once connected to your model, interacting with measure(s)
+will be done through these classes.
 """
 import logging
 import pandas as pd
@@ -10,14 +11,21 @@ logger = logging.getLogger("PyTabular")
 
 
 class PyMeasure(PyObject):
-    """Wrapper for [Microsoft.AnalysisServices.Measure](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.tabular.measure?view=analysisservices-dotnet).
-    With a few other bells and whistles added to it. WIP
+    """Main class for interacting with measures.
 
-    Args:
-        Table: Parent Table to the Measure
+    See methods for available functionality.
     """
 
     def __init__(self, object, table) -> None:
+        """Connects measure to parent `PyTable`.
+
+        It will also add some custom rows for the `rich`
+        table display.
+
+        Args:
+            object: The .Net measure object.
+            table (PyTable): The parent `PyTable`.
+        """
         super().__init__(object)
 
         self.Table = table
@@ -28,6 +36,7 @@ class PyMeasure(PyObject):
 
     def get_dependencies(self) -> pd.DataFrame:
         """Returns the dependant objects of a measure.
+
         Args:
             self: The Measure Object
 
@@ -37,18 +46,22 @@ class PyMeasure(PyObject):
                             of the object.
 
         """
-        dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"
+        dmv_query = f"select * from $SYSTEM.DISCOVER_CALC_DEPENDENCY where \
+            [OBJECT] = '{self.Name}' and [TABLE] = '{self.Table.Name}'"
         return self.Table.Model.query(dmv_query)
 
 
 class PyMeasures(PyObjects):
-    """
-    Groups together multiple measures. See `PyObjects` class for what more it can do.
+    """Groups together multiple measures.
+
+    See `PyObjects` class for what more it can do.
     You can interact with `PyMeasures` straight from model. For ex: `model.Measures`.
     Or through individual tables `model.Tables[TABLE_NAME].Measures`.
-    You can even filter down with `.Find()`. For example find all measures with `ratio` in name.
-    `model.Measures.Find('ratio')`.
+    You can even filter down with `.find()`.
+    For example find all measures with `ratio` in name.
+    `model.Measures.find('ratio')`.
     """
 
     def __init__(self, objects) -> None:
+        """Extends init from `PyObjects`."""
         super().__init__(objects)
