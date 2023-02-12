@@ -6,15 +6,13 @@ import logging
 
 from pathlib import Path
 
-from measure import PyMeasure
-from table import PyTable
-from column import PyColumn
-from culture import PyCulture
-
-from .pytabular import Tabular
+from pytabular.table import PyTable
+from pytabular.column import PyColumn
+from pytabular.culture import PyCulture
+from pytabular.measure import PyMeasure
+from pytabular.pytabular import Tabular
 
 logger = logging.getLogger("PyTabular")
-
 
 class ModelDocumenter:
     """The ModelDocumenter class can generate documentation.
@@ -166,7 +164,7 @@ class ModelDocumenter:
         target_file = self.save_path / page_name
 
         if keep_file and target_file.exists():
-            logger.info(f"{page_name} already exists -> fill will not overwritten.")
+            logger.info(f"{page_name} already exists -> file will not overwritten.")
         else:
             logger.info(f"Results are written to -> {page_name}.")
 
@@ -255,50 +253,33 @@ class ModelDocumenter:
             "\\n", ""
         )
 
-        return f"""
-### {object_caption}
-**Description**:
-> {object_description}
+        object_properties = ''
 
-<dl>
-
-<dt>Display Folder</dt>
-<dd>{object.DisplayFolder}</dd>
-
-<dt>Table Name</dt>
-<dd>{object.Parent.Name}</dd>
-
-<dt>Format String</dt>
-<dd>{object.FormatString}</dd>
-
-<dt>Is Hidden</dt>
-<dd>{object.IsHidden}</dd>
-
-</dl>
-
-```dax title="Technical: {object.Name}"
-{
-    object.Expression
-}
-```
-
----
-"""
+        obj_text = [
+            f"### {object_caption}",
+            "**Description**:",
+            f"> {object_description}",
+            ""
+            f"{object_properties}",
+            "",
+            f'```dax title="Technical: {object.Name}"',
+            f"  {object.Expression}",
+            "```",
+            "---"
+        ]
+        return "\n".join(obj_text)
 
     def generate_markdown_measure_page(self) -> str:
         """Based on the measure objects it generates a measure page."""
         prev_display_folder = ""
         markdown_template = [
-            f"""---
-sidebar_position: 3
-title: Measures
-description: This page contains all measures for the {self.model.Name} model, \
-including the description, \
-format string, and other technical details.
----
-
-# Measures for {self.model.Name}
-"""
+            "---",
+            "sidebar_position: 3",
+            "title: Measures",
+            f"description: This page contains all measures for the {self.model.Name} model, including the description, format string, and other technical details."
+            "---"
+            "",
+            f"# Measures for {self.model.Name}"
         ]
 
         measures = sorted(
@@ -316,7 +297,7 @@ format string, and other technical details.
 
             markdown_template.append(self.create_markdown_for_measure(measure))
 
-        return "".join(markdown_template)
+        return "\n".join(markdown_template)
 
     def create_markdown_for_table(self, object: PyTable) -> str:
         """This functions returns the markdown for a table.
@@ -338,6 +319,32 @@ format string, and other technical details.
             "\\n", ""
         )
 
+        object_details = ''
+        """
+            <dl>
+            <dt>Measures (#)</dt>
+            <dd>{len(object.Measures)}</dd>
+
+            <dt>Columns (#)</dt>
+            <dd>{len(object.Columns)}</dd>
+
+            <dt>Partitions (#)</dt>
+            <dd>{len(object.Partitions)}</dd>
+
+            <dt>Data Category</dt>
+            <dd>{object.DataCategory or "Regular Table"}</dd>
+
+            <dt>Is Hidden</dt>
+            <dd>{object.IsHidden}</dd>
+
+            <dt>Table Type</dt>
+            <dd>{object.Partitions[0].ObjectType}</dd>
+
+            <dt>Source Type</dt>
+            <dd>{object.Partitions[0].SourceType}</dd>
+            </dl>
+        """
+
         partition_type = ""
         partition_source = ""
 
@@ -351,86 +358,54 @@ format string, and other technical details.
             partition_type = "sql"
             partition_source = object.Partitions[0].Source.Query
 
-        return f"""
-### {object_caption}
-**Description**:
-> {object_description}
-
-<dl>
-<dt>Measures (#)</dt>
-<dd>{len(object.Measures)}</dd>
-
-<dt>Columns (#)</dt>
-<dd>{len(object.Columns)}</dd>
-
-<dt>Partitions (#)</dt>
-<dd>{len(object.Partitions)}</dd>
-
-<dt>Data Category</dt>
-<dd>{object.DataCategory or "Regular Table"}</dd>
-
-<dt>Is Hidden</dt>
-<dd>{object.IsHidden}</dd>
-
-<dt>Table Type</dt>
-<dd>{object.Partitions[0].ObjectType}</dd>
-
-<dt>Source Type</dt>
-<dd>{object.Partitions[0].SourceType}</dd>
-</dl>
-
-```{partition_type} title="Table Source: {object.Name}"
-{
-    partition_source
-}
-```
-
----
-
-"""
+        obj_text = [
+            f"### {object_caption}",
+            "**Description**: ",
+            "> {object_description}",
+            "",
+            f"{object_details}",
+            "", 
+            f"```{partition_type} title="Table Source: {object.Name}",
+            f"   {partition_source}",
+            "```",
+            "---"
+        ]
 
     def generate_markdown_table_page(self) -> str:
         """This function generates the markdown tables documentation for the tables in the Model."""
-        markdown_template = f"""---
-sidebar_position: 2
-title: Tables
-description: This page contains all columns with tables for {self.model.Name}, \
-including the description, \
-and technical details.
----
-
-# Tables {self.model.Name}
-
-    """
+        markdown_template = [
+            "---",
+            "sidebar_position: 2",
+            "title: Tables",
+            f"description: This page contains all columns with tables for {self.model.Name}, including the description, and technical details.",
+            "---",
+            f"# Tables {self.model.Name}"
+        ]
 
         for table in self.model.Tables:
-            markdown_template += self.create_markdown_for_table(table)
+            markdown_template.append(self.create_markdown_for_table(table))
 
-        return markdown_template
+        return "\n".join(markdown_template) 
 
     def generate_markdown_column_page(self) -> str:
         """This function generates the markdown for documentation about columns in the Model."""
-        markdown_template = f"""---
-sidebar_position: 4
-title: Columns
-description: This page contains all columns with Columns for {self.model.Name}, \
-including the description, format string, and other technical details.
----
-
-    """
+        markdown_template = [
+            "---"
+            "sidebar_position: 4"
+            f"title: Columns description: This page contains all columns with Columns for {self.model.Name}, including the description, format string, and other technical details."
+            "---"
+        ]
 
         for table in self.model.Tables:
-            markdown_template += f"""
-## Columns for {table.Name}
-                                """
+            markdown_template.append(f"## Columns for {table.Name}")
 
             for column in table.Columns:
                 if "RowNumber" in column.Name:
                     continue
 
-                markdown_template += self.create_markdown_for_column(column)
+                markdown_template.append(self.create_markdown_for_column(column))
 
-        return markdown_template
+        return "\n".join(markdown_template)
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
         """Generates the Markdown for a specifc column.
@@ -445,73 +420,127 @@ including the description, format string, and other technical details.
             or object.Name
         )
 
-        object_description = (object.Description or "No Description available").replace(
-            "\\n", ""
-        )
+        object_description = object.Description.replace("\\n", "") or "No Description available"
 
-        basic_info = f"""
-### {object_caption} {self.create_object_reference(
-        object=object.Name,
-        object_parent=object.Parent.Name
-        )}
-**Description**:
-> {object_description}
+        object_heading = f"""{object_caption} {self.create_object_reference( object=object.Name, object_parent=object.Parent.Name)}"""
 
-<dl>
-<dt>Column Name</dt>
-<dd>{object.Name}</dd>
+        object_details = ''
+        """
+        <dl>
+            <dt>Column Name</dt>
+            <dd>{object.Name}</dd>
 
-<dt>Object Type</dt>
-<dd>{object.ObjectType}</dd>
+            <dt>Object Type</dt>
+            <dd>{object.ObjectType}</dd>
 
-<dt>Type</dt>
-<dd>{object.Type}</dd>
+            <dt>Type</dt>
+            <dd>{object.Type}</dd>
 
-<dt>Is Available In Excel</dt>
-<dd>{object.IsAvailableInMDX}</dd>
+            <dt>Is Available In Excel</dt>
+            <dd>{object.IsAvailableInMDX}</dd>
 
-<dt>Is Hidden</dt>
-<dd>{object.IsHidden}</dd>
+            <dt>Is Hidden</dt>
+            <dd>{object.IsHidden}</dd>
 
-<dt>Data Category</dt>
-<dd>{object.DataCategory}</dd>
+            <dt>Data Category</dt>
+            <dd>{object.DataCategory}</dd>
 
-<dt>Data Type</dt>
-<dd>{object.DataType}</dd>
+            <dt>Data Type</dt>
+            <dd>{object.DataType}</dd>
 
-<dt>DisplayFolder</dt>
-<dd>{object.DisplayFolder}</dd>
+            <dt>DisplayFolder</dt>
+            <dd>{object.DisplayFolder}</dd>
 
-</dl>
-"""
+        </dl>"""
+        obj_text = [
+            f"### {object_heading}", 
+            "**Description**:"
+            f"> {object_description}"
+            "",
+            f"{object_details}"
+        ]
 
         if str(object.Type) == "Calculated":
-            basic_info += f"""
-```dax title="Technical: {object.Name}"
-{
-    object.Expression
-}
-```
-    """
-        return (
-            basic_info
-            + """
----
-    """
-        )
+            obj_text.append[
+                f"```dax title="Technical: {object.Name}",
+                f"  {object.Expression}",
+                "```"
+            ]
 
+        obj_text.append("---")
+
+        return "\n".join(obj_text)
+        
     def generate_category_file(self):
         """Docusaurs can generate an index.
 
         The category yaml will make that happen.
         """
-        return f"""position: 2 # float position is supported
-label: '{self.model_name}'
-collapsible: true # make the category collapsible
-collapsed: true # keep the category open by default
-link:
-  type: generated-index
-  title: Documentation Overview
-customProps:
-  description: To be added in the future.
-"""
+
+        obj_text = [
+            "position: 2 # float position is supported",
+            f"label: '{self.model_name}'",
+            "collapsible: true # make the category collapsible",
+            "collapsed: true # keep the category open by default",
+            "   link:",
+            "   type: generated-index",
+            "   title: Documentation Overview",
+            "customProps:",
+            "   description: To be added in the future."
+        ]    
+
+        return "\n".join(obj_text)
+    @staticmethod 
+    def select_object_properties(self, properties : list[dict]) -> str:
+        """
+        Generate the section for object properties,
+        you can select your own properties to display
+        by providing a the properties in a list of 
+        dicts.
+
+        Args:
+            Self.
+            Properties (dict): The ones you want to show. 
+    
+        Returns:
+            str:
+    
+        Examples: 
+        
+            Input
+            ```
+                [
+                    { "Display Folder": "Sales Order Information" },
+                    { "Is Hidden": "False" }, 
+                    { "Format String": "#.###,## }
+                ]
+            ```
+            
+            Output: 
+            ```
+            <dl>
+                <dt>Display Folder</dt>
+                <dd>Sales Order Information</dd>
+
+                <dt>Is Hidden</dt>
+                <dd>False</dd>
+
+                <dt>Format String</dt>
+                <dd>#.###,##</dd>
+            </dl>
+            ```    
+        """ 
+
+        obj_text = [
+            "<dl>"
+        ]
+
+        for obj_prop in properties:
+            for caption, text in obj_prop.items():
+                obj_text.append(f"  <dt>{caption}</dt>")
+                obj_text.append(f"  <dd>{text}</dd>")
+                obj_text.append(f"")
+
+        obj_text.append("</dl>")
+
+        return "\n".join(obj_text)
