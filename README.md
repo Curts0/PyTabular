@@ -35,19 +35,19 @@ You can query your models with the Query method from your tabular class. For Dax
 ```python
 #Run basic queries
 DAX_QUERY = "EVALUATE TOPN(100, 'Table1')"
-model.query(DAX_QUERY) #returns pd.DataFrame()
+model.query(DAX_QUERY)
 
 #or...
 DMV_QUERY = "select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"
-model.query(DMV_QUERY) #returns pd.DataFrame()
+model.query(DMV_QUERY)
 
 #or...
 SINGLE_VALUE_QUERY_EX = "EVALUATE {1}"
-model.query(SINGLE_VALUE_QUERY_EX) #returns 1
+model.query(SINGLE_VALUE_QUERY_EX)
 
 #or...
 FILE_PATH = 'C:\\FILEPATHEXAMPLE\\file.dax' #or file.txt
-model.query(FILE_PATH) #Will return same logic as above, single values if possible else will return pd.DataFrame()
+model.query(FILE_PATH)
 ```
 
 You can also explore your tables, partitions, and columns. Via the Attributes from your Tabular class.
@@ -88,7 +88,16 @@ model.refresh(<Partition Class>)
 model.refresh({'Table Name':'Partition Name'})
 
 #or any kind of weird combination like
-model.refresh([{<Table Class>:<Partition Class>,'Table Name':['Partition1','Partition2']},'Table Name','Table Name2'])
+model.refresh(
+    [
+    {
+    <Table Class>:<Partition Class>,
+    'Table Name':['Partition1','Partition2']
+    },
+    'Table Name',
+    'Table Name2'
+    ]
+)
 
 #You can even run through the Tables & Partition Attributes
 model.Tables['Table Name'].refresh()
