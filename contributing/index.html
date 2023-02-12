@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/contributing/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Contributing Guidelines - PyTabular</title>
+    <title>Contributing - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Contributing Guidelines";
+        var mkdocs_page_name = "Contributing";
         var mkdocs_page_input_path = "contributing.md";
         var mkdocs_page_url = "/PyTabular/contributing/";
       </script>
@@ -45,31 +45,35 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Tabular</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Main Tabular Class</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Table/">Table</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Refreshes/">Refreshing</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partition</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Querying</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Column/">Column</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Table/">Tables</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partitions</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Column/">Columns</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Queries</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measures</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Traces</a>
                 </li>
               </ul>
               <ul>
@@ -88,6 +92,20 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Logic%20Utils/">Logic Utils</a>
                 </li>
               </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Contributing</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#goal">Goal</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#some-rules">Some rules</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#documentation-help">Documentation help</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#misc">Misc</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -102,7 +120,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Contributing Guidelines</li>
+      <li>Contributing</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -112,23 +130,42 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="contributing-guidelines">Contributing Guidelines</h1>
+<h2 id="goal">Goal</h2>
 <ul>
-<li>Work will be distributed under MIT license.</li>
-<li>See github actions for checks run on pull request.</li>
-<li>Updates of any kind are welcome! Even just letting me know of the issues. Or updating doc strings...</li>
-<li>Limit any external modules, see pyproject.toml for dependencies</li>
-<li>Goal of project is to help connect the python world and the tabular model world for some easier programmatic execution on models. </li>
+<li>Make <strong>Python</strong> a first class citizen for interacting with <strong>Tabular models</strong>.</li>
+</ul>
+<h2 id="some-rules">Some rules</h2>
+<ul>
+<li>See <a href="https://github.com/Curts0/PyTabular/actions">github actions</a> for checks run on pull request.</li>
+<li>We <code>docstring-coverage</code> to check for 100% docstring coverage.</li>
+<li><code>flake8</code> also runs, but with a few extra packages. (pep8-naming, flake8-docstrings).</li>
+<li>Updates of any kind are welcome! Even just letting me know of the issues. Or updating docstrings...</li>
+<li>Limit any extra packages, see <code>pyproject.toml</code> for dependencies</li>
 <li>Install pre-commit. Pre-commit will run pytest, flake8, and docstr-coverage before push.</li>
 </ul>
 <pre><code class="language-powershell">pip install pre-commit
 pre-commit install --hook-type pre-push
 </code></pre>
 <ul>
-<li>This will take a while... pytest will open a PBIX file in repository and run tests on it.</li>
+<li><strong>This will take a while...</strong> pytest will open a PBIX file in repository and run tests on it... Eventually these tests will be run on a model that is not local.</li>
+</ul>
+<h2 id="documentation-help">Documentation help</h2>
+<ul>
+<li>Docstrings follow the google docstring convention. See <a href="https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html">Example</a>.</li>
+<li>The <code>flake8-docstrings</code> will check that google docstring format is followed.</li>
+<li>Docstrings get converted to markdown with the <code>mkgendocs</code> package.</li>
+<li>Then gets converted to <code>readthedocs</code> site with the <code>mkdocs</code> package.</li>
+</ul>
+<h2 id="misc">Misc</h2>
+<ul>
+<li>Work will be distributed under a MIT license.</li>
 </ul>
               
             </div>
           </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Logic%20Utils/" class="btn btn-neutral float-left" title="Logic Utils"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
 
   <hr/>
 
@@ -149,6 +186,8 @@ pre-commit install --hook-type pre-push
   <div class="rst-versions" role="note" aria-label="Versions">
   <span class="rst-current-version" data-toggle="rst-current-version">
     
+    
+      <span><a href="../Logic%20Utils/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
   </span>

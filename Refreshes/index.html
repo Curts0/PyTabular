@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Refreshes/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Refreshes - PyTabular</title>
+    <title>Refreshing - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Refreshes";
+        var mkdocs_page_name = "Refreshing";
         var mkdocs_page_input_path = "Refreshes.md";
         var mkdocs_page_url = "/PyTabular/Refreshes/";
       </script>
@@ -45,31 +45,85 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Tabular</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Main Tabular Class</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Refreshing</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#pyrefresh">PyRefresh</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#_get_trace">._get_trace</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_find_partition">._find_partition</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_refresh_table">._refresh_table</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_refresh_dict">._refresh_dict</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_find_table">._find_table</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_request_refresh">._request_refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_pre_checks">._pre_checks</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_post_checks">._post_checks</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#run">.run</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#_refresh_partition">._refresh_partition</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#refreshcheck">RefreshCheck</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#assertion_run">.assertion_run</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pre_check">.pre_check</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#post_check">.post_check</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#refreshcheckcollection">RefreshCheckCollection</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#add_refresh_check">.add_refresh_check</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#remove_refresh_check">.remove_refresh_check</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#clear_refresh_checks">.clear_refresh_checks</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Table/">Table</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Querying</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partition</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Table/">Tables</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Column/">Column</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partitions</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Column/">Columns</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measures</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Queries</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Traces</a>
                 </li>
               </ul>
               <ul>
@@ -88,6 +142,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Logic%20Utils/">Logic Utils</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
+                </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -102,7 +160,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Refreshes</li>
+      <li>Refreshing</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -124,14 +182,12 @@
 <hr />
 <p>PyRefresh Class to handle refreshes of model.</p>
 <p><strong>Methods:</strong></p>
-<h3 id="_refresh_partition">._refresh_partition</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L332">source</a></p>
-<pre><code class="language-python">._refresh_partition(
-   partition: PyPartition
-)
+<h3 id="_get_trace">._get_trace</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L302">source</a></p>
+<pre><code class="language-python">._get_trace()
 </code></pre>
 <hr />
-<p>Runs .Net <code>RequestRefresh()</code> on partition.</p>
+<p>Creates Trace and creates it in model.</p>
 <h3 id="_find_partition">._find_partition</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L315">source</a></p>
 <pre><code class="language-python">._find_partition(
@@ -140,13 +196,6 @@
 </code></pre>
 <hr />
 <p>Finds partition in <code>PyPartitions</code> class.</p>
-<h3 id="_pre_checks">._pre_checks</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L255">source</a></p>
-<pre><code class="language-python">._pre_checks()
-</code></pre>
-<hr />
-<p>Checks if any <code>BaseTrace</code> classes are needed from <code>tabular_tracing.py</code>.</p>
-<p>Then checks if any <code>RefreshChecks</code> are needed, along with the default <code>row_count</code> check.</p>
 <h3 id="_refresh_table">._refresh_table</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L324">source</a></p>
 <pre><code class="language-python">._refresh_table(
@@ -155,14 +204,6 @@
 </code></pre>
 <hr />
 <p>Runs .Net <code>RequestRefresh()</code> on table.</p>
-<h3 id="_find_table">._find_table</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L306">source</a></p>
-<pre><code class="language-python">._find_table(
-   table_str: str
-)
-</code></pre>
-<hr />
-<p>Finds table in <code>PyTables</code> class.</p>
 <h3 id="_refresh_dict">._refresh_dict</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L338">source</a></p>
 <pre><code class="language-python">._refresh_dict(
@@ -171,6 +212,37 @@
 </code></pre>
 <hr />
 <p>Handles refreshes if argument given was a dictionary.</p>
+<h3 id="_find_table">._find_table</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L306">source</a></p>
+<pre><code class="language-python">._find_table(
+   table_str: str
+)
+</code></pre>
+<hr />
+<p>Finds table in <code>PyTables</code> class.</p>
+<h3 id="_request_refresh">._request_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L357">source</a></p>
+<pre><code class="language-python">._request_refresh(
+   object
+)
+</code></pre>
+<hr />
+<p>Base method to parse through argument and figure out what needs to be refreshed.</p>
+<p>Someone please make this better...</p>
+<h3 id="_pre_checks">._pre_checks</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L255">source</a></p>
+<pre><code class="language-python">._pre_checks()
+</code></pre>
+<hr />
+<p>Checks if any <code>BaseTrace</code> classes are needed from <code>tabular_tracing.py</code>.</p>
+<p>Then checks if any <code>RefreshChecks</code> are needed, along with the default <code>row_count</code> check.</p>
+<h3 id="_post_checks">._post_checks</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L288">source</a></p>
+<pre><code class="language-python">._post_checks()
+</code></pre>
+<hr />
+<p>If traces are running it Stops and Drops it.</p>
+<p>Runs through any <code>post_checks()</code> in <code>RefreshChecks</code>.</p>
 <h3 id="run">.run</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L405">source</a></p>
 <pre><code class="language-python">.run()
@@ -182,15 +254,6 @@ Then starts the trace if needed.
 Next will execute <code>save_changes()</code>
 and run the post checks after that.
 Last will return a <code>pd.DataFrame</code> of refresh results.</p>
-<h3 id="_request_refresh">._request_refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L357">source</a></p>
-<pre><code class="language-python">._request_refresh(
-   object
-)
-</code></pre>
-<hr />
-<p>Base method to parse through argument and figure out what needs to be refreshed.</p>
-<p>Someone please make this better...</p>
 <h3 id="init">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L218">source</a></p>
 <pre><code class="language-python">.__init__(
@@ -216,19 +279,14 @@ Then will run pre checks on the requested objects.</p>
 <li><strong>default_row_count_check</strong> (bool, optional) : Defaults to True.</li>
 <li><strong>refresh_type</strong> (RefreshType, optional) : Defaults to RefreshType.Full.</li>
 </ul>
-<h3 id="_get_trace">._get_trace</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L302">source</a></p>
-<pre><code class="language-python">._get_trace()
+<h3 id="_refresh_partition">._refresh_partition</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L332">source</a></p>
+<pre><code class="language-python">._refresh_partition(
+   partition: PyPartition
+)
 </code></pre>
 <hr />
-<p>Creates Trace and creates it in model.</p>
-<h3 id="_post_checks">._post_checks</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L288">source</a></p>
-<pre><code class="language-python">._post_checks()
-</code></pre>
-<hr />
-<p>If traces are running it Stops and Drops it.</p>
-<p>Runs through any <code>post_checks()</code> in <code>RefreshChecks</code>.</p>
+<p>Runs .Net <code>RequestRefresh()</code> on partition.</p>
 <hr />
 <h2 id="refreshcheck">RefreshCheck</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L19">source</a></p>
@@ -244,13 +302,6 @@ The default given in a refresh is to check row count.
 It will check row count before, and row count after.
 Then fail if row count after is zero.</p>
 <p><strong>Methods:</strong></p>
-<h3 id="assertion_run">.assertion_run</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L151">source</a></p>
-<pre><code class="language-python">.assertion_run()
-</code></pre>
-<hr />
-<p>Runs the given self.assertion function with <code>self.pre</code> and <code>self.post</code>.</p>
-<p>So, <code>self.assertion_run(self.pre, self.post)</code>.</p>
 <h3 id="init_1">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L29">source</a></p>
 <pre><code class="language-python">.__init__(
@@ -272,18 +323,25 @@ Return <code>True</code> or <code>False</code> depending on the comparison of th
 to determine a pass or fail status of your refresh.
 Defaults to None.</li>
 </ul>
-<h3 id="post_check">.post_check</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L145">source</a></p>
-<pre><code class="language-python">.post_check()
+<h3 id="assertion_run">.assertion_run</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L151">source</a></p>
+<pre><code class="language-python">.assertion_run()
 </code></pre>
 <hr />
-<p>Runs <code>self._check("Post")</code> then <code>self.assertion_run()</code>.</p>
+<p>Runs the given self.assertion function with <code>self.pre</code> and <code>self.post</code>.</p>
+<p>So, <code>self.assertion_run(self.pre, self.post)</code>.</p>
 <h3 id="pre_check">.pre_check</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L140">source</a></p>
 <pre><code class="language-python">.pre_check()
 </code></pre>
 <hr />
 <p>Runs <code>self._check("Pre")</code>.</p>
+<h3 id="post_check">.post_check</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L145">source</a></p>
+<pre><code class="language-python">.post_check()
+</code></pre>
+<hr />
+<p>Runs <code>self._check("Post")</code> then <code>self.assertion_run()</code>.</p>
 <hr />
 <h2 id="refreshcheckcollection">RefreshCheckCollection</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/refresh.py/#L170">source</a></p>
@@ -330,6 +388,10 @@ Defaults to None.</li>
               
             </div>
           </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Tabular/" class="btn btn-neutral float-left" title="Main Tabular Class"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Queries/" class="btn btn-neutral float-right" title="Querying">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
 
   <hr/>
 
@@ -351,6 +413,10 @@ Defaults to None.</li>
   <span class="rst-current-version" data-toggle="rst-current-version">
     
     
+      <span><a href="../Tabular/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../Queries/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

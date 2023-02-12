@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Column/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Column - PyTabular</title>
+    <title>Columns - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Column";
+        var mkdocs_page_name = "Columns";
         var mkdocs_page_input_path = "Column.md";
         var mkdocs_page_url = "/PyTabular/Column/";
       </script>
@@ -45,31 +45,39 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Tabular</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Main Tabular Class</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Table/">Table</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Refreshes/">Refreshing</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partition</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Querying</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Table/">Tables</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Partition/">Partitions</a>
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Column</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Columns</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pycolumn">PyColumn</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#get_dependencies">.get_dependencies</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#distinct_count">.distinct_count</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#get_sample_values">.get_sample_values</a>
+    <li class="toctree-l3"><a class="reference internal" href="#get_dependencies">.get_dependencies</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#values">.values</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#values">.values</a>
+    <li class="toctree-l3"><a class="reference internal" href="#get_sample_values">.get_sample_values</a>
     </li>
         </ul>
     </li>
@@ -85,15 +93,11 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measures</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Queries</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Traces</a>
                 </li>
               </ul>
               <ul>
@@ -112,6 +116,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Logic%20Utils/">Logic Utils</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
+                </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -126,7 +134,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Column</li>
+      <li>Columns</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -153,12 +161,6 @@ See methods for extra functionality.</p>
 <li><strong>Table</strong>  : Parent table to the column.</li>
 </ul>
 <p><strong>Methods:</strong></p>
-<h3 id="get_dependencies">.get_dependencies</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L49">source</a></p>
-<pre><code class="language-python">.get_dependencies()
-</code></pre>
-<hr />
-<p>Returns the dependant columns of a measure.</p>
 <h3 id="distinct_count">.distinct_count</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L89">source</a></p>
 <pre><code class="language-python">.distinct_count(
@@ -177,14 +179,23 @@ See methods for extra functionality.</p>
 <li><strong>int</strong>  : Number of Distinct Count from column.
     If <code>no_blank == True</code> then will return number of distinct count no blanks.</li>
 </ul>
-<h3 id="get_sample_values">.get_sample_values</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L55">source</a></p>
-<pre><code class="language-python">.get_sample_values(
-   top_n: int = 3
-)
+<h3 id="get_dependencies">.get_dependencies</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L49">source</a></p>
+<pre><code class="language-python">.get_dependencies()
 </code></pre>
 <hr />
-<p>Get sample values of column.</p>
+<p>Returns the dependant columns of a measure.</p>
+<h3 id="values">.values</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L107">source</a></p>
+<pre><code class="language-python">.values()
+</code></pre>
+<hr />
+<p>Get single column DataFrame of values in column.</p>
+<p>Similar to <code>get_sample_values()</code> but will return <strong>all</strong>.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>DataFrame</strong>  : Single column DataFrame of values.</li>
+</ul>
 <h3 id="init">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L25">source</a></p>
 <pre><code class="language-python">.__init__(
@@ -200,17 +211,14 @@ display table.</p>
 <li><strong>object</strong> (Column) : .Net column object.</li>
 <li><strong>table</strong> (Table) : .Net table object.</li>
 </ul>
-<h3 id="values">.values</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L107">source</a></p>
-<pre><code class="language-python">.values()
+<h3 id="get_sample_values">.get_sample_values</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L55">source</a></p>
+<pre><code class="language-python">.get_sample_values(
+   top_n: int = 3
+)
 </code></pre>
 <hr />
-<p>Get single column DataFrame of values in column.</p>
-<p>Similar to <code>get_sample_values()</code> but will return <strong>all</strong>.</p>
-<p><strong>Returns</strong></p>
-<ul>
-<li><strong>DataFrame</strong>  : Single column DataFrame of values.</li>
-</ul>
+<p>Get sample values of column.</p>
 <hr />
 <h2 id="pycolumns">PyColumns</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L120">source</a></p>
@@ -259,8 +267,8 @@ whatever the given <code>query_function</code> value is.</p>
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../Partition/" class="btn btn-neutral float-left" title="Partition"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../Measure/" class="btn btn-neutral float-right" title="Measure">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Partition/" class="btn btn-neutral float-left" title="Partitions"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Measure/" class="btn btn-neutral float-right" title="Measures">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>

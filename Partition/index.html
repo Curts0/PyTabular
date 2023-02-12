@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://curts0.github.io/PyTabular/Partition/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Partition - PyTabular</title>
+    <title>Partitions - PyTabular</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Partition";
+        var mkdocs_page_name = "Partitions";
         var mkdocs_page_input_path = "Partition.md";
         var mkdocs_page_url = "/PyTabular/Partition/";
       </script>
@@ -45,28 +45,38 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Tabular</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Tabular/">Main Tabular Class</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Table/">Table</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Refreshes/">Refreshing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Querying</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Table/">Tables</a>
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">Partition</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Partitions</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pypartition">PyPartition</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
+    <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
     </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pypartitions">PyPartitions</a>
         <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh_1">.refresh</a>
+    </li>
     <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
     </li>
         </ul>
@@ -75,19 +85,15 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Column/">Column</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Column/">Columns</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measure</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Measure/">Measures</a>
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Trace</a>
-                </li>
-              </ul>
-              <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../Queries/">Queries</a>
+                <li class="toctree-l1"><a class="reference internal" href="../Traces/">Traces</a>
                 </li>
               </ul>
               <ul>
@@ -106,6 +112,10 @@
                 <li class="toctree-l1"><a class="reference internal" href="../Logic%20Utils/">Logic Utils</a>
                 </li>
               </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributing</a>
+                </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -120,7 +130,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>Partition</li>
+      <li>Partitions</li>
     <li class="wy-breadcrumbs-aside">
     </li>
   </ul>
@@ -140,16 +150,19 @@
 <p>Main class for interacting with partitions.</p>
 <p>See methods for available uses.</p>
 <p><strong>Methods:</strong></p>
-<h3 id="last_refresh">.last_refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L41">source</a></p>
-<pre><code class="language-python">.last_refresh()
+<h3 id="refresh">.refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L51">source</a></p>
+<pre><code class="language-python">.refresh(
+   *args, **kwargs
+)
 </code></pre>
 <hr />
-<p>Queries <code>RefreshedTime</code> attribute in the partition.</p>
-<p>Converts from C# Ticks to Python datetime.</p>
+<p>Same method from Model Refresh.</p>
+<p>You can pass through any extra parameters. For example:
+<code>Tabular().Tables['Table Name'].Partitions[0].refresh()</code></p>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
+<li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
 </ul>
 <h3 id="init">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L21">source</a></p>
@@ -165,19 +178,16 @@
 <li><strong>object</strong> (Partition) : .Net Partition object.</li>
 <li><strong>table</strong> (PyTable) : Parent table of the partition in question.</li>
 </ul>
-<h3 id="refresh">.refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L51">source</a></p>
-<pre><code class="language-python">.refresh(
-   *args, **kwargs
-)
+<h3 id="last_refresh">.last_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L41">source</a></p>
+<pre><code class="language-python">.last_refresh()
 </code></pre>
 <hr />
-<p>Same method from Model Refresh.</p>
-<p>You can pass through any extra parameters. For example:
-<code>Tabular().Tables['Table Name'].Partitions[0].refresh()</code></p>
+<p>Queries <code>RefreshedTime</code> attribute in the partition.</p>
+<p>Converts from C# Ticks to Python datetime.</p>
 <p><strong>Returns</strong></p>
 <ul>
-<li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
+<li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
 </ul>
 <hr />
 <h2 id="pypartitions">PyPartitions</h2>
@@ -195,6 +205,14 @@ Or through individual tables <code>model.Tables[TABLE_NAME].Partitions</code>.
 You can even filter down with <code>.find()</code>. For example find partitions with <code>prev-year</code> in name.
 <code>model.Partitions.find('prev-year')</code>.</p>
 <p><strong>Methods:</strong></p>
+<h3 id="refresh_1">.refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L78">source</a></p>
+<pre><code class="language-python">.refresh(
+   *args, **kwargs
+)
+</code></pre>
+<hr />
+<p>Refreshes all <code>PyPartition</code>(s) in class.</p>
 <h3 id="init_1">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L74">source</a></p>
 <pre><code class="language-python">.__init__(
@@ -207,8 +225,8 @@ You can even filter down with <code>.find()</code>. For example find partitions 
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../Table/" class="btn btn-neutral float-left" title="Table"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../Column/" class="btn btn-neutral float-right" title="Column">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Table/" class="btn btn-neutral float-left" title="Tables"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Column/" class="btn btn-neutral float-right" title="Columns">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
