@@ -67,9 +67,9 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
         </ul>
     </li>
@@ -164,6 +164,17 @@
 <ul>
 <li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
 </ul>
+<h3 id="last_refresh">.last_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L41">source</a></p>
+<pre><code class="language-python">.last_refresh()
+</code></pre>
+<hr />
+<p>Queries <code>RefreshedTime</code> attribute in the partition.</p>
+<p>Converts from C# Ticks to Python datetime.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
+</ul>
 <h3 id="init">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L21">source</a></p>
 <pre><code class="language-python">.__init__(
@@ -177,17 +188,6 @@
 <ul>
 <li><strong>object</strong> (Partition) : .Net Partition object.</li>
 <li><strong>table</strong> (PyTable) : Parent table of the partition in question.</li>
-</ul>
-<h3 id="last_refresh">.last_refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L41">source</a></p>
-<pre><code class="language-python">.last_refresh()
-</code></pre>
-<hr />
-<p>Queries <code>RefreshedTime</code> attribute in the partition.</p>
-<p>Converts from C# Ticks to Python datetime.</p>
-<p><strong>Returns</strong></p>
-<ul>
-<li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
 </ul>
 <hr />
 <h2 id="pypartitions">PyPartitions</h2>

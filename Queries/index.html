@@ -57,9 +57,9 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#connection">Connection</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#query">.query</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
         </ul>
     </li>
@@ -143,20 +143,6 @@ method in the Tabular class is just a wrapper for this class.
 But you can pass through your <code>effective_user</code> more efficiently,
 so use that instead.</p>
 <p><strong>Methods:</strong></p>
-<h3 id="init">.<strong>init</strong></h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L25">source</a></p>
-<pre><code class="language-python">.__init__(
-   server, effective_user = None
-)
-</code></pre>
-<hr />
-<p>Init creates the connection.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>server</strong> (Server) : The server that you are connecting to.</li>
-<li><strong>effective_user</strong> (str, optional) : Pass through an effective user
-    to query as somebody else. Defaults to None.</li>
-</ul>
 <h3 id="query">.query</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L45">source</a></p>
 <pre><code class="language-python">.query(
@@ -182,6 +168,20 @@ return that single value instead of DataFrame.</p>
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
+</ul>
+<h3 id="init">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/query.py/#L25">source</a></p>
+<pre><code class="language-python">.__init__(
+   server, effective_user = None
+)
+</code></pre>
+<hr />
+<p>Init creates the connection.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>server</strong> (Server) : The server that you are connecting to.</li>
+<li><strong>effective_user</strong> (str, optional) : Pass through an effective user
+    to query as somebody else. Defaults to None.</li>
 </ul>
               
             </div>
