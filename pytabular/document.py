@@ -341,6 +341,8 @@ class ModelDocumenter:
 
         partition_type = ""
         partition_source = ""
+        
+        logger.debug(f"{object_caption} => {str(object.Partitions[0].SourceType)}")
 
         if str(object.Partitions[0].SourceType) == "Calculated":
             partition_type = "dax"
@@ -348,7 +350,7 @@ class ModelDocumenter:
         elif str(object.Partitions[0].SourceType) == "M":
             partition_type = "powerquery"
             partition_source = object.Partitions[0].Source.Expression
-        elif str(object.Partitions[0].SourceType) == "CalculationGroupSource":
+        elif str(object.Partitions[0].SourceType) == "CalculationGroup":
             partition_type = ""
             partition_source = ""
         else:
