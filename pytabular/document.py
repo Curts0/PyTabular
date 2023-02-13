@@ -6,13 +6,14 @@ import logging
 
 from pathlib import Path
 
-from pytabular.table import PyTable
-from pytabular.column import PyColumn
-from pytabular.culture import PyCulture
-from pytabular.measure import PyMeasure
-from pytabular.pytabular import Tabular
+from table import PyTable
+from column import PyColumn
+from culture import PyCulture
+from measure import PyMeasure
+from pytabular import Tabular
 
 logger = logging.getLogger("PyTabular")
+
 
 class ModelDocumenter:
     """The ModelDocumenter class can generate documentation.
@@ -65,7 +66,7 @@ class ModelDocumenter:
         # Translation information
         self.culture_include: bool = False
         self.culture_selected: str = "en-US"
-        self.culture_object: PyCulture = None
+        self.culture_object: PyCulture
 
         # Documentation Parts
         self.general_page: str = str()
@@ -136,7 +137,7 @@ class ModelDocumenter:
         else:
             self.culture_include = enable_translations
 
-    def set_model_friendly_name(self):
+    def set_model_friendly_name(self) -> str:
         """Replaces the model name to a friendly string, so it can be used in an URL."""
         return (self.model_name).replace(" ", "-").replace("_", "-").lower()
 
@@ -249,49 +250,46 @@ class ModelDocumenter:
             or object.Name
         )
 
-        object_description = (object.Description or "No Description available").replace(
+        obj_description = (object.Description or "No Description available").replace(
             "\\n", ""
         )
 
-
-        # TODO: Resolve to make sure it's for measures.
         object_properties = [
-            { "Column Name": object.Name }, 
-            { "Object Type": object.ObjectType },
-            { "Type": object.Type },
-            { "Is Available In Excel": object.IsAvailableInMDX },
-            { "Is Hidden": object.IsHidden }, 
-            { "Data Category": object.DataCategory },
-            { "Data Type": object.DataType },
-            { "Display Folder": object.DisplayFolder }
+            {"Measure Name": object.Name},
+            {"Display Folder": object.DisplayFolder},
+            {"Format String": object.FormatString},
+            {"Is Hidden": "Yes" if object.IsHidden else "No"},
         ]
-
 
         obj_text = [
             f"### {object_caption}",
             "**Description**:",
-            f"> {object_description}",
-            ""
-            f"{self.select_object_properties(object_properties)}"
-            "",
+            f"> {obj_description}",
+            "" f"{self.generate_object_properties(object_properties)}" "",
             f'```dax title="Technical: {object.Name}"',
             f"  {object.Expression}",
             "```",
-            "---"
+            "---",
         ]
         return "\n".join(obj_text)
 
     def generate_markdown_measure_page(self) -> str:
-        """Based on the measure objects it generates a measure page."""
+        """This function generates the page that
+        Contains the measure documentation.
+
+        Returns:
+            str: The full markdown text that is needed
+                make it compatible with Docusaurus.
+        """
         prev_display_folder = ""
         markdown_template = [
             "---",
             "sidebar_position: 3",
             "title: Measures",
-            f"description: This page contains all measures for the {self.model.Name} model, including the description, format string, and other technical details."
-            "---"
+            f"description: This page contains all measures for the {self.model.Name} model, including the description, format string, and other technical details.",
+            "---",
             "",
-            f"# Measures for {self.model.Name}"
+            f"# Measures for {self.model.Name}",
         ]
 
         measures = sorted(
@@ -327,18 +325,18 @@ class ModelDocumenter:
             or object.Name
         )
 
-        object_description = (object.Description or "No Description available").replace(
+        obj_description = (object.Description or "No Description available").replace(
             "\\n", ""
         )
 
         object_properties = [
-            { "Measures (#)": len(object.Measures) }, 
-            { "Columns (#)": len(object.Columns) },
-            { "Partiton (#)": len(object.Partitions) },
-            { "Data Category": object.DataCategory or "Regular Table" },
-            { "Is Hidden": object.IsHidden },
-            { "Table Type": object.Partitions[0].ObjectType }, 
-            { "Source Type": object.Partitions[0].SourceType }
+            {"Measures (#)": len(object.Measures)},
+            {"Columns (#)": len(object.Columns)},
+            {"Partiton (#)": len(object.Partitions)},
+            {"Data Category": object.DataCategory or "Regular Table"},
+            {"Is Hidden": object.IsHidden},
+            {"Table Type": object.Partitions[0].ObjectType},
+            {"Source Type": object.Partitions[0].SourceType},
         ]
 
         partition_type = ""
@@ -357,57 +355,50 @@ class ModelDocumenter:
         obj_text = [
             f"### {object_caption}",
             "**Description**: ",
-            "> {object_description}",
+            f"> {obj_description}",
             "",
-            f"{self.select_object_properties(object_properties)}"
-            "", 
-            f"```{partition_type} title="Table Source: {object.Name}",
+            f"{self.generate_object_properties(object_properties)}",
+            "",
+            f'```{partition_type} title="Table Source: {object.Name}"',
             f"   {partition_source}",
             "```",
-            "---"
+            "---",
         ]
 
+        return "\n".join(obj_text)
+
     def generate_markdown_table_page(self) -> str:
-        """This function generates the markdown tables documentation for the tables in the Model."""
+        """This function generates the markdown tables documentation
+        for the tables in the Model.
+
+        Returns:
+            str: Will be appended to the page text.
+        """
         markdown_template = [
             "---",
             "sidebar_position: 2",
             "title: Tables",
             f"description: This page contains all columns with tables for {self.model.Name}, including the description, and technical details.",
             "---",
-            f"# Tables {self.model.Name}"
+            "",
+            f"# Tables {self.model.Name}",
         ]
 
-        for table in self.model.Tables:
-            markdown_template.append(self.create_markdown_for_table(table))
-
-        return "\n".join(markdown_template) 
-
-    def generate_markdown_column_page(self) -> str:
-        """This function generates the markdown for documentation about columns in the Model."""
-        markdown_template = [
-            "---"
-            "sidebar_position: 4"
-            f"title: Columns description: This page contains all columns with Columns for {self.model.Name}, including the description, format string, and other technical details."
-            "---"
-        ]
-
-        for table in self.model.Tables:
-            markdown_template.append(f"## Columns for {table.Name}")
-
-            for column in table.Columns:
-                if "RowNumber" in column.Name:
-                    continue
-
-                markdown_template.append(self.create_markdown_for_column(column))
-
+        markdown_template.extend(
+            self.create_markdown_for_table(table) for table in self.model.Tables
+        )
         return "\n".join(markdown_template)
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
-        """Generates the Markdown for a specifc column.
+        """Generates the Markdown for a specifc column. If a columns
+        is calculated, then it also shows the expression for
+        that column in DAX.
 
-        If a colums is calculated, then it also shows
-        the expression for that column in DAX.
+        Args:
+            object (PyColumn): Needs PyColumn objects input
+
+        Returns:
+            str: Will be appended to the page text.
         """
         object_caption = (
             self.get_object_caption(
@@ -416,46 +407,75 @@ class ModelDocumenter:
             or object.Name
         )
 
-        object_description = object.Description.replace("\\n", "") or "No Description available"
+        obj_description = (
+            object.Description.replace("\\n", "") or "No Description available"
+        )
 
-        object_heading = f"""{object_caption} {self.create_object_reference( object=object.Name, object_parent=object.Parent.Name)}"""
+        obj_heading = f"""{object_caption} {self.create_object_reference(object=object.Name, object_parent=object.Parent.Name)}"""
 
         object_properties = [
-            { "Column Name": object.Name }, 
-            { "Object Type": object.ObjectType },
-            { "Type": object.Type },
-            { "Is Available In Excel": object.IsAvailableInMDX },
-            { "Is Hidden": object.IsHidden }, 
-            { "Data Category": object.DataCategory },
-            { "Data Type": object.DataType },
-            { "Display Folder": object.DisplayFolder }
+            {"Column Name": object.Name},
+            {"Object Type": object.ObjectType},
+            {"Type": object.Type},
+            {"Is Available In Excel": object.IsAvailableInMDX},
+            {"Is Hidden": object.IsHidden},
+            {"Data Category": object.DataCategory},
+            {"Data Type": object.DataType},
+            {"Display Folder": object.DisplayFolder},
         ]
 
         obj_text = [
-            f"### {object_heading}", 
-            "**Description**:"
-            f"> {object_description}"
+            f"### {obj_heading}",
+            "**Description**:",
+            f"> {obj_description}",
             "",
-            f"{self.select_object_properties(object_properties)}"
+            f"{self.generate_object_properties(object_properties)}",
         ]
 
         if str(object.Type) == "Calculated":
-            obj_text.append[
-                f"```dax title="Technical: {object.Name}",
-                f"  {object.Expression}",
-                "```"
-            ]
-
+            obj_text.extend(
+                (
+                    f'```dax title="Technical: {object.Name}"',
+                    f"  {object.Expression}",
+                    "```",
+                )
+            )
         obj_text.append("---")
 
         return "\n".join(obj_text)
-        
-    def generate_category_file(self):
-        """Docusaurs can generate an index.
+    
+    def generate_markdown_column_page(self) -> str:
+        """This function generates the markdown for documentation
+        about columns in the Model.
 
-        The category yaml will make that happen.
+        Returns:
+            str: Will be appended to the page text.
         """
+        markdown_template = [
+            "---",
+            "sidebar_position: 4",
+            f"title: Columns description: This page contains all columns with Columns for {self.model.Name}, including the description, format string, and other technical details.",
+            "---",
+            ""
+        ]
 
+        for table in self.model.Tables:
+            markdown_template.append(f"## Columns for {table.Name}")
+
+            markdown_template.extend(
+                self.create_markdown_for_column(column)
+                for column in table.Columns
+                if "RowNumber" not in column.Name
+            )
+        return "\n".join(markdown_template)
+    
+    def generate_category_file(self) -> str:
+        """Docusaurs can generate an index based on the files that
+        are in the directory. The category yaml will make that happen.
+
+        Returns:
+            str: Text that will be the base of _category_.yml.
+        """
         obj_text = [
             "position: 2 # float position is supported",
             f"label: '{self.model_name}'",
@@ -465,38 +485,38 @@ class ModelDocumenter:
             "   type: generated-index",
             "   title: Documentation Overview",
             "customProps:",
-            "   description: To be added in the future."
-        ]    
+            "   description: To be added in the future.",
+        ]
 
         return "\n".join(obj_text)
- 
-    @staticmethod 
-    def select_object_properties(properties : list[dict]) -> str:
+
+    @staticmethod
+    def generate_object_properties(properties: list[dict[str, str]]) -> str:
         """
         Generate the section for object properties,
         you can select your own properties to display
-        by providing a the properties in a list of 
+        by providing a the properties in a list of
         dicts.
 
         Args:
             Self.
-            Properties (dict): The ones you want to show. 
-    
+            Properties (dict): The ones you want to show.
+
         Returns:
             str:
-    
-        Examples: 
-        
+
+        Examples:
+
             Input
             ```
                 [
                     { "Display Folder": "Sales Order Information" },
-                    { "Is Hidden": "False" }, 
+                    { "Is Hidden": "False" },
                     { "Format String": "#.###,## }
                 ]
             ```
-            
-            Output: 
+
+            Output:
             ```
             <dl>
                 <dt>Display Folder</dt>
@@ -508,19 +528,14 @@ class ModelDocumenter:
                 <dt>Format String</dt>
                 <dd>#.###,##</dd>
             </dl>
-            ```    
-        """ 
+            ```
+        """
 
-        obj_text = [
-            "<dl>"
-        ]
+        obj_text = ["<dl>"]
 
         for obj_prop in properties:
             for caption, text in obj_prop.items():
-                obj_text.append(f"  <dt>{caption}</dt>")
-                obj_text.append(f"  <dd>{text}</dd>")
-                obj_text.append(f"")
-
+                obj_text.extend((f"  <dt>{caption}</dt>", f"  <dd>{text}</dd>", ""))
         obj_text.append("</dl>")
 
         return "\n".join(obj_text)
