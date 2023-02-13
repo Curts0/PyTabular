@@ -348,10 +348,13 @@ class ModelDocumenter:
         elif str(object.Partitions[0].SourceType) == "M":
             partition_type = "powerquery"
             partition_source = object.Partitions[0].Source.Expression
+        elif str(object.Partitions[0].SourceType) == "CalculationGroupSource":
+            partition_type = ""
+            partition_source = ""
         else:
             partition_type = "sql"
             partition_source = object.Partitions[0].Source.Query
-
+        
         obj_text = [
             f"### {object_caption}",
             "**Description**: ",
