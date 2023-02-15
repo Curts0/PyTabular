@@ -91,11 +91,11 @@ class ModelDocumenter:
 
     def create_object_reference(self, object: str, object_parent: str) -> str:
         """Create a Custom ID for link sections in the docs.
-        Scope is only Docusaurus.
 
         This is based on the technical names in the model,
         so not the once in the translations. This makes it
-        possible to link based on dependencies.
+        possible to link based on dependencies. 
+        (Scope is only Docusaurus.)
 
         Args:
             object (str): Object Name
@@ -116,7 +116,9 @@ class ModelDocumenter:
 
     def get_object_caption(self, object_name: str, object_parent: str) -> str:
         """Retrieves the caption of an object, based on the translations in the culture.
+        
         If no culture is present, the object_name is returned
+        
         Args:
             object_name (str): Object Name
             object_parent (str): Object Parent Name
@@ -313,8 +315,7 @@ class ModelDocumenter:
         return "\n".join(obj_text)
 
     def generate_markdown_measure_page(self) -> str:
-        """This function generates the page that
-        Contains the measure documentation.
+        """This function generates the meausure documation page.
 
         Returns:
             str: The full markdown text that is needed
@@ -414,8 +415,7 @@ class ModelDocumenter:
         return "\n".join(obj_text)
 
     def generate_markdown_table_page(self) -> str:
-        """This function generates the markdown tables documentation
-        for the tables in the Model.
+        """This function generates the markdown for table documentation.
 
         Returns:
             str: Will be appended to the page text.
@@ -438,8 +438,9 @@ class ModelDocumenter:
         return "\n".join(markdown_template)
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
-        """Generates the Markdown for a specifc column. If a columns
-        is calculated, then it also shows the expression for
+        """Generates the Markdown for a specifc column. 
+        
+        If a columns is calculated, then it also shows the expression for
         that column in DAX.
 
         Args:
@@ -498,8 +499,7 @@ class ModelDocumenter:
         return "\n".join(obj_text)
 
     def generate_markdown_column_page(self) -> str:
-        """This function generates the markdown for documentation
-        about columns in the Model.
+        """This function generates the markdown for the colums documentation.
 
         Returns:
             str: Will be appended to the page text.
@@ -525,8 +525,11 @@ class ModelDocumenter:
         return "\n".join(markdown_template)
 
     def generate_category_file(self) -> str:
-        """Docusaurs can generate an index based on the files that
-        are in the directory. The category yaml will make that happen.
+        """Docusaurs can generate an index based on the files.
+        
+        The files that are in the same directory as _category_.ym will
+        be use to create an index and a navigation. For more information
+        see Docusaurus documentation.
 
         Returns:
             str: Text that will be the base of _category_.yml.
@@ -547,9 +550,9 @@ class ModelDocumenter:
 
     @staticmethod
     def generate_object_properties(properties: list[dict[str, str]]) -> str:
-        """
-        Generate the section for object properties,
-        you can select your own properties to display
+        """Generate the section for object properties.
+
+        You can select your own properties to display
         by providing a the properties in a list of
         dicts.
 
@@ -561,7 +564,6 @@ class ModelDocumenter:
             str:
 
         Examples:
-
             Input
             ```
                 [
