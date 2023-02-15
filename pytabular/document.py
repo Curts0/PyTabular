@@ -562,7 +562,7 @@ class ModelDocumenter:
 
         Returns:
             str: HTML used in the markdown.
-        
+
         Example:
             ```python
                 [
