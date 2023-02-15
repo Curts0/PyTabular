@@ -11,6 +11,7 @@ from column import PyColumn
 from culture import PyCulture
 from measure import PyMeasure
 from pytabular import Tabular
+from typing import List, Dict
 
 logger = logging.getLogger("PyTabular")
 
@@ -549,7 +550,7 @@ class ModelDocumenter:
         return "\n".join(obj_text)
 
     @staticmethod
-    def generate_object_properties(properties: list[dict[str, str]]) -> str:
+    def generate_object_properties(properties: List[Dict[str, str]]) -> str:
         """Generate the section for object properties.
 
         You can select your own properties to display
