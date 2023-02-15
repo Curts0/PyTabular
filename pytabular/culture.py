@@ -19,9 +19,9 @@ class PyCulture(PyObject):
     def set_translation(self) -> List[dict]:
         """Based on the culture, it creates a list of dicts with available translations.
 
-            The model object doesn't have a Parent object. So that will stay 
+            The model object doesn't have a Parent object. So that will stay
             empty.
-        
+
         Returns:
             List[dict]: Translations per object.
         """

@@ -94,8 +94,8 @@ class ModelDocumenter:
 
         This is based on the technical names in the model,
         so not the once in the translations. This makes it
-        possible to link based on dependencies. 
-        (Scope is only Docusaurus.)
+        possible to link based on dependencies.
+        (Scope is only Docusaurus)
 
         Args:
             object (str): Object Name
@@ -116,8 +116,8 @@ class ModelDocumenter:
 
     def get_object_caption(self, object_name: str, object_parent: str) -> str:
         """Retrieves the caption of an object, based on the translations in the culture.
-        
-        If no culture is present, the object_name is returned
+
+        If no culture is present, the object_name is returned.
         
         Args:
             object_name (str): Object Name
@@ -438,8 +438,8 @@ class ModelDocumenter:
         return "\n".join(markdown_template)
 
     def create_markdown_for_column(self, object: PyColumn) -> str:
-        """Generates the Markdown for a specifc column. 
-        
+        """Generates the Markdown for a specifc column.
+
         If a columns is calculated, then it also shows the expression for
         that column in DAX.
 
@@ -526,7 +526,7 @@ class ModelDocumenter:
 
     def generate_category_file(self) -> str:
         """Docusaurs can generate an index based on the files.
-        
+
         The files that are in the same directory as _category_.ym will
         be use to create an index and a navigation. For more information
         see Docusaurus documentation.
@@ -556,13 +556,6 @@ class ModelDocumenter:
         by providing a the properties in a list of
         dicts.
 
-        Args:
-            Self.
-            Properties (dict): The ones you want to show.
-
-        Returns:
-            str:
-
         Examples:
             Input
             ```
@@ -586,6 +579,13 @@ class ModelDocumenter:
                 <dd>#.###,##</dd>
             </dl>
             ```
+
+        Args:
+            Self.
+            Properties (dict): The ones you want to show.
+
+        Returns:
+            str: HTML used in the markdown.
         """
 
         obj_text = ["<dl>"]
