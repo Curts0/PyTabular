@@ -118,7 +118,7 @@ class ModelDocumenter:
         """Retrieves the caption of an object, based on the translations in the culture.
 
         If no culture is present, the object_name is returned.
-        
+
         Args:
             object_name (str): Object Name
             object_parent (str): Object Parent Name
@@ -556,17 +556,22 @@ class ModelDocumenter:
         by providing a the properties in a list of
         dicts.
 
-        Examples:
-            Input
-            ```
+        Args:
+            Self.
+            Properties (dict): The ones you want to show.
+
+        Returns:
+            str: HTML used in the markdown.
+        
+        Example:
+            ```python
                 [
                     { "Display Folder": "Sales Order Information" },
                     { "Is Hidden": "False" },
                     { "Format String": "#.###,## }
                 ]
             ```
-
-            Output:
+            Returns:
             ```
             <dl>
                 <dt>Display Folder</dt>
@@ -579,15 +584,7 @@ class ModelDocumenter:
                 <dd>#.###,##</dd>
             </dl>
             ```
-
-        Args:
-            Self.
-            Properties (dict): The ones you want to show.
-
-        Returns:
-            str: HTML used in the markdown.
         """
-
         obj_text = ["<dl>"]
 
         for obj_prop in properties:
