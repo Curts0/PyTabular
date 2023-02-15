@@ -17,12 +17,18 @@ class PyCulture(PyObject):
         self.ObjectTranslations = self.set_translation()
 
     def set_translation(self) -> List[dict]:
-        """Based on the culture, it creates a list of dicts with available translations."""
+        """Based on the culture, it creates a list of dicts with available translations.
+            Note: The model object doesn't have a Parent object.
+        Returns:
+            List[dict]: Translations per object.
+        """
         return [
             {
                 "object_translation": translation.Value,
                 "object_name": translation.Object.Name,
-                "object_parent_name": translation.Object.Parent.Name,
+                "object_parent_name": translation.Object.Parent.Name
+                if translation.Object.Parent
+                else "",
                 "object_type": str(translation.Property),
             }
             for translation in self._object.ObjectTranslations
@@ -35,9 +41,17 @@ class PyCulture(PyObject):
 
         By default it will search for the "Caption" object type, due to fact that a
         Display folder and Description can also have translations.
+
+        Args:
+            object_name (str): Object name that you want to translate.
+            object_parent_name (str): Parent Object name that you want to translate.
+            object_type (str, optional): The Display Folders can also have translations.
+                Defaults to "Caption" > Object translation.
+
+        Returns:
+            dict: With translation of the object.
         """
         try:
-            # Removed walrus operator so it can be compatible with with python versions before 3.8
             translations = [
                 d
                 for d in self.ObjectTranslations

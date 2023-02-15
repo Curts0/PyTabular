@@ -91,10 +91,18 @@ class ModelDocumenter:
 
     def create_object_reference(self, object: str, object_parent: str) -> str:
         """Create a Custom ID for link sections in the docs.
+        Scope is only Docusaurus.
 
         This is based on the technical names in the model,
         so not the once in the translations. This makes it
         possible to link based on dependencies.
+
+        Args:
+            object (str): Object Name
+            object_parent (str): Object Parent (e.g. Table)
+
+        Returns:
+            str: String that can be used for custom linking
         """
         url_reference = f"{object_parent}-{object}".replace(" ", "")
         return f"{{#{url_reference}}}"
@@ -106,19 +114,36 @@ class ModelDocumenter:
         self.column_page = self.generate_markdown_column_page()
         self.category_page = self.generate_category_file()
 
-    def get_object_caption(self, object_name: str, object_parent: str):
-        """Retrieves the caption of an object, based on the translations in the culture."""
+    def get_object_caption(self, object_name: str, object_parent: str) -> str:
+        """Retrieves the caption of an object, based on the translations in the culture.
+        If no culture is present, the object_name is returned
+        Args:
+            object_name (str): Object Name
+            object_parent (str): Object Parent Name
+
+        Returns:
+            str: Translated object.
+        """
         if self.culture_include:
-            return self.culture_object.get_translation(
-                object_name=object_name, object_parent_name=object_parent
-            ).get("object_translation")
+            return str(
+                self.culture_object.get_translation(
+                    object_name=object_name, object_parent_name=object_parent
+                ).get("object_translation")
+            )
 
         return object_name
 
     def set_translations(
         self, enable_translations: bool = False, culture: str = "en-US"
     ) -> None:
-        """Set translations to active or inactive, depending on the needs of the users."""
+        """Set translations to active or inactive, depending on the needs of the users.
+
+        Args:
+            enable_translations (bool, optional): Flag to enable or disable translations.
+                Defaults to False.
+            culture (str, optional): Set culture that needs to be used in the docs.
+                Defaults to "en-US".
+        """
         logger.info(f"Using Translations set to > {enable_translations}")
 
         if enable_translations:
@@ -138,11 +163,19 @@ class ModelDocumenter:
             self.culture_include = enable_translations
 
     def set_model_friendly_name(self) -> str:
-        """Replaces the model name to a friendly string, so it can be used in an URL."""
+        """Replaces the model name to a friendly string, so it can be used in an URL.
+
+        Returns:
+            str: Friendly model name used in url for docs.
+        """
         return (self.model_name).replace(" ", "-").replace("_", "-").lower()
 
     def set_save_path(self) -> Path:
-        """Set the location of the documentation."""
+        """Set the location of the documentation.
+
+        Returns:
+            Path: Path where the docs are saved.
+        """
         return Path(f"{self.save_location}/{self.friendly_name}")
 
     def save_page(self, content: str, page_name: str, keep_file: bool = False) -> None:
@@ -242,6 +275,12 @@ class ModelDocumenter:
         """Create Markdown for a specific measure.
 
         That can later on be used for generating the whole measure page.
+
+        Args:
+            object (PyMeasure): The measure to document.
+
+        Returns:
+            str: Markdown section for specific Measure
         """
         object_caption = (
             self.get_object_caption(
@@ -286,7 +325,9 @@ class ModelDocumenter:
             "---",
             "sidebar_position: 3",
             "title: Measures",
-            f"description: This page contains all measures for the {self.model.Name} model, including the description, format string, and other technical details.",
+            "description: This page contains all measures for "
+            f"the {self.model.Name} model, including the description, "
+            "format string, and other technical details.",
             "---",
             "",
             f"# Measures for {self.model.Name}",
@@ -341,7 +382,7 @@ class ModelDocumenter:
 
         partition_type = ""
         partition_source = ""
-        
+
         logger.debug(f"{object_caption} => {str(object.Partitions[0].SourceType)}")
 
         if str(object.Partitions[0].SourceType) == "Calculated":
@@ -356,7 +397,7 @@ class ModelDocumenter:
         else:
             partition_type = "sql"
             partition_source = object.Partitions[0].Source.Query
-        
+
         obj_text = [
             f"### {object_caption}",
             "**Description**: ",
@@ -383,7 +424,9 @@ class ModelDocumenter:
             "---",
             "sidebar_position: 2",
             "title: Tables",
-            f"description: This page contains all columns with tables for {self.model.Name}, including the description, and technical details.",
+            "description: This page contains all columns with "
+            f"tables for {self.model.Name}, including the description, "
+            "and technical details.",
             "---",
             "",
             f"# Tables {self.model.Name}",
@@ -416,7 +459,12 @@ class ModelDocumenter:
             object.Description.replace("\\n", "") or "No Description available"
         )
 
-        obj_heading = f"""{object_caption} {self.create_object_reference(object=object.Name, object_parent=object.Parent.Name)}"""
+        obj_reference = self.create_object_reference(
+            object=object.Name,
+            object_parent=object.Parent.Name
+        )
+
+        obj_heading = f"""{object_caption} {obj_reference}"""
 
         object_properties = [
             {"Column Name": object.Name},
@@ -448,7 +496,7 @@ class ModelDocumenter:
         obj_text.append("---")
 
         return "\n".join(obj_text)
-    
+
     def generate_markdown_column_page(self) -> str:
         """This function generates the markdown for documentation
         about columns in the Model.
@@ -459,9 +507,11 @@ class ModelDocumenter:
         markdown_template = [
             "---",
             "sidebar_position: 4",
-            f"title: Columns description: This page contains all columns with Columns for {self.model.Name}, including the description, format string, and other technical details.",
+            f"title: Columns description: This page contains all columns with "
+            f"Columns for {self.model.Name} "
+            "including the description, format string, and other technical details.",
             "---",
-            ""
+            "",
         ]
 
         for table in self.model.Tables:
@@ -473,7 +523,7 @@ class ModelDocumenter:
                 if "RowNumber" not in column.Name
             )
         return "\n".join(markdown_template)
-    
+
     def generate_category_file(self) -> str:
         """Docusaurs can generate an index based on the files that
         are in the directory. The category yaml will make that happen.
