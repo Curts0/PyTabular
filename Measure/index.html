@@ -73,9 +73,9 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pymeasure">PyMeasure</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#get_dependencies">.get_dependencies</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#get_dependencies">.get_dependencies</a>
     </li>
         </ul>
     </li>
@@ -146,6 +146,21 @@
 <p>Main class for interacting with measures.</p>
 <p>See methods for available functionality.</p>
 <p><strong>Methods:</strong></p>
+<h3 id="init">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L19">source</a></p>
+<pre><code class="language-python">.__init__(
+   object, table
+)
+</code></pre>
+<hr />
+<p>Connects measure to parent <code>PyTable</code>.</p>
+<p>It will also add some custom rows for the <code>rich</code>
+table display.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>object</strong>  : The .Net measure object.</li>
+<li><strong>table</strong> (PyTable) : The parent <code>PyTable</code>.</li>
+</ul>
 <h3 id="get_dependencies">.get_dependencies</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L37">source</a></p>
 <pre><code class="language-python">.get_dependencies()
@@ -161,21 +176,6 @@
 <li><strong>DataFrame</strong>  : The Return Value is a Pandas dataframe
                 which displays all the dependancies
                 of the object.</li>
-</ul>
-<h3 id="init">.<strong>init</strong></h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/measure.py/#L19">source</a></p>
-<pre><code class="language-python">.__init__(
-   object, table
-)
-</code></pre>
-<hr />
-<p>Connects measure to parent <code>PyTable</code>.</p>
-<p>It will also add some custom rows for the <code>rich</code>
-table display.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>object</strong>  : The .Net measure object.</li>
-<li><strong>table</strong> (PyTable) : The parent <code>PyTable</code>.</li>
 </ul>
 <hr />
 <h2 id="pymeasures">PyMeasures</h2>

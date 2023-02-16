@@ -71,9 +71,9 @@
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#values">.values</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#get_sample_values">.get_sample_values</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#get_sample_values">.get_sample_values</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#get_dependencies">.get_dependencies</a>
     </li>
@@ -83,9 +83,9 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pycolumns">PyColumns</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#query_all">.query_all</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#query_all">.query_all</a>
     </li>
         </ul>
     </li>
@@ -172,14 +172,6 @@ See methods for extra functionality.</p>
 <ul>
 <li><strong>DataFrame</strong>  : Single column DataFrame of values.</li>
 </ul>
-<h3 id="get_sample_values">.get_sample_values</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L55">source</a></p>
-<pre><code class="language-python">.get_sample_values(
-   top_n: int = 3
-)
-</code></pre>
-<hr />
-<p>Get sample values of column.</p>
 <h3 id="init">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L25">source</a></p>
 <pre><code class="language-python">.__init__(
@@ -195,6 +187,14 @@ display table.</p>
 <li><strong>object</strong> (Column) : .Net column object.</li>
 <li><strong>table</strong> (Table) : .Net table object.</li>
 </ul>
+<h3 id="get_sample_values">.get_sample_values</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L55">source</a></p>
+<pre><code class="language-python">.get_sample_values(
+   top_n: int = 3
+)
+</code></pre>
+<hr />
+<p>Get sample values of column.</p>
 <h3 id="get_dependencies">.get_dependencies</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L49">source</a></p>
 <pre><code class="language-python">.get_dependencies()
@@ -235,6 +235,14 @@ You can even filter down with <code>.Find()</code>.
 For example find all columns with <code>Key</code> in name.
 <code>model.Columns.Find('Key')</code>.</p>
 <p><strong>Methods:</strong></p>
+<h3 id="init_1">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L131">source</a></p>
+<pre><code class="language-python">.__init__(
+   objects
+)
+</code></pre>
+<hr />
+<p>Init extends through to the <code>PyObjects()</code> init.</p>
 <h3 id="query_all">.query_all</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L135">source</a></p>
 <pre><code class="language-python">.query_all(
@@ -255,14 +263,6 @@ whatever the given <code>query_function</code> value is.</p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns dataframe with results.</li>
 </ul>
-<h3 id="init_1">.<strong>init</strong></h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/column.py/#L131">source</a></p>
-<pre><code class="language-python">.__init__(
-   objects
-)
-</code></pre>
-<hr />
-<p>Init extends through to the <code>PyObjects()</code> init.</p>
               
             </div>
           </div><footer>
