@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Test for 100% docstring coverage
+name: 100% docstring coverage
 
 # Controls when the workflow will run
 on:
