@@ -65,9 +65,9 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pypartition">PyPartition</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
@@ -150,6 +150,17 @@
 <p>Main class for interacting with partitions.</p>
 <p>See methods for available uses.</p>
 <p><strong>Methods:</strong></p>
+<h3 id="last_refresh">.last_refresh</h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L41">source</a></p>
+<pre><code class="language-python">.last_refresh()
+</code></pre>
+<hr />
+<p>Queries <code>RefreshedTime</code> attribute in the partition.</p>
+<p>Converts from C# Ticks to Python datetime.</p>
+<p><strong>Returns</strong></p>
+<ul>
+<li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
+</ul>
 <h3 id="refresh">.refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L51">source</a></p>
 <pre><code class="language-python">.refresh(
@@ -163,17 +174,6 @@
 <p><strong>Returns</strong></p>
 <ul>
 <li><strong>DataFrame</strong>  : Returns pandas dataframe with some refresh details</li>
-</ul>
-<h3 id="last_refresh">.last_refresh</h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L41">source</a></p>
-<pre><code class="language-python">.last_refresh()
-</code></pre>
-<hr />
-<p>Queries <code>RefreshedTime</code> attribute in the partition.</p>
-<p>Converts from C# Ticks to Python datetime.</p>
-<p><strong>Returns</strong></p>
-<ul>
-<li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
 </ul>
 <h3 id="init">.<strong>init</strong></h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L21">source</a></p>
