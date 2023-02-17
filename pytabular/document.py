@@ -30,11 +30,12 @@ class ModelDocumenter:
         model: Tabular,
         friendly_name: str = str(),
         save_location: str = "docs",
-        general_page_url: str = "1-general-information.md",
-        measure_page_url: str = "2-measures.md",
-        table_page_url: str = "3-tables.md",
-        column_page_url: str = "4-columns.md",
-        roles_page_url: str = "5-roles.md",
+        general_page_url: str = "index.md",
+        measure_page_url: str = "measures.md",
+        roles_page_url: str = "roles.md",
+        table_folder: str = "tables",
+        # table_page_url: str = "3-tables.md",
+        # column_page_url: str = "4-columns.md",
     ):
         """Init will set attributes based on arguments given.
 
@@ -48,15 +49,13 @@ class ModelDocumenter:
             save_location (str, optional): The save location where the files will be stored.
                 Defaults to "docs".
             general_page_url (str, optional): Name of the `md` file for general information.
-                Defaults to "1-general-information.md".
+                Defaults to "index.md".
             measure_page_url (str, optional): Name of the `md` file for measures.
-                Defaults to "2-measures.md".
-            table_page_url (str, optional): Name of the `md` file for tables.
-                Defaults to "3-tables.md".
-            column_page_url (str, optional): Name of the `md` file for columns.
-                Defaults to "4-columns.md".
+                Defaults to "measures.md".
+            table_folder (str, optional): Name of the folder where columns info is stored.
+                Defaults to "table_folder".
             roles_page_url (str, optional): Name of the `md` file for roles.
-                Defaults to "5-roles.md".
+                Defaults to "roles.md".
         """
         self.model = model
         self.model_name = friendly_name or model.Catalog or model.Database.Name
@@ -71,21 +70,19 @@ class ModelDocumenter:
 
         # Documentation Parts
         self.general_page: str = str()
-        self.measure_page: str = str()
-        self.table_page: str = str()
-        self.column_page: str = str()
-        self.roles_page: str = str()
-        self.category_page: str = str()
-
-        self.category_file_name: str = "_category_.yml"
         self.general_page_url: str = general_page_url
+
+        self.measure_page: str = str()
         self.measure_page_url: str = measure_page_url
-        self.table_page_url: str = table_page_url
-        self.column_page_url: str = column_page_url
+
+        self.roles_page: str = str()
         self.roles_page_url: str = roles_page_url
 
+        self.table_page: str = str()
+        self.table_folder: str = table_folder
+
         # Generate an url friendly name for the model / folder
-        self.friendly_name: str = self.set_model_friendly_name()
+        self.friendly_name: str = self.set_url_friendly_name(self.model_name)
 
         # Initialize Save path so checks can be run against it.
         self.save_path = self.set_save_path()
@@ -112,8 +109,7 @@ class ModelDocumenter:
         """Generate Documentation for each specific part of the model."""
         self.measure_page = self.generate_markdown_measure_page()
         self.table_page = self.generate_markdown_table_page()
-        self.column_page = self.generate_markdown_column_page()
-        self.category_page = self.generate_category_file()
+        self.general_page = self.generate_general_info_file()
 
     def get_object_caption(self, object_name: str, object_parent: str) -> str:
         """Retrieves the caption of an object, based on the translations in the culture.
@@ -165,14 +161,6 @@ class ModelDocumenter:
         else:
             self.culture_include = enable_translations
 
-    def set_model_friendly_name(self) -> str:
-        """Replaces the model name to a friendly string, so it can be used in an URL.
-
-        Returns:
-            str: Friendly model name used in url for docs.
-        """
-        return (self.model_name).replace(" ", "-").replace("_", "-").lower()
-
     def set_save_path(self) -> Path:
         """Set the location of the documentation.
 
@@ -200,6 +188,9 @@ class ModelDocumenter:
         """
         target_file = self.save_path / page_name
 
+        if target_file.parent.exists() is False:
+            target_file.parent.mkdir(parents=True, exist_ok=True)
+
         if keep_file and target_file.exists():
             logger.info(f"{page_name} already exists -> file will not overwritten.")
         else:
@@ -216,10 +207,10 @@ class ModelDocumenter:
         and then starts to export the files that are needed
         for the documentatation.
         - General Information Page -> Free format page to create.
-        - Measure Page -> Describes the measures in the model. (Incl. OLS?)
-        - Tables Page -> Describes the tables in the model. (Incl. OLS?)
-        - Columns Page -> Describes all columns in the model. (Incl. OLS?)
-        - Roles Page -> Describes the roles in the model, (incl. RLS?)
+        - Measure Page -> Describes the measures in the model.
+        - Tables Page -> Describes the tables in the model.
+        - Columns Page -> Describes all columns in the model per table.
+        - Roles Page -> Describes the roles in the model.
 
         Args:
             self (ModelDocumenter): Model object for documentation.
@@ -237,17 +228,11 @@ class ModelDocumenter:
             )
             self.save_path.mkdir(parents=True, exist_ok=True)
 
-        if self.category_page:
-            self.save_page(
-                content=self.category_page,
-                keep_file=True,
-                page_name=self.category_file_name,
-            )
-
-        # Create General information page.
         if self.general_page:
             self.save_page(
-                content="General Info", keep_file=True, page_name=self.general_page_url
+                content=self.general_page,
+                keep_file=True,
+                page_name=self.general_page_url,
             )
 
         if self.measure_page:
@@ -257,16 +242,13 @@ class ModelDocumenter:
                 page_name=self.measure_page_url,
             )
 
-        if self.table_page:
+        for table in self.create_markdown_for_table_and_column():
+            table = table.items()
+            page_name, page_content = list(table)[0]
             self.save_page(
-                content=self.table_page, keep_file=False, page_name=self.table_page_url
-            )
-
-        if self.column_page:
-            self.save_page(
-                content=self.column_page,
+                content=page_content,
                 keep_file=False,
-                page_name=self.column_page_url,
+                page_name=f"{self.table_folder}/{page_name}",
             )
 
         if self.roles_page:
@@ -296,6 +278,8 @@ class ModelDocumenter:
             "\\n", ""
         )
 
+        obj_description = obj_description.replace("<>", "not equal to ")
+
         object_properties = [
             {"Measure Name": object.Name},
             {"Display Folder": object.DisplayFolder},
@@ -307,6 +291,7 @@ class ModelDocumenter:
             f"### {object_caption}",
             "**Description**:",
             f"> {obj_description}",
+            "",
             "" f"{self.generate_object_properties(object_properties)}" "",
             f'```dax title="Technical: {object.Name}"',
             f"  {object.Expression}",
@@ -325,7 +310,7 @@ class ModelDocumenter:
         prev_display_folder = ""
         markdown_template = [
             "---",
-            "sidebar_position: 3",
+            "sidebar_position: 1",
             "title: Measures",
             "description: This page contains all measures for "
             f"the {self.model.Name} model, including the description, "
@@ -351,6 +336,46 @@ class ModelDocumenter:
             markdown_template.append(self.create_markdown_for_measure(measure))
 
         return "\n".join(markdown_template)
+
+    def create_markdown_for_table_and_column(self) -> list:
+        """Create Pages for Tables and Columns.
+
+        Based on the model this functions creates a general
+        overview pages for all tables and then with per
+        table a page with all column details.
+
+        Returns:
+            list: List of dicts per page.
+
+        Example:
+            ```
+                {
+                    "Overview": "Content",
+                    "Table1": "Content",
+                    "Table2": "Content",
+                }
+
+        """
+        obj_content = [{"index.md": self.generate_markdown_table_page()}]
+
+        for idx, table in enumerate(self.model.Tables):
+            obj_caption = (
+                self.get_object_caption(
+                    object_name=table.Name, object_parent=table.Parent.Name
+                )
+                or table.Name
+            )
+
+            obj_caption = obj_caption.replace("[", "").replace("]", "")
+
+            key = f"{self.set_url_friendly_name(obj_caption)}.md"
+            value = self.generate_markdown_column_page(
+                object=table, object_caption=obj_caption, page_index=idx + 2
+            )
+
+            obj_content.append({key: value})
+
+        return obj_content
 
     def create_markdown_for_table(self, object: PyTable) -> str:
         """This functions returns the markdown for a table.
@@ -381,6 +406,8 @@ class ModelDocumenter:
             {"Table Type": object.Partitions[0].ObjectType},
             {"Source Type": object.Partitions[0].SourceType},
         ]
+
+        obj_description = obj_description.replace("<>", "not equal to ")
 
         partition_type = ""
         partition_source = ""
@@ -424,7 +451,7 @@ class ModelDocumenter:
         markdown_template = [
             "---",
             "sidebar_position: 2",
-            "title: Tables",
+            "sidebar_label: Tables",
             "description: This page contains all columns with "
             f"tables for {self.model.Name}, including the description, "
             "and technical details.",
@@ -461,12 +488,9 @@ class ModelDocumenter:
             object.Description.replace("\\n", "") or "No Description available"
         )
 
-        obj_reference = self.create_object_reference(
-            object=object.Name,
-            object_parent=object.Parent.Name
-        )
+        obj_description = obj_description.replace("<>", "not equal to ")
 
-        obj_heading = f"""{object_caption} {obj_reference}"""
+        obj_heading = f"""{object_caption}"""
 
         object_properties = [
             {"Column Name": object.Name},
@@ -499,7 +523,9 @@ class ModelDocumenter:
 
         return "\n".join(obj_text)
 
-    def generate_markdown_column_page(self) -> str:
+    def generate_markdown_column_page(
+        self, object: PyTable, object_caption: str, page_index: int = 2
+    ) -> str:
         """This function generates the markdown for the colums documentation.
 
         Returns:
@@ -507,47 +533,47 @@ class ModelDocumenter:
         """
         markdown_template = [
             "---",
-            "sidebar_position: 4",
-            f"title: Columns description: This page contains all columns with "
+            f"sidebar_position: {page_index}",
+            f"sidebar_label: {object_caption}",
+            f"title: {object_caption}",
+            f"description: This page contains all columns with "
             f"Columns for {self.model.Name} "
             "including the description, format string, and other technical details.",
             "---",
             "",
         ]
 
-        for table in self.model.Tables:
-            markdown_template.append(f"## Columns for {table.Name}")
-
-            markdown_template.extend(
-                self.create_markdown_for_column(column)
-                for column in table.Columns
-                if "RowNumber" not in column.Name
-            )
+        markdown_template.extend(
+            self.create_markdown_for_column(column)
+            for column in object.Columns
+            if "RowNumber" not in column.Name
+        )
         return "\n".join(markdown_template)
 
-    def generate_category_file(self) -> str:
-        """Docusaurs can generate an index based on the files.
+    def generate_general_info_file(self) -> str:
+        """Index.md file for the model.
 
-        The files that are in the same directory as _category_.ym will
-        be use to create an index and a navigation. For more information
-        see Docusaurus documentation.
+        Basic text for an introduction page.
 
         Returns:
-            str: Text that will be the base of _category_.yml.
+            str: Markdown str for info page
         """
-        obj_text = [
-            "position: 2 # float position is supported",
-            f"label: '{self.model_name}'",
-            "collapsible: true # make the category collapsible",
-            "collapsed: true # keep the category open by default",
-            "   link:",
-            "   type: generated-index",
-            "   title: Documentation Overview",
-            "customProps:",
-            "   description: To be added in the future.",
-        ]
-
-        return "\n".join(obj_text)
+        return "\n".join(
+            [
+                "---",
+                "sidebar_position: 1",
+                f"title: {self.model_name}",
+                "description: This page contains all measures for the Model model,"
+                "including the description,"
+                "format string, and other technical details.",
+                "---",
+                "",
+                "## General information",
+                "### Business Owners",
+                "",
+                "## Information Sources",
+            ]
+        )
 
     @staticmethod
     def generate_object_properties(properties: List[Dict[str, str]]) -> str:
@@ -590,7 +616,25 @@ class ModelDocumenter:
 
         for obj_prop in properties:
             for caption, text in obj_prop.items():
-                obj_text.extend((f"  <dt>{caption}</dt>", f"  <dd>{text}</dd>", ""))
-        obj_text.append("</dl>")
-
+                save_text = str(text).replace("\\", " > ")
+                obj_text.extend(
+                    (f"  <dt>{caption}</dt>", f"  <dd>{save_text}</dd>", "")
+                )
+        obj_text.extend(("</dl>", ""))
         return "\n".join(obj_text)
+
+    @staticmethod
+    def set_url_friendly_name(page_name: str) -> str:
+        """Replaces the model name to a friendly string, so it can be used in an URL.
+
+        Returns:
+            str: Friendly model name used in url for docs.
+        """
+        # return (self.model_name).replace(" ", "-").replace("_", "-").lower()
+        return (
+            page_name.replace(" ", "-")
+            .replace("_", "-")
+            .lower()
+            .replace("[", "")
+            .replace("]", "")
+        )
