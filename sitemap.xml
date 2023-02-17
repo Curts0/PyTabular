@@ -6,52 +6,57 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Best%20Practice%20Analyzer/</loc>
+         <loc>https://curts0.github.io/PyTabular/CONTRIBUTING/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Column/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyColumn/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Logic%20Utils/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyColumns/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Measure/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyMeasure/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/PBI%20Helper/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyMeasures/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Partition/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyObject/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Queries/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyObjects/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Refreshes/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyPartition/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Table/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyPartitions/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Tabular%20Editor%202/</loc>
+         <loc>https://curts0.github.io/PyTabular/PyTable/</loc>
+         <lastmod>2023-02-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/PyTables/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
@@ -61,12 +66,37 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/Traces/</loc>
+         <loc>https://curts0.github.io/PyTabular/best_practice_analyzer/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://curts0.github.io/PyTabular/contributing/</loc>
+         <loc>https://curts0.github.io/PyTabular/document/</loc>
+         <lastmod>2023-02-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/logic_utils/</loc>
+         <lastmod>2023-02-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/pbi_helper/</loc>
+         <lastmod>2023-02-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/query/</loc>
+         <lastmod>2023-02-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/refresh/</loc>
+         <lastmod>2023-02-17</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/tabular_editor/</loc>
          <lastmod>2023-02-17</lastmod>
          <changefreq>daily</changefreq>
     </url>
