@@ -27,7 +27,7 @@ class PyObject(ABC):
         It will also begin to build out a default `rich` table display.
 
         Args:
-            object: A .Net object.
+            object (.Net object): A .Net object.
         """
         self._object = object
         self._display = Table(title=self.Name)
@@ -130,7 +130,7 @@ class PyObjects:
             object_str (str): str to lookup in `PyObjects`
 
         Returns:
-            PyObjects: Returns a `PyObjects` class with all `PyObject`
+            PyObjects (object.PyObjects): Returns a `PyObjects` class with all `PyObject`
                 where the `PyObject.Name` matches `object_str`.
         """
         items = [

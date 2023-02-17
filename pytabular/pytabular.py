@@ -1,4 +1,4 @@
-"""`pytabular.py` is where it all started.
+"""`pytabular.py` is where it all starts.
 
 Main class is `Tabular()`. Use that for connecting with your models.
 """
@@ -26,15 +26,15 @@ from logic_utils import (
     remove_file,
 )
 
-from table import PyTable, PyTables
-from partition import PyPartitions
-from column import PyColumns
-from measure import PyMeasures
-from culture import PyCultures, PyCulture
-from relationship import PyRelationship, PyRelationships
-from object import PyObject
-from refresh import PyRefresh
-from query import Connection
+from pytabular.table import PyTable, PyTables
+from pytabular.partition import PyPartitions
+from pytabular.column import PyColumns
+from pytabular.measure import PyMeasures
+from pytabular.culture import PyCultures, PyCulture
+from pytabular.relationship import PyRelationship, PyRelationships
+from pytabular.object import PyObject
+from pytabular.refresh import PyRefresh
+from pytabular.query import Connection
 
 logger = logging.getLogger("PyTabular")
 
@@ -47,16 +47,16 @@ class Tabular(PyObject):
 
     Args:
             connection_str (str): Need a valid connection string:
-                [link](https://learn.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services)
+                    [link](https://learn.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services)
 
     Attributes:
             AdomdConnection (Connection): For querying.
-                This is the `Connection` class.
-            Tables (PyTables[PyTable]): See `PyTables` for more information.
-                Iterate through your tables in your model.
-            Columns (PyColumns[PyColumn]): See `PyColumns` for more information.
-            Partitions (PyPartitions[PyPartition]): See `PyPartitions` for more information.
-            Measures (PyMeasures[PyMeasure]): See `PyMeasures` for more information.
+                    This is the `Connection` class.
+            Tables (PyTables): See `PyTables` for more information.
+                    Iterate through your tables in your model.
+            Columns (PyColumns): See `PyColumns` for more information.
+            Partitions (PyPartitions): See `PyPartitions` for more information.
+            Measures (PyMeasures): See `PyMeasures` for more information.
     """
 
     def __init__(self, connection_str: str):
@@ -435,9 +435,9 @@ class Tabular(PyObject):
         Args:
             query_str (str): Query string to execute.
             effective_user (str, optional): Pass through an effective user
-            if desired. It will create and store a new `Connection()` class if need,
-            which will help with speed if looping through multiple users in a row.
-            Defaults to None.
+                    if desired. It will create and store a new `Connection()` class if need,
+                    which will help with speed if looping through multiple users in a row.
+                    Defaults to None.
 
         Returns:
             Union[pd.DataFrame, str, int]: _description_
@@ -466,14 +466,14 @@ class Tabular(PyObject):
 
         Args:
                 tabular_editor_exe (str): TE2 Exe File path.
-                    Feel free to use class TE2().EXE_Path or provide your own.
+                        Feel free to use class TE2().EXE_Path or provide your own.
                 best_practice_analyzer (str): BPA json file path.
-                    Feel free to use class BPA().Location or provide your own.
+                        Feel free to use class BPA().Location or provide your own.
 
         Returns:
                 List[str]: Assuming no failure,
-                    will return list of BPA violations.
-                    Else will return error from command line.
+                        will return list of BPA violations.
+                        Else will return error from command line.
         """
         logger.debug("Beginning request to talk with TE2 & Find BPA...")
         bim_file_location = f"{os.getcwd()}\\Model.bim"

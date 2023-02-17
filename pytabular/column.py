@@ -4,7 +4,7 @@ Once connected to your model, interacting with column(s) will be done through th
 """
 import logging
 import pandas as pd
-from object import PyObject, PyObjects
+from pytabular.object import PyObject, PyObjects
 from Microsoft.AnalysisServices.Tabular import ColumnType
 
 logger = logging.getLogger("PyTabular")
@@ -17,9 +17,6 @@ class PyColumn(PyObject):
     if it is unable to find it in the default attributes.
     This let's you also easily check the default .Net properties.
     See methods for extra functionality.
-
-    Args:
-        Table: Parent table to the column.
     """
 
     def __init__(self, object, table) -> None:
@@ -140,8 +137,8 @@ class PyColumns(PyObjects):
 
         Args:
                 query_function (str, optional): Default is `COUNTROWS(VALUES(_))`.
-                    The `_` gets replaced with the column in question.
-                    Method will take whatever DAX query is given.
+                        The `_` gets replaced with the column in question.
+                        Method will take whatever DAX query is given.
 
         Returns:
                 pd.DataFrame: Returns dataframe with results.

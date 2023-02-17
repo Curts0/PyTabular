@@ -1,6 +1,6 @@
 """`culture.py` is used to house the `PyCulture`, and `PyCultures` classes."""
 import logging
-from object import PyObject, PyObjects
+from pytabular.object import PyObject, PyObjects
 from typing import List
 
 logger = logging.getLogger("PyTabular")
