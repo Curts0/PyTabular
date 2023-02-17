@@ -1,4 +1,7 @@
-"""`refresh.py` is the main file to handle all the components of refreshing your model."""
+"""`refresh.py` is the main file to handle all the components of refreshing your model.
+
+See the `PyTable(s)` and `PyPartition(s)` classes. Use the `refresh` method from their.
+"""
 from tabular_tracing import RefreshTrace, BaseTrace
 import logging
 from Microsoft.AnalysisServices.Tabular import (
@@ -9,8 +12,8 @@ from Microsoft.AnalysisServices.Tabular import (
 import pandas as pd
 from logic_utils import ticks_to_datetime
 from typing import Union, Dict, Any
-from table import PyTable, PyTables
-from partition import PyPartition
+from pytabular.table import PyTable, PyTables
+from pytabular.partition import PyPartition
 from abc import ABC
 
 logger = logging.getLogger("PyTabular")
@@ -32,14 +35,14 @@ class RefreshCheck(ABC):
         Args:
             name (str): Name of refresh check.
             function (Callable): Function to run on pre and post checks.
-                For example, a dax query. readme has examples of this.
+                    For example, a dax query. readme has examples of this.
             assertion (Callable, optional): A function that can be run.
-            Supply the assertion function with 2 arguments. The first one
-            for your 'pre' results from the `function` argument. The second
-            for your `post` results from the`function` argument.
-            Return `True` or `False` depending on the comparison of the two arguments
-            to determine a pass or fail status of your refresh.
-            Defaults to None.
+                    Supply the assertion function with 2 arguments. The first one
+                    for your 'pre' results from the `function` argument. The second
+                    for your `post` results from the`function` argument.
+                    Return `True` or `False` depending on the comparison of the two arguments
+                    to determine a pass or fail status of your refresh.
+                    Defaults to None.
         """
         super().__init__()
         self._name = name

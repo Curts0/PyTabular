@@ -6,11 +6,11 @@ import logging
 
 from pathlib import Path
 
-from table import PyTable
-from column import PyColumn
-from culture import PyCulture
-from measure import PyMeasure
-from pytabular import Tabular
+from pytabular.table import PyTable
+from pytabular.column import PyColumn
+from pytabular.culture import PyCulture
+from pytabular.measure import PyMeasure
+from pytabular.pytabular import Tabular
 from typing import List, Dict
 
 logger = logging.getLogger("PyTabular")
@@ -462,8 +462,7 @@ class ModelDocumenter:
         )
 
         obj_reference = self.create_object_reference(
-            object=object.Name,
-            object_parent=object.Parent.Name
+            object=object.Name, object_parent=object.Parent.Name
         )
 
         obj_heading = f"""{object_caption} {obj_reference}"""
@@ -558,8 +557,7 @@ class ModelDocumenter:
         dicts.
 
         Args:
-            Self.
-            Properties (dict): The ones you want to show.
+            properties (dict): The ones you want to show.
 
         Returns:
             str: HTML used in the markdown.

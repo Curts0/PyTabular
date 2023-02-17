@@ -1,18 +1,40 @@
 site_name: PyTabular
 site_url: https://curts0.github.io/PyTabular/
+docs_dir: docs
 nav:
-    - Home: index.md
+    - Home: README.md
     - Main Tabular Class: Tabular.md
-    - Refreshing: Refreshes.md
-    - Querying: Queries.md
-    - Tables: Table.md
-    - Partitions: Partition.md
-    - Columns: Column.md
-    - Measures: Measure.md
-    - Traces: Traces.md
-    - Best Practice Analyzer: Best Practice Analyzer.md
-    - Tabular Editor: Tabular Editor 2.md
-    - PBI Helper: PBI Helper.md
-    - Logic Utils: Logic Utils.md
-    - Contributing: contributing.md
-theme: readthedocs
+    - Query Model: query.md
+    - Refresh Model: refresh.md
+    - PyObject Reference:
+      - PyObjects: PyObjects.md
+      - PyObject: PyObject.md
+      - PyTables: PyTables.md
+      - PyTable: PyTable.md
+      - PyColumns: PyColumns.md
+      - PyColumn: PyColumn.md
+      - PyPartitions: PyPartitions.md
+      - PyPartition: PyPartition.md
+      - PyMeasures: PyMeasures.md
+      - PyMeasure: PyMeasure.md
+    - Misc. File Reference:
+      - tabular_editor: tabular_editor.md
+      - best_practice_analyzer: best_practice_analyzer.md
+      - pbi_helper: pbi_helper.md
+      - logic_utils: logic_utils.md
+    - Documenting Model: document.md
+    - Contributing: CONTRIBUTING.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+theme:
+  name: "material"
+  features:
+    - content.code.annotate
+plugins:
+  - mkdocstrings:
+  - search

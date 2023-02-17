@@ -4,7 +4,7 @@ Once connected to your model, interacting with partition(s) will be done through
 """
 import logging
 
-from object import PyObject, PyObjects
+from pytabular.object import PyObject, PyObjects
 from logic_utils import ticks_to_datetime
 import pandas as pd
 from datetime import datetime
