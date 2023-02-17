@@ -65,19 +65,19 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pypartition">PyPartition</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#refresh">.refresh</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#last_refresh">.last_refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init">.init</a>
     </li>
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#pypartitions">PyPartitions</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#refresh_1">.refresh</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#init_1">.init</a>
     </li>
         </ul>
     </li>
@@ -150,20 +150,6 @@
 <p>Main class for interacting with partitions.</p>
 <p>See methods for available uses.</p>
 <p><strong>Methods:</strong></p>
-<h3 id="init">.<strong>init</strong></h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L21">source</a></p>
-<pre><code class="language-python">.__init__(
-   object, table
-)
-</code></pre>
-<hr />
-<p>Extends from <code>PyObject</code> class.</p>
-<p>Adds a few custom rows to <code>rich</code> table for the partition.</p>
-<p><strong>Args</strong></p>
-<ul>
-<li><strong>object</strong> (Partition) : .Net Partition object.</li>
-<li><strong>table</strong> (PyTable) : Parent table of the partition in question.</li>
-</ul>
 <h3 id="refresh">.refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L51">source</a></p>
 <pre><code class="language-python">.refresh(
@@ -189,6 +175,20 @@
 <ul>
 <li><strong>datetime</strong>  : Last Refreshed time of Partition in datetime format</li>
 </ul>
+<h3 id="init">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L21">source</a></p>
+<pre><code class="language-python">.__init__(
+   object, table
+)
+</code></pre>
+<hr />
+<p>Extends from <code>PyObject</code> class.</p>
+<p>Adds a few custom rows to <code>rich</code> table for the partition.</p>
+<p><strong>Args</strong></p>
+<ul>
+<li><strong>object</strong> (Partition) : .Net Partition object.</li>
+<li><strong>table</strong> (PyTable) : Parent table of the partition in question.</li>
+</ul>
 <hr />
 <h2 id="pypartitions">PyPartitions</h2>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L63">source</a></p>
@@ -205,14 +205,6 @@ Or through individual tables <code>model.Tables[TABLE_NAME].Partitions</code>.
 You can even filter down with <code>.find()</code>. For example find partitions with <code>prev-year</code> in name.
 <code>model.Partitions.find('prev-year')</code>.</p>
 <p><strong>Methods:</strong></p>
-<h3 id="init_1">.<strong>init</strong></h3>
-<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L74">source</a></p>
-<pre><code class="language-python">.__init__(
-   objects
-)
-</code></pre>
-<hr />
-<p>Extends through to <code>PyObjects</code>.</p>
 <h3 id="refresh_1">.refresh</h3>
 <p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L78">source</a></p>
 <pre><code class="language-python">.refresh(
@@ -221,6 +213,14 @@ You can even filter down with <code>.find()</code>. For example find partitions 
 </code></pre>
 <hr />
 <p>Refreshes all <code>PyPartition</code>(s) in class.</p>
+<h3 id="init_1">.<strong>init</strong></h3>
+<p><a href="https://github.com/Curts0/PyTabular/blob/master/pytabular/partition.py/#L74">source</a></p>
+<pre><code class="language-python">.__init__(
+   objects
+)
+</code></pre>
+<hr />
+<p>Extends through to <code>PyObjects</code>.</p>
               
             </div>
           </div><footer>
