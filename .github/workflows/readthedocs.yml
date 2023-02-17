@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v2
       - run: pip install --upgrade pip
-      - run: pip install  mkdocstring[python]
+      - run: pip install  mkdocstrings[python]
       - run: pip install mkdocs-material
       - run: pip install mkdocs mkdocs-gen-files
       - run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
