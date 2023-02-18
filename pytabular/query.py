@@ -14,7 +14,7 @@ Example:
         "EVALUATE {1}",
         effective_user = "user@company.com"
     )
-    ``` 
+    ```
 """
 import logging
 import os

@@ -26,10 +26,10 @@ class PyTable(PyObject):
         Partitions (PyPartitions): The `PyPartitions()` in the table.
         Columns (PyColumns): The `PyColumns()` in the table.
         Measures (PyMeasures): The `PyMeasures()` in the table.
-        
+
     Example:
         ```python title="Passing through PyTable to PyPartition"
-        
+
         model.Tables[0].Partitions['Last Year'].refresh() # (1)
         ```
 
@@ -90,7 +90,7 @@ class PyTable(PyObject):
 
         Returns:
             int: Number of rows using `COUNTROWS`.
-        
+
         Example:
             ```python
             model.Tables['Table Name'].row_count()
@@ -103,14 +103,14 @@ class PyTable(PyObject):
 
         Returns:
             pd.DataFrame: Returns pandas dataframe with some refresh details.
-        
+
         Example:
             ```python
             model.Tables['Table Name'].refresh()
 
             model.Tables['Table Name'].refresh(trace = None) # (1)
             ```
-            
+
             1. You can pass through arguments to `PyRefresh`, like removing trace.
         """
         return self.Model.refresh(self, *args, **kwargs)
@@ -162,7 +162,7 @@ class PyTables(PyObjects):
 
         Returns:
                 pd.DataFrame: Returns dataframe with results
-        
+
         Example:
             ```python
             model.Tables.find('fact').query_all() # (1)
@@ -187,7 +187,7 @@ class PyTables(PyObjects):
 
     def find_zero_rows(self) -> "PyTables":
         """Returns PyTables class of tables with zero rows queried.
-        
+
         Returns:
             PyTables: A subset of the `PyTables` that contains zero rows.
         """
