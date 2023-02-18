@@ -1,6 +1,20 @@
 """`query.py` houses a custom `Connection` class that uses the .Net AdomdConnection.
 
 `Connection` is created automatically when connecting to your model.
+
+Example:
+    ```python title="query from model"
+    import pytabular as p
+    model = p.Tabular(CONNECTION_STR)
+    model.query("EVALUATE {1}")
+    ```
+
+    ```python title="pass an effective user"
+    model.query(
+        "EVALUATE {1}",
+        effective_user = "user@company.com"
+    )
+    ```
 """
 import logging
 import os
