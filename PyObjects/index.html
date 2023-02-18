@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Connect to your Tabular models in Python!">
+      
       
       
         <link rel="canonical" href="https://curts0.github.io/PyTabular/PyObjects/">
@@ -17,7 +19,7 @@
         <link rel="next" href="../PyObject/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.12">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
       
@@ -25,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ffa9267a.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -310,21 +312,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.object.PyObjects" class="md-nav__link">
-    pytabular.object.PyObjects
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.object.PyObjects.__getitem__" class="md-nav__link">
-    __getitem__()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.object.PyObjects.__iadd__" class="md-nav__link">
-    __iadd__()
+    PyObjects
   </a>
   
 </li>
@@ -332,6 +320,20 @@
         <li class="md-nav__item">
   <a href="#pytabular.object.PyObjects.__init__" class="md-nav__link">
     __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.object.PyObjects.__rich_repr__" class="md-nav__link">
+    __rich_repr__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.object.PyObjects.__getitem__" class="md-nav__link">
+    __getitem__()
   </a>
   
 </li>
@@ -351,8 +353,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.object.PyObjects.__rich_repr__" class="md-nav__link">
-    __rich_repr__()
+  <a href="#pytabular.object.PyObjects.__iadd__" class="md-nav__link">
+    __iadd__()
   </a>
   
 </li>
@@ -652,21 +654,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.object.PyObjects" class="md-nav__link">
-    pytabular.object.PyObjects
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.object.PyObjects.__getitem__" class="md-nav__link">
-    __getitem__()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.object.PyObjects.__iadd__" class="md-nav__link">
-    __iadd__()
+    PyObjects
   </a>
   
 </li>
@@ -674,6 +662,20 @@
         <li class="md-nav__item">
   <a href="#pytabular.object.PyObjects.__init__" class="md-nav__link">
     __init__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.object.PyObjects.__rich_repr__" class="md-nav__link">
+    __rich_repr__()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.object.PyObjects.__getitem__" class="md-nav__link">
+    __getitem__()
   </a>
   
 </li>
@@ -693,8 +695,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.object.PyObjects.__rich_repr__" class="md-nav__link">
-    __rich_repr__()
+  <a href="#pytabular.object.PyObjects.__iadd__" class="md-nav__link">
+    __iadd__()
   </a>
   
 </li>
@@ -719,7 +721,6 @@
               <article class="md-content__inner md-typeset">
                 
                   
-
 
 
   <h1>PyObjects</h1>
@@ -926,102 +927,6 @@ Still building out the magic methods to give <code>PyObjects</code> more flexibi
 
 
 
-<h2 id="pytabular.object.PyObjects.__getitem__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Get item from <code>PyObjects</code>.</p>
-<p>Checks if item is str or int.
-If string will iterate through and try to find matching name.
-Otherwise, will call into <code>self._objects[int]</code> to retrieve item.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>pytabular/object.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-85">85</a></span>
-<span class="normal"><a href="#__codelineno-0-86">86</a></span>
-<span class="normal"><a href="#__codelineno-0-87">87</a></span>
-<span class="normal"><a href="#__codelineno-0-88">88</a></span>
-<span class="normal"><a href="#__codelineno-0-89">89</a></span>
-<span class="normal"><a href="#__codelineno-0-90">90</a></span>
-<span class="normal"><a href="#__codelineno-0-91">91</a></span>
-<span class="normal"><a href="#__codelineno-0-92">92</a></span>
-<span class="normal"><a href="#__codelineno-0-93">93</a></span>
-<span class="normal"><a href="#__codelineno-0-94">94</a></span>
-<span class="normal"><a href="#__codelineno-0-95">95</a></span>
-<span class="normal"><a href="#__codelineno-0-96">96</a></span>
-<span class="normal"><a href="#__codelineno-0-97">97</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-85" name="__codelineno-0-85"></a><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
-<a id="__codelineno-0-86" name="__codelineno-0-86"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get item from `PyObjects`.</span>
-<a id="__codelineno-0-87" name="__codelineno-0-87"></a>
-<a id="__codelineno-0-88" name="__codelineno-0-88"></a><span class="sd">    Checks if item is str or int.</span>
-<a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="sd">    If string will iterate through and try to find matching name.</span>
-<a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="sd">    Otherwise, will call into `self._objects[int]` to retrieve item.</span>
-<a id="__codelineno-0-91" name="__codelineno-0-91"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-92" name="__codelineno-0-92"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-<a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="k">return</span> <span class="p">[</span><span class="n">pyobject</span> <span class="k">for</span> <span class="n">pyobject</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span> <span class="k">if</span> <span class="nb">object</span> <span class="o">==</span> <span class="n">pyobject</span><span class="o">.</span><span class="n">Name</span><span class="p">][</span>
-<a id="__codelineno-0-94" name="__codelineno-0-94"></a>            <span class="o">-</span><span class="mi">1</span>
-<a id="__codelineno-0-95" name="__codelineno-0-95"></a>        <span class="p">]</span>
-<a id="__codelineno-0-96" name="__codelineno-0-96"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-97" name="__codelineno-0-97"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="pytabular.object.PyObjects.__iadd__" class="doc doc-heading">
-<code class="highlight language-python"><span class="fm">__iadd__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Add a <code>PyObject</code> or <code>PyObjects</code> to your current <code>PyObjects</code> class.</p>
-<p>This is useful for building out a custom <code>PyObjects</code> class to work with.</p>
-
-      <details class="quote">
-        <summary>Source code in <code>pytabular/object.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-111">111</a></span>
-<span class="normal"><a href="#__codelineno-0-112">112</a></span>
-<span class="normal"><a href="#__codelineno-0-113">113</a></span>
-<span class="normal"><a href="#__codelineno-0-114">114</a></span>
-<span class="normal"><a href="#__codelineno-0-115">115</a></span>
-<span class="normal"><a href="#__codelineno-0-116">116</a></span>
-<span class="normal"><a href="#__codelineno-0-117">117</a></span>
-<span class="normal"><a href="#__codelineno-0-118">118</a></span>
-<span class="normal"><a href="#__codelineno-0-119">119</a></span>
-<span class="normal"><a href="#__codelineno-0-120">120</a></span>
-<span class="normal"><a href="#__codelineno-0-121">121</a></span>
-<span class="normal"><a href="#__codelineno-0-122">122</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-111" name="__codelineno-0-111"></a><span class="k">def</span> <span class="fm">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
-<a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a `PyObject` or `PyObjects` to your current `PyObjects` class.</span>
-<a id="__codelineno-0-113" name="__codelineno-0-113"></a>
-<a id="__codelineno-0-114" name="__codelineno-0-114"></a><span class="sd">    This is useful for building out a custom `PyObjects` class to work with.</span>
-<a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-116" name="__codelineno-0-116"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
-<a id="__codelineno-0-117" name="__codelineno-0-117"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="fm">__iadd__</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">_objects</span><span class="p">)</span>
-<a id="__codelineno-0-118" name="__codelineno-0-118"></a>    <span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-119" name="__codelineno-0-119"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="fm">__iadd__</span><span class="p">([</span><span class="n">obj</span><span class="p">])</span>
-<a id="__codelineno-0-120" name="__codelineno-0-120"></a>
-<a id="__codelineno-0-121" name="__codelineno-0-121"></a>    <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">)</span>
-<a id="__codelineno-0-122" name="__codelineno-0-122"></a>    <span class="k">return</span> <span class="bp">self</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
 <h2 id="pytabular.object.PyObjects.__init__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__init__</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span></code>
 
@@ -1095,6 +1000,83 @@ Then will build a default <code>rich</code> table display.</p>
 
 
 
+<h2 id="pytabular.object.PyObjects.__rich_repr__" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">__rich_repr__</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>See <a href="https://rich.readthedocs.io/en/stable/pretty.html#rich-repr-protocol">Rich Repr</a>.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>pytabular/object.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-81">81</a></span>
+<span class="normal"><a href="#__codelineno-0-82">82</a></span>
+<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="k">def</span> <span class="nf">__rich_repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;See [Rich Repr](https://rich.readthedocs.io/en/stable/pretty.html#rich-repr-protocol).&quot;&quot;&quot;</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="n">Console</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytabular.object.PyObjects.__getitem__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__getitem__</span><span class="p">(</span><span class="nb">object</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get item from <code>PyObjects</code>.</p>
+<p>Checks if item is str or int.
+If string will iterate through and try to find matching name.
+Otherwise, will call into <code>self._objects[int]</code> to retrieve item.</p>
+
+      <details class="quote">
+        <summary>Source code in <code>pytabular/object.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-85">85</a></span>
+<span class="normal"><a href="#__codelineno-0-86">86</a></span>
+<span class="normal"><a href="#__codelineno-0-87">87</a></span>
+<span class="normal"><a href="#__codelineno-0-88">88</a></span>
+<span class="normal"><a href="#__codelineno-0-89">89</a></span>
+<span class="normal"><a href="#__codelineno-0-90">90</a></span>
+<span class="normal"><a href="#__codelineno-0-91">91</a></span>
+<span class="normal"><a href="#__codelineno-0-92">92</a></span>
+<span class="normal"><a href="#__codelineno-0-93">93</a></span>
+<span class="normal"><a href="#__codelineno-0-94">94</a></span>
+<span class="normal"><a href="#__codelineno-0-95">95</a></span>
+<span class="normal"><a href="#__codelineno-0-96">96</a></span>
+<span class="normal"><a href="#__codelineno-0-97">97</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-85" name="__codelineno-0-85"></a><span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get item from `PyObjects`.</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a><span class="sd">    Checks if item is str or int.</span>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="sd">    If string will iterate through and try to find matching name.</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="sd">    Otherwise, will call into `self._objects[int]` to retrieve item.</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a>        <span class="k">return</span> <span class="p">[</span><span class="n">pyobject</span> <span class="k">for</span> <span class="n">pyobject</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span> <span class="k">if</span> <span class="nb">object</span> <span class="o">==</span> <span class="n">pyobject</span><span class="o">.</span><span class="n">Name</span><span class="p">][</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a>            <span class="o">-</span><span class="mi">1</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a>        <span class="p">]</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h2 id="pytabular.object.PyObjects.__iter__" class="doc doc-heading">
 <code class="highlight language-python"><span class="fm">__iter__</span><span class="p">()</span></code>
 
@@ -1143,7 +1125,7 @@ Then will build a default <code>rich</code> table display.</p>
     <tbody>
         <tr>
 <td><code>int</code></td>          <td>
-                <code>int</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
           </td>
           <td><p>Number of PyObject in PyObjects</p></td>
         </tr>
@@ -1175,23 +1157,42 @@ Then will build a default <code>rich</code> table display.</p>
 
 
 
-<h2 id="pytabular.object.PyObjects.__rich_repr__" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">__rich_repr__</span><span class="p">()</span></code>
+<h2 id="pytabular.object.PyObjects.__iadd__" class="doc doc-heading">
+<code class="highlight language-python"><span class="fm">__iadd__</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span></code>
 
 </h2>
 
 
   <div class="doc doc-contents ">
   
-      <p>See <a href="https://rich.readthedocs.io/en/stable/pretty.html#rich-repr-protocol">Rich Repr</a>.</p>
+      <p>Add a <code>PyObject</code> or <code>PyObjects</code> to your current <code>PyObjects</code> class.</p>
+<p>This is useful for building out a custom <code>PyObjects</code> class to work with.</p>
 
       <details class="quote">
         <summary>Source code in <code>pytabular/object.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-81">81</a></span>
-<span class="normal"><a href="#__codelineno-0-82">82</a></span>
-<span class="normal"><a href="#__codelineno-0-83">83</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="k">def</span> <span class="nf">__rich_repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;See [Rich Repr](https://rich.readthedocs.io/en/stable/pretty.html#rich-repr-protocol).&quot;&quot;&quot;</span>
-<a id="__codelineno-0-83" name="__codelineno-0-83"></a>    <span class="n">Console</span><span class="p">()</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_display</span><span class="p">)</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-111">111</a></span>
+<span class="normal"><a href="#__codelineno-0-112">112</a></span>
+<span class="normal"><a href="#__codelineno-0-113">113</a></span>
+<span class="normal"><a href="#__codelineno-0-114">114</a></span>
+<span class="normal"><a href="#__codelineno-0-115">115</a></span>
+<span class="normal"><a href="#__codelineno-0-116">116</a></span>
+<span class="normal"><a href="#__codelineno-0-117">117</a></span>
+<span class="normal"><a href="#__codelineno-0-118">118</a></span>
+<span class="normal"><a href="#__codelineno-0-119">119</a></span>
+<span class="normal"><a href="#__codelineno-0-120">120</a></span>
+<span class="normal"><a href="#__codelineno-0-121">121</a></span>
+<span class="normal"><a href="#__codelineno-0-122">122</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-111" name="__codelineno-0-111"></a><span class="k">def</span> <span class="fm">__iadd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+<a id="__codelineno-0-112" name="__codelineno-0-112"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Add a `PyObject` or `PyObjects` to your current `PyObjects` class.</span>
+<a id="__codelineno-0-113" name="__codelineno-0-113"></a>
+<a id="__codelineno-0-114" name="__codelineno-0-114"></a><span class="sd">    This is useful for building out a custom `PyObjects` class to work with.</span>
+<a id="__codelineno-0-115" name="__codelineno-0-115"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-116" name="__codelineno-0-116"></a>    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+<a id="__codelineno-0-117" name="__codelineno-0-117"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="fm">__iadd__</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">_objects</span><span class="p">)</span>
+<a id="__codelineno-0-118" name="__codelineno-0-118"></a>    <span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-119" name="__codelineno-0-119"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="o">.</span><span class="fm">__iadd__</span><span class="p">([</span><span class="n">obj</span><span class="p">])</span>
+<a id="__codelineno-0-120" name="__codelineno-0-120"></a>
+<a id="__codelineno-0-121" name="__codelineno-0-121"></a>    <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_objects</span><span class="p">)</span>
+<a id="__codelineno-0-122" name="__codelineno-0-122"></a>    <span class="k">return</span> <span class="bp">self</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -1227,7 +1228,7 @@ Then will build a default <code>rich</code> table display.</p>
         <tr>
           <td><code>object_str</code></td>
           <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
           </td>
           <td><p>str to lookup in <code>PyObjects</code></p></td>
           <td>
@@ -1343,10 +1344,10 @@ where the <code>PyObject.Name</code> matches <code>object_str</code>.</p></td>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.4b2c34cd.min.js"></script>
+      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
       
     
   </body>

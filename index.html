@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Connect to your Tabular models in Python!">
+      
       
       
         <link rel="canonical" href="https://curts0.github.io/PyTabular/">
@@ -15,7 +17,7 @@
         <link rel="next" href="Tabular/">
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.12">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
       
@@ -23,10 +25,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.0d440cfe.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.ffa9267a.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -859,7 +861,6 @@
                   
 
 
-
 <h1 id="pytabular">PyTabular</h1>
 <p><a href="https://badge.fury.io/py/python-tabular"><img alt="PyPI version" src="https://badge.fury.io/py/python-tabular.svg" /></a>
 <a href="https://pepy.tech/project/python-tabular"><img alt="Downloads" src="https://pepy.tech/badge/python-tabular" /></a>
@@ -879,13 +880,16 @@
 </code></pre></div></p>
 <p>In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.
 <div class="highlight"><span class="filename">Connecting to Model</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span> <span class="c1"># (1)</span>
 </code></pre></div></p>
+<ol>
+<li>That's it. A solid connection string.</li>
+</ol>
 <p>You may have noticed some logging into your console. I'm a big fan of logging, if you don't want any just get the logger and disable it.
 <div class="highlight"><span class="filename">Logging Example</span><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">pytabular</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
 </code></pre></div></p>
-<p>You can query your models with the <code>query</code> method from your tabular class. For Dax Queries, it will need the full Dax syntax. See <a href="https://dax.guide/st/evaluate/">EVALUATE example</a>. This will return a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>. If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See <a href="https://curts0.github.io/PyTabular/Tabular/#query">PyTabular Docs for Query</a>.
+<p>You can query your models with the <code>query()</code> method from your tabular class. For Dax Queries, it will need the full Dax syntax. See <a href="https://dax.guide/st/evaluate/">EVALUATE example</a>. This will return a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html">Pandas DataFrame</a>. If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example.
 <div class="highlight"><span class="filename">Query Examples</span><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">#Run basic queries</span>
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">DAX_QUERY</span> <span class="o">=</span> <span class="s2">&quot;EVALUATE TOPN(100, &#39;Table1&#39;)&quot;</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">model</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">DAX_QUERY</span><span class="p">)</span> <span class="c1"># (1)</span>
@@ -908,14 +912,14 @@
 <li>This will return a single value. Example, <code>1</code> or <code>'string'</code>.</li>
 <li>This will return same logic as above, single values if possible else will return <code>pd.DataFrame()</code>. Supply any file type.</li>
 </ol>
-<p>You can also explore your tables, partitions, columns, etc. via the attributes of your <code>Tabular()</code> class.
+<p>You can also explore your tables, partitions, columns, etc. via the attributes of your <code>Tabular</code> class.
 <div class="highlight"><span class="filename">Usage Examples</span><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="p">[</span><span class="s1">&#39;Table Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span> <span class="c1"># (1)</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1">#or</span>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="p">[</span><span class="s1">&#39;Table Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Partitions</span><span class="p">[</span><span class="s1">&#39;Partition Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span> <span class="c1"># (2)</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="c1">#or</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="p">[</span><span class="s1">&#39;Table Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Partitions</span><span class="p">[</span><span class="s1">&#39;Partition Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">last_refresh</span><span class="p">()</span> <span class="c1"># (3)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="p">[</span><span class="s1">&#39;Table Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Partitions</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">last_refresh</span><span class="p">()</span> <span class="c1"># (3)</span>
 <a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
 <a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="c1">#or</span>
 <a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="p">[</span><span class="s1">&#39;Table Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">row_count</span><span class="p">()</span> <span class="c1"># (4)</span>
@@ -924,13 +928,13 @@
 <a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="p">[</span><span class="s1">&#39;Table Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">Columns</span><span class="p">[</span><span class="s1">&#39;Column Name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">distinct_count</span><span class="p">()</span> <span class="c1"># (5)</span>
 </code></pre></div></p>
 <ol>
-<li>Refresh a specific table.</li>
+<li>Refresh a specific table. The <code>.Tables</code> is your attribute to gain access to your <code>PyTables</code> class. From that, you can iterate into specific <code>PyTable</code> classes.</li>
 <li>Refresh a specific partition.</li>
-<li>Get the last refresh time of a specific partition.</li>
+<li>Get the last refresh time of a specific partition. Notice this time that instead of the partition name, an <code>int</code> was used to index into the specific <code>PyPartition</code>.</li>
 <li>Get row count of a table.</li>
 <li>Get distinct count of a column.</li>
 </ol>
-<p>Use the <code>refresh()</code> method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">PyTabular Docs for Refreshing Tables and Partitions</a>. Most basic way to refresh is input the table name string. The method will search for table and output exception if unable to find it. For partitions you will need a key, value combination. Example, <code>{'Table1':'Partition1'}</code>. You can also take the key value pair and iterate through a group of partitions. Example, <code>{'Table1':['Partition1','Partition2']}</code>. Rather than providing a string, you can also input the actual class. See below for those examples. You can acess them from the built in attributes <code>self.Tables</code>, <code>self.Partitions</code>.
+<p>Use the <code>refresh()</code> method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See <a href="https://curts0.github.io/PyTabular/refresh">PyTabular Docs for Refreshing Tables and Partitions</a>. Most basic way to refresh is input the table name string. The method will search for table and output exception if unable to find it. For partitions you will need a key, value combination. Example, <code>{'Table1':'Partition1'}</code>. You can also take the key value pair and iterate through a group of partitions. Example, <code>{'Table1':['Partition1','Partition2']}</code>. Rather than providing a string, you can also input the actual class. See below for those examples. You can acess them from the built in attributes <code>self.Tables</code>, <code>self.Partitions</code>.
 <div class="highlight"><span class="filename">Refresh Examples</span><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">model</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="s1">&#39;Table Name&#39;</span><span class="p">)</span> <span class="c1"># (1)</span>
 <a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
 <a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">model</span><span class="o">.</span><span class="n">refresh</span><span class="p">([</span><span class="s1">&#39;Table1&#39;</span><span class="p">,</span><span class="s1">&#39;Table2&#39;</span><span class="p">,</span><span class="s1">&#39;Table3&#39;</span><span class="p">])</span> <span class="c1"># (2)</span>
@@ -978,22 +982,22 @@
 </ol>
 <h3 id="use-cases">Use Cases</h3>
 <h4 id="if-blank-table-then-refresh-table">If blank table, then refresh table.</h4>
-<p>This will use the function <a href="https://curts0.github.io/PyTabular/Table/#find_zero_rows">find_zero_rows</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">refresh</a> from the Tabular class.
+<p>This will use the function <a href="https://curts0.github.io/PyTabular/PyTables/#pytabular.table.PyTables.find_zero_rows">find_zero_rows</a> and the method <a href="https://curts0.github.io/PyTabular/PyTables/#pytabular.table.PyTables.refresh">refresh</a> from the Tabular class.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span>
 <a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="n">tables</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="o">.</span><span class="n">find_zero_rows</span><span class="p">()</span>
 <a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">model</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    <span class="n">tables</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 </code></pre></div></p>
 <p>Maybe you only want to check a subset of tables? Like <code>find()</code> tables with 'fact' in the name, then check if any facts are blank.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span>
 <a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">tables</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;fact&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">find_zero_rows</span><span class="p">()</span>
 <a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">model</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">tables</span><span class="p">)</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    <span class="n">tables</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
 </code></pre></div></p>
 <h4 id="sneak-in-a-refresh">Sneak in a refresh.</h4>
-<p>This will use the method <a href="https://curts0.github.io/PyTabular/Tabular/#is_process">is_process</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#refresh">refresh</a> from the Tabular class. It will check the DMV to see if any jobs are currently running classified as processing.
+<p>This will use the method <a href="https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.is_process">is_process</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.refresh">refresh</a> from the Tabular class. It will check the DMV to see if any jobs are currently running classified as processing.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span>
 <a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">is_process</span><span class="p">():</span>
@@ -1002,14 +1006,14 @@
 <a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>    <span class="n">model</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="n">TABLES_OR_PARTITIONS_TO_REFRESH</span><span class="p">)</span>
 </code></pre></div></p>
 <h4 id="show-refresh-times-in-model">Show refresh times in model.</h4>
-<p>This will use the function <a href="https://curts0.github.io/PyTabular/Table/#last_refresh_1">last_refresh</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#create_table">create_table</a> from the Tabular class. It will search through the model for all tables and partitions and pull the 'RefreshedTime' property from it. It will return results into a pandas dataframe, which will then be converted into an M expression used for a new table.
+<p>This will use the function <a href="https://curts0.github.io/PyTabular/PyTables/#pytabular.table.PyTables.last_refresh">last_refresh</a> and the method <a href="https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.create_table">create_table</a> from the Tabular class. It will search through the model for all tables and partitions and pull the 'RefreshedTime' property from it. It will return results into a pandas dataframe, which will then be converted into an M expression used for a new table.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span>
 <a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">df</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">Tables</span><span class="o">.</span><span class="n">last_refresh</span><span class="p">()</span>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">model</span><span class="o">.</span><span class="n">create_table</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;Refresh Times&#39;</span><span class="p">)</span>
 </code></pre></div></p>
 <h4 id="if-bpa-violation-then-revert-deployment">If BPA Violation, then revert deployment.</h4>
-<p>This uses a few things. First the <a href="https://curts0.github.io/PyTabular/Best%20Practice%20Analyzer/#bpa">BPA Class</a>, then the <a href="https://curts0.github.io/PyTabular/Tabular%20Editor%202/#tabulareditor">TE2 Class</a>, and will finish with the <a href="https://curts0.github.io/PyTabular/Tabular/#analyze_bpa">analyze_bpa</a> method. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities.
+<p>This uses a few things. First the <a href="https://curts0.github.io/PyTabular/best_practice_analyzer/">BPA Class</a>, then the <a href="https://curts0.github.io/PyTabular/tabular_editor/">TE2 Class</a>, and will finish with the <a href="https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.analyze_bpa">analyze_bpa</a> method. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># Feel free to input your TE2 File path or this will download for you.</span>
@@ -1023,7 +1027,7 @@
 <a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>    <span class="c1">#Revert deployment here!</span>
 </code></pre></div></p>
 <h4 id="loop-through-and-query-dax-files">Loop through and query Dax files</h4>
-<p>Let's say you have multiple dax queries you would like to store and run through as checks. The <a href="https://curts0.github.io/PyTabular/Tabular/#query">query</a> method on the Tabular class can also take file paths. It can really be any file type as it's just checking os.path.isfile(). But would suggest <code>.dax</code> or <code>.txt</code>. It will read the file and use that as the new <code>query_str</code> argument.
+<p>Let's say you have multiple dax queries you would like to store and run through as checks. The <a href="https://curts0.github.io/PyTabular/query/#pytabular.query.Connection.query">query</a> method on the Tabular class can also take file paths. It can really be any file type as it's just checking os.path.isfile(). But would suggest <code>.dax</code> or <code>.txt</code>. It will read the file and use that as the new <code>query_str</code> argument.
 <div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span>
 <a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="n">LIST_OF_FILE_PATHS</span> <span class="o">=</span> <span class="p">[</span>
@@ -1111,17 +1115,23 @@
 <h2 id="documenting-a-model">Documenting a Model</h2>
 <p>The Tabular model contains a lot of information that can be used to generation documentation if filled in. Currently the markdown files are generated with the Docusaurs heading in place, but this will be changed in future to support multiple documentation platforms. </p>
 <p><strong>Tip</strong>: With Tabular Editor 2 (Free) or 3 (Paid) you can easily add Descriptioms, Translations (Cultures) and other additonal information that can later be used for generating the documentation. </p>
-<p>Args:
-- <strong>model</strong>: Tabular
-- <strong>friendly_name</strong>: Default &gt; No Value </p>
-<p>To specify the location of the docs, just supply the save location with a new folder name argument. 
-- <strong>save_location</strong>: Default &gt; docs</p>
-<p>Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
-- <strong>general_page_url</strong>: Default &gt; 1-general-information.md
-- <strong>measure_page_url</strong>: Default &gt; 2-measures.md
-- <strong>table_page_url</strong>: Default &gt; 3-tables.md
-- <strong>column_page_url</strong>: Default &gt; 4-columns.md
-- <strong>roles_page_url</strong>: Default &gt; 5-roles.md</p>
+<p>Args:</p>
+<ul>
+<li><strong>model</strong>: Tabular</li>
+<li><strong>friendly_name</strong>: Default &gt; No Value </li>
+</ul>
+<p>To specify the location of the docs, just supply the save location with a new folder name argument.</p>
+<ul>
+<li><strong>save_location</strong>: Default &gt; docs</li>
+</ul>
+<p>Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking.</p>
+<ul>
+<li><strong>general_page_url</strong>: Default &gt; 1-general-information.md</li>
+<li><strong>measure_page_url</strong>: Default &gt; 2-measures.md</li>
+<li><strong>table_page_url</strong>: Default &gt; 3-tables.md</li>
+<li><strong>column_page_url</strong>: Default &gt; 4-columns.md</li>
+<li><strong>roles_page_url</strong>: Default &gt; 5-roles.md</li>
+</ul>
 <h3 id="documenting-a-model_1">Documenting a Model</h3>
 <p>The simpelst way to document a tabular model is to connect to the model, and initialize the documentation and execute <code>save_documentation()</code>. </p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
@@ -1220,10 +1230,10 @@
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.annotate"], "search": "assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": ".", "features": ["content.code.annotate"], "search": "assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="assets/javascripts/bundle.4b2c34cd.min.js"></script>
+      <script src="assets/javascripts/bundle.2a6f1dda.min.js"></script>
       
     
   </body>

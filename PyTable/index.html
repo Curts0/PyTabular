@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Connect to your Tabular models in Python!">
+      
       
       
         <link rel="canonical" href="https://curts0.github.io/PyTabular/PyTable/">
@@ -17,7 +19,7 @@
         <link rel="next" href="../PyColumns/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.12">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
       
@@ -25,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ffa9267a.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -352,7 +354,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.table.PyTable" class="md-nav__link">
-    pytabular.table.PyTable
+    PyTable
   </a>
   
 </li>
@@ -365,8 +367,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.table.PyTable.last_refresh" class="md-nav__link">
-    last_refresh()
+  <a href="#pytabular.table.PyTable.row_count" class="md-nav__link">
+    row_count()
   </a>
   
 </li>
@@ -379,15 +381,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.table.PyTable.related" class="md-nav__link">
-    related()
+  <a href="#pytabular.table.PyTable.last_refresh" class="md-nav__link">
+    last_refresh()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.table.PyTable.row_count" class="md-nav__link">
-    row_count()
+  <a href="#pytabular.table.PyTable.related" class="md-nav__link">
+    related()
   </a>
   
 </li>
@@ -638,7 +640,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.table.PyTable" class="md-nav__link">
-    pytabular.table.PyTable
+    PyTable
   </a>
   
 </li>
@@ -651,8 +653,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.table.PyTable.last_refresh" class="md-nav__link">
-    last_refresh()
+  <a href="#pytabular.table.PyTable.row_count" class="md-nav__link">
+    row_count()
   </a>
   
 </li>
@@ -665,15 +667,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.table.PyTable.related" class="md-nav__link">
-    related()
+  <a href="#pytabular.table.PyTable.last_refresh" class="md-nav__link">
+    last_refresh()
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.table.PyTable.row_count" class="md-nav__link">
-    row_count()
+  <a href="#pytabular.table.PyTable.related" class="md-nav__link">
+    related()
   </a>
   
 </li>
@@ -691,7 +693,6 @@
               <article class="md-content__inner md-typeset">
                 
                   
-
 
 
   <h1>PyTable</h1>
@@ -1046,6 +1047,123 @@ table.</p>
 
 
 
+<h2 id="pytabular.table.PyTable.row_count" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">row_count</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Method to return count of rows.</p>
+<p>Simple Dax Query: <code>EVALUATE {COUNTROWS('Table Name')}</code>.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>int</code></td>          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+          </td>
+          <td><p>Number of rows using <code>COUNTROWS</code>.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pytabular/table.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-68">68</a></span>
+<span class="normal"><a href="#__codelineno-0-69">69</a></span>
+<span class="normal"><a href="#__codelineno-0-70">70</a></span>
+<span class="normal"><a href="#__codelineno-0-71">71</a></span>
+<span class="normal"><a href="#__codelineno-0-72">72</a></span>
+<span class="normal"><a href="#__codelineno-0-73">73</a></span>
+<span class="normal"><a href="#__codelineno-0-74">74</a></span>
+<span class="normal"><a href="#__codelineno-0-75">75</a></span>
+<span class="normal"><a href="#__codelineno-0-76">76</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="k">def</span> <span class="nf">row_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-0-69" name="__codelineno-0-69"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Method to return count of rows.</span>
+<a id="__codelineno-0-70" name="__codelineno-0-70"></a>
+<a id="__codelineno-0-71" name="__codelineno-0-71"></a><span class="sd">    Simple Dax Query: `EVALUATE {COUNTROWS(&#39;Table Name&#39;)}`.</span>
+<a id="__codelineno-0-72" name="__codelineno-0-72"></a>
+<a id="__codelineno-0-73" name="__codelineno-0-73"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-74" name="__codelineno-0-74"></a><span class="sd">        int: Number of rows using `COUNTROWS`.</span>
+<a id="__codelineno-0-75" name="__codelineno-0-75"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-76" name="__codelineno-0-76"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">Adomd</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EVALUATE </span><span class="se">{{</span><span class="s2">COUNTROWS(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s2">&#39;)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytabular.table.PyTable.refresh" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">refresh</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Use this to refresh the PyTable in question.</p>
+<p>You can pass through any extra parameters. For example:
+<code>Tabular().Tables['Table Name'].Refresh(trace = None)</code></p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code><a class="autorefs autorefs-external" title="pandas" href="https://pandas.pydata.org/docs/index.html#module-pandas">pd</a>.<a class="autorefs autorefs-external" title="pandas.DataFrame" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame">DataFrame</a></code>
+          </td>
+          <td><p>pd.DataFrame: Returns pandas dataframe with some refresh details.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pytabular/table.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-78">78</a></span>
+<span class="normal"><a href="#__codelineno-0-79">79</a></span>
+<span class="normal"><a href="#__codelineno-0-80">80</a></span>
+<span class="normal"><a href="#__codelineno-0-81">81</a></span>
+<span class="normal"><a href="#__codelineno-0-82">82</a></span>
+<span class="normal"><a href="#__codelineno-0-83">83</a></span>
+<span class="normal"><a href="#__codelineno-0-84">84</a></span>
+<span class="normal"><a href="#__codelineno-0-85">85</a></span>
+<span class="normal"><a href="#__codelineno-0-86">86</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Use this to refresh the PyTable in question.</span>
+<a id="__codelineno-0-80" name="__codelineno-0-80"></a>
+<a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="sd">    You can pass through any extra parameters. For example:</span>
+<a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="sd">    `Tabular().Tables[&#39;Table Name&#39;].Refresh(trace = None)`</span>
+<a id="__codelineno-0-83" name="__codelineno-0-83"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-84" name="__codelineno-0-84"></a><span class="sd">        pd.DataFrame: Returns pandas dataframe with some refresh details.</span>
+<a id="__codelineno-0-85" name="__codelineno-0-85"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-86" name="__codelineno-0-86"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h2 id="pytabular.table.PyTable.last_refresh" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">last_refresh</span><span class="p">()</span></code>
 
@@ -1068,7 +1186,7 @@ table.</p>
     <tbody>
         <tr>
 <td><code>datetime</code></td>          <td>
-                <code><span title="datetime.datetime">datetime</span></code>
+                <code><a class="autorefs autorefs-external" title="datetime.datetime" href="https://docs.python.org/3/library/datetime.html#datetime.datetime">datetime</a></code>
           </td>
           <td><p>Last refresh time in datetime format</p></td>
         </tr>
@@ -1110,65 +1228,6 @@ table.</p>
 
 
 
-<h2 id="pytabular.table.PyTable.refresh" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">refresh</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Use this to refresh the PyTable in question.</p>
-<p>You can pass through any extra parameters. For example:
-<code>Tabular().Tables['Table Name'].Refresh(trace = None)</code></p>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td>
-                <code><span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span></code>
-          </td>
-          <td><p>pd.DataFrame: Returns pandas dataframe with some refresh details.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>pytabular/table.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-78">78</a></span>
-<span class="normal"><a href="#__codelineno-0-79">79</a></span>
-<span class="normal"><a href="#__codelineno-0-80">80</a></span>
-<span class="normal"><a href="#__codelineno-0-81">81</a></span>
-<span class="normal"><a href="#__codelineno-0-82">82</a></span>
-<span class="normal"><a href="#__codelineno-0-83">83</a></span>
-<span class="normal"><a href="#__codelineno-0-84">84</a></span>
-<span class="normal"><a href="#__codelineno-0-85">85</a></span>
-<span class="normal"><a href="#__codelineno-0-86">86</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-78" name="__codelineno-0-78"></a><span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
-<a id="__codelineno-0-79" name="__codelineno-0-79"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Use this to refresh the PyTable in question.</span>
-<a id="__codelineno-0-80" name="__codelineno-0-80"></a>
-<a id="__codelineno-0-81" name="__codelineno-0-81"></a><span class="sd">    You can pass through any extra parameters. For example:</span>
-<a id="__codelineno-0-82" name="__codelineno-0-82"></a><span class="sd">    `Tabular().Tables[&#39;Table Name&#39;].Refresh(trace = None)`</span>
-<a id="__codelineno-0-83" name="__codelineno-0-83"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-84" name="__codelineno-0-84"></a><span class="sd">        pd.DataFrame: Returns pandas dataframe with some refresh details.</span>
-<a id="__codelineno-0-85" name="__codelineno-0-85"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-86" name="__codelineno-0-86"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
 <h2 id="pytabular.table.PyTable.related" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">related</span><span class="p">()</span></code>
 
@@ -1186,64 +1245,6 @@ table.</p>
 <span class="normal"><a href="#__codelineno-0-103">103</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-101" name="__codelineno-0-101"></a><span class="k">def</span> <span class="nf">related</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <a id="__codelineno-0-102" name="__codelineno-0-102"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns tables with a relationship with the table in question.&quot;&quot;&quot;</span>
 <a id="__codelineno-0-103" name="__codelineno-0-103"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">Relationships</span><span class="o">.</span><span class="n">related</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="pytabular.table.PyTable.row_count" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">row_count</span><span class="p">()</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Method to return count of rows.</p>
-<p>Simple Dax Query: <code>EVALUATE {COUNTROWS('Table Name')}</code>.</p>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-<th>Name</th>        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-<td><code>int</code></td>          <td>
-                <code>int</code>
-          </td>
-          <td><p>Number of rows using <code>COUNTROWS</code>.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>pytabular/table.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-68">68</a></span>
-<span class="normal"><a href="#__codelineno-0-69">69</a></span>
-<span class="normal"><a href="#__codelineno-0-70">70</a></span>
-<span class="normal"><a href="#__codelineno-0-71">71</a></span>
-<span class="normal"><a href="#__codelineno-0-72">72</a></span>
-<span class="normal"><a href="#__codelineno-0-73">73</a></span>
-<span class="normal"><a href="#__codelineno-0-74">74</a></span>
-<span class="normal"><a href="#__codelineno-0-75">75</a></span>
-<span class="normal"><a href="#__codelineno-0-76">76</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-68" name="__codelineno-0-68"></a><span class="k">def</span> <span class="nf">row_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<a id="__codelineno-0-69" name="__codelineno-0-69"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Method to return count of rows.</span>
-<a id="__codelineno-0-70" name="__codelineno-0-70"></a>
-<a id="__codelineno-0-71" name="__codelineno-0-71"></a><span class="sd">    Simple Dax Query: `EVALUATE {COUNTROWS(&#39;Table Name&#39;)}`.</span>
-<a id="__codelineno-0-72" name="__codelineno-0-72"></a>
-<a id="__codelineno-0-73" name="__codelineno-0-73"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-74" name="__codelineno-0-74"></a><span class="sd">        int: Number of rows using `COUNTROWS`.</span>
-<a id="__codelineno-0-75" name="__codelineno-0-75"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-76" name="__codelineno-0-76"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">Adomd</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EVALUATE </span><span class="se">{{</span><span class="s2">COUNTROWS(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s2">&#39;)</span><span class="se">}}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -1294,10 +1295,10 @@ table.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.4b2c34cd.min.js"></script>
+      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
       
     
   </body>

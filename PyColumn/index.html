@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Connect to your Tabular models in Python!">
+      
       
       
         <link rel="canonical" href="https://curts0.github.io/PyTabular/PyColumn/">
@@ -17,7 +19,7 @@
         <link rel="next" href="../PyPartitions/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.12">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
       
@@ -25,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ffa9267a.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -380,7 +382,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.column.PyColumn" class="md-nav__link">
-    pytabular.column.PyColumn
+    PyColumn
   </a>
   
 </li>
@@ -388,13 +390,6 @@
         <li class="md-nav__item">
   <a href="#pytabular.column.PyColumn.__init__" class="md-nav__link">
     __init__()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.column.PyColumn.distinct_count" class="md-nav__link">
-    distinct_count()
   </a>
   
 </li>
@@ -409,6 +404,13 @@
         <li class="md-nav__item">
   <a href="#pytabular.column.PyColumn.get_sample_values" class="md-nav__link">
     get_sample_values()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.column.PyColumn.distinct_count" class="md-nav__link">
+    distinct_count()
   </a>
   
 </li>
@@ -638,7 +640,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.column.PyColumn" class="md-nav__link">
-    pytabular.column.PyColumn
+    PyColumn
   </a>
   
 </li>
@@ -646,13 +648,6 @@
         <li class="md-nav__item">
   <a href="#pytabular.column.PyColumn.__init__" class="md-nav__link">
     __init__()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.column.PyColumn.distinct_count" class="md-nav__link">
-    distinct_count()
   </a>
   
 </li>
@@ -667,6 +662,13 @@
         <li class="md-nav__item">
   <a href="#pytabular.column.PyColumn.get_sample_values" class="md-nav__link">
     get_sample_values()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.column.PyColumn.distinct_count" class="md-nav__link">
+    distinct_count()
   </a>
   
 </li>
@@ -691,7 +693,6 @@
               <article class="md-content__inner md-typeset">
                 
                   
-
 
 
   <h1>PyColumn</h1>
@@ -1039,105 +1040,6 @@ display table.</p>
 
 
 
-<h2 id="pytabular.column.PyColumn.distinct_count" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">distinct_count</span><span class="p">(</span><span class="n">no_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>Get the <code>DISTINCTCOUNT</code> of a column.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>no_blank</code></td>
-          <td>
-                <code>bool</code>
-          </td>
-          <td><p>If <code>True</code>, will call <code>DISTINCTCOUNTNOBLANK</code>.
-Defaults to <code>False</code>.</p></td>
-          <td>
-                <code>False</code>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-<th>Name</th>        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-<td><code>int</code></td>          <td>
-                <code>int</code>
-          </td>
-          <td><p>Number of Distinct Count from column.
-If <code>no_blank == True</code> then will return number of distinct count no blanks.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>pytabular/column.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-86"> 86</a></span>
-<span class="normal"><a href="#__codelineno-0-87"> 87</a></span>
-<span class="normal"><a href="#__codelineno-0-88"> 88</a></span>
-<span class="normal"><a href="#__codelineno-0-89"> 89</a></span>
-<span class="normal"><a href="#__codelineno-0-90"> 90</a></span>
-<span class="normal"><a href="#__codelineno-0-91"> 91</a></span>
-<span class="normal"><a href="#__codelineno-0-92"> 92</a></span>
-<span class="normal"><a href="#__codelineno-0-93"> 93</a></span>
-<span class="normal"><a href="#__codelineno-0-94"> 94</a></span>
-<span class="normal"><a href="#__codelineno-0-95"> 95</a></span>
-<span class="normal"><a href="#__codelineno-0-96"> 96</a></span>
-<span class="normal"><a href="#__codelineno-0-97"> 97</a></span>
-<span class="normal"><a href="#__codelineno-0-98"> 98</a></span>
-<span class="normal"><a href="#__codelineno-0-99"> 99</a></span>
-<span class="normal"><a href="#__codelineno-0-100">100</a></span>
-<span class="normal"><a href="#__codelineno-0-101">101</a></span>
-<span class="normal"><a href="#__codelineno-0-102">102</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-86" name="__codelineno-0-86"></a><span class="k">def</span> <span class="nf">distinct_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<a id="__codelineno-0-87" name="__codelineno-0-87"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the `DISTINCTCOUNT` of a column.</span>
-<a id="__codelineno-0-88" name="__codelineno-0-88"></a>
-<a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="sd">        no_blank (bool, optional): If `True`, will call `DISTINCTCOUNTNOBLANK`.</span>
-<a id="__codelineno-0-91" name="__codelineno-0-91"></a><span class="sd">            Defaults to `False`.</span>
-<a id="__codelineno-0-92" name="__codelineno-0-92"></a>
-<a id="__codelineno-0-93" name="__codelineno-0-93"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-94" name="__codelineno-0-94"></a><span class="sd">        int: Number of Distinct Count from column.</span>
-<a id="__codelineno-0-95" name="__codelineno-0-95"></a><span class="sd">            If `no_blank == True` then will return number of distinct count no blanks.</span>
-<a id="__codelineno-0-96" name="__codelineno-0-96"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-97" name="__codelineno-0-97"></a>    <span class="n">func</span> <span class="o">=</span> <span class="s2">&quot;DISTINCTCOUNT&quot;</span>
-<a id="__codelineno-0-98" name="__codelineno-0-98"></a>    <span class="k">if</span> <span class="n">no_blank</span><span class="p">:</span>
-<a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="n">func</span> <span class="o">+=</span> <span class="s2">&quot;NOBLANK&quot;</span>
-<a id="__codelineno-0-100" name="__codelineno-0-100"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">Adomd</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
-<a id="__codelineno-0-101" name="__codelineno-0-101"></a>        <span class="sa">f</span><span class="s2">&quot;EVALUATE </span><span class="se">{{</span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s2">&#39;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s2">])</span><span class="se">}}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-102" name="__codelineno-0-102"></a>    <span class="p">)</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
 <h2 id="pytabular.column.PyColumn.get_dependencies" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_dependencies</span><span class="p">()</span></code>
 
@@ -1256,6 +1158,105 @@ If <code>no_blank == True</code> then will return number of distinct count no bl
 
 
 
+<h2 id="pytabular.column.PyColumn.distinct_count" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">distinct_count</span><span class="p">(</span><span class="n">no_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Get the <code>DISTINCTCOUNT</code> of a column.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>no_blank</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+          </td>
+          <td><p>If <code>True</code>, will call <code>DISTINCTCOUNTNOBLANK</code>.
+Defaults to <code>False</code>.</p></td>
+          <td>
+                <code>False</code>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>int</code></td>          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+          </td>
+          <td><p>Number of Distinct Count from column.
+If <code>no_blank == True</code> then will return number of distinct count no blanks.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pytabular/column.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-86"> 86</a></span>
+<span class="normal"><a href="#__codelineno-0-87"> 87</a></span>
+<span class="normal"><a href="#__codelineno-0-88"> 88</a></span>
+<span class="normal"><a href="#__codelineno-0-89"> 89</a></span>
+<span class="normal"><a href="#__codelineno-0-90"> 90</a></span>
+<span class="normal"><a href="#__codelineno-0-91"> 91</a></span>
+<span class="normal"><a href="#__codelineno-0-92"> 92</a></span>
+<span class="normal"><a href="#__codelineno-0-93"> 93</a></span>
+<span class="normal"><a href="#__codelineno-0-94"> 94</a></span>
+<span class="normal"><a href="#__codelineno-0-95"> 95</a></span>
+<span class="normal"><a href="#__codelineno-0-96"> 96</a></span>
+<span class="normal"><a href="#__codelineno-0-97"> 97</a></span>
+<span class="normal"><a href="#__codelineno-0-98"> 98</a></span>
+<span class="normal"><a href="#__codelineno-0-99"> 99</a></span>
+<span class="normal"><a href="#__codelineno-0-100">100</a></span>
+<span class="normal"><a href="#__codelineno-0-101">101</a></span>
+<span class="normal"><a href="#__codelineno-0-102">102</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-86" name="__codelineno-0-86"></a><span class="k">def</span> <span class="nf">distinct_count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">no_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-0-87" name="__codelineno-0-87"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the `DISTINCTCOUNT` of a column.</span>
+<a id="__codelineno-0-88" name="__codelineno-0-88"></a>
+<a id="__codelineno-0-89" name="__codelineno-0-89"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-90" name="__codelineno-0-90"></a><span class="sd">        no_blank (bool, optional): If `True`, will call `DISTINCTCOUNTNOBLANK`.</span>
+<a id="__codelineno-0-91" name="__codelineno-0-91"></a><span class="sd">            Defaults to `False`.</span>
+<a id="__codelineno-0-92" name="__codelineno-0-92"></a>
+<a id="__codelineno-0-93" name="__codelineno-0-93"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-94" name="__codelineno-0-94"></a><span class="sd">        int: Number of Distinct Count from column.</span>
+<a id="__codelineno-0-95" name="__codelineno-0-95"></a><span class="sd">            If `no_blank == True` then will return number of distinct count no blanks.</span>
+<a id="__codelineno-0-96" name="__codelineno-0-96"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-97" name="__codelineno-0-97"></a>    <span class="n">func</span> <span class="o">=</span> <span class="s2">&quot;DISTINCTCOUNT&quot;</span>
+<a id="__codelineno-0-98" name="__codelineno-0-98"></a>    <span class="k">if</span> <span class="n">no_blank</span><span class="p">:</span>
+<a id="__codelineno-0-99" name="__codelineno-0-99"></a>        <span class="n">func</span> <span class="o">+=</span> <span class="s2">&quot;NOBLANK&quot;</span>
+<a id="__codelineno-0-100" name="__codelineno-0-100"></a>    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">Model</span><span class="o">.</span><span class="n">Adomd</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+<a id="__codelineno-0-101" name="__codelineno-0-101"></a>        <span class="sa">f</span><span class="s2">&quot;EVALUATE </span><span class="se">{{</span><span class="si">{</span><span class="n">func</span><span class="si">}</span><span class="s2">(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Table</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s2">&#39;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Name</span><span class="si">}</span><span class="s2">])</span><span class="se">}}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-102" name="__codelineno-0-102"></a>    <span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h2 id="pytabular.column.PyColumn.values" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">values</span><span class="p">()</span></code>
 
@@ -1278,7 +1279,7 @@ If <code>no_blank == True</code> then will return number of distinct count no bl
     <tbody>
         <tr>
           <td>
-                <code><span title="pandas">pd</span>.<span title="pandas.DataFrame">DataFrame</span></code>
+                <code><a class="autorefs autorefs-external" title="pandas" href="https://pandas.pydata.org/docs/index.html#module-pandas">pd</a>.<a class="autorefs autorefs-external" title="pandas.DataFrame" href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html#pandas.DataFrame">DataFrame</a></code>
           </td>
           <td><p>pd.DataFrame: Single column DataFrame of values.</p></td>
         </tr>
@@ -1358,10 +1359,10 @@ If <code>no_blank == True</code> then will return number of distinct count no bl
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.4b2c34cd.min.js"></script>
+      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
       
     
   </body>

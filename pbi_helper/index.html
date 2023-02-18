@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Connect to your Tabular models in Python!">
+      
       
       
         <link rel="canonical" href="https://curts0.github.io/PyTabular/pbi_helper/">
@@ -17,7 +19,7 @@
         <link rel="next" href="../logic_utils/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.12">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.13">
     
     
       
@@ -25,10 +27,10 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/main.0d440cfe.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/main.ffa9267a.min.css">
       
         
-        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+        <link rel="stylesheet" href="../assets/stylesheets/palette.a0c5b2b5.min.css">
       
       
 
@@ -513,21 +515,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.pbi_helper" class="md-nav__link">
-    pytabular.pbi_helper
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.pbi_helper.create_connection_str" class="md-nav__link">
-    create_connection_str()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.pbi_helper.find_local_pbi_instances" class="md-nav__link">
-    find_local_pbi_instances()
+    pbi_helper
   </a>
   
 </li>
@@ -535,6 +523,13 @@
         <li class="md-nav__item">
   <a href="#pytabular.pbi_helper.get_msmdsrv" class="md-nav__link">
     get_msmdsrv()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.pbi_helper.get_port_number" class="md-nav__link">
+    get_port_number()
   </a>
   
 </li>
@@ -554,8 +549,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.pbi_helper.get_port_number" class="md-nav__link">
-    get_port_number()
+  <a href="#pytabular.pbi_helper.create_connection_str" class="md-nav__link">
+    create_connection_str()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.pbi_helper.find_local_pbi_instances" class="md-nav__link">
+    find_local_pbi_instances()
   </a>
   
 </li>
@@ -645,21 +647,7 @@
       
         <li class="md-nav__item">
   <a href="#pytabular.pbi_helper" class="md-nav__link">
-    pytabular.pbi_helper
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.pbi_helper.create_connection_str" class="md-nav__link">
-    create_connection_str()
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#pytabular.pbi_helper.find_local_pbi_instances" class="md-nav__link">
-    find_local_pbi_instances()
+    pbi_helper
   </a>
   
 </li>
@@ -667,6 +655,13 @@
         <li class="md-nav__item">
   <a href="#pytabular.pbi_helper.get_msmdsrv" class="md-nav__link">
     get_msmdsrv()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.pbi_helper.get_port_number" class="md-nav__link">
+    get_port_number()
   </a>
   
 </li>
@@ -686,8 +681,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#pytabular.pbi_helper.get_port_number" class="md-nav__link">
-    get_port_number()
+  <a href="#pytabular.pbi_helper.create_connection_str" class="md-nav__link">
+    create_connection_str()
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pytabular.pbi_helper.find_local_pbi_instances" class="md-nav__link">
+    find_local_pbi_instances()
   </a>
   
 </li>
@@ -705,7 +707,6 @@
               <article class="md-content__inner md-typeset">
                 
                   
-
 
 
   <h1>pbi_helper</h1>
@@ -738,186 +739,6 @@ It will find any open PBIX files on your computer and spit out a connection stri
 
 
 
-<h2 id="pytabular.pbi_helper.create_connection_str" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">create_connection_str</span><span class="p">(</span><span class="n">port_number</span><span class="p">)</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>This takes the port number and adds to connection string.</p>
-<p>This is pretty bland right now, may improve later.</p>
-
-  <p><strong>Parameters:</strong></p>
-  <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Description</th>
-        <th>Default</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-          <td><code>port_number</code></td>
-          <td>
-                <code>str</code>
-          </td>
-          <td><p>port number retrieved from <code>get_port_number(msmdsrv)</code>.</p></td>
-          <td>
-              <em>required</em>
-          </td>
-        </tr>
-    </tbody>
-  </table>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-<th>Name</th>        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-<td><code>str</code></td>          <td>
-                <code>str</code>
-          </td>
-          <td><p>port number as string.</p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>pytabular/pbi_helper.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-120">120</a></span>
-<span class="normal"><a href="#__codelineno-0-121">121</a></span>
-<span class="normal"><a href="#__codelineno-0-122">122</a></span>
-<span class="normal"><a href="#__codelineno-0-123">123</a></span>
-<span class="normal"><a href="#__codelineno-0-124">124</a></span>
-<span class="normal"><a href="#__codelineno-0-125">125</a></span>
-<span class="normal"><a href="#__codelineno-0-126">126</a></span>
-<span class="normal"><a href="#__codelineno-0-127">127</a></span>
-<span class="normal"><a href="#__codelineno-0-128">128</a></span>
-<span class="normal"><a href="#__codelineno-0-129">129</a></span>
-<span class="normal"><a href="#__codelineno-0-130">130</a></span>
-<span class="normal"><a href="#__codelineno-0-131">131</a></span>
-<span class="normal"><a href="#__codelineno-0-132">132</a></span>
-<span class="normal"><a href="#__codelineno-0-133">133</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-120" name="__codelineno-0-120"></a><span class="k">def</span> <span class="nf">create_connection_str</span><span class="p">(</span><span class="n">port_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-121" name="__codelineno-0-121"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;This takes the port number and adds to connection string.</span>
-<a id="__codelineno-0-122" name="__codelineno-0-122"></a>
-<a id="__codelineno-0-123" name="__codelineno-0-123"></a><span class="sd">    This is pretty bland right now, may improve later.</span>
-<a id="__codelineno-0-124" name="__codelineno-0-124"></a>
-<a id="__codelineno-0-125" name="__codelineno-0-125"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-126" name="__codelineno-0-126"></a><span class="sd">        port_number (str): port number retrieved from `get_port_number(msmdsrv)`.</span>
-<a id="__codelineno-0-127" name="__codelineno-0-127"></a>
-<a id="__codelineno-0-128" name="__codelineno-0-128"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-129" name="__codelineno-0-129"></a><span class="sd">        str: port number as string.</span>
-<a id="__codelineno-0-130" name="__codelineno-0-130"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-131" name="__codelineno-0-131"></a>    <span class="n">connection_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Data Source=localhost:</span><span class="si">{</span><span class="n">port_number</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-132" name="__codelineno-0-132"></a>    <span class="n">p</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Local Connection Str - </span><span class="si">{</span><span class="n">connection_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-133" name="__codelineno-0-133"></a>    <span class="k">return</span> <span class="n">connection_str</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
-<h2 id="pytabular.pbi_helper.find_local_pbi_instances" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">find_local_pbi_instances</span><span class="p">()</span></code>
-
-</h2>
-
-
-  <div class="doc doc-contents ">
-  
-      <p>The real genius is from Dax Studio.</p>
-<p>I just wanted it in python not C#, so reverse engineered what DaxStudio did.
-It will run some powershell scripts to pull the appropriate info.
-Then will spit out a list with tuples inside.
-You can use the connection string to connect to your model with pytabular.
-<a href="https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs">Dax Studio</a>.</p>
-
-  <p><strong>Returns:</strong></p>
-  <table>
-    <thead>
-      <tr>
-<th>Name</th>        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-        <tr>
-<td><code>list</code></td>          <td>
-                <code>list</code>
-          </td>
-          <td><p>EX <code>[('PBI File Name1','localhost:{port}'),('PBI File Name2','localhost:{port}')]</code></p></td>
-        </tr>
-    </tbody>
-  </table>
-
-      <details class="quote">
-        <summary>Source code in <code>pytabular/pbi_helper.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-136">136</a></span>
-<span class="normal"><a href="#__codelineno-0-137">137</a></span>
-<span class="normal"><a href="#__codelineno-0-138">138</a></span>
-<span class="normal"><a href="#__codelineno-0-139">139</a></span>
-<span class="normal"><a href="#__codelineno-0-140">140</a></span>
-<span class="normal"><a href="#__codelineno-0-141">141</a></span>
-<span class="normal"><a href="#__codelineno-0-142">142</a></span>
-<span class="normal"><a href="#__codelineno-0-143">143</a></span>
-<span class="normal"><a href="#__codelineno-0-144">144</a></span>
-<span class="normal"><a href="#__codelineno-0-145">145</a></span>
-<span class="normal"><a href="#__codelineno-0-146">146</a></span>
-<span class="normal"><a href="#__codelineno-0-147">147</a></span>
-<span class="normal"><a href="#__codelineno-0-148">148</a></span>
-<span class="normal"><a href="#__codelineno-0-149">149</a></span>
-<span class="normal"><a href="#__codelineno-0-150">150</a></span>
-<span class="normal"><a href="#__codelineno-0-151">151</a></span>
-<span class="normal"><a href="#__codelineno-0-152">152</a></span>
-<span class="normal"><a href="#__codelineno-0-153">153</a></span>
-<span class="normal"><a href="#__codelineno-0-154">154</a></span>
-<span class="normal"><a href="#__codelineno-0-155">155</a></span>
-<span class="normal"><a href="#__codelineno-0-156">156</a></span>
-<span class="normal"><a href="#__codelineno-0-157">157</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-136" name="__codelineno-0-136"></a><span class="k">def</span> <span class="nf">find_local_pbi_instances</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
-<a id="__codelineno-0-137" name="__codelineno-0-137"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The real genius is from Dax Studio.</span>
-<a id="__codelineno-0-138" name="__codelineno-0-138"></a>
-<a id="__codelineno-0-139" name="__codelineno-0-139"></a><span class="sd">    I just wanted it in python not C#, so reverse engineered what DaxStudio did.</span>
-<a id="__codelineno-0-140" name="__codelineno-0-140"></a><span class="sd">    It will run some powershell scripts to pull the appropriate info.</span>
-<a id="__codelineno-0-141" name="__codelineno-0-141"></a><span class="sd">    Then will spit out a list with tuples inside.</span>
-<a id="__codelineno-0-142" name="__codelineno-0-142"></a><span class="sd">    You can use the connection string to connect to your model with pytabular.</span>
-<a id="__codelineno-0-143" name="__codelineno-0-143"></a><span class="sd">    [Dax Studio](https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs).</span>
-<a id="__codelineno-0-144" name="__codelineno-0-144"></a>
-<a id="__codelineno-0-145" name="__codelineno-0-145"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-146" name="__codelineno-0-146"></a><span class="sd">        list: EX `[(&#39;PBI File Name1&#39;,&#39;localhost:{port}&#39;),(&#39;PBI File Name2&#39;,&#39;localhost:{port}&#39;)]`</span>
-<a id="__codelineno-0-147" name="__codelineno-0-147"></a><span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
-<a id="__codelineno-0-148" name="__codelineno-0-148"></a>    <span class="n">instances</span> <span class="o">=</span> <span class="n">get_msmdsrv</span><span class="p">()</span>
-<a id="__codelineno-0-149" name="__codelineno-0-149"></a>    <span class="n">pbi_instances</span> <span class="o">=</span> <span class="p">[]</span>
-<a id="__codelineno-0-150" name="__codelineno-0-150"></a>    <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
-<a id="__codelineno-0-151" name="__codelineno-0-151"></a>        <span class="n">p</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Building connection for </span><span class="si">{</span><span class="n">instance</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-152" name="__codelineno-0-152"></a>        <span class="n">port</span> <span class="o">=</span> <span class="n">get_port_number</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
-<a id="__codelineno-0-153" name="__codelineno-0-153"></a>        <span class="n">parent</span> <span class="o">=</span> <span class="n">get_parent_id</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
-<a id="__codelineno-0-154" name="__codelineno-0-154"></a>        <span class="n">title</span> <span class="o">=</span> <span class="n">get_parent_title</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
-<a id="__codelineno-0-155" name="__codelineno-0-155"></a>        <span class="n">connect_str</span> <span class="o">=</span> <span class="n">create_connection_str</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
-<a id="__codelineno-0-156" name="__codelineno-0-156"></a>        <span class="n">pbi_instances</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">title</span><span class="p">,</span> <span class="n">connect_str</span><span class="p">)]</span>
-<a id="__codelineno-0-157" name="__codelineno-0-157"></a>    <span class="k">return</span> <span class="n">pbi_instances</span>
-</code></pre></div></td></tr></table></div>
-      </details>
-  </div>
-
-</div>
-
-<div class="doc doc-object doc-function">
-
-
-
 <h2 id="pytabular.pbi_helper.get_msmdsrv" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_msmdsrv</span><span class="p">()</span></code>
 
@@ -940,7 +761,7 @@ You can use the connection string to connect to your model with pytabular.
     <tbody>
         <tr>
 <td><code>list</code></td>          <td>
-                <code>list</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></code>
           </td>
           <td><p>returns ProcessId(s) in list.
 Formatted to account for multiple PBIX files open at the same time.</p></td>
@@ -1029,6 +850,109 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
 
 
 
+<h2 id="pytabular.pbi_helper.get_port_number" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_port_number</span><span class="p">(</span><span class="n">msmdsrv</span><span class="p">)</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Gets the local port number of given msmdsrv ProcessId. Via PowerShell.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>msmdsrv</code></td>
+          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td><p>A ProcessId returned from <code>get_msmdsrv()</code>.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>str</code></td>          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
+          </td>
+          <td><p><code>LocalPort</code> returned for specific ProcessId.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pytabular/pbi_helper.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-49">49</a></span>
+<span class="normal"><a href="#__codelineno-0-50">50</a></span>
+<span class="normal"><a href="#__codelineno-0-51">51</a></span>
+<span class="normal"><a href="#__codelineno-0-52">52</a></span>
+<span class="normal"><a href="#__codelineno-0-53">53</a></span>
+<span class="normal"><a href="#__codelineno-0-54">54</a></span>
+<span class="normal"><a href="#__codelineno-0-55">55</a></span>
+<span class="normal"><a href="#__codelineno-0-56">56</a></span>
+<span class="normal"><a href="#__codelineno-0-57">57</a></span>
+<span class="normal"><a href="#__codelineno-0-58">58</a></span>
+<span class="normal"><a href="#__codelineno-0-59">59</a></span>
+<span class="normal"><a href="#__codelineno-0-60">60</a></span>
+<span class="normal"><a href="#__codelineno-0-61">61</a></span>
+<span class="normal"><a href="#__codelineno-0-62">62</a></span>
+<span class="normal"><a href="#__codelineno-0-63">63</a></span>
+<span class="normal"><a href="#__codelineno-0-64">64</a></span>
+<span class="normal"><a href="#__codelineno-0-65">65</a></span>
+<span class="normal"><a href="#__codelineno-0-66">66</a></span>
+<span class="normal"><a href="#__codelineno-0-67">67</a></span>
+<span class="normal"><a href="#__codelineno-0-68">68</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="k">def</span> <span class="nf">get_port_number</span><span class="p">(</span><span class="n">msmdsrv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the local port number of given msmdsrv ProcessId. Via PowerShell.</span>
+<a id="__codelineno-0-51" name="__codelineno-0-51"></a>
+<a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">        msmdsrv (str): A ProcessId returned from `get_msmdsrv()`.</span>
+<a id="__codelineno-0-54" name="__codelineno-0-54"></a>
+<a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">        str: `LocalPort` returned for specific ProcessId.</span>
+<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="n">port</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
+<a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="p">[</span>
+<a id="__codelineno-0-60" name="__codelineno-0-60"></a>            <span class="s2">&quot;powershell&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-61" name="__codelineno-0-61"></a>            <span class="sa">f</span><span class="s2">&quot;Get-NetTCPConnection -State Listen </span><span class="se">\</span>
+<a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="s2">                -OwningProcess </span><span class="si">{</span><span class="n">msmdsrv</span><span class="si">}</span><span class="s2"> | Select-Object </span><span class="se">\</span>
+<a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="s2">                -Property LocalPort -First 1 -ExpandProperty LocalPort&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="p">]</span>
+<a id="__codelineno-0-65" name="__codelineno-0-65"></a>    <span class="p">)</span>
+<a id="__codelineno-0-66" name="__codelineno-0-66"></a>    <span class="n">port_number</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<a id="__codelineno-0-67" name="__codelineno-0-67"></a>    <span class="n">p</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Listening port - </span><span class="si">{</span><span class="n">port_number</span><span class="si">}</span><span class="s2"> for msmdsrv.exe - </span><span class="si">{</span><span class="n">msmdsrv</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="k">return</span> <span class="n">port_number</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
 <h2 id="pytabular.pbi_helper.get_parent_id" class="doc doc-heading">
 <code class="highlight language-python"><span class="n">get_parent_id</span><span class="p">(</span><span class="n">msmdsrv</span><span class="p">)</span></code>
 
@@ -1053,7 +977,7 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
         <tr>
           <td><code>msmdsrv</code></td>
           <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
           </td>
           <td><p>A ProcessId returned from <code>get_msmdsrv()</code>.</p></td>
           <td>
@@ -1074,7 +998,7 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
     <tbody>
         <tr>
 <td><code>str</code></td>          <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
           </td>
           <td><p>Returns ParentProcessId in <code>str</code> format.</p></td>
         </tr>
@@ -1156,7 +1080,7 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
         <tr>
           <td><code>parent_id</code></td>
           <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
           </td>
           <td><p>Takes ParentProcessId which can be retrieved from <code>get_parent_id(msmdsrv)</code></p></td>
           <td>
@@ -1177,7 +1101,7 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
     <tbody>
         <tr>
 <td><code>str</code></td>          <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
           </td>
           <td><p>Returns str of title of PBIX file.</p></td>
         </tr>
@@ -1245,15 +1169,16 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
 
 
 
-<h2 id="pytabular.pbi_helper.get_port_number" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_port_number</span><span class="p">(</span><span class="n">msmdsrv</span><span class="p">)</span></code>
+<h2 id="pytabular.pbi_helper.create_connection_str" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">create_connection_str</span><span class="p">(</span><span class="n">port_number</span><span class="p">)</span></code>
 
 </h2>
 
 
   <div class="doc doc-contents ">
   
-      <p>Gets the local port number of given msmdsrv ProcessId. Via PowerShell.</p>
+      <p>This takes the port number and adds to connection string.</p>
+<p>This is pretty bland right now, may improve later.</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -1267,11 +1192,11 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
     </thead>
     <tbody>
         <tr>
-          <td><code>msmdsrv</code></td>
+          <td><code>port_number</code></td>
           <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
           </td>
-          <td><p>A ProcessId returned from <code>get_msmdsrv()</code>.</p></td>
+          <td><p>port number retrieved from <code>get_port_number(msmdsrv)</code>.</p></td>
           <td>
               <em>required</em>
           </td>
@@ -1290,54 +1215,130 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
     <tbody>
         <tr>
 <td><code>str</code></td>          <td>
-                <code>str</code>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a></code>
           </td>
-          <td><p><code>LocalPort</code> returned for specific ProcessId.</p></td>
+          <td><p>port number as string.</p></td>
         </tr>
     </tbody>
   </table>
 
       <details class="quote">
         <summary>Source code in <code>pytabular/pbi_helper.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-49">49</a></span>
-<span class="normal"><a href="#__codelineno-0-50">50</a></span>
-<span class="normal"><a href="#__codelineno-0-51">51</a></span>
-<span class="normal"><a href="#__codelineno-0-52">52</a></span>
-<span class="normal"><a href="#__codelineno-0-53">53</a></span>
-<span class="normal"><a href="#__codelineno-0-54">54</a></span>
-<span class="normal"><a href="#__codelineno-0-55">55</a></span>
-<span class="normal"><a href="#__codelineno-0-56">56</a></span>
-<span class="normal"><a href="#__codelineno-0-57">57</a></span>
-<span class="normal"><a href="#__codelineno-0-58">58</a></span>
-<span class="normal"><a href="#__codelineno-0-59">59</a></span>
-<span class="normal"><a href="#__codelineno-0-60">60</a></span>
-<span class="normal"><a href="#__codelineno-0-61">61</a></span>
-<span class="normal"><a href="#__codelineno-0-62">62</a></span>
-<span class="normal"><a href="#__codelineno-0-63">63</a></span>
-<span class="normal"><a href="#__codelineno-0-64">64</a></span>
-<span class="normal"><a href="#__codelineno-0-65">65</a></span>
-<span class="normal"><a href="#__codelineno-0-66">66</a></span>
-<span class="normal"><a href="#__codelineno-0-67">67</a></span>
-<span class="normal"><a href="#__codelineno-0-68">68</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-49" name="__codelineno-0-49"></a><span class="k">def</span> <span class="nf">get_port_number</span><span class="p">(</span><span class="n">msmdsrv</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<a id="__codelineno-0-50" name="__codelineno-0-50"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Gets the local port number of given msmdsrv ProcessId. Via PowerShell.</span>
-<a id="__codelineno-0-51" name="__codelineno-0-51"></a>
-<a id="__codelineno-0-52" name="__codelineno-0-52"></a><span class="sd">    Args:</span>
-<a id="__codelineno-0-53" name="__codelineno-0-53"></a><span class="sd">        msmdsrv (str): A ProcessId returned from `get_msmdsrv()`.</span>
-<a id="__codelineno-0-54" name="__codelineno-0-54"></a>
-<a id="__codelineno-0-55" name="__codelineno-0-55"></a><span class="sd">    Returns:</span>
-<a id="__codelineno-0-56" name="__codelineno-0-56"></a><span class="sd">        str: `LocalPort` returned for specific ProcessId.</span>
-<a id="__codelineno-0-57" name="__codelineno-0-57"></a><span class="sd">    &quot;&quot;&quot;</span>
-<a id="__codelineno-0-58" name="__codelineno-0-58"></a>    <span class="n">port</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span>
-<a id="__codelineno-0-59" name="__codelineno-0-59"></a>        <span class="p">[</span>
-<a id="__codelineno-0-60" name="__codelineno-0-60"></a>            <span class="s2">&quot;powershell&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-61" name="__codelineno-0-61"></a>            <span class="sa">f</span><span class="s2">&quot;Get-NetTCPConnection -State Listen </span><span class="se">\</span>
-<a id="__codelineno-0-62" name="__codelineno-0-62"></a><span class="s2">                -OwningProcess </span><span class="si">{</span><span class="n">msmdsrv</span><span class="si">}</span><span class="s2"> | Select-Object </span><span class="se">\</span>
-<a id="__codelineno-0-63" name="__codelineno-0-63"></a><span class="s2">                -Property LocalPort -First 1 -ExpandProperty LocalPort&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-64" name="__codelineno-0-64"></a>        <span class="p">]</span>
-<a id="__codelineno-0-65" name="__codelineno-0-65"></a>    <span class="p">)</span>
-<a id="__codelineno-0-66" name="__codelineno-0-66"></a>    <span class="n">port_number</span> <span class="o">=</span> <span class="n">port</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-<a id="__codelineno-0-67" name="__codelineno-0-67"></a>    <span class="n">p</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Listening port - </span><span class="si">{</span><span class="n">port_number</span><span class="si">}</span><span class="s2"> for msmdsrv.exe - </span><span class="si">{</span><span class="n">msmdsrv</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="k">return</span> <span class="n">port_number</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-120">120</a></span>
+<span class="normal"><a href="#__codelineno-0-121">121</a></span>
+<span class="normal"><a href="#__codelineno-0-122">122</a></span>
+<span class="normal"><a href="#__codelineno-0-123">123</a></span>
+<span class="normal"><a href="#__codelineno-0-124">124</a></span>
+<span class="normal"><a href="#__codelineno-0-125">125</a></span>
+<span class="normal"><a href="#__codelineno-0-126">126</a></span>
+<span class="normal"><a href="#__codelineno-0-127">127</a></span>
+<span class="normal"><a href="#__codelineno-0-128">128</a></span>
+<span class="normal"><a href="#__codelineno-0-129">129</a></span>
+<span class="normal"><a href="#__codelineno-0-130">130</a></span>
+<span class="normal"><a href="#__codelineno-0-131">131</a></span>
+<span class="normal"><a href="#__codelineno-0-132">132</a></span>
+<span class="normal"><a href="#__codelineno-0-133">133</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-120" name="__codelineno-0-120"></a><span class="k">def</span> <span class="nf">create_connection_str</span><span class="p">(</span><span class="n">port_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<a id="__codelineno-0-121" name="__codelineno-0-121"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;This takes the port number and adds to connection string.</span>
+<a id="__codelineno-0-122" name="__codelineno-0-122"></a>
+<a id="__codelineno-0-123" name="__codelineno-0-123"></a><span class="sd">    This is pretty bland right now, may improve later.</span>
+<a id="__codelineno-0-124" name="__codelineno-0-124"></a>
+<a id="__codelineno-0-125" name="__codelineno-0-125"></a><span class="sd">    Args:</span>
+<a id="__codelineno-0-126" name="__codelineno-0-126"></a><span class="sd">        port_number (str): port number retrieved from `get_port_number(msmdsrv)`.</span>
+<a id="__codelineno-0-127" name="__codelineno-0-127"></a>
+<a id="__codelineno-0-128" name="__codelineno-0-128"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-129" name="__codelineno-0-129"></a><span class="sd">        str: port number as string.</span>
+<a id="__codelineno-0-130" name="__codelineno-0-130"></a><span class="sd">    &quot;&quot;&quot;</span>
+<a id="__codelineno-0-131" name="__codelineno-0-131"></a>    <span class="n">connection_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Data Source=localhost:</span><span class="si">{</span><span class="n">port_number</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-0-132" name="__codelineno-0-132"></a>    <span class="n">p</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Local Connection Str - </span><span class="si">{</span><span class="n">connection_str</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-133" name="__codelineno-0-133"></a>    <span class="k">return</span> <span class="n">connection_str</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h2 id="pytabular.pbi_helper.find_local_pbi_instances" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">find_local_pbi_instances</span><span class="p">()</span></code>
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>The real genius is from Dax Studio.</p>
+<p>I just wanted it in python not C#, so reverse engineered what DaxStudio did.
+It will run some powershell scripts to pull the appropriate info.
+Then will spit out a list with tuples inside.
+You can use the connection string to connect to your model with pytabular.
+<a href="https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs">Dax Studio</a>.</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+<th>Name</th>        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+<td><code>list</code></td>          <td>
+                <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a></code>
+          </td>
+          <td><p>EX <code>[('PBI File Name1','localhost:{port}'),('PBI File Name2','localhost:{port}')]</code></p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>pytabular/pbi_helper.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-136">136</a></span>
+<span class="normal"><a href="#__codelineno-0-137">137</a></span>
+<span class="normal"><a href="#__codelineno-0-138">138</a></span>
+<span class="normal"><a href="#__codelineno-0-139">139</a></span>
+<span class="normal"><a href="#__codelineno-0-140">140</a></span>
+<span class="normal"><a href="#__codelineno-0-141">141</a></span>
+<span class="normal"><a href="#__codelineno-0-142">142</a></span>
+<span class="normal"><a href="#__codelineno-0-143">143</a></span>
+<span class="normal"><a href="#__codelineno-0-144">144</a></span>
+<span class="normal"><a href="#__codelineno-0-145">145</a></span>
+<span class="normal"><a href="#__codelineno-0-146">146</a></span>
+<span class="normal"><a href="#__codelineno-0-147">147</a></span>
+<span class="normal"><a href="#__codelineno-0-148">148</a></span>
+<span class="normal"><a href="#__codelineno-0-149">149</a></span>
+<span class="normal"><a href="#__codelineno-0-150">150</a></span>
+<span class="normal"><a href="#__codelineno-0-151">151</a></span>
+<span class="normal"><a href="#__codelineno-0-152">152</a></span>
+<span class="normal"><a href="#__codelineno-0-153">153</a></span>
+<span class="normal"><a href="#__codelineno-0-154">154</a></span>
+<span class="normal"><a href="#__codelineno-0-155">155</a></span>
+<span class="normal"><a href="#__codelineno-0-156">156</a></span>
+<span class="normal"><a href="#__codelineno-0-157">157</a></span></pre></div></td><td class="code"><div><pre><span></span><code><a id="__codelineno-0-136" name="__codelineno-0-136"></a><span class="k">def</span> <span class="nf">find_local_pbi_instances</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<a id="__codelineno-0-137" name="__codelineno-0-137"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;The real genius is from Dax Studio.</span>
+<a id="__codelineno-0-138" name="__codelineno-0-138"></a>
+<a id="__codelineno-0-139" name="__codelineno-0-139"></a><span class="sd">    I just wanted it in python not C#, so reverse engineered what DaxStudio did.</span>
+<a id="__codelineno-0-140" name="__codelineno-0-140"></a><span class="sd">    It will run some powershell scripts to pull the appropriate info.</span>
+<a id="__codelineno-0-141" name="__codelineno-0-141"></a><span class="sd">    Then will spit out a list with tuples inside.</span>
+<a id="__codelineno-0-142" name="__codelineno-0-142"></a><span class="sd">    You can use the connection string to connect to your model with pytabular.</span>
+<a id="__codelineno-0-143" name="__codelineno-0-143"></a><span class="sd">    [Dax Studio](https://github.com/DaxStudio/DaxStudio/blob/master/src/DaxStudio.UI/Utils/PowerBIHelper.cs).</span>
+<a id="__codelineno-0-144" name="__codelineno-0-144"></a>
+<a id="__codelineno-0-145" name="__codelineno-0-145"></a><span class="sd">    Returns:</span>
+<a id="__codelineno-0-146" name="__codelineno-0-146"></a><span class="sd">        list: EX `[(&#39;PBI File Name1&#39;,&#39;localhost:{port}&#39;),(&#39;PBI File Name2&#39;,&#39;localhost:{port}&#39;)]`</span>
+<a id="__codelineno-0-147" name="__codelineno-0-147"></a><span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: E501</span>
+<a id="__codelineno-0-148" name="__codelineno-0-148"></a>    <span class="n">instances</span> <span class="o">=</span> <span class="n">get_msmdsrv</span><span class="p">()</span>
+<a id="__codelineno-0-149" name="__codelineno-0-149"></a>    <span class="n">pbi_instances</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-150" name="__codelineno-0-150"></a>    <span class="k">for</span> <span class="n">instance</span> <span class="ow">in</span> <span class="n">instances</span><span class="p">:</span>
+<a id="__codelineno-0-151" name="__codelineno-0-151"></a>        <span class="n">p</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Building connection for </span><span class="si">{</span><span class="n">instance</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-152" name="__codelineno-0-152"></a>        <span class="n">port</span> <span class="o">=</span> <span class="n">get_port_number</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+<a id="__codelineno-0-153" name="__codelineno-0-153"></a>        <span class="n">parent</span> <span class="o">=</span> <span class="n">get_parent_id</span><span class="p">(</span><span class="n">instance</span><span class="p">)</span>
+<a id="__codelineno-0-154" name="__codelineno-0-154"></a>        <span class="n">title</span> <span class="o">=</span> <span class="n">get_parent_title</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+<a id="__codelineno-0-155" name="__codelineno-0-155"></a>        <span class="n">connect_str</span> <span class="o">=</span> <span class="n">create_connection_str</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+<a id="__codelineno-0-156" name="__codelineno-0-156"></a>        <span class="n">pbi_instances</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">title</span><span class="p">,</span> <span class="n">connect_str</span><span class="p">)]</span>
+<a id="__codelineno-0-157" name="__codelineno-0-157"></a>    <span class="k">return</span> <span class="n">pbi_instances</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -1388,10 +1389,10 @@ Formatted to account for multiple PBIX files open at the same time.</p></td>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.db81ec45.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.annotate"], "search": "../assets/javascripts/workers/search.208ed371.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../assets/javascripts/bundle.4b2c34cd.min.js"></script>
+      <script src="../assets/javascripts/bundle.2a6f1dda.min.js"></script>
       
     
   </body>
