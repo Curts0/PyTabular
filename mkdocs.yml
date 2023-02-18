@@ -1,4 +1,5 @@
 site_name: PyTabular
+site_description: "Connect to your Tabular models in Python!"
 site_url: https://curts0.github.io/PyTabular/
 docs_dir: docs
 nav:
@@ -36,5 +37,15 @@ theme:
   features:
     - content.code.annotate
 plugins:
-  - mkdocstrings:
   - search
+  - mkdocstrings:
+      handlers:
+        python:
+          import:
+          - https://docs.python.org/3/objects.inv
+          - https://pandas.pydata.org/docs/objects.inv
+          options:
+            docstring_style: google
+            show_submodules: true
+            show_root_full_path: false
+            members_order: source
