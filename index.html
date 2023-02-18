@@ -147,6 +147,18 @@
 </div>
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/Curts0/PyTabular" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Curts0/PyTabular
+  </div>
+</a>
+      </div>
+    
   </nav>
   
 </header>
@@ -179,6 +191,18 @@
     </a>
     PyTabular
   </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Curts0/PyTabular" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Curts0/PyTabular
+  </div>
+</a>
+    </div>
   
   <ul class="md-nav__list" data-md-scrollfix>
     
@@ -875,6 +899,9 @@
                 
                   
 
+  
+  
+
 
 <h1 id="pytabular">PyTabular</h1>
 <p><a href="https://badge.fury.io/py/python-tabular"><img alt="PyPI version" src="https://badge.fury.io/py/python-tabular.svg" /></a>
@@ -887,12 +914,16 @@
 <h3 id="what-is-it">What is it?</h3>
 <p><a href="https://github.com/Curts0/PyTabular">PyTabular</a> (<strong>python-tabular</strong> in <a href="https://pypi.org/project/python-tabular/">pypi</a>) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to <a href="https://pythonnet.github.io/">Pythonnet</a> and Microsoft's <a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet">.Net APIs on Azure Analysis Services</a>. Currently this build is tested and working on <strong>Windows Operating System only</strong>. Help is needed to expand this for other os. See the <a href="https://curts0.github.io/PyTabular/">Documentation Here</a>. PyTabular is still considered alpha. Please send bugs my way! Preferably in the issues section in Github.</p>
 <h3 id="getting-started">Getting Started</h3>
-<p>See the <a href="https://pypi.org/project/python-tabular/">Pypi project</a> for available versions. <strong>To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.</strong> Install v. 0.3.4 or lower to get the older naming conventions.
+<p>See the <a href="https://pypi.org/project/python-tabular/">Pypi project</a> for available versions.</p>
+<div class="admonition danger">
+<p class="admonition-title">Before 0.3.5</p>
+<p><strong>To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.</strong> Install v. 0.3.4 or lower to get the older naming conventions.</p>
+</div>
 <div class="highlight"><span class="filename">Install Example</span><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">python3</span> <span class="n">-m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">python-tabular</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c">#install specific version</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">python3</span> <span class="n">-m</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">python-tabular</span><span class="p">==</span><span class="n">0</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">4</span>
-</code></pre></div></p>
+</code></pre></div>
 <p>In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.
 <div class="highlight"><span class="filename">Connecting to Model</span><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span> <span class="nn">pytabular</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">model</span> <span class="o">=</span> <span class="n">pytabular</span><span class="o">.</span><span class="n">Tabular</span><span class="p">(</span><span class="n">CONNECTION_STR</span><span class="p">)</span> <span class="c1"># (1)</span>
