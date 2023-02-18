@@ -22,8 +22,10 @@ python3 -m pip install python-tabular==0.3.4
 In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.
 ```python title="Connecting to Model"
 import pytabular
-model = pytabular.Tabular(CONNECTION_STR)
+model = pytabular.Tabular(CONNECTION_STR) # (1)
 ```
+
+1. For more info: see the [Tabular][pytabular.pytabular.Tabular] class.
 
 You may have noticed some logging into your console. I'm a big fan of logging, if you don't want any just get the logger and disable it.
 ```python title="Logging Example"
@@ -31,7 +33,7 @@ import pytabular
 pytabular.logger.disabled = True
 ```
 
-You can query your models with the `query` method from your tabular class. For Dax Queries, it will need the full Dax syntax. See [EVALUATE example](https://dax.guide/st/evaluate/). This will return a [Pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html). If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See [PyTabular Docs for Query](https://curts0.github.io/PyTabular/Tabular/#query).
+You can query your models with the [query][pytabular.pytabular.Tabular.query] method from your tabular class. For Dax Queries, it will need the full Dax syntax. See [EVALUATE example](https://dax.guide/st/evaluate/). This will return a [Pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html). If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example.
 ```python title="Query Examples"
 #Run basic queries
 DAX_QUERY = "EVALUATE TOPN(100, 'Table1')"
@@ -56,7 +58,7 @@ model.query(FILE_PATH) # (4)
 4. This will return same logic as above, single values if possible else will return `pd.DataFrame()`. Supply any file type.
 
 
-You can also explore your tables, partitions, columns, etc. via the attributes of your `Tabular()` class.
+You can also explore your tables, partitions, columns, etc. via the attributes of your [Tabular][pytabular.pytabular.Tabular] class.
 ```python title="Usage Examples"
 model.Tables['Table Name'].refresh() # (1)
 
@@ -64,7 +66,7 @@ model.Tables['Table Name'].refresh() # (1)
 model.Tables['Table Name'].Partitions['Partition Name'].refresh() # (2)
 
 #or
-model.Tables['Table Name'].Partitions['Partition Name'].last_refresh() # (3)
+model.Tables['Table Name'].Partitions[4].last_refresh() # (3)
 
 #or
 model.Tables['Table Name'].row_count() # (4)
@@ -73,9 +75,9 @@ model.Tables['Table Name'].row_count() # (4)
 model.Tables['Table Name'].Columns['Column Name'].distinct_count() # (5)
 ```
 
-1. Refresh a specific table.
+1. Refresh a specific table. The `.Tables` is your attribute to gain access to your [PyTables][pytabular.table.PyTables] class. From that, you can iterate into specific [PyTable][pytabular.table.PyTable] classes.
 2. Refresh a specific partition.
-3. Get the last refresh time of a specific partition.
+3. Get the last refresh time of a specific partition. Notice this time that instead of the partition name, an `int` was used to index into the specific [PyPartition][pytabular.partition.PyPartition].
 4. Get row count of a table.
 5. Get distinct count of a column.
 
