@@ -2,6 +2,28 @@
 
 It also includes some pre built traces to make life easier.
 Feel free to build your own.
+
+Example:
+    ```python title="Monitor Queries"
+    import pytabular as p
+    import logging as l
+    model = p.Tabular(CONNECTION_STR)
+    query_trace = p.QueryMonitor(model)
+    query_trace.start() # (1)
+
+    ###
+
+    p.logger.setLevel(l.DEBUG) # (2)
+
+    ###
+
+    query_trace.stop()
+    query_trace.drop() # (3)
+    ```
+
+    1. You will now start to see query traces on your model get outputed to your console.
+    2. If you want to see the FULL query then set logging to DEBUG.
+    3. You can drop on your own, or will get dropped on script exit.
 """
 import logging
 import random
@@ -118,8 +140,8 @@ class BaseTrace:
         """Runs on init. Syncs with Server.
 
         Returns:
-                None: Returns None.
-                    Unless unsuccessful then it will return the error from Server.
+            None: Returns None.
+                Unless unsuccessful then it will return the error from Server.
         """
         logger.info(f"Updating {self.Name} in {self.tabular_class.Server.Name}")
         if self.tabular_class.Server.Connected is False:
@@ -131,8 +153,8 @@ class BaseTrace:
         """Call when you want to start the trace.
 
         Returns:
-                None: Returns None.
-                    Unless unsuccessful then it will return the error from Server.
+            None: Returns None.
+                Unless unsuccessful then it will return the error from Server.
         """
         logger.info(f"Starting {self.Name} in {self.tabular_class.Server.Name}")
         return self.Trace.Start()
@@ -141,8 +163,8 @@ class BaseTrace:
         """Call when you want to stop the trace.
 
         Returns:
-                None: Returns None.
-                    Unless unsuccessful then it will return the error from Server.
+            None: Returns None.
+                Unless unsuccessful then it will return the error from Server.
         """
         logger.info(f"Stopping {self.Name} in {self.tabular_class.Server.Name}")
         return self.Trace.Stop()
@@ -151,8 +173,8 @@ class BaseTrace:
         """Call when you want to drop the trace.
 
         Returns:
-                None: Returns None. Unless unsuccessful,
-                    then it will return the error from Server.
+            None: Returns None. Unless unsuccessful,
+                then it will return the error from Server.
         """
         logger.info(f"Dropping {self.Name} in {self.tabular_class.Server.Name}")
         atexit.unregister(self.drop)
