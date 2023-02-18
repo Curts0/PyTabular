@@ -50,13 +50,14 @@ class Tabular(PyObject):
                     [link](https://learn.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services)
 
     Attributes:
-        AdomdConnection (Connection): For querying.
+        Adomd (Connection): For querying.
             This is the `Connection` class.
         Tables (PyTables): See `PyTables` for more information.
             Iterate through your tables in your model.
         Columns (PyColumns): See `PyColumns` for more information.
         Partitions (PyPartitions): See `PyPartitions` for more information.
         Measures (PyMeasures): See `PyMeasures` for more information.
+        PyRefresh (PyRefresh): See `PyRefresh` for more information.
     """
 
     def __init__(self, connection_str: str):
@@ -85,7 +86,7 @@ class Tabular(PyObject):
         logger.info(f"Connected to Model - {self.Model.Name}")
         self.Adomd: Connection = Connection(self.Server)
         self.effective_users: dict = {}
-        self.PyRefresh = PyRefresh
+        self.PyRefresh: PyRefresh = PyRefresh
 
         # Build PyObjects
         self.reload_model_info()
