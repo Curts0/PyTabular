@@ -2,6 +2,8 @@ site_name: PyTabular
 site_description: "Connect to your Tabular models in Python!"
 site_url: https://curts0.github.io/PyTabular/
 docs_dir: docs
+repo_name: Curts0/PyTabular
+repo_url: https://github.com/Curts0/PyTabular
 nav:
     - Home: README.md
     - Main Tabular Class: Tabular.md
@@ -33,6 +35,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed
+  - admonition
 theme:
   name: "material"
   features:
