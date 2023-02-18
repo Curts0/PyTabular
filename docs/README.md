@@ -12,7 +12,7 @@
 
 ### Getting Started
 See the [Pypi project](https://pypi.org/project/python-tabular/) for available versions. **To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.** Install v. 0.3.4 or lower to get the older naming conventions.
-```powershell
+```powershell title="Install Example"
 python3 -m pip install python-tabular
 
 #install specific version
@@ -20,74 +20,81 @@ python3 -m pip install python-tabular==0.3.4
 ```
 
 In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.
-```python
+```python title="Connecting to Model"
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
 ```
 
 You may have noticed some logging into your console. I'm a big fan of logging, if you don't want any just get the logger and disable it.
-```python
+```python title="Logging Example"
 import pytabular
 pytabular.logger.disabled = True
 ```
 
 You can query your models with the `query` method from your tabular class. For Dax Queries, it will need the full Dax syntax. See [EVALUATE example](https://dax.guide/st/evaluate/). This will return a [Pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html). If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See [PyTabular Docs for Query](https://curts0.github.io/PyTabular/Tabular/#query).
-```python
+```python title="Query Examples"
 #Run basic queries
 DAX_QUERY = "EVALUATE TOPN(100, 'Table1')"
-model.query(DAX_QUERY) #returns pd.DataFrame()
+model.query(DAX_QUERY) # (1)
 
 #or...
 DMV_QUERY = "select * from $SYSTEM.DISCOVER_TRACE_EVENT_CATEGORIES"
-model.query(DMV_QUERY) #returns pd.DataFrame()
+model.query(DMV_QUERY) # (2)
 
 #or...
 SINGLE_VALUE_QUERY_EX = "EVALUATE {1}"
-model.query(SINGLE_VALUE_QUERY_EX) #returns 1
+model.query(SINGLE_VALUE_QUERY_EX) # (3)
 
 #or...
-FILE_PATH = 'C:\\FILEPATHEXAMPLE\\file.dax' #or file.txt
-model.query(FILE_PATH) #Will return same logic as above, single values if possible else will return pd.DataFrame()
+FILE_PATH = 'C:\\FILEPATHEXAMPLE\\file.dax'
+model.query(FILE_PATH) # (4)
 ```
+
+1. Returns a `pd.DataFrame()`.
+2. Returns a `pd.DataFrame()`.
+3. This will return a single value. Example, `1` or `'string'`.
+4. This will return same logic as above, single values if possible else will return `pd.DataFrame()`. Supply any file type.
+
 
 You can also explore your tables, partitions, columns, etc. via the attributes of your `Tabular()` class.
-```python
-#Explore tables...
-dir(model.Tables['Table Name'])
+```python title="Usage Examples"
+model.Tables['Table Name'].refresh() # (1)
 
-#Explore columns & partitions
-dir(model.Tables['Table Name'].Partitions['Partition Name'])
+#or
+model.Tables['Table Name'].Partitions['Partition Name'].refresh() # (2)
 
-#Check out some of the built in methods.
-model.Tables['Table Name'].refresh()
 #or
-model.Tables['Table Name'].Partitions['Partition Name'].refresh()
+model.Tables['Table Name'].Partitions['Partition Name'].last_refresh() # (3)
+
 #or
-model.Tables['Table Name'].Partitions['Partition Name'].last_refresh()
+model.Tables['Table Name'].row_count() # (4)
+
 #or
-model.Tables['Table Name'].row_count()
-#or
-model.Tables['Table Name'].Columns['Column Name'].distinct_count()
+model.Tables['Table Name'].Columns['Column Name'].distinct_count() # (5)
 ```
 
+1. Refresh a specific table.
+2. Refresh a specific partition.
+3. Get the last refresh time of a specific partition.
+4. Get row count of a table.
+5. Get distinct count of a column.
+
 Use the `refresh()` method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See [PyTabular Docs for Refreshing Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh). Most basic way to refresh is input the table name string. The method will search for table and output exception if unable to find it. For partitions you will need a key, value combination. Example, `{'Table1':'Partition1'}`. You can also take the key value pair and iterate through a group of partitions. Example, `{'Table1':['Partition1','Partition2']}`. Rather than providing a string, you can also input the actual class. See below for those examples. You can acess them from the built in attributes `self.Tables`, `self.Partitions`.
-```python
-#You have a few options when refreshing. 
-model.refresh('Table Name')
+```python title="Refresh Examples"
+model.refresh('Table Name') # (1)
+
+model.refresh(['Table1','Table2','Table3']) # (2)
 
 #or...
-model.refresh(['Table1','Table2','Table3'])
+model.refresh(<PyTable Class>) # (3)
 
 #or...
-model.refresh(<PyTable Class>)
+model.refresh(<PyPartition Class>) # (4)
 
 #or...
-model.refresh(<PyPartition Class>)
+model.refresh({'Table Name':'Partition Name'}) # (5)
 
 #or...
-model.refresh({'Table Name':'Partition Name'})
-
-#or any kind of weird combination like
 model.refresh(
     [
         {
@@ -97,31 +104,27 @@ model.refresh(
         'Table Name',
         'Table Name2'
     ]
-)
+) # (6)
 
-#You can even run through the Tables & Partition Attributes
-model.Tables['Table Name'].refresh()
+#or...
+model.Tables['Table Name'].refresh() # (7)
 
-#or
-model.Tables['Table Name'].Partitions['Partition Name'].refresh()
+#or...
+model.Tables['Table Name'].Partitions['Partition Name'].refresh() # (8)
 
-#Default tracing happens automatically, but can be removed by... 
-model.refresh(['Table1','Table2'], trace = None)
+#or...
+model.refresh(['Table1','Table2'], trace = None) # (9)
 ```
 
-It's not uncommon to need to run through some checks on specific Tables, Partitions, Columns, Etc...
-```python
-#Get Row Count from model
-model.Tables['Table Name'].row_count()
-
-#Get Last Refresh time from a partition
-model.Tables['Table Name'].last_refresh()
-
-#Get Distinct Count or Values from a Column
-model.Tables['Table Name'].Columns['Column Name'].distinct_count()
-#or
-model.Tables['Table Name'].Columns['Column Name'].values()
-```
+1. Basic refresh of a specific table by table name string.
+2. Basic refresh of a group of tables by table name strings. Example is with list, but as long as it's iterable you should be fine.
+3. Refresh of a table by passing the `PyTable` class.
+4. Refresh of a partition by passing the `PyPartition` class.
+5. Refresh a specific partition by passing a dictionary with table name as key and partition name as value.
+6. Get crazy. Pass all kinds of weird combinations.
+7. Basic refresh from a `PyTable` class.
+8. Basic refresh from a `PyPartition` class.
+9. By default a `RefreshTrace` is started during refresh. It can be disabled by setting `trace = None`.
 
 ### Use Cases
 
@@ -361,4 +364,4 @@ docs.save_documentation()
 ```
 
 ### Contributing
-See [contributing.md](contributing.md)
+See [contributing.md](CONTRIBUTING.md)

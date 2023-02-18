@@ -9,7 +9,7 @@ import requests as r
 import atexit
 import json
 import os
-from logic_utils import remove_folder_and_contents
+from pytabular.logic_utils import remove_folder_and_contents
 
 
 logger = logging.getLogger("PyTabular")
@@ -30,9 +30,9 @@ def download_bpa_file(
 
     Args:
             download_location (str, optional):  Defaults to
-                [BPA]'https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json'.
+                    [BPA]'https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json'.
             folder (str, optional): New folder string.
-                Defaults to 'Best_Practice_Analyzer'.
+                    Defaults to 'Best_Practice_Analyzer'.
             auto_remove (bool, optional): Auto Remove when script exits. Defaults to True.
 
     Returns:

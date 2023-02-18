@@ -19,8 +19,8 @@ pre-commit install --hook-type pre-push
 ## Documentation help
 - Docstrings follow the google docstring convention. See [Example](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html).
 - The `flake8-docstrings` will check that google docstring format is followed.
-- Docstrings get converted to markdown with the `mkgendocs` package.
-- Then gets converted to `readthedocs` site with the `mkdocs` package.
+- Docstrings get converted to markdown with the `mkdocstring` package.
+- Then gets converted to a site with the `mkdocs` package.
 
 ## Misc
 - Work will be distributed under a MIT license.

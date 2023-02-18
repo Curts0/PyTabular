@@ -27,10 +27,10 @@ def download_tabular_editor(
 
     Args:
             download_location (str, optional): File path for zip of Tabular Editor 2.
-                See code args for default download url.
+                    See code args for default download url.
             folder (str, optional): New Folder Location. Defaults to "Tabular_Editor_2".
             auto_remove (bool, optional): Boolean to determine auto
-                removal of files once script exits. Defaults to True.
+                    removal of files once script exits. Defaults to True.
 
     Returns:
             str: File path of TabularEditor.exe

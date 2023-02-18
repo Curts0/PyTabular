@@ -5,7 +5,7 @@ will be done through these classes.
 """
 import logging
 import pandas as pd
-from object import PyObject, PyObjects
+from pytabular.object import PyObject, PyObjects
 
 logger = logging.getLogger("PyTabular")
 
@@ -23,8 +23,8 @@ class PyMeasure(PyObject):
         table display.
 
         Args:
-            object: The .Net measure object.
-            table (PyTable): The parent `PyTable`.
+            object (object.PyObject): The .Net measure object.
+            table (table.PyTable): The parent `PyTable`.
         """
         super().__init__(object)
 
@@ -35,10 +35,7 @@ class PyMeasure(PyObject):
         self._display.add_row("FormatString", self._object.FormatString)
 
     def get_dependencies(self) -> pd.DataFrame:
-        """Returns the dependant objects of a measure.
-
-        Args:
-            self: The Measure Object
+        """Get the dependant objects of a measure.
 
         Returns:
             pd.DataFrame: The Return Value is a Pandas dataframe

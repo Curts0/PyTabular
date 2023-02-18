@@ -4,8 +4,8 @@ Once connected to your model, interacting with relationship(s)
 will be done through these classes.
 """
 import logging
-from object import PyObject, PyObjects
-from table import PyTable, PyTables
+from pytabular.object import PyObject, PyObjects
+from pytabular.table import PyTable, PyTables
 
 from Microsoft.AnalysisServices.Tabular import (
     CrossFilteringBehavior,

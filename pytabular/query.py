@@ -5,7 +5,7 @@
 import logging
 import os
 from typing import Union
-from logic_utils import get_value_to_df
+from pytabular.logic_utils import get_value_to_df
 import pandas as pd
 from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
 
@@ -51,7 +51,7 @@ class Connection(AdomdConnection):
 
         Args:
             query_str (str): Dax Query. Note, needs full syntax
-                (ex: `EVALUATE`). See (DAX)[https://docs.microsoft.com/en-us/dax/dax-queries].
+                (ex: `EVALUATE`). See [DAX](https://docs.microsoft.com/en-us/dax/dax-queries).
                 Will check if query string is a file.
                 If it is, then it will perform a query
                 on whatever is read from the file.
