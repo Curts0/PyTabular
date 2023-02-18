@@ -8,7 +8,6 @@ from pytabular.partition import PyPartition, PyPartitions
 from pytabular.column import PyColumn, PyColumns
 from pytabular.measure import PyMeasure, PyMeasures
 from pytabular.object import PyObjects, PyObject
-from pytabular.pytabular import Tabular
 from logic_utils import ticks_to_datetime
 from datetime import datetime
 
@@ -40,7 +39,7 @@ class PyTable(PyObject):
         -> `PyPartition` (.Name == 'Last Year') -> `.refresh()`
     """
 
-    def __init__(self, object, model: Tabular) -> None:
+    def __init__(self, object, model) -> None:
         """Init extends from `PyObject` class.
 
         Also adds a few specific rows to the `rich`
@@ -51,7 +50,7 @@ class PyTable(PyObject):
             model (Tabular): The model that the table is in.
         """
         super().__init__(object)
-        self.Model: Tabular = model
+        self.Model = model
         self.Partitions: PyPartitions = PyPartitions(
             [
                 PyPartition(partition, self)

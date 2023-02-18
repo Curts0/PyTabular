@@ -5,7 +5,6 @@ Once connected to your model, interacting with partition(s) will be done through
 import logging
 
 from pytabular.object import PyObject, PyObjects
-from pytabular.table import PyTable
 from logic_utils import ticks_to_datetime
 import pandas as pd
 from datetime import datetime
@@ -19,7 +18,7 @@ class PyPartition(PyObject):
     See methods for available uses.
     """
 
-    def __init__(self, object, table: PyTable) -> None:
+    def __init__(self, object, table) -> None:
         """Extends from `PyObject` class.
 
         Adds a few custom rows to `rich` table for the partition.
