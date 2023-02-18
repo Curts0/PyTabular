@@ -23,6 +23,7 @@ nav:
       - best_practice_analyzer: best_practice_analyzer.md
       - pbi_helper: pbi_helper.md
       - logic_utils: logic_utils.md
+    - Running Traces: tabular_tracing.md
     - Documenting Model: document.md
     - Contributing: CONTRIBUTING.md
 
