@@ -8,6 +8,7 @@ from pytabular.partition import PyPartition, PyPartitions
 from pytabular.column import PyColumn, PyColumns
 from pytabular.measure import PyMeasure, PyMeasures
 from pytabular.object import PyObjects, PyObject
+from pytabular.pytabular import Tabular
 from logic_utils import ticks_to_datetime
 from datetime import datetime
 
@@ -17,9 +18,26 @@ logger = logging.getLogger("PyTabular")
 class PyTable(PyObject):
     """The main PyTable class to interact with the tables in model.
 
-    Notice the `PyObject` magic method `__getattr__()` will search in `self._object`
-    if it is unable to find it in the default attributes.
-    This let's you also easily check the default .Net properties.
+    Attributes:
+        Name (str): Name of table.
+        IsHidden (bool): Is the table hidden.
+        Description (str): The description of the table.
+        Model (Tabular): The parent `Tabular()` class.
+        Partitions (PyPartitions): The `PyPartitions()` in the table.
+        Columns (PyColumns): The `PyColumns()` in the table.
+        Measures (PyMeasures): The `PyMeasures()` in the table.
+        
+    Example:
+        ```python title="Passing through PyTable to PyPartition"
+        
+        model.Tables[0].Partitions['Last Year'].refresh() # (1)
+        ```
+
+        1. This shows the ability to travel through your model
+        to a specific partition and then running a refresh
+        for that specific partition.
+        `model` -> `PyTables` -> `PyTable` (1st index) -> `PyPartitions`
+        -> `PyPartition` (.Name == 'Last Year') -> `.refresh()`
     """
 
     def __init__(self, object, model) -> None:
@@ -33,17 +51,17 @@ class PyTable(PyObject):
             model (Tabular): The model that the table is in.
         """
         super().__init__(object)
-        self.Model = model
-        self.Partitions = PyPartitions(
+        self.Model: Tabular = model
+        self.Partitions: PyPartitions = PyPartitions(
             [
                 PyPartition(partition, self)
                 for partition in self._object.Partitions.GetEnumerator()
             ]
         )
-        self.Columns = PyColumns(
+        self.Columns: PyColumns = PyColumns(
             [PyColumn(column, self) for column in self._object.Columns.GetEnumerator()]
         )
-        self.Measures = PyMeasures(
+        self.Measures: PyMeasures = PyMeasures(
             [
                 PyMeasure(measure, self)
                 for measure in self._object.Measures.GetEnumerator()
