@@ -3,12 +3,11 @@
 Once connected to your model, interacting with table(s) will be done through these classes.
 """
 import logging
-from object import PyObject
 import pandas as pd
-from partition import PyPartition, PyPartitions
-from column import PyColumn, PyColumns
-from measure import PyMeasure, PyMeasures
-from pytabular.object import PyObjects
+from pytabular.partition import PyPartition, PyPartitions
+from pytabular.column import PyColumn, PyColumns
+from pytabular.measure import PyMeasure, PyMeasures
+from pytabular.object import PyObjects, PyObject
 from logic_utils import ticks_to_datetime
 from datetime import datetime
 
@@ -131,8 +130,8 @@ class PyTables(PyObjects):
 
         Args:
                 query_function (str, optional): Dax query is
-                dynamically building a query with the
-                `UNION` & `ROW` DAX Functions. Defaults to 'COUNTROWS(_)'.
+                        dynamically building a query with the
+                        `UNION` & `ROW` DAX Functions. Defaults to 'COUNTROWS(_)'.
 
         Returns:
                 pd.DataFrame: Returns dataframe with results
@@ -169,15 +168,14 @@ class PyTables(PyObjects):
         `model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')`.
 
         Args:
-                model (pytabular.Tabular): Tabular Model
                 group_partition (bool, optional): Whether or not you want
-                    the grain of the dataframe to be by table or by partition.
-                    Defaults to True.
+                        the grain of the dataframe to be by table or by partition.
+                        Defaults to True.
 
         Returns:
                 pd.DataFrame: pd dataframe with the RefreshedTime property
-                    If group_partition == True and the table has
-                    multiple partitions, then df.groupby(by["tables"]).max()
+                        If group_partition == True and the table has
+                        multiple partitions, then df.groupby(by["tables"]).max()
         """
         data = {
             "Tables": [

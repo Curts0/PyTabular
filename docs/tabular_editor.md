@@ -1,0 +1,1 @@
+:::pytabular.tabular_editor

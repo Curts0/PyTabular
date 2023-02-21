@@ -27,7 +27,7 @@ class PyObject(ABC):
         It will also begin to build out a default `rich` table display.
 
         Args:
-            object: A .Net object.
+            object (.Net object): A .Net object.
         """
         self._object = object
         self._display = Table(title=self.Name)
@@ -130,7 +130,7 @@ class PyObjects:
             object_str (str): str to lookup in `PyObjects`
 
         Returns:
-            PyObjects: Returns a `PyObjects` class with all `PyObject`
+            PyObjects (object.PyObjects): Returns a `PyObjects` class with all `PyObject`
                 where the `PyObject.Name` matches `object_str`.
         """
         items = [
@@ -139,3 +139,23 @@ class PyObjects:
             if object_str.lower() in object.Name.lower()
         ]
         return self.__class__.mro()[0](items)
+
+    def get(self, object_str: str, alt_result: str) -> str:
+        """Gets the object based on str. 
+
+        If the object isnt found, then an alternate result
+        can be supplied as an argument.
+
+        Args:
+            object_str (str): str to lookup object
+            alt_result (str): str to return when value isn't found.
+
+        Returns:
+            str: Result of the lookup, or the alternate result.
+        """
+        try:
+            return self.__getitem__(object_str)
+        except Exception as e:
+            print(e)
+        else:
+            return alt_result
