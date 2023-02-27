@@ -1,6 +1,31 @@
 """`refresh.py` is the main file to handle all the components of refreshing your model.
 
-See the `PyTable(s)` and `PyPartition(s)` classes. Use the `refresh` method from their.
+You have may ways to interact with refreshing.
+
+Example:
+    ```python title="refresh from model"
+    import pytabular as p
+    model = p.Tabular(CONNECTION_STR)
+    model.refresh('Table Name')
+    ```
+
+    ```python title="refresh from PyTables"
+    model.Tables.find("fact").refresh() # (1)
+    ```
+
+    1. Refresh all tables with 'fact' in the name.
+
+    ```python title="refresh from PyTable"
+    model.Tables['Sales'].refresh()
+    ```
+
+    ```python title="refresh from PyPartitions"
+    model.Tables['Large Sales Fact'].Partitions.refresh()
+    ```
+
+    ```python title="refresh from PyPartition"
+    model.Tables['Sales'].Partitions['Last Fiscal Year'].refresh()
+    ```
 """
 from tabular_tracing import RefreshTrace, BaseTrace
 import logging

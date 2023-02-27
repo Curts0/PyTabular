@@ -17,9 +17,26 @@ logger = logging.getLogger("PyTabular")
 class PyTable(PyObject):
     """The main PyTable class to interact with the tables in model.
 
-    Notice the `PyObject` magic method `__getattr__()` will search in `self._object`
-    if it is unable to find it in the default attributes.
-    This let's you also easily check the default .Net properties.
+    Attributes:
+        Name (str): Name of table.
+        IsHidden (bool): Is the table hidden.
+        Description (str): The description of the table.
+        Model (Tabular): The parent `Tabular()` class.
+        Partitions (PyPartitions): The `PyPartitions()` in the table.
+        Columns (PyColumns): The `PyColumns()` in the table.
+        Measures (PyMeasures): The `PyMeasures()` in the table.
+
+    Example:
+        ```python title="Passing through PyTable to PyPartition"
+
+        model.Tables[0].Partitions['Last Year'].refresh() # (1)
+        ```
+
+        1. This shows the ability to travel through your model
+        to a specific partition and then running a refresh
+        for that specific partition.
+        `model` -> `PyTables` -> `PyTable` (1st index) -> `PyPartitions`
+        -> `PyPartition` (.Name == 'Last Year') -> `.refresh()`
     """
 
     def __init__(self, object, model) -> None:
@@ -34,16 +51,16 @@ class PyTable(PyObject):
         """
         super().__init__(object)
         self.Model = model
-        self.Partitions = PyPartitions(
+        self.Partitions: PyPartitions = PyPartitions(
             [
                 PyPartition(partition, self)
                 for partition in self._object.Partitions.GetEnumerator()
             ]
         )
-        self.Columns = PyColumns(
+        self.Columns: PyColumns = PyColumns(
             [PyColumn(column, self) for column in self._object.Columns.GetEnumerator()]
         )
-        self.Measures = PyMeasures(
+        self.Measures: PyMeasures = PyMeasures(
             [
                 PyMeasure(measure, self)
                 for measure in self._object.Measures.GetEnumerator()
@@ -72,16 +89,28 @@ class PyTable(PyObject):
 
         Returns:
             int: Number of rows using `COUNTROWS`.
+
+        Example:
+            ```python
+            model.Tables['Table Name'].row_count()
+            ```
         """
         return self.Model.Adomd.query(f"EVALUATE {{COUNTROWS('{self.Name}')}}")
 
     def refresh(self, *args, **kwargs) -> pd.DataFrame:
-        """Use this to refresh the PyTable in question.
+        """Use this to refresh the PyTable.
 
-        You can pass through any extra parameters. For example:
-        `Tabular().Tables['Table Name'].Refresh(trace = None)`
         Returns:
             pd.DataFrame: Returns pandas dataframe with some refresh details.
+
+        Example:
+            ```python
+            model.Tables['Table Name'].refresh()
+
+            model.Tables['Table Name'].refresh(trace = None) # (1)
+            ```
+
+            1. You can pass through arguments to `PyRefresh`, like removing trace.
         """
         return self.Model.refresh(self, *args, **kwargs)
 
@@ -106,11 +135,8 @@ class PyTable(PyObject):
 class PyTables(PyObjects):
     """Groups together multiple tables.
 
-    See `PyObjects` class for what more it can do.
-    You can interact with `PyTables` straight from model. For ex: `model.Tables`.
-    You can even filter down with `.Find()`.
-    For example find all tables with `fact` in name.
-    `model.Tables.Find('fact')`.
+    You can interact with `PyTables` straight from model.
+    You can even filter down with `.find()`.
     """
 
     def __init__(self, objects) -> None:
@@ -135,6 +161,16 @@ class PyTables(PyObjects):
 
         Returns:
                 pd.DataFrame: Returns dataframe with results
+
+        Example:
+            ```python
+            model.Tables.find('fact').query_all() # (1)
+            ```
+
+            1. Because `.find()` will return the `PyObjects` you are searching in,
+            another `PyTables` is returned, but reduced to just
+            the `PyTable`(s) with the 'fact' in the name. Then will
+            get the # of rows for each table.
         """
         logger.info("Querying every table in PyTables...")
         logger.debug(f"Function to be run: {query_function}")
@@ -148,8 +184,12 @@ class PyTables(PyObjects):
         query_str = f"{query_str[:-2]})"
         return self[0].Model.query(query_str)
 
-    def find_zero_rows(self):
-        """Returns PyTables class of tables with zero rows queried."""
+    def find_zero_rows(self) -> "PyTables":
+        """Returns PyTables class of tables with zero rows queried.
+
+        Returns:
+            PyTables: A subset of the `PyTables` that contains zero rows.
+        """
         query_function: str = "COUNTROWS(_)"
         df = self.query_all(query_function)
 
@@ -168,14 +208,14 @@ class PyTables(PyObjects):
         `model.Create_Table(p.Table_Last_Refresh_Times(model),'RefreshTimes')`.
 
         Args:
-                group_partition (bool, optional): Whether or not you want
-                        the grain of the dataframe to be by table or by partition.
-                        Defaults to True.
+            group_partition (bool, optional): Whether or not you want
+                the grain of the dataframe to be by table or by partition.
+                Defaults to True.
 
         Returns:
-                pd.DataFrame: pd dataframe with the RefreshedTime property
-                        If group_partition == True and the table has
-                        multiple partitions, then df.groupby(by["tables"]).max()
+            pd.DataFrame: pd dataframe with the RefreshedTime property
+                If group_partition == True and the table has
+                multiple partitions, then df.groupby(by["tables"]).max()
         """
         data = {
             "Tables": [

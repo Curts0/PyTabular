@@ -40,7 +40,7 @@ logger = logging.getLogger("PyTabular")
 
 
 class Tabular(PyObject):
-    """Tabular Class to perform operations.
+    """This is the Tabular Class to perform operations.
 
     This is the main class to work with in PyTabular.
     You can connect to the other classes via the supplied attributes.
@@ -50,13 +50,14 @@ class Tabular(PyObject):
                     [link](https://learn.microsoft.com/en-us/analysis-services/instances/connection-string-properties-analysis-services)
 
     Attributes:
-            AdomdConnection (Connection): For querying.
-                    This is the `Connection` class.
-            Tables (PyTables): See `PyTables` for more information.
-                    Iterate through your tables in your model.
-            Columns (PyColumns): See `PyColumns` for more information.
-            Partitions (PyPartitions): See `PyPartitions` for more information.
-            Measures (PyMeasures): See `PyMeasures` for more information.
+        Adomd (Connection): For querying.
+            This is the `Connection` class.
+        Tables (PyTables): See `PyTables` for more information.
+            Iterate through your tables in your model.
+        Columns (PyColumns): See `PyColumns` for more information.
+        Partitions (PyPartitions): See `PyPartitions` for more information.
+        Measures (PyMeasures): See `PyMeasures` for more information.
+        PyRefresh (PyRefresh): See `PyRefresh` for more information.
     """
 
     def __init__(self, connection_str: str):
@@ -85,7 +86,7 @@ class Tabular(PyObject):
         logger.info(f"Connected to Model - {self.Model.Name}")
         self.Adomd: Connection = Connection(self.Server)
         self.effective_users: dict = {}
-        self.PyRefresh = PyRefresh
+        self.PyRefresh: PyRefresh = PyRefresh
 
         # Build PyObjects
         self.reload_model_info()
@@ -158,7 +159,7 @@ class Tabular(PyObject):
         to see if any processing is happening.
 
         Returns:
-                bool: True if DMV shows Process, False if not.
+            bool: True if DMV shows Process, False if not.
         """
         _jobs_df = self.query("select * from $SYSTEM.DISCOVER_JOBS")
         return len(_jobs_df[_jobs_df["JOB_DESCRIPTION"] == "Process"]) > 0
@@ -243,7 +244,7 @@ class Tabular(PyObject):
             )
 
     def backup_table(self, table_str: str) -> bool:
-        """Will be removed.
+        """This will be removed.
 
         Used in conjunction with `revert_table()`.
         """
@@ -338,7 +339,7 @@ class Tabular(PyObject):
         return True
 
     def revert_table(self, table_str: str) -> bool:
-        """Will be removed.
+        """This will be removed.
 
         This is used in conjunction with `backup_table()`.
         """
@@ -428,19 +429,31 @@ class Tabular(PyObject):
     def query(
         self, query_str: str, effective_user: str = None
     ) -> Union[pd.DataFrame, str, int]:
-        """Executes query on model.
+        """Executes a query on model.
 
         See `Connection().query()` for details on execution.
 
         Args:
             query_str (str): Query string to execute.
             effective_user (str, optional): Pass through an effective user
-                    if desired. It will create and store a new `Connection()` class if need,
-                    which will help with speed if looping through multiple users in a row.
-                    Defaults to None.
+                if desired. It will create and store a new `Connection()` class if need,
+                which will help with speed if looping through multiple users in a row.
+                Defaults to None.
 
         Returns:
-            Union[pd.DataFrame, str, int]: _description_
+            Union[pd.DataFrame, str, int]: Depending on query, will return DataFrame
+                or single value.
+        Example:
+            ```python
+            model.query("EVALUATE {1}")
+
+            model.query("EVALUATE TOPN(5, 'Customer')")
+
+            model.query(
+                "EVALUATE VALUES('Sales Region'[Region])",
+                effective_user = "user@company.com"
+            )
+            ```
         """
         if effective_user is None:
             return self.Adomd.query(query_str)

@@ -1,6 +1,9 @@
 site_name: PyTabular
+site_description: "Connect to your Tabular models in Python!"
 site_url: https://curts0.github.io/PyTabular/
 docs_dir: docs
+repo_name: Curts0/PyTabular
+repo_url: https://github.com/Curts0/PyTabular
 nav:
     - Home: README.md
     - Main Tabular Class: Tabular.md
@@ -22,6 +25,7 @@ nav:
       - best_practice_analyzer: best_practice_analyzer.md
       - pbi_helper: pbi_helper.md
       - logic_utils: logic_utils.md
+    - Running Traces: tabular_tracing.md
     - Documenting Model: document.md
     - Contributing: CONTRIBUTING.md
 
@@ -31,10 +35,22 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.tabbed
+  - admonition
 theme:
   name: "material"
   features:
     - content.code.annotate
 plugins:
-  - mkdocstrings:
   - search
+  - mkdocstrings:
+      handlers:
+        python:
+          import:
+          - https://docs.python.org/3/objects.inv
+          - https://pandas.pydata.org/docs/objects.inv
+          options:
+            docstring_style: google
+            show_submodules: true
+            show_root_full_path: false
+            members_order: source

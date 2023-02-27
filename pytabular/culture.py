@@ -64,7 +64,7 @@ class PyCulture(PyObject):
             ]
             return translations[0]
         except Exception:
-            return {"object_not_found": "Not Available"}
+            return {"object_translation": object_name}
 
 
 class PyCultures(PyObjects):

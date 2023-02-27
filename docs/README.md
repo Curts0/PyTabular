@@ -11,7 +11,11 @@
 [PyTabular](https://github.com/Curts0/PyTabular) (**python-tabular** in [pypi](https://pypi.org/project/python-tabular/)) is a python package that allows for programmatic execution on your tabular models! This is possible thanks to [Pythonnet](https://pythonnet.github.io/) and Microsoft's [.Net APIs on Azure Analysis Services](https://docs.microsoft.com/en-us/dotnet/api/microsoft.analysisservices?view=analysisservices-dotnet). Currently this build is tested and working on **Windows Operating System only**. Help is needed to expand this for other os. See the [Documentation Here](https://curts0.github.io/PyTabular/). PyTabular is still considered alpha. Please send bugs my way! Preferably in the issues section in Github.
 
 ### Getting Started
-See the [Pypi project](https://pypi.org/project/python-tabular/) for available versions. **To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.** Install v. 0.3.4 or lower to get the older naming conventions.
+See the [Pypi project](https://pypi.org/project/python-tabular/) for available versions.
+
+!!! DANGER "Before 0.3.5"
+
+    **To become PEP8 compliant with naming conventions, serious name changes were made in 0.3.5.** Install v. 0.3.4 or lower to get the older naming conventions.
 ```powershell title="Install Example"
 python3 -m pip install python-tabular
 
@@ -22,8 +26,10 @@ python3 -m pip install python-tabular==0.3.4
 In your python environment, import pytabular and call the main Tabular Class. Only parameter needed is a solid connection string.
 ```python title="Connecting to Model"
 import pytabular
-model = pytabular.Tabular(CONNECTION_STR)
+model = pytabular.Tabular(CONNECTION_STR) # (1)
 ```
+
+1. That's it. A solid connection string.
 
 You may have noticed some logging into your console. I'm a big fan of logging, if you don't want any just get the logger and disable it.
 <<<<<<< HEAD:README.md
@@ -35,10 +41,14 @@ import pytabular
 pytabular.logger.disabled = True
 ```
 
+<<<<<<< HEAD
 You can query your models with the `query` method from your tabular class. For Dax Queries, it will need the full Dax syntax. See [EVALUATE example](https://dax.guide/st/evaluate/). This will return a [Pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html). If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example. See [PyTabular Docs for Query](https://curts0.github.io/PyTabular/Tabular/#query).
 <<<<<<< HEAD:README.md
 ```python
 =======
+=======
+You can query your models with the `query()` method from your tabular class. For Dax Queries, it will need the full Dax syntax. See [EVALUATE example](https://dax.guide/st/evaluate/). This will return a [Pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html). If you are looking to return a single value, see below. Simply wrap your query in the the curly brackets. The method will take that single cell table and just return the individual value. You can also query your DMV. See below for example.
+>>>>>>> 4f5639e919d0defb06859a3ecd12fc9b7bab9599
 ```python title="Query Examples"
 >>>>>>> c70c0bbea620a2a73b1ccbccddc1a6d186ecc837:docs/README.md
 #Run basic queries
@@ -71,11 +81,15 @@ dir(model.Tables['Table Name'])
 >>>>>>> c70c0bbea620a2a73b1ccbccddc1a6d186ecc837:docs/README.md
 
 
+<<<<<<< HEAD
 <<<<<<< HEAD:README.md
 #Check out some of the built in methods.
 model.Tables['Table Name'].refresh()
 =======
 You can also explore your tables, partitions, columns, etc. via the attributes of your `Tabular()` class.
+=======
+You can also explore your tables, partitions, columns, etc. via the attributes of your `Tabular` class.
+>>>>>>> 4f5639e919d0defb06859a3ecd12fc9b7bab9599
 ```python title="Usage Examples"
 model.Tables['Table Name'].refresh() # (1)
 
@@ -84,7 +98,7 @@ model.Tables['Table Name'].refresh() # (1)
 model.Tables['Table Name'].Partitions['Partition Name'].refresh() # (2)
 
 #or
-model.Tables['Table Name'].Partitions['Partition Name'].last_refresh() # (3)
+model.Tables['Table Name'].Partitions[4].last_refresh() # (3)
 
 #or
 model.Tables['Table Name'].row_count() # (4)
@@ -93,6 +107,7 @@ model.Tables['Table Name'].row_count() # (4)
 model.Tables['Table Name'].Columns['Column Name'].distinct_count() # (5)
 ```
 
+<<<<<<< HEAD
 <<<<<<< HEAD:README.md
 Use the `refresh()` method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See [PyTabular Docs for Refreshing Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh). Most basic way to refresh is input the table name string. The method will search for table and output exception if unable to find it. For partitions you will need a key, value combination. Example, `{'Table1':'Partition1'}`. You can also take the key value pair and iterate through a group of partitions. Example, `{'Table1':['Partition1','Partition2']}`. Rather than providing a string, you can also input the actual class. See below for those examples. You can acess them from the built in attributes `self.Tables`, `self.Partitions`.
 ```python
@@ -100,12 +115,15 @@ Use the `refresh()` method to handle refreshes on your model. This is synchronou
 model.refresh('Table Name')
 =======
 1. Refresh a specific table.
+=======
+1. Refresh a specific table. The `.Tables` is your attribute to gain access to your `PyTables` class. From that, you can iterate into specific `PyTable` classes.
+>>>>>>> 4f5639e919d0defb06859a3ecd12fc9b7bab9599
 2. Refresh a specific partition.
-3. Get the last refresh time of a specific partition.
+3. Get the last refresh time of a specific partition. Notice this time that instead of the partition name, an `int` was used to index into the specific `PyPartition`.
 4. Get row count of a table.
 5. Get distinct count of a column.
 
-Use the `refresh()` method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See [PyTabular Docs for Refreshing Tables and Partitions](https://curts0.github.io/PyTabular/Tabular/#refresh). Most basic way to refresh is input the table name string. The method will search for table and output exception if unable to find it. For partitions you will need a key, value combination. Example, `{'Table1':'Partition1'}`. You can also take the key value pair and iterate through a group of partitions. Example, `{'Table1':['Partition1','Partition2']}`. Rather than providing a string, you can also input the actual class. See below for those examples. You can acess them from the built in attributes `self.Tables`, `self.Partitions`.
+Use the `refresh()` method to handle refreshes on your model. This is synchronous. Should be flexible enough to handle a variety of inputs. See [PyTabular Docs for Refreshing Tables and Partitions](https://curts0.github.io/PyTabular/refresh). Most basic way to refresh is input the table name string. The method will search for table and output exception if unable to find it. For partitions you will need a key, value combination. Example, `{'Table1':'Partition1'}`. You can also take the key value pair and iterate through a group of partitions. Example, `{'Table1':['Partition1','Partition2']}`. Rather than providing a string, you can also input the actual class. See below for those examples. You can acess them from the built in attributes `self.Tables`, `self.Partitions`.
 ```python title="Refresh Examples"
 model.refresh('Table Name') # (1)
 
@@ -185,13 +203,13 @@ model.refresh(['Table1','Table2'], trace = None) # (9)
 ### Use Cases
 
 #### If blank table, then refresh table.
-This will use the function [find_zero_rows](https://curts0.github.io/PyTabular/Table/#find_zero_rows) and the method [refresh](https://curts0.github.io/PyTabular/Tabular/#refresh) from the Tabular class.
+This will use the function [find_zero_rows](https://curts0.github.io/PyTabular/PyTables/#pytabular.table.PyTables.find_zero_rows) and the method [refresh](https://curts0.github.io/PyTabular/PyTables/#pytabular.table.PyTables.refresh) from the Tabular class.
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
 tables = model.Tables.find_zero_rows()
 if len(tables) > 0:
-    model.refresh(tables)
+    tables.refresh()
 ```
 
 Maybe you only want to check a subset of tables? Like `find()` tables with 'fact' in the name, then check if any facts are blank.
@@ -200,11 +218,11 @@ import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
 tables = model.Tables.find('fact').find_zero_rows()
 if len(tables) > 0:
-    model.refresh(tables)
+    tables.refresh()
 ```
 
 #### Sneak in a refresh.
-This will use the method [is_process](https://curts0.github.io/PyTabular/Tabular/#is_process) and the method [refresh](https://curts0.github.io/PyTabular/Tabular/#refresh) from the Tabular class. It will check the DMV to see if any jobs are currently running classified as processing.
+This will use the method [is_process](https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.is_process) and the method [refresh](https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.refresh) from the Tabular class. It will check the DMV to see if any jobs are currently running classified as processing.
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
@@ -215,7 +233,7 @@ else:
 ```
 
 #### Show refresh times in model.
-This will use the function [last_refresh](https://curts0.github.io/PyTabular/Table/#last_refresh_1) and the method [create_table](https://curts0.github.io/PyTabular/Tabular/#create_table) from the Tabular class. It will search through the model for all tables and partitions and pull the 'RefreshedTime' property from it. It will return results into a pandas dataframe, which will then be converted into an M expression used for a new table.
+This will use the function [last_refresh](https://curts0.github.io/PyTabular/PyTables/#pytabular.table.PyTables.last_refresh) and the method [create_table](https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.create_table) from the Tabular class. It will search through the model for all tables and partitions and pull the 'RefreshedTime' property from it. It will return results into a pandas dataframe, which will then be converted into an M expression used for a new table.
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
@@ -225,7 +243,7 @@ model.create_table(df, 'Refresh Times')
 
 
 #### If BPA Violation, then revert deployment.
-This uses a few things. First the [BPA Class](https://curts0.github.io/PyTabular/Best%20Practice%20Analyzer/#bpa), then the [TE2 Class](https://curts0.github.io/PyTabular/Tabular%20Editor%202/#tabulareditor), and will finish with the [analyze_bpa](https://curts0.github.io/PyTabular/Tabular/#analyze_bpa) method. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities.
+This uses a few things. First the [BPA Class](https://curts0.github.io/PyTabular/best_practice_analyzer/), then the [TE2 Class](https://curts0.github.io/PyTabular/tabular_editor/), and will finish with the [analyze_bpa](https://curts0.github.io/PyTabular/Tabular/#pytabular.pytabular.Tabular.analyze_bpa) method. Did not want to re-invent the wheel with the amazing work done with Tabular Editor and it's BPA capabilities.
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
@@ -241,7 +259,7 @@ if len(results) > 0:
 ```
 
 #### Loop through and query Dax files
-Let's say you have multiple dax queries you would like to store and run through as checks. The [query](https://curts0.github.io/PyTabular/Tabular/#query) method on the Tabular class can also take file paths. It can really be any file type as it's just checking os.path.isfile(). But would suggest `.dax` or `.txt`. It will read the file and use that as the new `query_str` argument.
+Let's say you have multiple dax queries you would like to store and run through as checks. The [query](https://curts0.github.io/PyTabular/query/#pytabular.query.Connection.query) method on the Tabular class can also take file paths. It can really be any file type as it's just checking os.path.isfile(). But would suggest `.dax` or `.txt`. It will read the file and use that as the new `query_str` argument.
 ```python
 import pytabular
 model = pytabular.Tabular(CONNECTION_STR)
@@ -340,13 +358,16 @@ The Tabular model contains a lot of information that can be used to generation d
 **Tip**: With Tabular Editor 2 (Free) or 3 (Paid) you can easily add Descriptioms, Translations (Cultures) and other additonal information that can later be used for generating the documentation. 
 
 Args:
+
 - **model**: Tabular
 - **friendly_name**: Default > No Value 
 
-To specify the location of the docs, just supply the save location with a new folder name argument. 
+To specify the location of the docs, just supply the save location with a new folder name argument.
+
 - **save_location**: Default > docs
 
-Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking. 
+Each page in the generation process has it's own specific name, with these arguments you can rename them to your liking.
+
 - **general_page_url**: Default > 1-general-information.md
 - **measure_page_url**: Default > 2-measures.md
 - **table_page_url**: Default > 3-tables.md
