@@ -140,8 +140,8 @@ class PyObjects:
         ]
         return self.__class__.mro()[0](items)
 
-    def get(self, object_str: str, alt_result: str) -> str:
-        """Gets the object based on str. 
+    def get(self, object_str: str, alt_result: str = "") -> str:
+        """Gets the object based on str.
 
         If the object isnt found, then an alternate result
         can be supplied as an argument.
@@ -156,6 +156,4 @@ class PyObjects:
         try:
             return self.__getitem__(object_str)
         except Exception as e:
-            print(e)
-        else:
             return alt_result

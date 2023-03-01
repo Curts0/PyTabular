@@ -219,7 +219,6 @@ class ModelDocumenter:
         Returns:
             None
         """
-
         if self.save_path.exists():
             logger.info(
                 f"Path exists -> Generating documentation for {self.friendly_name}"
