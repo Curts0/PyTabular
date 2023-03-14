@@ -78,7 +78,6 @@ class ModelDocumenter:
         self.roles_page: str = str()
         self.roles_page_url: str = roles_page_url
 
-
         self.table_page: str = str()
         self.table_folder: str = table_folder
 

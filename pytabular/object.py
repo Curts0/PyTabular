@@ -156,4 +156,6 @@ class PyObjects:
         try:
             return self.__getitem__(object_str)
         except Exception as e:
-            return alt_result
+            Console().print(e)
+
+        return alt_result
