@@ -294,7 +294,7 @@ class ModelDocumenter:
             "",
             "" f"{self.generate_object_properties(object_properties)}" "",
             f'```dax title="Technical: {object.Name}"',
-            f"  {object.Expression}",
+            f"{object.Expression}",
             "```",
             "---",
         ]
@@ -435,7 +435,7 @@ class ModelDocumenter:
             f"{self.generate_object_properties(object_properties)}",
             "",
             f'```{partition_type} title="Table Source: {object.Name}"',
-            f"   {partition_source}",
+            f"{partition_source}",
             "```",
             "---",
         ]
@@ -515,7 +515,7 @@ class ModelDocumenter:
             obj_text.extend(
                 (
                     f'```dax title="Technical: {object.Name}"',
-                    f"  {object.Expression}",
+                    f"{object.Expression}",
                     "```",
                 )
             )
