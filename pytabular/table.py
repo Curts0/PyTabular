@@ -64,7 +64,8 @@ class PyTable(PyObject):
             [
                 PyMeasure(measure, self)
                 for measure in self._object.Measures.GetEnumerator()
-            ]
+            ],
+            self,
         )
         self._display.add_row("# of Partitions", str(len(self.Partitions)))
         self._display.add_row("# of Columns", str(len(self.Columns)))
