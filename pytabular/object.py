@@ -124,6 +124,7 @@ class PyObjects:
         return self
 
     def _first_visible_object(self):
+        """Does what the method is called. Get's first `object.IsHidden is False`."""
         for object in self:
             if object.IsHidden is False:
                 return object
