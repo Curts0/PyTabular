@@ -181,7 +181,7 @@ class PyTables(PyObjects):
             table_name = table.get_Name()
             dax_table_identifier = f"'{table_name}'"
             query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",\
-                {query_function.replace('_',dax_table_identifier)}),\n"
+                {query_function.replace('_',dax_table_identifier)}), \n"
         query_str = f"{query_str[:-2]})"
         return self[0].Model.query(query_str)
 
