@@ -27,5 +27,5 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v2
       - run: pip install --upgrade pip
-      - run: pip install docstr-coverage
+      - run: pip install docstr-coverage==2.2.0
       - run: docstr-coverage
