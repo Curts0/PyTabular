@@ -155,6 +155,6 @@ class PyColumns(PyObjects):
                 dax_identifier = f"'{table_name}'[{column_name}]"
                 query_str += f"ROW(\"Table\",\"{table_name}\",\
                     \"Column\",\"{column_name}\",\"{query_function}\",\
-                    {query_function.replace('_',dax_identifier)}),\n" # noqa: E231
+                    {query_function.replace('_',dax_identifier)}),\n" # noqa: E231, E261
         query_str = f"{query_str[:-2]})"
         return self[0].Table.Model.query(query_str)
