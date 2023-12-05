@@ -141,7 +141,7 @@ class Tabular(PyObject):
             [column for table in self.Tables for column in table.Columns]
         )
         self.Measures = PyMeasures(
-            [measure for table in self.Tables for measure in table.Measures]
+            [measure for table in self.Tables for measure in table.Measures], self
         )
 
         self.Cultures = PyCultures(

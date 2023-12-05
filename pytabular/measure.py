@@ -6,6 +6,8 @@ will be done through these classes.
 import logging
 import pandas as pd
 from pytabular.object import PyObject, PyObjects
+from Microsoft.AnalysisServices.Tabular import Measure, Table
+
 
 logger = logging.getLogger("PyTabular")
 
@@ -27,7 +29,6 @@ class PyMeasure(PyObject):
             table (table.PyTable): The parent `PyTable`.
         """
         super().__init__(object)
-
         self.Table = table
         self._display.add_row("Expression", self._object.Expression, end_section=True)
         self._display.add_row("DisplayFolder", self._object.DisplayFolder)
@@ -59,6 +60,74 @@ class PyMeasures(PyObjects):
     `model.Measures.find('ratio')`.
     """
 
-    def __init__(self, objects) -> None:
+    def __init__(self, objects, parent) -> None:
         """Extends init from `PyObjects`."""
-        super().__init__(objects)
+        super().__init__(objects, parent)
+
+    def __call__(self, *args, **kwargs):
+        """Made `PyMeasures` just sends args through to `add_measure`."""
+        return self.add_measure(*args, **kwargs)
+
+    def add_measure(self, name: str, expression: str, **kwargs) -> PyMeasure:
+        """Add or replace measures from `PyMeasures` class.
+
+        Required is just `name` and `expression`.
+        But you can pass through any properties you wish to update as a kwarg.
+        This method is also used when calling the class,
+        so you can create a new measure that way.
+        kwargs will be set via the `settr` built in function.
+        Anything in the .Net Measures properties should be viable.
+        [Measure Class](https://learn.microsoft.com/en-us/dotnet/api/microsoft.analysisservices.measure?#properties) # noqa: E501
+
+        Example:
+            ```
+            expr = "SUM('Orders'[Amount])"
+            model.Measures.add_measure("Orders Total", expr)
+            ```
+
+            ```
+            expr = "SUM('Orders'[Amount])"
+            model.Measures.add_measure("Orders Total", expr, Folder = 'Measures')
+            ```
+
+            ```
+            expr = "SUM('Orders'[Amount])"
+            model.Tables['Sales'].Measures('Total Sales', expr, Folder = 'Measures')
+            ```
+
+        Args:
+            name (str): Name of the measure. Brackets ARE NOT required.
+            expression (str): DAX expression for the measure.
+        """
+        if isinstance(self.parent._object, Table):
+            table = self.parent
+            model = self.parent.Model
+        else:
+            table = self.parent.Tables._first_visible_object()
+            model = self.parent
+
+        logger.debug(f"Creating measure in {table.Name}")
+
+        new = True
+
+        try:
+            logger.debug(f"Measure {name} exists... Overwriting...")
+            new_measure = self.parent.Measures[name]._object
+            new = False
+        except IndexError:
+            logger.debug(f"Creating new measure {name}")
+            new_measure = Measure()
+
+        new_measure.set_Name(name)
+        new_measure.set_Expression(expression)
+
+        for key, value in kwargs.items():
+            logger.debug(f"Setting '{key}'='{value}' for {new_measure.Name}")
+            setattr(new_measure, key, value)
+
+        if new:
+            measures = table.get_Measures()
+            measures.Add(new_measure)
+
+        model.save_changes()
+        return model.Measures[new_measure.Name]

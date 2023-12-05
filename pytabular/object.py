@@ -2,6 +2,7 @@
 
 These classes are used with the others (Tables, Columns, Measures, Partitions, etc.).
 """
+from __future__ import annotations
 from abc import ABC
 from rich.console import Console
 from rich.table import Table
@@ -64,16 +65,18 @@ class PyObjects:
     Still building out the magic methods to give `PyObjects` more flexibility.
     """
 
-    def __init__(self, objects) -> None:
+    def __init__(self, objects: list[PyObject], parent=None) -> None:
         """Initialization of `PyObjects`.
 
         Takes the objects in something that is iterable.
         Then will build a default `rich` table display.
 
         Args:
-            objects (_type_): _description_
+            objects(list[PyObject]): .Net objects.
+            parent: Parent Object. Defaults to `None`.
         """
         self._objects = objects
+        self.parent = parent
         self._display = Table(title=str(self.__class__.mro()[0]))
         for index, obj in enumerate(self._objects):
             self._display.add_row(str(index), obj.Name)
@@ -120,6 +123,13 @@ class PyObjects:
 
         self.__init__(self._objects)
         return self
+
+    def _first_visible_object(self):
+        """Does what the method is called. Get's first `object.IsHidden is False`."""
+        for object in self:
+            if object.IsHidden is False:
+                return object
+        return None
 
     def find(self, object_str: str):
         """Finds any or all `PyObject` inside of `PyObjects` that match the `object_str`.

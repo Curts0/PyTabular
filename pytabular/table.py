@@ -64,7 +64,8 @@ class PyTable(PyObject):
             [
                 PyMeasure(measure, self)
                 for measure in self._object.Measures.GetEnumerator()
-            ]
+            ],
+            self,
         )
         self._display.add_row("# of Partitions", str(len(self.Partitions)))
         self._display.add_row("# of Columns", str(len(self.Columns)))
@@ -180,7 +181,7 @@ class PyTables(PyObjects):
             table_name = table.get_Name()
             dax_table_identifier = f"'{table_name}'"
             query_str += f"ROW(\"Table\",\"{table_name}\",\"{query_function}\",\
-                {query_function.replace('_',dax_table_identifier)}),\n"
+                {query_function.replace('_',dax_table_identifier)}),\n" # noqa: E231, E261
         query_str = f"{query_str[:-2]})"
         return self[0].Model.query(query_str)
 

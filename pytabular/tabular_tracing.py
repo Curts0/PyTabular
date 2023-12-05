@@ -198,7 +198,7 @@ class BaseTrace:
         )
         for index, row in df.iterrows():
             xml_data = xmltodict.parse(row.Data)
-            if type(xml_data["EVENTCATEGORY"]["EVENTLIST"]["EVENT"]) == list:
+            if isinstance(xml_data["EVENTCATEGORY"]["EVENTLIST"]["EVENT"], list):
                 events += [
                     event for event in xml_data["EVENTCATEGORY"]["EVENTLIST"]["EVENT"]
                 ]
