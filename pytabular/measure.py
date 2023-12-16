@@ -60,7 +60,7 @@ class PyMeasures(PyObjects):
     `model.Measures.find('ratio')`.
     """
 
-    def __init__(self, objects, parent) -> None:
+    def __init__(self, objects, parent=None) -> None:
         """Extends init from `PyObjects`."""
         super().__init__(objects, parent)
 
@@ -68,7 +68,9 @@ class PyMeasures(PyObjects):
         """Made `PyMeasures` just sends args through to `add_measure`."""
         return self.add_measure(*args, **kwargs)
 
-    def add_measure(self, name: str, expression: str, **kwargs) -> PyMeasure:
+    def add_measure(
+        self, name: str, expression: str, auto_save: bool = True, **kwargs
+    ) -> PyMeasure:
         """Add or replace measures from `PyMeasures` class.
 
         Required is just `name` and `expression`.
@@ -98,6 +100,8 @@ class PyMeasures(PyObjects):
         Args:
             name (str): Name of the measure. Brackets ARE NOT required.
             expression (str): DAX expression for the measure.
+            auto_save (bool, optional): Automatically save changes after measure creations.
+                Defaults to `True`
         """
         if isinstance(self.parent._object, Table):
             table = self.parent
@@ -128,6 +132,8 @@ class PyMeasures(PyObjects):
         if new:
             measures = table.get_Measures()
             measures.Add(new_measure)
-
-        model.save_changes()
-        return model.Measures[new_measure.Name]
+        if auto_save:
+            model.save_changes()
+            return model.Measures[new_measure.Name]
+        else:
+            return True
