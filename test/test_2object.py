@@ -107,3 +107,11 @@ def test_iadd_table(model):
     b = model.Tables.find("Date")[0]
     a += b
     assert len(a.find("Date")) > 0
+
+
+@pytest.mark.parametrize("model", testing_parameters)
+def test_find_measure(model):
+    """Tests `find()` with a `PyMeasure()`."""
+    a = model.Measures[0].Name
+    b = model.Measures.find(a)
+    assert len(b) > 0
