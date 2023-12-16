@@ -131,7 +131,7 @@ class PyObjects:
                 return object
         return None
 
-    def find(self, object_str: str):
+    def find(self, object_str: str, parent = None):
         """Finds any or all `PyObject` inside of `PyObjects` that match the `object_str`.
 
         It is case insensitive.
@@ -148,7 +148,7 @@ class PyObjects:
             for object in self._objects
             if object_str.lower() in object.Name.lower()
         ]
-        return self.__class__.mro()[0](items)
+        return self.__class__.mro()[0](items, parent)
 
     def get(self, object_str: str, alt_result: str = "") -> str:
         """Gets the object based on str.

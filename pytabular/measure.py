@@ -60,7 +60,7 @@ class PyMeasures(PyObjects):
     `model.Measures.find('ratio')`.
     """
 
-    def __init__(self, objects, parent) -> None:
+    def __init__(self, objects, parent = None) -> None:
         """Extends init from `PyObjects`."""
         super().__init__(objects, parent)
 
