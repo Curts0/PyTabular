@@ -96,6 +96,9 @@ class PyObjects:
             return [pyobject for pyobject in self._objects if object == pyobject.Name][
                 -1
             ]
+        elif isinstance(object, slice):
+            cls = type(self)
+            return cls(self._objects[object])
         else:
             return self._objects[object]
 
