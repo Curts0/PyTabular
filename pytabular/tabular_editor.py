@@ -74,7 +74,8 @@ class TabularEditor:
             exe_file_path (str, optional): File path where TE2 lives. Defaults to "Default".
                 If "Default", it will run `download_tabular_editor()`
                 and download from github.
-            verify_download (bool, optional): Passthrough argument for `r.get`. Need to update later.
+            verify_download (bool, optional): Passthrough argument for `r.get`.
+                Need to update later.
         """
         logger.debug(f"Initializing Tabular Editor Class:: {exe_file_path}")
         if exe_file_path == "Default":
