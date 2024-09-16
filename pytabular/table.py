@@ -2,6 +2,7 @@
 
 Once connected to your model, interacting with table(s) will be done through these classes.
 """
+
 import logging
 import pandas as pd
 from pytabular.partition import PyPartition, PyPartitions

@@ -25,6 +25,7 @@ Example:
     2. If you want to see the FULL query then set logging to DEBUG.
     3. You can drop on your own, or will get dropped on script exit.
 """
+
 import logging
 import random
 import xmltodict

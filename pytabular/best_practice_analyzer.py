@@ -4,6 +4,7 @@ You can call the `BPA()` class to download or specify your own BPA file.
 It is used with tabular_editor.py to run BPA.
 I did not want to re-invent the wheel, so just letting TE2 work it's magic.
 """
+
 import logging
 import requests as r
 import atexit
@@ -20,7 +21,8 @@ def download_bpa_file(
         "https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json"  # noqa: E501
     ),
     folder: str = "Best_Practice_Analyzer",
-    auto_remove=True,
+    auto_remove: bool = True,
+    verify: bool = False,
 ) -> str:
     """Download a BPA file from local or web.
 
@@ -34,6 +36,7 @@ def download_bpa_file(
             folder (str, optional): New folder string.
                     Defaults to 'Best_Practice_Analyzer'.
             auto_remove (bool, optional): Auto Remove when script exits. Defaults to True.
+            verify (bool, optional): Passthrough argument for `r.get`. Need to update later.
 
     Returns:
             str: File path for the newly downloaded BPA.
@@ -42,7 +45,7 @@ def download_bpa_file(
     folder_location = os.path.join(os.getcwd(), folder)
     if os.path.exists(folder_location) is False:
         os.makedirs(folder_location)
-    response = r.get(download_location)
+    response = r.get(download_location, verify=verify)
     file_location = os.path.join(folder_location, download_location.split("/")[-1])
     with open(file_location, "w", encoding="utf-8") as bpa:
         json.dump(response.json(), bpa, ensure_ascii=False, indent=4)
@@ -55,7 +58,9 @@ def download_bpa_file(
 class BPA:
     """Setting BPA Class for future work..."""
 
-    def __init__(self, file_path: str = "Default") -> None:
+    def __init__(
+        self, file_path: str = "Default", verify_download: bool = True
+    ) -> None:
         """BPA class to be used with the TE2 class.
 
         You can create the BPA class without any arguments.
@@ -64,10 +69,12 @@ class BPA:
 
         Args:
             file_path (str, optional): See `Download_BPA_File()`. Defaults to "Default".
+            verify_download (bool, optional): Passthrough argument for `r.get`.
+                Need to update later.
         """
         logger.debug(f"Initializing BPA Class:: {file_path}")
         if file_path == "Default":
-            self.location: str = download_bpa_file()
+            self.location: str = download_bpa_file(verify=verify_download)
         else:
             self.location: str = file_path
         pass

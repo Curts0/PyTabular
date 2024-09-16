@@ -1,4 +1,5 @@
 """Bulk of pytests for `PyMeasure()` class."""
+
 import pytest
 from test.config import testing_parameters
 

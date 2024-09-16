@@ -2,6 +2,7 @@
 
 This module can generate pages in markdown for use in Docusaurus.
 """
+
 import logging
 
 from pathlib import Path

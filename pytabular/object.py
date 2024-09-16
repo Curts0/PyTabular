@@ -2,6 +2,7 @@
 
 These classes are used with the others (Tables, Columns, Measures, Partitions, etc.).
 """
+
 from __future__ import annotations
 from abc import ABC
 from rich.console import Console

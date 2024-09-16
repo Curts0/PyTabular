@@ -1,4 +1,5 @@
 """Custom configurations for pytest."""
+
 import pytabular as p
 import os
 import pandas as pd

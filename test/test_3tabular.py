@@ -1,4 +1,5 @@
 """Bulk of pytests for `Tabular()` class."""
+
 import pytest
 import pandas as pd
 import pytabular as p

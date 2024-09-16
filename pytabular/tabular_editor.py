@@ -2,6 +2,7 @@
 
 Or you can input your own location.
 """
+
 import logging
 import os
 import requests as r
@@ -18,6 +19,7 @@ def download_tabular_editor(
     ),
     folder: str = "Tabular_Editor_2",
     auto_remove=True,
+    verify=False,
 ) -> str:
     """Runs a request.get() to retrieve the zip file from web.
 
@@ -31,6 +33,7 @@ def download_tabular_editor(
             folder (str, optional): New Folder Location. Defaults to "Tabular_Editor_2".
             auto_remove (bool, optional): Boolean to determine auto
                     removal of files once script exits. Defaults to True.
+            verify (bool, optional): Passthrough argument for `r.get`. Need to update later.
 
     Returns:
             str: File path of TabularEditor.exe
@@ -38,7 +41,7 @@ def download_tabular_editor(
     logger.info("Downloading Tabular Editor 2...")
     logger.info(f"From... {download_location}")
     folder_location = os.path.join(os.getcwd(), folder)
-    response = r.get(download_location)
+    response = r.get(download_location, verify=verify)
     file_location = f"{os.getcwd()}\\{download_location.split('/')[-1]}"
     with open(file_location, "wb") as te2_zip:
         te2_zip.write(response.content)
@@ -59,7 +62,9 @@ class TabularEditor:
     Mainly runs `download_tabular_editor()`
     """
 
-    def __init__(self, exe_file_path: str = "Default") -> None:
+    def __init__(
+        self, exe_file_path: str = "Default", verify_download: bool = True
+    ) -> None:
         """Init for `TabularEditor()` class.
 
         This is mostly a placeholder right now.
@@ -69,10 +74,12 @@ class TabularEditor:
             exe_file_path (str, optional): File path where TE2 lives. Defaults to "Default".
                 If "Default", it will run `download_tabular_editor()`
                 and download from github.
+            verify_download (bool, optional): Passthrough argument for `r.get`.
+                Need to update later.
         """
         logger.debug(f"Initializing Tabular Editor Class:: {exe_file_path}")
         if exe_file_path == "Default":
-            self.exe: str = download_tabular_editor()
+            self.exe: str = download_tabular_editor(verify=verify_download)
         else:
             self.exe: str = exe_file_path
         pass

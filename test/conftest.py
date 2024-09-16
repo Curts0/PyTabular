@@ -4,6 +4,7 @@ Has a `TestingStorage()` class to pass parameters from one test to another.
 This file also has functions that give instructions on start and finish of pytest.
 See `config.py` for more testing configurations.
 """
+
 from test.config import (
     local_pbix,
     testingtablename,
