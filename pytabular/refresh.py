@@ -27,6 +27,7 @@ Example:
     model.Tables['Sales'].Partitions['Last Fiscal Year'].refresh()
     ```
 """
+
 from tabular_tracing import RefreshTrace, BaseTrace
 import logging
 from Microsoft.AnalysisServices.Tabular import (

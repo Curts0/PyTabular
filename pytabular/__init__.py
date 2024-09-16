@@ -4,6 +4,7 @@ __init__.py will start to setup the basics.
 It will setup logging and make sure Pythonnet is good to go.
 Then it will begin to import specifics of the module.
 """
+
 # flake8: noqa
 import logging
 import os

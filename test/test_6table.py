@@ -1,4 +1,5 @@
 """pytest for the table.py file. Covers the PyTable and PyTables classes."""
+
 from test.config import testing_parameters, testingtablename
 import pytest
 import pandas as pd

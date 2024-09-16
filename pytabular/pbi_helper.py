@@ -5,6 +5,7 @@ I just wanted it in python...
 The main function is `find_local_pbi_instances()`.
 It will find any open PBIX files on your computer and spit out a connection string for you.
 """
+
 import pytabular as p
 import subprocess
 

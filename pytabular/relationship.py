@@ -3,6 +3,7 @@
 Once connected to your model, interacting with relationship(s)
 will be done through these classes.
 """
+
 import logging
 from pytabular.object import PyObject, PyObjects
 from pytabular.table import PyTable, PyTables

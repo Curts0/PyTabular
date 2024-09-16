@@ -3,6 +3,7 @@
 Does 1 actually equal 1?
 Or am I crazy person about to descend into madness.
 """
+
 import pytest
 from Microsoft.AnalysisServices.Tabular import Database
 from test.config import testing_parameters

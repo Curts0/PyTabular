@@ -1,4 +1,5 @@
 """Tests to cover the document.py file."""
+
 from test.config import testing_parameters
 import pytest
 import pytabular as p

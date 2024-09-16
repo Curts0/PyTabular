@@ -1,4 +1,5 @@
 """`culture.py` is used to house the `PyCulture`, and `PyCultures` classes."""
+
 import logging
 from pytabular.object import PyObject, PyObjects
 from typing import List
@@ -29,9 +30,9 @@ class PyCulture(PyObject):
             {
                 "object_translation": translation.Value,
                 "object_name": translation.Object.Name,
-                "object_parent_name": translation.Object.Parent.Name
-                if translation.Object.Parent
-                else "",
+                "object_parent_name": (
+                    translation.Object.Parent.Name if translation.Object.Parent else ""
+                ),
                 "object_type": str(translation.Property),
             }
             for translation in self._object.ObjectTranslations

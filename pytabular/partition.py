@@ -2,6 +2,7 @@
 
 Once connected to your model, interacting with partition(s) will be done through these classes.
 """
+
 import logging
 
 from pytabular.object import PyObject, PyObjects

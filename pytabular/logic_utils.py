@@ -1,4 +1,5 @@
 """`logic_utils` used to store multiple functions that are used in many different files."""
+
 import logging
 import datetime
 import os
