@@ -21,8 +21,8 @@ def download_bpa_file(
         "https://raw.githubusercontent.com/microsoft/Analysis-Services/master/BestPracticeRules/BPARules.json"  # noqa: E501
     ),
     folder: str = "Best_Practice_Analyzer",
-    auto_remove=True,
-    verify=False,
+    auto_remove: bool = True,
+    verify: bool = False,
 ) -> str:
     """Download a BPA file from local or web.
 
@@ -36,6 +36,7 @@ def download_bpa_file(
             folder (str, optional): New folder string.
                     Defaults to 'Best_Practice_Analyzer'.
             auto_remove (bool, optional): Auto Remove when script exits. Defaults to True.
+            verify (bool, optional): Passthrough argument for `r.get`. Need to update later. 
 
     Returns:
             str: File path for the newly downloaded BPA.
@@ -68,6 +69,7 @@ class BPA:
 
         Args:
             file_path (str, optional): See `Download_BPA_File()`. Defaults to "Default".
+            verify_download (bool, optional): Passthrough argument for `r.get`. Need to update later.
         """
         logger.debug(f"Initializing BPA Class:: {file_path}")
         if file_path == "Default":

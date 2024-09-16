@@ -33,6 +33,7 @@ def download_tabular_editor(
             folder (str, optional): New Folder Location. Defaults to "Tabular_Editor_2".
             auto_remove (bool, optional): Boolean to determine auto
                     removal of files once script exits. Defaults to True.
+            verify (bool, optional): Passthrough argument for `r.get`. Need to update later.
 
     Returns:
             str: File path of TabularEditor.exe
@@ -73,6 +74,7 @@ class TabularEditor:
             exe_file_path (str, optional): File path where TE2 lives. Defaults to "Default".
                 If "Default", it will run `download_tabular_editor()`
                 and download from github.
+            verify_download (bool, optional): Passthrough argument for `r.get`. Need to update later.
         """
         logger.debug(f"Initializing Tabular Editor Class:: {exe_file_path}")
         if exe_file_path == "Default":
