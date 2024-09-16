@@ -2,6 +2,7 @@
 
 Main class is `Tabular()`. Use that for connecting with your models.
 """
+
 import logging
 
 from Microsoft.AnalysisServices.Tabular import (
@@ -491,7 +492,7 @@ class Tabular(PyObject):
         logger.debug("Beginning request to talk with TE2 & Find BPA...")
         bim_file_location = f"{os.getcwd()}\\Model.bim"
         atexit.register(remove_file, bim_file_location)
-        cmd = f'{tabular_editor_exe} "Provider=MSOLAP;\
+        cmd = f'"{tabular_editor_exe}" "Provider=MSOLAP;\
             {self.Adomd.ConnectionString}" {self.Database.Name} -B "{bim_file_location}" \
             -A {best_practice_analyzer} -V/?'
         logger.debug("Command Generated")
