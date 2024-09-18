@@ -54,3 +54,12 @@ exclude_lines = [
 include = [
     "pytabular/*"
 ]
+
+[tool.curtis_janky_solution]
+dependencies = [
+    "black",
+    "flake8",
+    "docstr-coverage==2.2.0",
+    "pep8-naming",
+    "flake8-docstrings"
+]

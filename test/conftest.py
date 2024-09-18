@@ -20,6 +20,12 @@ class TestStorage:
     documentation_class = None
 
 
+def pytest_generate_tests(metafunc):
+    """Need to move more of these params later."""
+    if "model" in metafunc.fixturenames:
+        metafunc.parametrize("model", [local_pbix], ids=[local_pbix.Name])
+
+
 def pytest_report_header(config):
     """Pytest header name."""
     return "PyTabular Local Testing"

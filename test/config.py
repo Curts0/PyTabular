@@ -3,7 +3,6 @@
 import pytabular as p
 import os
 import pandas as pd
-import pytest
 import subprocess
 from time import sleep
 
@@ -47,6 +46,3 @@ local_pbix = p.Tabular(LOCAL_FILE[1])
 p.logger.info("Generating test data...")
 testingtablename = "PyTestTable"
 testingtabledf = pd.DataFrame(data={"col1": [1, 2, 3], "col2": ["four", "five", "six"]})
-testing_parameters = [
-    pytest.param(local_pbix, id=local_pbix.Name),
-]
