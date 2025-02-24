@@ -50,9 +50,9 @@ class Connection(AdomdConnection):
             connection_string = server.ConnectionString
         else:
             connection_string = (
-                f"{server.ConnectionString}Password='{server.ConnectionInfo.Password}'"
+                f"{server.ConnectionString};Password='{server.ConnectionInfo.Password}'"
             )
-        logger.debug(f"{connection_string}")
+        logger.debug(f"ADOMD Connection: {connection_string}")
         if effective_user is not None:
             connection_string += f";EffectiveUserName={effective_user}"
         self.ConnectionString = connection_string
