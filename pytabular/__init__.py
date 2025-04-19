@@ -65,6 +65,7 @@ from .best_practice_analyzer import BPA
 from .query import Connection
 from .pbi_helper import find_local_pbi_instances
 from .document import ModelDocumenter
+from .tdml import Tmdl
 
 
 logger.info("Import successful...")
