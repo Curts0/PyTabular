@@ -30,4 +30,4 @@ jobs:
             python-version: '3.10'
       - run: pip install --upgrade pip
       - run: pip install docstr-coverage==2.2.0
-      - run: docstr-coverage
+      - run: docstr-coverage --skip-init

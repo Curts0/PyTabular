@@ -1,4 +1,3 @@
-exclude pytabular/localsecret.py
 include pytabular/dll/Microsoft.AnalysisServices.AdomdClient.dll
 include pytabular/dll/Microsoft.AnalysisServices.Core.dll
 include pytabular/dll/Microsoft.AnalysisServices.dll
