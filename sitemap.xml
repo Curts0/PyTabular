@@ -2,86 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://curts0.github.io/PyTabular/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/CONTRIBUTING/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyColumn/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyColumns/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyMeasure/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyMeasures/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyObject/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyObjects/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyPartition/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyPartitions/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyTable/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/PyTables/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/Tabular/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/best_practice_analyzer/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/document/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/logic_utils/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/pbi_helper/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/query/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/refresh/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/tabular_editor/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
     </url>
     <url>
          <loc>https://curts0.github.io/PyTabular/tabular_tracing/</loc>
-         <lastmod>2025-02-24</lastmod>
+         <lastmod>2025-04-21</lastmod>
+    </url>
+    <url>
+         <loc>https://curts0.github.io/PyTabular/tmdl/</loc>
+         <lastmod>2025-04-21</lastmod>
     </url>
 </urlset>
