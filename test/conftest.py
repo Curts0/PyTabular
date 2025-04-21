@@ -37,9 +37,16 @@ def remove_testing_table(model):
         model.Model.Tables.Remove(table)
     model.SaveChanges()
 
+
 def pytest_generate_tests(metafunc):
+    """Creates the model param for most tests.
+
+    Will update to use a semantic model via online connection
+    vs. connecting to a local model.
+    """
     if "model" in metafunc.fixturenames:
         metafunc.parametrize("model", [local_pbix], ids=[local_pbix.Name])
+
 
 def pytest_sessionstart(session):
     """Run at pytest start.

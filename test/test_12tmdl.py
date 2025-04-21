@@ -1,8 +1,6 @@
 """Tests to cover the tmdl.py file."""
 
 import pytabular as p
-from test.config import testing_parameters
-import pytest
 
 path = "tmdl_testing"
 

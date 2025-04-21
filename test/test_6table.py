@@ -1,7 +1,6 @@
 """pytest for the table.py file. Covers the PyTable and PyTables classes."""
 
-from test.config import testing_parameters, testingtablename
-import pytest
+from test.config import testingtablename
 import pandas as pd
 from datetime import datetime
 

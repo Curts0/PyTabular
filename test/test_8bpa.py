@@ -1,8 +1,6 @@
 """pytest for bpa."""
 
-import pytest
 import pytabular as p
-from test.config import testing_parameters
 from os import getcwd
 
 

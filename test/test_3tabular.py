@@ -3,7 +3,7 @@
 import pytest
 import pandas as pd
 import pytabular as p
-from test.config import testingtablename, testing_parameters, get_test_path
+from test.config import testingtablename, get_test_path
 
 
 def test_basic_query(model):

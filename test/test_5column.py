@@ -1,7 +1,6 @@
 """pytest for the column.py file. Covers the PyColumn and PyColumns classes."""
 
-from test.config import testing_parameters, testingtablename
-import pytest
+from test.config import testingtablename
 import pandas as pd
 from numpy import int64
 
