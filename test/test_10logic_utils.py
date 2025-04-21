@@ -54,7 +54,6 @@ def test_dataframe_to_dict(df):
     assert isinstance(logic_utils.dataframe_to_dict(df), list)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_dict_to_markdown_table(model):
     """Tests `dict_to_markdown_table()` function."""
     dependencies = [measure.get_dependencies() for measure in model.Measures]

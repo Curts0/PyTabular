@@ -8,7 +8,6 @@ from test.config import testing_parameters, testingtablename
 import pytest
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_backingup_table(model):
     """Tests model.backup_table()."""
     model.backup_table(testingtablename)
@@ -24,7 +23,6 @@ def test_backingup_table(model):
     )
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_revert_table2(model):
     """Tests model.revert_table()."""
     model.revert_table(testingtablename)

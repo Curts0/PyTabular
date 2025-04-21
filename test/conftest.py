@@ -37,6 +37,9 @@ def remove_testing_table(model):
         model.Model.Tables.Remove(table)
     model.SaveChanges()
 
+def pytest_generate_tests(metafunc):
+    if "model" in metafunc.fixturenames:
+        metafunc.parametrize("model", [local_pbix], ids=[local_pbix.Name])
 
 def pytest_sessionstart(session):
     """Run at pytest start.

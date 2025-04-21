@@ -4,7 +4,6 @@ import pytest
 from test.config import testing_parameters
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_create_measure(model):
     """Test Creating Measure."""
     name = "Test Measure"

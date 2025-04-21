@@ -8,7 +8,6 @@ from pytabular import logic_utils
 from test.conftest import TestStorage
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_basic_document_funcionality(model):
     """Tests basic documentation functionality."""
     try:

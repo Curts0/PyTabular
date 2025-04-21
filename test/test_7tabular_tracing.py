@@ -6,14 +6,12 @@ import pytabular as p
 from test.conftest import TestStorage
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_disconnect_for_trace(model):
     """Tests `disconnect()` from `Tabular` class."""
     model.disconnect()
     assert model.Server.Connected is False
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_reconnect_update(model):
     """This will test the `reconnect()`.
 
@@ -24,7 +22,6 @@ def test_reconnect_update(model):
     assert model.Server.Connected is True
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_query_monitor_start(model):
     """This will test the `QueryMonitor` trace and `start()` it."""
     query_trace = p.QueryMonitor(model)
@@ -33,14 +30,12 @@ def test_query_monitor_start(model):
     assert TestStorage.query_trace.Trace.IsStarted
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_query_monitor_stop(model):
     """Tests `stop()` of `QueryMonitor` trace."""
     TestStorage.query_trace.stop()
     assert TestStorage.query_trace.Trace.IsStarted is False
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_query_monitor_drop(model):
     """Tests `drop()` of `QueryMonitor` trace."""
     assert TestStorage.query_trace.drop() is None

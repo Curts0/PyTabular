@@ -6,7 +6,6 @@ import pytabular as p
 from test.config import testingtablename, testing_parameters, get_test_path
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_basic_query(model):
     """Tests a basic query execution."""
     int_result = model.query("EVALUATE {1}")
@@ -21,7 +20,6 @@ datatype_queries = [
 ]
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_datatype_query(model):
     """Tests the results of different datatypes."""
     for query in datatype_queries:
@@ -29,7 +27,6 @@ def test_datatype_query(model):
         assert result == query[0]
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_file_query(model):
     """Test `query()` via a file."""
     singlevaltest = get_test_path() + "\\singlevaltest.dax"
@@ -38,37 +35,31 @@ def test_file_query(model):
     assert model.query(singlevaltest) == 1 and model.query(dfvaltest).equals(dfdupe)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_repr_str(model):
     """Testing successful `__repr__()` on model."""
     assert isinstance(model.__repr__(), str)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_pytables_count(model):
     """Testing row count of testingtable."""
     assert model.Tables[testingtablename].row_count() > 0
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_pytables_refresh(model):
     """Tests refrshing table of testingtable."""
     assert len(model.Tables[testingtablename].refresh()) > 0
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_pypartition_refresh(model):
     """Tests refreshing partition of testingtable."""
     assert len(model.Tables[testingtablename].Partitions[0].refresh()) > 0
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_pypartitions_refresh(model):
     """Tests refreshing partitions of testingtable."""
     assert len(model.Tables[testingtablename].Partitions.refresh()) > 0
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_pyobjects_adding(model):
     """Tests adding a PyObject."""
     table = model.Tables.find(testingtablename)
@@ -76,7 +67,6 @@ def test_pyobjects_adding(model):
     assert len(table) == 2
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_nonetype_decimal_bug(model):
     """Tests the pesky nonetype decimal bug."""
     query_str = """
@@ -90,40 +80,34 @@ def test_nonetype_decimal_bug(model):
     assert len(model.query(query_str)) == 3
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_table_last_refresh_times(model):
     """Really just testing the the function completes successfully and returns df."""
     assert isinstance(model.Tables.last_refresh(), pd.DataFrame)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_return_zero_row_tables(model):
     """Testing that `find_zero_rows()`."""
     assert isinstance(model.Tables.find_zero_rows(), p.pytabular.PyTables)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_get_dependencies(model):
     """Tests execution of `PyMeasure.get_dependencies()`."""
     dependencies = model.Measures[0].get_dependencies()
     assert len(dependencies) > 0
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_disconnect(model):
     """Tests `Disconnect()` from `Tabular` class."""
     model.disconnect()
     assert model.Server.Connected is False
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_reconnect(model):
     """Tests `Reconnect()` from `Tabular` class."""
     model.reconnect()
     assert model.Server.Connected is True
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_reconnect_savechanges(model):
     """This will test the `reconnect()` gets called in `save_changes()`."""
     model.disconnect()
@@ -131,20 +115,17 @@ def test_reconnect_savechanges(model):
     assert model.Server.Connected is True
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_is_process(model):
     """Checks that `Is_Process()` from `Tabular` class returns bool."""
     assert isinstance(model.is_process(), bool)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_bad_table(model):
     """Checks for unable to find table exception."""
     with pytest.raises(Exception):
         model.refresh("badtablename")
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_refresh_dict(model):
     """Checks for refreshing dictionary."""
     table = model.Tables[testingtablename]
@@ -152,7 +133,6 @@ def test_refresh_dict(model):
     assert isinstance(refresh, pd.DataFrame)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_refresh_dict_pypartition(model):
     """Checks for refreshing dictionary with PyPartition."""
     table = model.Tables[testingtablename]
@@ -160,7 +140,6 @@ def test_refresh_dict_pypartition(model):
     assert isinstance(refresh, pd.DataFrame)
 
 
-@pytest.mark.parametrize("model", testing_parameters)
 def test_bad_partition(model):
     """Checks for refreshing dictionary failure."""
     table = model.Tables[testingtablename]
