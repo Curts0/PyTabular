@@ -5,6 +5,9 @@ import datetime
 import os
 from typing import Dict, List
 import pandas as pd
+
+from pytabular.currency import unicodes
+
 from Microsoft.AnalysisServices.Tabular import DataType
 from Microsoft.AnalysisServices.AdomdClient import AdomdDataReader
 
@@ -162,6 +165,28 @@ def get_sub_list(lst: list, n: int) -> list:
     return [lst[i : i + n] for i in range(0, len(lst), n)]
 
 
+def clean_formatting(query_result: str, sep: str = ",") -> float:
+    """Attempts to clean DAX formatting.
+
+    For example, `$(12,345.67)` will output -> `-12345.67`.
+
+    Args:
+        query_result (str): The value given from `get_value_to_df`
+        sep (str, optional): The thousands separator. Defaults to ",".
+
+    Returns:
+        float: Value of DAX query cell.
+    """
+    multiplier = 1
+    if "(" in query_result and ")" in query_result:
+        multiplier = -1
+        query_result = query_result.replace("(", "").replace(")", "")
+
+    query_result = query_result.replace(sep, "")
+
+    return float(query_result.translate(unicodes)) * multiplier
+
+
 def get_value_to_df(query: AdomdDataReader, index: int):
     """Gets the values from the AdomdDataReader to convert to python df.
 
@@ -171,11 +196,19 @@ def get_value_to_df(query: AdomdDataReader, index: int):
         query (AdomdDataReader): The AdomdDataReader .Net object.
         index (int): Index of the value to perform the logic on.
     """
+    # TODO: Clean this up
     if (
         query.GetDataTypeName((index)) in ("Decimal")
         and query.GetValue(index) is not None
     ):
         return query.GetValue(index).ToDouble(query.GetValue(index))
+    elif query.GetDataTypeName((index)) in (
+        "String"
+    ):
+        try:
+            return clean_formatting(query.GetValue(index))
+        except Exception:
+            return query.GetValue(index)
     else:
         return query.GetValue(index)
 
