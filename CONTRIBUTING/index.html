@@ -848,18 +848,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#some-rules" class="md-nav__link">
+  <a href="#info" class="md-nav__link">
     <span class="md-ellipsis">
-      Some rules
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation-help" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation help
+      Info
     </span>
   </a>
   
@@ -918,18 +909,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#some-rules" class="md-nav__link">
+  <a href="#info" class="md-nav__link">
     <span class="md-ellipsis">
-      Some rules
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#documentation-help" class="md-nav__link">
-    <span class="md-ellipsis">
-      Documentation help
+      Info
     </span>
   </a>
   
@@ -968,25 +950,12 @@
 <ul>
 <li>Make <strong>Python</strong> a first class citizen for interacting with <strong>Tabular models</strong>.</li>
 </ul>
-<h2 id="some-rules">Some rules</h2>
+<h2 id="info">Info</h2>
 <ul>
-<li>See <a href="https://github.com/Curts0/PyTabular/actions">github actions</a> for checks run on pull request.</li>
-<li>We <code>docstring-coverage</code> to check for 100% docstring coverage.</li>
-<li><code>flake8</code> also runs, but with a few extra packages. (pep8-naming, flake8-docstrings).</li>
-<li>Updates of any kind are welcome! Even just letting me know of the issues. Or updating docstrings...</li>
-<li>Limit any extra packages, see <code>pyproject.toml</code> for dependencies</li>
-<li>Install pre-commit. Pre-commit will run pytest, flake8, and docstr-coverage before push.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">pip</span> <span class="n">install</span> <span class="n">pre-commit</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">pre-commit</span> <span class="n">install</span> <span class="p">-</span><span class="n">-hook-type</span> <span class="n">pre-push</span>
-</code></pre></div></li>
-<li><strong>This will take a while...</strong> pytest will open a PBIX file in repository and run tests on it... Eventually these tests will be run on a model that is not local.</li>
+<li>Use <code>tox</code> for local testing.<ul>
+<li>Will run docstring coverage, linter, and python versions needed to support w/ pytest.</li>
 </ul>
-<h2 id="documentation-help">Documentation help</h2>
-<ul>
-<li>Docstrings follow the google docstring convention. See <a href="https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html">Example</a>.</li>
-<li>The <code>flake8-docstrings</code> will check that google docstring format is followed.</li>
-<li>Docstrings get converted to markdown with the <code>mkdocstring</code> package.</li>
-<li>Then gets converted to a site with the <code>mkdocs</code> package.</li>
+</li>
 </ul>
 <h2 id="misc">Misc</h2>
 <ul>
