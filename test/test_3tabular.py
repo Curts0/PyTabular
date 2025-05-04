@@ -27,6 +27,33 @@ def test_datatype_query(model):
         assert result == query[0]
 
 
+number_queries = (
+    pytest.param(("EVALUATE {1}", 1), id="basic"),
+    pytest.param(
+        ("""EVALUATE {FORMAT(12345.67, "$#,##0.00;($#,##0.00)")}""", 12345.67),
+        id="$#,##0.00",
+    ),
+    pytest.param(
+        ("""EVALUATE {FORMAT(12345.00, "$#,##0.00;($#,##0.00)")}""", 12345.00),
+        id="$#,##0.00 w/o decimal",
+    ),
+    pytest.param(
+        ("""EVALUATE {FORMAT(-12345.67, "$#,##0.00;($#,##0.00)")}""", -12345.67),
+        id="$#,##0.00 w/ -",
+    ),
+    pytest.param(
+        ("""EVALUATE {FORMAT(12345.67, "#,##0.00;(#,##0.00)")}""", 12345.67),
+        id="#,##0.00",
+    ),
+)
+
+
+@pytest.mark.parametrize("number_queries", number_queries)
+def test_parsing_query(model, number_queries):
+    """Assert that the proper query result stripping is happenign."""
+    assert model.query(number_queries[0]) == number_queries[1]
+
+
 def test_file_query(model):
     """Test `query()` via a file."""
     singlevaltest = get_test_path() + "\\singlevaltest.dax"
