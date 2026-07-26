@@ -168,7 +168,6 @@ __pycache__
 /daxqueries
 /pytabular/localsecret.py
 /TE2
-setup.py
 notes.txt
 adhoc.py
 *.bim
@@ -179,8 +178,15 @@ docs/_config.yml# Byte-compiled / optimized / DLL files
 /Best_Practice_Analyzer
 /Tabular_Editor_2
 *.tmdl
+!tests/fixtures/**/*.tmdl
 
 # Test files for new functionality
 test-notebook.ipynb
 test.py
 testing.py
+
+# Generated Analysis Services runtime and .NET build output
+pytabular/_vendor/*
+!pytabular/_vendor/.gitkeep
+runtime/bin/
+runtime/obj/

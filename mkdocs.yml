@@ -6,6 +6,8 @@ repo_name: Curts0/PyTabular
 repo_url: https://github.com/Curts0/PyTabular
 nav:
     - Home: README.md
+    - Architecture: architecture.md
+    - Migrating to 0.6: migration-0.6.md
     - Main Tabular Class: Tabular.md
     - Query Model: query.md
     - Refresh Model: refresh.md
@@ -47,9 +49,6 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          import:
-          - https://docs.python.org/3/objects.inv
-          - https://pandas.pydata.org/docs/objects.inv
           options:
             docstring_style: google
             show_submodules: true

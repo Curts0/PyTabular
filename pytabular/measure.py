@@ -7,6 +7,10 @@ will be done through these classes.
 import logging
 import pandas as pd
 from pytabular.object import PyObject, PyObjects
+from pytabular._runtime import load_tom
+
+load_tom()
+
 from Microsoft.AnalysisServices.Tabular import Measure, Table
 
 

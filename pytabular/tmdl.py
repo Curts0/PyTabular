@@ -1,45 +1,38 @@
-"""See [TMDL Scripting].(https://learn.microsoft.com/en-us/analysis-services/tmdl/tmdl-overview).
+"""TMDL compatibility wrapper."""
 
-Run `Tmdl(model).save_to_folder()` to save tmdl of model.
-Run `Tmdl(model).execute()` to execute a specific set of tmdl scripts.
-"""
+from __future__ import annotations
 
-from Microsoft.AnalysisServices.Tabular import TmdlSerializer
+from pathlib import Path
+
+from pytabular._runtime import load_tom
 
 
 class Tmdl:
-    """Specify the specific model you want to use for scripting.
+    """Serialize or apply TMDL for a ``Tabular`` model."""
 
-    Args:
-        model (Tabular): Initialize with Tabular model.
-    """
     def __init__(self, model):
         self.model = model
 
-    def save_to_folder(self, path: str = "tmdl"):
-        """Runs `SerializeModelToFolder` from .net library.
+    def save_to_folder(self, path: str | Path = "tmdl"):
+        """Save a model definition to a TMDL folder."""
+        if hasattr(self.model, "save_tmdl"):
+            self.model.save_tmdl(path)
+            return True
 
-        Args:
-            path (str, optional): directory where to save tmdl structure.
-                Defaults to "tmdl".
-        """
-        TmdlSerializer.SerializeModelToFolder(self.model._object, path)
+        serializer = load_tom().TmdlSerializer
+        database = getattr(self.model, "Database", None)
+        if database is not None and hasattr(serializer, "SerializeDatabaseToFolder"):
+            serializer.SerializeDatabaseToFolder(database, str(path))
+        else:
+            serializer.SerializeModelToFolder(self.model._object, str(path))
         return True
 
-    def execute(self, path: str = "tmdl", auto_save: bool = True):
-        """Runs `DeserializeModelFromFolder` from .net library.
-
-        Args:
-            path (str, optional): directory to look for tmdl scripts.
-                Defaults to "tmdl".
-            auto_save (bool, optional): You can set to false
-                if you want to precheck a few things, but will need to
-                run `model.save_changes()`. Setting to `True` will go ahead
-                and execute `model.save_changes()` Defaults to True.
-        """
-        model_object = TmdlSerializer.DeserializeModelFromFolder(path)
-        model_object.CopyTo(self.model._object)
-        if auto_save:
-            return self.model.save_changes()
+    def execute(self, path: str | Path = "tmdl", auto_save: bool = True):
+        """Copy a TMDL definition into the current model."""
+        serializer = load_tom().TmdlSerializer
+        if hasattr(serializer, "DeserializeDatabaseFromFolder"):
+            loaded = serializer.DeserializeDatabaseFromFolder(str(path)).Model
         else:
-            return True
+            loaded = serializer.DeserializeModelFromFolder(str(path))
+        loaded.CopyTo(self.model._object)
+        return self.model.save_changes() if auto_save else True

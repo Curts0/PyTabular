@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0": {
+      "Microsoft.AnalysisServices": {
+        "type": "Direct",
+        "requested": "[19.114.8, )",
+        "resolved": "19.114.8",
+        "contentHash": "6V61ctP+/OHGCslG0nUGyoKmh3w79cHDAstD7pWTFKWaKs7787De16oIebHMnFDaJHRFyZD3FS+5hjhvotBxug==",
+        "dependencies": {
+          "Microsoft.Identity.Client": "4.83.3",
+          "Microsoft.Identity.Client.Broker": "4.83.3"
+        }
+      },
+      "Microsoft.AnalysisServices.AdomdClient": {
+        "type": "Direct",
+        "requested": "[19.114.8, )",
+        "resolved": "19.114.8",
+        "contentHash": "hXYvW8bnBQoAItkA94MKc7jJHvp+SsCd/nisyhR5GuH3YqCPiC+gT14pjGOFGaDJlPcW0JM2lmQsMpYi62h2vA==",
+        "dependencies": {
+          "Microsoft.Identity.Client": "4.83.3",
+          "Microsoft.Identity.Client.Broker": "4.83.3"
+        }
+      },
+      "Microsoft.Identity.Client": {
+        "type": "Transitive",
+        "resolved": "4.83.3",
+        "contentHash": "XNJJn5uctuGvl3u6qzAof2TNysAZ/PPVKzkAglxvTO5XHgff/Ibs1+yi2G26Xrf6X/f780kS4fMKKdHcGb96hQ==",
+        "dependencies": {
+          "Microsoft.IdentityModel.Abstractions": "8.14.0",
+          "System.Diagnostics.DiagnosticSource": "6.0.1",
+          "System.ValueTuple": "4.5.0"
+        }
+      },
+      "Microsoft.Identity.Client.Broker": {
+        "type": "Transitive",
+        "resolved": "4.83.3",
+        "contentHash": "1yn682hgnCimnYR27Ne/SRMWxCWUZtCKjYwPzWbjrfhqBF1GS7bDlPZkF4yvJxl90Y+xzDdZFh4u9pcGIFSEvw==",
+        "dependencies": {
+          "Microsoft.Identity.Client": "4.83.3",
+          "Microsoft.Identity.Client.NativeInterop": "0.20.4"
+        }
+      },
+      "Microsoft.Identity.Client.NativeInterop": {
+        "type": "Transitive",
+        "resolved": "0.20.4",
+        "contentHash": "JHlfJ8oolxj20sNlwdIh8H8MZtzVQ55MyOjrIrQCtD/KJL5x8EOjQxafYu8AEYZOCSW+09DQnRogGk+J37BURA=="
+      },
+      "Microsoft.IdentityModel.Abstractions": {
+        "type": "Transitive",
+        "resolved": "8.14.0",
+        "contentHash": "iwbCpSjD3ehfTwBhtSNEtKPK0ICun6ov7Ibx6ISNA9bfwIyzI2Siwyi9eJFCJBwxowK9xcA1mj+jBWiigeqgcQ=="
+      },
+      "System.Diagnostics.DiagnosticSource": {
+        "type": "Transitive",
+        "resolved": "6.0.1",
+        "contentHash": "KiLYDu2k2J82Q9BJpWiuQqCkFjRBWVq4jDzKKWawVi9KWzyD0XG3cmfX0vqTQlL14Wi9EufJrbL0+KCLTbqWiQ==",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "6.0.0"
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe": {
+        "type": "Transitive",
+        "resolved": "6.0.0",
+        "contentHash": "/iUeP3tq1S0XdNNoMz5C9twLSrM/TH+qElHkXWaPvuNOt+99G75NrV0OS2EqHx5wMN7popYjpc8oTjC1y16DLg=="
+      },
+      "System.ValueTuple": {
+        "type": "Transitive",
+        "resolved": "4.5.0",
+        "contentHash": "okurQJO6NRE/apDIP23ajJ0hpiNmJ+f0BwOlB/cSqTLQlw5upkf+5+96+iG2Jw40G1fCVCyPz/FhIABUjMR+RQ=="
+      }
+    }
+  }
+}

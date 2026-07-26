@@ -28,15 +28,19 @@ Example:
     ```
 """
 
-from tabular_tracing import RefreshTrace, BaseTrace
+from pytabular.tabular_tracing import RefreshTrace, BaseTrace
 import logging
+from pytabular._runtime import load_tom
+
+load_tom()
+
 from Microsoft.AnalysisServices.Tabular import (
     RefreshType,
     Table,
     Partition,
 )
 import pandas as pd
-from logic_utils import ticks_to_datetime
+from pytabular.logic_utils import ticks_to_datetime
 from typing import Union, Dict, Any
 from pytabular.table import PyTable, PyTables
 from pytabular.partition import PyPartition

@@ -6,6 +6,10 @@ Once connected to your model, interacting with column(s) will be done through th
 import logging
 import pandas as pd
 from pytabular.object import PyObject, PyObjects
+from pytabular._runtime import load_tom
+
+load_tom()
+
 from Microsoft.AnalysisServices.Tabular import ColumnType
 
 logger = logging.getLogger("PyTabular")

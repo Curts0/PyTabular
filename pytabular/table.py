@@ -9,7 +9,7 @@ from pytabular.partition import PyPartition, PyPartitions
 from pytabular.column import PyColumn, PyColumns
 from pytabular.measure import PyMeasure, PyMeasures
 from pytabular.object import PyObjects, PyObject
-from logic_utils import ticks_to_datetime
+from pytabular.logic_utils import ticks_to_datetime
 from datetime import datetime
 
 logger = logging.getLogger("PyTabular")

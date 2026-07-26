@@ -1,68 +1,23 @@
-"""pytest conftest.py.
+"""Safety gate for the legacy Power BI Desktop integration suite."""
 
-Has a `TestingStorage()` class to pass parameters from one test to another.
-This file also has functions that give instructions on start and finish of pytest.
-See `config.py` for more testing configurations.
-"""
+from __future__ import annotations
 
-from test.config import (
-    local_pbix,
-    testingtablename,
-    testingtabledf,
-)
-import pytabular as p
+import os
+from pathlib import Path
+
+import pytest
+
+_ENABLED = os.getenv("PYTABULAR_RUN_LEGACY_DESKTOP_TESTS") == "1"
 
 
-class TestStorage:
-    """Class to pass parameters from on pytest to another."""
-
-    query_trace = None
-    documentation_class = None
+def pytest_ignore_collect(collection_path: Path, config: pytest.Config) -> bool:
+    """Never import legacy live tests unless they were explicitly enabled."""
+    return not _ENABLED and collection_path.name.startswith("test_")
 
 
-def pytest_report_header(config):
-    """Pytest header name."""
-    return "PyTabular Local Testing"
-
-
-def remove_testing_table(model):
-    """Function to remove the testing table."""
-    table_check = [
-        table
-        for table in model.Model.Tables.GetEnumerator()
-        if testingtablename in table.Name
-    ]
-    for table in table_check:
-        p.logger.info(f"Removing table {table.Name} from {model.Server.Name}")
-        model.Model.Tables.Remove(table)
-    model.SaveChanges()
-
-
-def pytest_generate_tests(metafunc):
-    """Creates the model param for most tests.
-
-    Will update to use a semantic model via online connection
-    vs. connecting to a local model.
-    """
-    if "model" in metafunc.fixturenames:
-        metafunc.parametrize("model", [local_pbix], ids=[local_pbix.Name])
-
-
-def pytest_sessionstart(session):
-    """Run at pytest start.
-
-    Removes testing table if exists, and creates a new one.
-    """
-    p.logger.info("Executing pytest setup...")
-    remove_testing_table(local_pbix)
-    local_pbix.create_table(testingtabledf, testingtablename)
-    return True
-
-
-def pytest_sessionfinish(session, exitstatus):
-    """On pytest finish it will remove testing table."""
-    p.logger.info("Executing pytest cleanup...")
-    remove_testing_table(local_pbix)
-    # p.logger.info("Finding and closing PBIX file...")
-    # subprocess.run(["powershell", "Stop-Process -Name PBIDesktop"])
-    return True
+def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
+    """Label every enabled legacy test as a Desktop integration test."""
+    marker = pytest.mark.desktop
+    for item in items:
+        if "\\test\\" in str(item.path) or "/test/" in str(item.path):
+            item.add_marker(marker)

@@ -1,0 +1,4 @@
+table Sales
+
+	measure 'Total Sales' = 1
+

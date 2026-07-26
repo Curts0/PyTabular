@@ -30,6 +30,10 @@ import logging
 import random
 import xmltodict
 from typing import List, Callable
+from pytabular._runtime import load_tom
+
+load_tom()
+
 from Microsoft.AnalysisServices.Tabular import Trace, TraceEvent, TraceEventHandler
 from Microsoft.AnalysisServices import (
     TraceColumn,

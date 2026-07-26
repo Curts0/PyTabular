@@ -1,5 +1,7 @@
-include pytabular/dll/Microsoft.AnalysisServices.AdomdClient.dll
-include pytabular/dll/Microsoft.AnalysisServices.Core.dll
-include pytabular/dll/Microsoft.AnalysisServices.dll
-include pytabular/dll/Microsoft.AnalysisServices.Tabular.dll
-include pytabular/dll/Microsoft.AnalysisServices.Tabular.Json.dll
+include LICENSE.txt
+include README.md
+include runtime/PyTabular.Runtime.csproj
+include runtime/packages.lock.json
+include tools/restore-runtime.ps1
+recursive-include pytabular/_vendor *.dll *.json
+prune test

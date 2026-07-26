@@ -7,6 +7,9 @@ will be done through these classes.
 import logging
 from pytabular.object import PyObject, PyObjects
 from pytabular.table import PyTable, PyTables
+from pytabular._runtime import load_tom
+
+load_tom()
 
 from Microsoft.AnalysisServices.Tabular import (
     CrossFilteringBehavior,

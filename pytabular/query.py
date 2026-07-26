@@ -22,6 +22,10 @@ import os
 from typing import Union
 from pytabular.logic_utils import get_value_to_df
 import pandas as pd
+from pytabular._runtime import load_adomd
+
+load_adomd()
+
 from Microsoft.AnalysisServices.AdomdClient import AdomdCommand, AdomdConnection
 
 

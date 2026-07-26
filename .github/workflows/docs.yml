@@ -1,0 +1,25 @@
+name: Documentation
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: ./tools/restore-runtime.ps1
+        shell: pwsh
+      - run: python -m pip install -e ".[dev,all]"
+      - run: mkdocs gh-deploy --force

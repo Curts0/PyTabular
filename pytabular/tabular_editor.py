@@ -8,7 +8,7 @@ import os
 import requests as r
 import zipfile as z
 import atexit
-from logic_utils import remove_folder_and_contents
+from pytabular.logic_utils import remove_folder_and_contents
 
 logger = logging.getLogger("PyTabular")
 

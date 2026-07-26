@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master, modernize/v0.6-foundation]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+          cache: pip
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: ./tools/restore-runtime.ps1
+        shell: pwsh
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e ".[dev,all]"
+      - run: python -m pytest
+      - if: matrix.python == '3.11'
+        run: |
+          ruff check pytabular tests
+          ruff format --check pytabular tests
+          pyright
+      - run: python -m build
+      - run: |
+          $wheel = (Get-ChildItem dist/*.whl | Select-Object -First 1).FullName
+          python -m pip install --force-reinstall $wheel
+          Push-Location $env:TEMP
+          try {
+            python -c "import pytabular; print(pytabular.__version__)"
+          } finally {
+            Pop-Location
+          }
+        shell: pwsh
+
+  docs:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: ./tools/restore-runtime.ps1
+        shell: pwsh
+      - run: python -m pip install -e ".[dev,all]"
+      - run: mkdocs build --strict

@@ -1,57 +1,131 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=75", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "python_tabular"
-version = "0.5.7"
-authors = [
-  { name="Curtis Stallings", email="curtisrstallings@gmail.com" },
-]
-dependencies = [
-    "pythonnet>=3.0.3",
-    "clr-loader>=0.2.6",
-    "xmltodict==0.13.0",
-    "pandas>=1.4.3",
-    "requests>=2.28.1",
-    "rich>=12.5.1"
-]
-description = "Connect to your tabular model and perform operations programmatically"
+name = "python-tabular"
+version = "0.6.0a1"
+description = "Local-first Python tooling for tabular semantic models"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.11,<3.15"
+license = "MIT"
+license-files = ["LICENSE.txt"]
+authors = [
+  { name = "Curtis Stallings", email = "curtisrstallings@gmail.com" },
+]
+dependencies = ["pythonnet>=3.1,<4"]
 classifiers = [
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Development Status :: 5 - Production/Stable",
-    "Operating System :: Microsoft",
-    "License :: OSI Approved :: MIT License"
+  "Development Status :: 3 - Alpha",
+  "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+]
+
+[project.optional-dependencies]
+query = [
+  "pandas>=2.2",
+  "rich>=13.9",
+  "xmltodict>=0.14",
+]
+desktop = [
+  "pandas>=2.2",
+  "requests>=2.32",
+  "rich>=13.9",
+  "xmltodict>=0.14",
+]
+dev = [
+  "build>=1.2",
+  "mkdocs>=1.6",
+  "mkdocs-material>=9.6",
+  "mkdocstrings[python]>=0.27",
+  "pyright>=1.1.400",
+  "pytest>=8.3",
+  "pytest-cov>=6",
+  "ruff>=0.11",
+  "tox>=4.24",
+]
+all = [
+  "pandas>=2.2",
+  "requests>=2.32",
+  "rich>=13.9",
+  "xmltodict>=0.14",
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/Curts0/PyTabular"
-"Bug Tracker" = "https://github.com/Curts0/PyTabular/issues"
+Homepage = "https://github.com/Curts0/PyTabular"
+Documentation = "https://curts0.github.io/PyTabular/"
+Issues = "https://github.com/Curts0/PyTabular/issues"
 
-[tool.setuptools]
-packages.find.where = ["."]
-packages.find.include = ["pytabular"]
-include-package-data = true
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["pytabular*"]
 
 [tool.setuptools.package-data]
-"*" = ["*.dll"]
+pytabular = ["py.typed", "_vendor/*.dll", "_vendor/*.json"]
 
 [tool.pytest.ini_options]
-filterwarnings = ["ignore::DeprecationWarning"]
-addopts = "-vv"
+addopts = "-ra --strict-markers"
+testpaths = ["tests"]
+markers = [
+  "desktop: requires an explicitly supplied Power BI Desktop model",
+  "fabric: requires an explicitly supplied Fabric XMLA test model",
+]
+
+[tool.coverage.run]
+source = ["pytabular"]
+omit = ["pytabular/_legacy.py"]
 
 [tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover"
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+extend-exclude = [
+  "pytabular/_legacy.py",
+  "pytabular/best_practice_analyzer.py",
+  "pytabular/column.py",
+  "pytabular/culture.py",
+  "pytabular/currency.py",
+  "pytabular/document.py",
+  "pytabular/logic_utils.py",
+  "pytabular/measure.py",
+  "pytabular/object.py",
+  "pytabular/partition.py",
+  "pytabular/pbi_helper.py",
+  "pytabular/query.py",
+  "pytabular/refresh.py",
+  "pytabular/relationship.py",
+  "pytabular/table.py",
+  "pytabular/tabular_editor.py",
+  "pytabular/tabular_tracing.py",
 ]
-[tool.coverage.run]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]
+
+[tool.pyright]
+pythonVersion = "3.11"
 include = [
-    "pytabular/*"
+  "pytabular/__init__.py",
+  "pytabular/_runtime.py",
+  "pytabular/exceptions.py",
+  "pytabular/pytabular.py",
+  "pytabular/results.py",
+  "pytabular/sources.py",
+  "pytabular/tmdl.py",
+  "tests",
 ]
+exclude = ["test"]
+reportMissingTypeStubs = false
+reportMissingImports = false
+reportUnsupportedDunderAll = false
+reportUnknownMemberType = false
+reportUnknownVariableType = false
+reportUnknownArgumentType = false
+reportUnknownLambdaType = false

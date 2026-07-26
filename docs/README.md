@@ -27,7 +27,8 @@ python3 -m pip install python-tabular
 python3 -m pip install python-tabular==0.3.4
 ```
 
-In your python environment, import pytabular and call the main Tabular Class. The only parameter needed is a solid connection string.
+In your Python environment, import PyTabular and call the main `Tabular` class.
+The only parameter needed for a live model is a connection string.
 
 ```python title="Connecting to Model"
 import pytabular
@@ -36,11 +37,13 @@ model = pytabular.Tabular(CONNECTION_STR) # (1)
 
 1. That's it. A solid connection string.
 
-You may have noticed some logging into your console. I'm a big fan of logging, if you don't want any just get the logger and disable it.
+PyTabular no longer configures application logging during import. Enable it
+using Python's standard logging configuration when desired.
 
 ```python title="Logging Example"
-import pytabular
-pytabular.logger.disabled = True
+import logging
+
+logging.basicConfig(level=logging.INFO)
 ```
 
 You can query your models with the `query()` method from your tabular class. For Dax Queries, it will need the full Dax syntax. See [EVALUATE example](https://dax.guide/st/evaluate/). This will return a [Pandas DataFrame](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html). If you are looking to return a single value, see below. Simply wrap your query in the curly brackets. The method will take that single-cell table and just return the individual value. You can also query your DMV. See below for example.

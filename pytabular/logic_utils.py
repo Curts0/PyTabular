@@ -7,6 +7,9 @@ from typing import Dict, List
 import pandas as pd
 
 from pytabular.currency import unicodes
+from pytabular._runtime import load_tom
+
+load_tom()
 
 from Microsoft.AnalysisServices.Tabular import DataType
 from Microsoft.AnalysisServices.AdomdClient import AdomdDataReader

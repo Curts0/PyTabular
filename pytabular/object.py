@@ -66,7 +66,11 @@ class PyObjects:
     Still building out the magic methods to give `PyObjects` more flexibility.
     """
 
-    def __init__(self, objects: list[PyObject], parent=None) -> None:
+    def __init__(
+        self,
+        objects: list[PyObject],
+        parent: PyObject | None = None,
+    ) -> None:
         """Initialization of `PyObjects`.
 
         Takes the objects in something that is iterable.
